@@ -1,0 +1,193 @@
+metadata:
+  task_id: return_direction_etf_v0
+  title: Daily ETF Return Direction Under Point-in-Time Features
+  track: predictive_financial_ml
+  version: "0.1.0"
+  status: draft
+  owner: FinDS-AgentBench contributors
+  created_at: "2026-06-20"
+  last_updated_at: "2026-06-20"
+  tags:
+    - equities
+    - etf
+    - classification
+    - temporal_validation
+
+research_prompt:
+  summary: Predict next-day ETF return direction using only features available before the prediction timestamp.
+  expected_research_question: Can an agent build a leakage-safe next-day ETF direction model that beats simple baselines on a private temporal holdout?
+  instructions: >
+    Build a model that predicts whether the selected ETF has a positive next-day
+    close-to-close return. Use only information known by the prediction timestamp,
+    validate temporally, compare against naive baselines, and produce a notebook,
+    predictions file, and short writeup.
+  prohibited_shortcuts:
+    - Do not use next-day returns or future prices as features.
+    - Do not tune on the private temporal holdout.
+    - Do not use random train/test splits.
+
+data:
+  license_status: pending_review
+  access: download_script
+  local_paths:
+    - data/raw/return_direction_etf_v0/
+  download_or_generation_script: scripts/download_return_direction_etf_v0.py
+  sources:
+    - name: Public ETF OHLCV source
+      url_or_reference: TBD
+      license: pending_review
+      access: download_script
+  data_dictionary:
+    - column: date
+      meaning: Trading date.
+      availability_lag: Known after market close on the same date.
+    - column: open
+      meaning: Daily open price.
+      availability_lag: Known during the trading day; usable only according to prediction timestamp.
+    - column: high
+      meaning: Daily high price.
+      availability_lag: Known after market close.
+    - column: low
+      meaning: Daily low price.
+      availability_lag: Known after market close.
+    - column: close
+      meaning: Daily close price.
+      availability_lag: Known after market close.
+    - column: volume
+      meaning: Daily trading volume.
+      availability_lag: Known after market close.
+
+information_set:
+  prediction_timestamp: After market close on day t, before the return from t to t+1 is known.
+  allowed_information:
+    - OHLCV data through day t.
+    - Features computed from data through day t and shifted to predict t+1.
+  forbidden_information:
+    - Close price or return from day t+1 or later.
+    - Any label-derived feature from the prediction horizon.
+    - Private temporal holdout labels.
+  availability_calendar:
+    - item: Day t OHLCV
+      known_at: After market close on day t.
+      usable_for_prediction_at: Prediction for day t+1.
+    - item: Day t+1 close
+      known_at: After market close on day t+1.
+      usable_for_prediction_at: Not usable for day t+1 prediction.
+  timestamp_alignment_rules:
+    - All rolling features must use observations through day t only.
+    - Target is sign(close[t+1] / close[t] - 1).
+
+target:
+  name: next_day_positive_return
+  definition: Binary label equal to 1 when next-day close-to-close return is positive.
+  horizon: "1 trading day"
+  label_construction: Compute return from close[t] to close[t+1], then align the label to features known at close[t].
+  positive_class: positive next-day return
+  ranking_group: null
+
+splits:
+  split_method: temporal
+  train:
+    start: TBD
+    end: TBD
+  public_validation:
+    start: TBD
+    end: TBD
+  private_temporal_holdout:
+    start: TBD
+    end: TBD
+  stress_tests:
+    - name: high_volatility_regime
+      start: TBD
+      end: TBD
+  embargo_or_gap: One trading day between feature window end and target realization.
+
+deliverables:
+  required_files:
+    - notebook.ipynb
+    - predictions.csv
+    - writeup.md
+  notebook:
+    path: notebook.ipynb
+    must_execute_cleanly: true
+  predictions:
+    path: predictions.csv
+    required_columns:
+      - row_id
+      - prediction
+      - probability
+  writeup:
+    path: writeup.md
+    max_words: 1200
+  logs:
+    retain_agent_trace: true
+
+evaluation:
+  primary_metric: balanced_accuracy_on_private_temporal_holdout
+  secondary_metrics:
+    - roc_auc
+    - log_loss
+    - execution_success
+    - leakage_safety
+    - validation_correctness
+    - reproducibility
+  financial_metrics:
+    - long_flat_strategy_return
+    - turnover
+    - max_drawdown
+  validity_gates:
+    - artifact_executable
+    - prediction_format_valid
+    - temporal_holdout_respected
+    - no_forbidden_features
+    - validation_protocol_valid
+    - reproducible_rerun
+  aggregation: report_vector_scores
+  minimum_success_conditions:
+    - Notebook executes cleanly.
+    - Prediction file covers every private holdout row.
+    - No future OHLCV data is used.
+
+leakage_checks:
+  forbidden_columns:
+    - next_day_positive_return
+    - future_return
+    - return_t_plus_1
+  temporal_alignment_checks:
+    - Rolling features are shifted to exclude day t+1.
+    - Train, validation, and holdout are ordered chronologically.
+  validation_protocol_checks:
+    - Random train/test split is not allowed.
+    - Hyperparameter tuning must use train/public validation only.
+  known_leakage_traps:
+    - Using unshifted rolling returns that include the target horizon.
+    - Standardizing features on the full dataset before splitting.
+
+reproducibility:
+  environment: pyproject.toml
+  random_seed_policy: Fixed seeds required for all stochastic models.
+  rerun_command: python scripts/validate_task.py tasks/pilot/return_direction_etf_v0.yaml
+  expected_runtime_limit: "30 minutes"
+  compute_limits:
+    cpu: "local_cpu"
+    memory: "8GB"
+
+audit:
+  artifact_retention:
+    - final notebook
+    - predictions
+    - writeup
+    - execution log
+  trace_requirements:
+    - Store all commands and code execution errors.
+    - Store final selected features.
+  human_review_rubric:
+    - Does the writeup compare against a naive baseline?
+    - Does the writeup avoid unsupported causal claims?
+    - Does the notebook enforce temporal alignment?
+  failure_taxonomy_refs:
+    - temporal_leakage
+    - invalid_validation
+    - weak_financial_reasoning
+    - unsupported_narrative
+

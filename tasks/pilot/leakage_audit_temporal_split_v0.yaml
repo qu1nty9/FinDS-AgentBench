@@ -1,0 +1,184 @@
+metadata:
+  task_id: leakage_audit_temporal_split_v0
+  title: Audit a Financial ML Notebook for Temporal Leakage
+  track: research_replication_and_audit
+  version: "0.1.0"
+  status: draft
+  owner: FinDS-AgentBench contributors
+  created_at: "2026-06-20"
+  last_updated_at: "2026-06-20"
+  tags:
+    - leakage
+    - audit
+    - replication
+    - validation
+
+research_prompt:
+  summary: Detect and correct leakage in a flawed financial ML notebook.
+  expected_research_question: Can an agent identify invalid validation and future leakage, repair the workflow, and quantify the performance drop?
+  instructions: >
+    You are given a financial ML notebook with suspiciously strong results.
+    Audit the notebook, identify leakage or validation flaws, rerun the analysis
+    with a correct temporal split, and write a before/after audit note.
+  prohibited_shortcuts:
+    - Do not preserve random splits if the task has temporal structure.
+    - Do not report the flawed score as the final valid score.
+    - Do not change labels or rows to hide the performance drop.
+
+data:
+  license_status: pending_review
+  access: bundled
+  local_paths:
+    - data/raw/leakage_audit_temporal_split_v0/
+  download_or_generation_script: scripts/generate_leakage_audit_temporal_split_v0.py
+  sources:
+    - name: Synthetic financial panel with controlled leakage traps
+      url_or_reference: generated locally
+      license: project_generated
+      access: synthetic_generator
+  data_dictionary:
+    - column: date
+      meaning: Observation date.
+      availability_lag: Known at prediction timestamp.
+    - column: asset_id
+      meaning: Synthetic asset identifier.
+      availability_lag: Known at prediction timestamp.
+    - column: feature_lagged_signal
+      meaning: Legitimate lagged signal.
+      availability_lag: Known at prediction timestamp.
+    - column: feature_future_return_leak
+      meaning: Intentionally leaked future information.
+      availability_lag: Not available at prediction timestamp.
+    - column: target
+      meaning: Future outcome label.
+      availability_lag: Known only after target horizon.
+
+information_set:
+  prediction_timestamp: End of period t, before target outcome for t+1 is known.
+  allowed_information:
+    - Synthetic features marked as known at or before t.
+    - Lagged target history only when shifted before t.
+  forbidden_information:
+    - feature_future_return_leak
+    - target for validation or holdout rows during model selection
+    - Any feature computed using t+1 outcome.
+  availability_calendar:
+    - item: feature_lagged_signal
+      known_at: End of period t.
+      usable_for_prediction_at: t+1 prediction.
+    - item: feature_future_return_leak
+      known_at: After t+1 outcome.
+      usable_for_prediction_at: Never for t+1 prediction.
+  timestamp_alignment_rules:
+    - All target-derived features must be shifted by one full horizon.
+    - Split must be chronological at the row date level.
+
+target:
+  name: target
+  definition: Binary future outcome for the next period.
+  horizon: "1 period"
+  label_construction: Generated from latent process and aligned to period t features.
+  positive_class: positive future outcome
+  ranking_group: asset_id
+
+splits:
+  split_method: temporal
+  train:
+    start: TBD
+    end: TBD
+  public_validation:
+    start: TBD
+    end: TBD
+  private_temporal_holdout:
+    start: TBD
+    end: TBD
+  stress_tests:
+    - name: leak_removed_stress
+      start: TBD
+      end: TBD
+  embargo_or_gap: One full target horizon.
+
+deliverables:
+  required_files:
+    - corrected_notebook.ipynb
+    - audit_note.md
+    - before_after_metrics.csv
+  notebook:
+    path: corrected_notebook.ipynb
+    must_execute_cleanly: true
+  predictions:
+    path: before_after_metrics.csv
+    required_columns:
+      - metric
+      - flawed_value
+      - corrected_value
+  writeup:
+    path: audit_note.md
+    max_words: 1500
+  logs:
+    retain_agent_trace: true
+
+evaluation:
+  primary_metric: audit_correctness_score
+  secondary_metrics:
+    - leakage_identification
+    - corrected_temporal_validation
+    - before_after_quantification
+    - execution_success
+    - reproducibility
+  financial_metrics: []
+  validity_gates:
+    - artifact_executable
+    - temporal_holdout_respected
+    - no_forbidden_features
+    - validation_protocol_valid
+    - reproducible_rerun
+  aggregation: rubric_plus_vector_scores
+  minimum_success_conditions:
+    - Agent identifies at least one true leakage mechanism.
+    - Corrected notebook uses temporal validation.
+    - Audit note reports both flawed and corrected metrics.
+
+leakage_checks:
+  forbidden_columns:
+    - feature_future_return_leak
+    - target
+  temporal_alignment_checks:
+    - Target-derived features are shifted.
+    - Validation rows are later than training rows.
+  validation_protocol_checks:
+    - Random splits are replaced with temporal splits.
+    - Preprocessing is fit on train only.
+  known_leakage_traps:
+    - Future-return feature included in training.
+    - StandardScaler fit on the full dataset.
+    - Random split across dates.
+
+reproducibility:
+  environment: pyproject.toml
+  random_seed_policy: Generator and models must use fixed seeds.
+  rerun_command: python scripts/validate_task.py tasks/pilot/leakage_audit_temporal_split_v0.yaml
+  expected_runtime_limit: "20 minutes"
+  compute_limits:
+    cpu: "local_cpu"
+    memory: "4GB"
+
+audit:
+  artifact_retention:
+    - corrected notebook
+    - audit note
+    - before/after metrics
+    - execution log
+  trace_requirements:
+    - Store identified leakage mechanisms.
+    - Store corrected split code.
+  human_review_rubric:
+    - Did the agent correctly identify the leakage trap?
+    - Did the corrected workflow remove the trap?
+    - Did the writeup avoid presenting flawed results as valid?
+  failure_taxonomy_refs:
+    - temporal_leakage
+    - invalid_validation
+    - reproducibility_failure
+    - unsupported_narrative
+

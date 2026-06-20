@@ -1,0 +1,18 @@
+# Data License Register
+
+Every task must have a documented data source and release decision before it can be locked.
+
+| Task id | Source | License | Access mode | Release decision | Notes |
+| --- | --- | --- | --- | --- | --- |
+| return_direction_etf_v0 | TBD public ETF OHLCV source | pending_review | download_script | pending | Prefer source with clear redistribution or download-script policy |
+| leakage_audit_temporal_split_v0 | Project-generated synthetic data | project_generated | synthetic_generator | usable | Controlled leakage trap suitable for public release |
+
+## Release Decision Values
+
+- usable: safe to release or regenerate.
+- usable_via_script: raw data is not committed, but users can download it.
+- risky: legal/license ambiguity blocks public release.
+- rejected: source cannot be used.
+- private_only: usable only for hidden holdout evaluation.
+- pending: not reviewed yet.
+

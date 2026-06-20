@@ -1,0 +1,106 @@
+schema_version: "0.1.0"
+object_type: scoring_schema
+description: >
+  Vector scoring schema for FinDS-AgentBench. The benchmark intentionally
+  separates predictive performance from research validity, leakage safety,
+  reproducibility, financial plausibility, and writeup quality.
+
+scorecard:
+  dimensions:
+    execution_success:
+      scale: binary
+      description: Submitted artifacts execute without manual repair.
+    predictive_performance:
+      scale: task_specific_numeric
+      description: Score on locked temporal holdout.
+    financial_performance:
+      scale: task_specific_numeric
+      description: Cost-adjusted or risk-adjusted financial performance where applicable.
+    leakage_safety:
+      scale: 0_to_1
+      description: No forbidden future information, timestamp leak, or invalid feature.
+    validation_correctness:
+      scale: 0_to_1
+      description: Correct temporal split, embargo, and benchmark protocol.
+    reproducibility:
+      scale: 0_to_1
+      description: Clean rerun succeeds with deterministic or documented variability.
+    robustness:
+      scale: 0_to_1
+      description: Stability across regimes, perturbations, or stress slices.
+    writeup_validity:
+      scale: 0_to_1
+      description: Claims are supported by results; limitations and uncertainty are explicit.
+    cost_efficiency:
+      scale: numeric
+      description: Wall-clock time, token cost, retries, and compute use.
+    auditability:
+      scale: 0_to_1
+      description: Agent actions, artifacts, and corrections can be inspected.
+
+validity_gates:
+  - gate_id: artifact_executable
+    failure_effect: task_failure
+    description: Notebook/script must run from a clean environment.
+  - gate_id: prediction_format_valid
+    failure_effect: task_failure
+    description: Prediction file must match task format and row ids.
+  - gate_id: temporal_holdout_respected
+    failure_effect: cap_predictive_score
+    description: Private temporal holdout labels or future rows must not be used.
+  - gate_id: no_forbidden_features
+    failure_effect: invalidate_predictive_score
+    description: Forbidden columns or future-derived features invalidate the predictive score.
+  - gate_id: validation_protocol_valid
+    failure_effect: cap_research_validity
+    description: Non-temporal validation or invalid split lowers validity even if holdout score is high.
+  - gate_id: reproducible_rerun
+    failure_effect: cap_overall_score
+    description: Clean rerun must reproduce outputs within task tolerance.
+
+run_record_schema:
+  required_fields:
+    - run_id
+    - task_id
+    - agent_id
+    - agent_version
+    - started_at
+    - completed_at
+    - status
+    - artifacts
+    - scores
+    - failures
+  status_values:
+    - completed
+    - failed_runtime
+    - failed_format
+    - failed_validity_gate
+    - timed_out
+    - manually_excluded
+
+aggregation_policy:
+  default: report_vector_scores
+  notes:
+    - Do not collapse to one leaderboard score in the pilot paper.
+    - Report predictive performance alongside validity gates.
+    - Report confidence intervals over repeated stochastic runs.
+    - If a composite score is introduced later, publish the formula and all component scores.
+
+failure_taxonomy:
+  code_failure:
+    description: Runtime errors, missing files, dependency failure, invalid output format.
+  temporal_leakage:
+    description: Future data, post-event data, target leakage, or invalid timestamp alignment.
+  invalid_validation:
+    description: Random split, leakage through cross-validation, missing embargo, or using holdout for tuning.
+  overfitting:
+    description: Excessive tuning to public validation or unstable performance across regimes.
+  weak_financial_reasoning:
+    description: Ignores costs, turnover, baselines, drawdown, calibration, or financial plausibility.
+  unsupported_narrative:
+    description: Claims in the writeup are not supported by executed results.
+  reproducibility_failure:
+    description: Missing seeds, non-deterministic pipeline, undocumented dependencies, or non-rerunnable notebook.
+  bad_tool_use:
+    description: Agent uses unavailable tools, misreads files, corrupts data, or fails to inspect outputs.
+

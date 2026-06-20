@@ -1,0 +1,22 @@
+.DS_Store
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.omx/
+
+# Data and generated artifacts
+data/raw/*
+data/processed/*
+data/private/*
+runs/*
+reports/generated/*
+
+# Keep directory docs/placeholders
+!data/README.md
+!runs/README.md
+!reports/README.md

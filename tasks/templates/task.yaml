@@ -1,0 +1,156 @@
+metadata:
+  task_id: example_task_v0
+  title: Example FinDS-AgentBench Task
+  track: predictive_financial_ml
+  version: "0.1.0"
+  status: draft
+  owner: FinDS-AgentBench contributors
+  created_at: "2026-06-20"
+  last_updated_at: "2026-06-20"
+  tags:
+    - example
+
+research_prompt:
+  summary: One-paragraph description of the research task.
+  expected_research_question: What financial ML question should the agent answer?
+  instructions: >
+    Build a leakage-safe model, validate it temporally, submit predictions on
+    the private temporal holdout, and write a short research report.
+  prohibited_shortcuts:
+    - Do not use private holdout labels.
+    - Do not use features unavailable at prediction time.
+
+data:
+  license_status: pending_review
+  access: download_script
+  local_paths:
+    - data/raw/example/
+  download_or_generation_script: scripts/download_example_data.py
+  sources:
+    - name: Example source
+      url_or_reference: https://example.com/
+      license: pending_review
+      access: download_script
+  data_dictionary:
+    - column: date
+      meaning: Observation date.
+      availability_lag: Known after market close on the same date.
+
+information_set:
+  prediction_timestamp: Define exactly when the agent makes each prediction.
+  allowed_information:
+    - Features known at or before the prediction timestamp.
+  forbidden_information:
+    - Future returns.
+    - Private holdout labels.
+  availability_calendar:
+    - item: Example feature
+      known_at: "t"
+      usable_for_prediction_at: "t+1"
+  timestamp_alignment_rules:
+    - All rolling features must be shifted by at least one prediction period.
+
+target:
+  name: target
+  definition: Define the target variable.
+  horizon: "1 period ahead"
+  label_construction: Explain how labels are constructed without leakage.
+  positive_class: Optional for classification tasks.
+  ranking_group: Optional for ranking tasks.
+
+splits:
+  split_method: temporal
+  train:
+    start: "YYYY-MM-DD"
+    end: "YYYY-MM-DD"
+  public_validation:
+    start: "YYYY-MM-DD"
+    end: "YYYY-MM-DD"
+  private_temporal_holdout:
+    start: "YYYY-MM-DD"
+    end: "YYYY-MM-DD"
+  stress_tests:
+    - name: stress_regime_example
+      start: "YYYY-MM-DD"
+      end: "YYYY-MM-DD"
+  embargo_or_gap: Define if applicable.
+
+deliverables:
+  required_files:
+    - notebook.ipynb
+    - predictions.csv
+    - writeup.md
+  notebook:
+    path: notebook.ipynb
+    must_execute_cleanly: true
+  predictions:
+    path: predictions.csv
+    required_columns:
+      - row_id
+      - prediction
+  writeup:
+    path: writeup.md
+    max_words: 1200
+  logs:
+    retain_agent_trace: true
+
+evaluation:
+  primary_metric: Define task-specific metric.
+  secondary_metrics:
+    - execution_success
+    - leakage_safety
+    - validation_correctness
+    - reproducibility
+  financial_metrics: []
+  validity_gates:
+    - artifact_executable
+    - prediction_format_valid
+    - temporal_holdout_respected
+    - no_forbidden_features
+    - validation_protocol_valid
+    - reproducible_rerun
+  aggregation: report_vector_scores
+  minimum_success_conditions:
+    - Notebook executes cleanly.
+    - Prediction file has valid format.
+    - No forbidden information is used.
+
+leakage_checks:
+  forbidden_columns:
+    - target
+    - future_return
+  temporal_alignment_checks:
+    - Rolling features are shifted.
+    - Validation and holdout are strictly after train.
+  validation_protocol_checks:
+    - No random train/test split for time-series rows.
+  known_leakage_traps:
+    - Unshifted rolling target statistics.
+
+reproducibility:
+  environment: pyproject.toml
+  random_seed_policy: Fixed seeds required for stochastic models.
+  rerun_command: python scripts/validate_task.py tasks/templates/task.yaml
+  expected_runtime_limit: "30 minutes"
+  compute_limits:
+    cpu: "TBD"
+    memory: "TBD"
+
+audit:
+  artifact_retention:
+    - final notebook
+    - predictions
+    - writeup
+    - run logs
+  trace_requirements:
+    - Store commands executed by the agent.
+    - Store intermediate errors and retries.
+  human_review_rubric:
+    - Are claims supported by results?
+    - Are limitations stated clearly?
+    - Is the validation protocol financially plausible?
+  failure_taxonomy_refs:
+    - temporal_leakage
+    - invalid_validation
+    - unsupported_narrative
+

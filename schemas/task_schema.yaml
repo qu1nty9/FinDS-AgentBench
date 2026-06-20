@@ -1,0 +1,272 @@
+schema_version: "0.1.0"
+object_type: task_spec_schema
+description: >
+  Canonical schema for FinDS-AgentBench task specifications. A task is valid
+  only when it defines the prediction timestamp, allowed information set,
+  target horizon, temporal splits, deliverables, scoring, leakage checks, and
+  reproducibility requirements.
+
+required_top_level_keys:
+  - metadata
+  - research_prompt
+  - data
+  - information_set
+  - target
+  - splits
+  - deliverables
+  - evaluation
+  - leakage_checks
+  - reproducibility
+  - audit
+
+enums:
+  track:
+    - predictive_financial_ml
+    - event_aware_time_series_reasoning
+    - research_replication_and_audit
+    - portfolio_backtest_construction
+  status:
+    - draft
+    - pilot_locked
+    - public
+    - deprecated
+  data_access:
+    - bundled
+    - download_script
+    - external_manual
+    - synthetic_generator
+    - private_holdout_only
+  split_role:
+    - train
+    - public_validation
+    - private_temporal_holdout
+    - stress_test
+
+sections:
+  metadata:
+    required:
+      - task_id
+      - title
+      - track
+      - version
+      - status
+      - owner
+    fields:
+      task_id:
+        type: string
+        description: Stable machine-readable id, e.g. ret_dir_etf_daily_v0.
+      title:
+        type: string
+      track:
+        type: enum
+        enum_ref: track
+      version:
+        type: string
+      status:
+        type: enum
+        enum_ref: status
+      owner:
+        type: string
+      created_at:
+        type: date
+      last_updated_at:
+        type: date
+      tags:
+        type: list[string]
+
+  research_prompt:
+    required:
+      - summary
+      - instructions
+      - expected_research_question
+    fields:
+      summary:
+        type: string
+      instructions:
+        type: string
+        description: Prompt shown to agents.
+      expected_research_question:
+        type: string
+      prohibited_shortcuts:
+        type: list[string]
+
+  data:
+    required:
+      - sources
+      - license_status
+      - access
+      - data_dictionary
+    fields:
+      sources:
+        type: list[object]
+        required_fields:
+          - name
+          - url_or_reference
+          - license
+          - access
+      license_status:
+        type: string
+        description: usable, risky, rejected, or pending_review.
+      access:
+        type: enum
+        enum_ref: data_access
+      local_paths:
+        type: list[string]
+      download_or_generation_script:
+        type: string
+      data_dictionary:
+        type: list[object]
+        required_fields:
+          - column
+          - meaning
+          - availability_lag
+
+  information_set:
+    required:
+      - prediction_timestamp
+      - allowed_information
+      - forbidden_information
+      - availability_calendar
+    fields:
+      prediction_timestamp:
+        type: string
+        description: Definition of the timestamp at which a prediction is made.
+      allowed_information:
+        type: list[string]
+      forbidden_information:
+        type: list[string]
+      availability_calendar:
+        type: list[object]
+        required_fields:
+          - item
+          - known_at
+          - usable_for_prediction_at
+      timestamp_alignment_rules:
+        type: list[string]
+
+  target:
+    required:
+      - name
+      - definition
+      - horizon
+      - label_construction
+    fields:
+      name:
+        type: string
+      definition:
+        type: string
+      horizon:
+        type: string
+      label_construction:
+        type: string
+      positive_class:
+        type: string
+      ranking_group:
+        type: string
+
+  splits:
+    required:
+      - split_method
+      - train
+      - public_validation
+      - private_temporal_holdout
+    fields:
+      split_method:
+        type: string
+        description: Must be temporal unless task explicitly justifies otherwise.
+      train:
+        type: object
+      public_validation:
+        type: object
+      private_temporal_holdout:
+        type: object
+      stress_tests:
+        type: list[object]
+      embargo_or_gap:
+        type: string
+
+  deliverables:
+    required:
+      - required_files
+      - notebook
+      - predictions
+      - writeup
+    fields:
+      required_files:
+        type: list[string]
+      notebook:
+        type: object
+      predictions:
+        type: object
+      writeup:
+        type: object
+      logs:
+        type: object
+
+  evaluation:
+    required:
+      - primary_metric
+      - secondary_metrics
+      - validity_gates
+      - aggregation
+    fields:
+      primary_metric:
+        type: string
+      secondary_metrics:
+        type: list[string]
+      financial_metrics:
+        type: list[string]
+      validity_gates:
+        type: list[string]
+      aggregation:
+        type: string
+      minimum_success_conditions:
+        type: list[string]
+
+  leakage_checks:
+    required:
+      - forbidden_columns
+      - temporal_alignment_checks
+      - validation_protocol_checks
+    fields:
+      forbidden_columns:
+        type: list[string]
+      temporal_alignment_checks:
+        type: list[string]
+      validation_protocol_checks:
+        type: list[string]
+      known_leakage_traps:
+        type: list[string]
+
+  reproducibility:
+    required:
+      - environment
+      - random_seed_policy
+      - rerun_command
+    fields:
+      environment:
+        type: string
+      random_seed_policy:
+        type: string
+      rerun_command:
+        type: string
+      expected_runtime_limit:
+        type: string
+      compute_limits:
+        type: object
+
+  audit:
+    required:
+      - artifact_retention
+      - trace_requirements
+      - human_review_rubric
+    fields:
+      artifact_retention:
+        type: list[string]
+      trace_requirements:
+        type: list[string]
+      human_review_rubric:
+        type: list[string]
+      failure_taxonomy_refs:
+        type: list[string]
+
