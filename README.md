@@ -102,6 +102,13 @@ PYTHONPATH=src python scripts/score_synthetic_market_direction_v0.py \
   --submission runs/synthetic_market_direction_v0/momentum_baseline/predictions.csv
 ```
 
+Validate a full submission directory, including notebook execution:
+
+```bash
+PYTHONPATH=src python scripts/validate_submission_artifacts.py \
+  tasks/pilot/synthetic_market_direction_v0.yaml path/to/submission_dir
+```
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.

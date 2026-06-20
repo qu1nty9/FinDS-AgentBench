@@ -1,0 +1,47 @@
+schema_version: "0.1.0"
+object_type: artifact_contract_schema
+description: >
+  Submission artifact contract for FinDS-AgentBench. The concrete required
+  files are read from each task spec's `deliverables` section; this file defines
+  the validation gates shared across tasks.
+
+required_validation_gates:
+  - submission_directory_exists
+  - notebook_present
+  - notebook_executes
+  - required_files_present
+  - prediction_columns_valid
+  - writeup_within_word_limit
+
+submission_layout:
+  predictive_financial_ml:
+    expected_artifacts:
+      - notebook.ipynb
+      - predictions.csv
+      - writeup.md
+    prediction_columns:
+      - row_id
+      - prediction
+      - probability
+  research_replication_and_audit:
+    expected_artifacts:
+      - corrected_notebook.ipynb
+      - audit_note.md
+      - before_after_metrics.csv
+    metric_columns:
+      - metric
+      - flawed_value
+      - corrected_value
+
+notebook_execution:
+  default_kernel_name: python3
+  default_timeout_seconds: 120
+  execution_cwd: submission_directory
+  output_policy: write_executed_copy_only_when_requested
+
+failure_effects:
+  missing_required_file: task_failure
+  notebook_execution_error: task_failure
+  invalid_prediction_columns: task_failure
+  writeup_word_limit_exceeded: cap_writeup_validity
+

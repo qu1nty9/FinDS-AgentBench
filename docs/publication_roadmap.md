@@ -114,8 +114,8 @@ Acceptance criteria:
 
 ## Immediate Next Steps
 
-1. Harden the current runnable slices with notebook execution validation.
-2. Select a license-safe data source for `return_direction_etf_v0`.
-3. Add a model-based baseline for `synthetic_market_direction_v0`.
-4. Add a leakage checker that detects private answer-key access in agent artifacts.
+1. Add a leakage checker that detects private answer-key access in agent artifacts.
+2. Add a model-based baseline for `synthetic_market_direction_v0`.
+3. Select a license-safe data source for `return_direction_etf_v0`.
+4. Add run manifests and agent trace retention.
 5. Expand from 2 runnable tasks to the 8-12 task workshop pilot.
