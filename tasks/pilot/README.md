@@ -13,3 +13,17 @@ Pilot tasks should stay small enough to run repeatedly across agents while still
 
 The first target is 8-12 locked tasks across predictive financial ML, event-aware reasoning, and leakage audit.
 
+## Runnable Vertical Slice
+
+`leakage_audit_temporal_split_v0.yaml` is the first runnable task spec.
+
+Commands:
+
+```bash
+PYTHONPATH=src python scripts/generate_leakage_audit_temporal_split_v0.py --seed 7
+PYTHONPATH=src python scripts/validate_task.py tasks/pilot/leakage_audit_temporal_split_v0.yaml
+PYTHONPATH=src python scripts/score_leakage_audit_temporal_split_v0.py \
+  --submission-dir baselines/leakage_audit_temporal_split_v0/expert_submission
+```
+
+The scorer currently checks the audit note and before/after metrics. Notebook execution validation will be added after the first model-based baseline is implemented.

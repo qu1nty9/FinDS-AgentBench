@@ -25,6 +25,8 @@ The pilot paper should use 8-12 tasks across:
 
 The pilot should avoid becoming a general finance benchmark. Its job is to prove that validity-gated evaluation reveals failures that ordinary predictive scoring hides.
 
+The first implemented vertical slice is `leakage_audit_temporal_split_v0`: a synthetic audit task with controlled future-feature leakage, random temporal split misuse, and full-dataset preprocessing leakage.
+
 ## Stage 2 Scope
 
 The full benchmark should expand to 30-50 tasks, add portfolio/backtest construction, hidden temporal holdouts, public task cards, evaluation cards, and a stronger benchmark harness.
@@ -32,4 +34,3 @@ The full benchmark should expand to 30-50 tasks, add portfolio/backtest construc
 ## Stage 3 Scope
 
 The journal version should study reliability mechanisms, not merely announce the benchmark. It should include intervention experiments, repeated-run variance, failure-mode analysis, and implications for financial model risk management.
-

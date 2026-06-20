@@ -114,9 +114,8 @@ Acceptance criteria:
 
 ## Immediate Next Steps
 
-1. Lock the task and scoring schemas for the pilot.
-2. Select data sources for the two draft pilot tasks.
-3. Implement data generation/download scripts.
-4. Build the minimal evaluator and leakage checker.
-5. Write naive/classical baselines for the first task.
-
+1. Harden the current synthetic leakage-audit vertical slice with notebook execution validation.
+2. Select a license-safe data source for `return_direction_etf_v0`.
+3. Implement the first predictive-task download/generation script.
+4. Build the minimal evaluator for prediction submissions.
+5. Write naive/classical baselines for the first predictive task.

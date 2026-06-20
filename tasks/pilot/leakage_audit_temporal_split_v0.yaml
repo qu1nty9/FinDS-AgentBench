@@ -26,7 +26,7 @@ research_prompt:
     - Do not change labels or rows to hide the performance drop.
 
 data:
-  license_status: pending_review
+  license_status: usable
   access: bundled
   local_paths:
     - data/raw/leakage_audit_temporal_split_v0/
@@ -84,18 +84,18 @@ target:
 splits:
   split_method: temporal
   train:
-    start: TBD
-    end: TBD
+    start: "2020-01-02"
+    end: "2020-12-31"
   public_validation:
-    start: TBD
-    end: TBD
+    start: "2021-01-01"
+    end: "2021-06-30"
   private_temporal_holdout:
-    start: TBD
-    end: TBD
+    start: "2021-07-01"
+    end: "2021-12-29"
   stress_tests:
     - name: leak_removed_stress
-      start: TBD
-      end: TBD
+      start: "2021-07-01"
+      end: "2021-12-29"
   embargo_or_gap: One full target horizon.
 
 deliverables:
@@ -157,7 +157,7 @@ leakage_checks:
 reproducibility:
   environment: pyproject.toml
   random_seed_policy: Generator and models must use fixed seeds.
-  rerun_command: python scripts/validate_task.py tasks/pilot/leakage_audit_temporal_split_v0.yaml
+  rerun_command: python scripts/generate_leakage_audit_temporal_split_v0.py --seed 7
   expected_runtime_limit: "20 minutes"
   compute_limits:
     cpu: "local_cpu"
@@ -181,4 +181,3 @@ audit:
     - invalid_validation
     - reproducibility_failure
     - unsupported_narrative
-

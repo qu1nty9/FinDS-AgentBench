@@ -61,6 +61,31 @@ The first milestone is not a leaderboard. It is a reliable pilot benchmark:
 - first naive/classical baselines;
 - initial failure taxonomy.
 
+## Current Runnable Task
+
+The first runnable vertical slice is `leakage_audit_temporal_split_v0`, a synthetic audit task with controlled leakage traps.
+
+Generate the task data and private answer key:
+
+```bash
+PYTHONPATH=src python scripts/generate_leakage_audit_temporal_split_v0.py --seed 7
+```
+
+Validate the task spec:
+
+```bash
+PYTHONPATH=src python scripts/validate_task.py tasks/pilot/leakage_audit_temporal_split_v0.yaml
+```
+
+Score the included expert sanity-check submission:
+
+```bash
+PYTHONPATH=src python scripts/score_leakage_audit_temporal_split_v0.py \
+  --submission-dir baselines/leakage_audit_temporal_split_v0/expert_submission
+```
+
+The generated `data/raw/`, `data/private/`, and `runs/` artifacts are ignored by git.
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.
