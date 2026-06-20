@@ -1,0 +1,60 @@
+schema_version: "0.1.0"
+object_type: run_manifest_schema
+description: >
+  Canonical metadata contract for a FinDS-AgentBench run. A run manifest links
+  the task, agent or baseline, tool permissions, commands, retained artifacts,
+  validation outputs, scores, and failures.
+
+required_top_level_keys:
+  - schema_version
+  - run_id
+  - task_id
+  - run_type
+  - agent
+  - timing
+  - status
+  - tool_permissions
+  - commands
+  - artifacts
+  - validations
+  - scores
+  - failures
+
+run_type_values:
+  - agent
+  - baseline
+  - human
+  - expert
+
+status_values:
+  - completed
+  - failed_runtime
+  - failed_format
+  - failed_validity_gate
+  - timed_out
+  - manually_excluded
+
+agent_required_keys:
+  - agent_id
+  - agent_version
+
+timing_required_keys:
+  - started_at
+  - completed_at
+
+artifact_required_keys:
+  - submission_dir
+  - files
+
+command_required_keys:
+  - command
+  - started_at
+  - completed_at
+  - exit_code
+
+notes:
+  - `files` should include path, size_bytes, and sha256 for retained submission artifacts.
+  - `validations` may include artifact validation, leakage scan, notebook execution, and custom gates.
+  - `scores` should store the raw scorecard returned by task-specific scorers.
+  - `failures` should use the failure taxonomy where possible.
+

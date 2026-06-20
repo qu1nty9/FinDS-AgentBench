@@ -114,8 +114,8 @@ Acceptance criteria:
 
 ## Immediate Next Steps
 
-1. Add run manifests and agent trace retention.
-2. Add a model-based baseline for `synthetic_market_direction_v0`.
-3. Select a license-safe data source for `return_direction_etf_v0`.
-4. Add static checks for suspicious preprocessing and random temporal splits.
+1. Add a model-based baseline for `synthetic_market_direction_v0`.
+2. Select a license-safe data source for `return_direction_etf_v0`.
+3. Add static checks for suspicious preprocessing and random temporal splits.
+4. Add a report builder that aggregates run manifests into paper-ready tables.
 5. Expand from 2 runnable tasks to the 8-12 task workshop pilot.

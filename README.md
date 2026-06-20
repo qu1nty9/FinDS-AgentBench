@@ -123,6 +123,20 @@ The standalone scanner is also available:
 PYTHONPATH=src python scripts/scan_submission_leakage.py path/to/submission_dir
 ```
 
+Create and validate a run manifest after scoring:
+
+```bash
+PYTHONPATH=src python scripts/create_run_manifest.py \
+  --task-id synthetic_market_direction_v0 \
+  --agent-id momentum_baseline \
+  --agent-version 0.1.0 \
+  --submission-dir runs/synthetic_market_direction_v0/momentum_baseline \
+  --output runs/synthetic_market_direction_v0/momentum_baseline/run_manifest.json
+
+PYTHONPATH=src python scripts/validate_run_manifest.py \
+  runs/synthetic_market_direction_v0/momentum_baseline/run_manifest.json
+```
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.
