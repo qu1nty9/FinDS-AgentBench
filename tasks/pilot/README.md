@@ -27,3 +27,17 @@ PYTHONPATH=src python scripts/score_leakage_audit_temporal_split_v0.py \
 ```
 
 The scorer currently checks the audit note and before/after metrics. Notebook execution validation will be added after the first model-based baseline is implemented.
+
+`synthetic_market_direction_v0.yaml` is the first runnable predictive task spec.
+
+Commands:
+
+```bash
+PYTHONPATH=src python scripts/generate_synthetic_market_direction_v0.py --seed 11
+PYTHONPATH=src python scripts/validate_task.py tasks/pilot/synthetic_market_direction_v0.yaml
+PYTHONPATH=src python baselines/synthetic_market_direction_v0/momentum_baseline.py
+PYTHONPATH=src python scripts/score_synthetic_market_direction_v0.py \
+  --submission runs/synthetic_market_direction_v0/momentum_baseline/predictions.csv
+```
+
+The public data contains train and public-validation labels. Private holdout labels are written only to `data/private/` and are ignored by git.

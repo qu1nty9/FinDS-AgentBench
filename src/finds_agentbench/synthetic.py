@@ -16,6 +16,15 @@ class LeakageAuditPaths:
     answer_key: Path
 
 
+@dataclass(frozen=True)
+class SyntheticMarketPaths:
+    train_public: Path
+    private_holdout_features: Path
+    sample_submission: Path
+    metadata: Path
+    answer_key: Path
+
+
 def business_dates(start: date, periods: int) -> list[date]:
     """Return the first `periods` weekdays at or after `start`."""
     values: list[date] = []
@@ -170,6 +179,171 @@ def write_leakage_audit_task(
     return LeakageAuditPaths(
         public_panel=public_panel,
         flawed_workflow=flawed_workflow,
+        answer_key=answer_key,
+    )
+
+
+def predictive_split_for_date(value: date) -> str:
+    if value <= date(2020, 12, 31):
+        return "train"
+    if value <= date(2021, 6, 30):
+        return "public_validation"
+    return "private_temporal_holdout"
+
+
+def mean(values: list[float]) -> float:
+    return sum(values) / len(values)
+
+
+def std(values: list[float]) -> float:
+    if len(values) < 2:
+        return 0.0
+    center = mean(values)
+    variance = sum((value - center) ** 2 for value in values) / (len(values) - 1)
+    return math.sqrt(variance)
+
+
+def generate_synthetic_market_rows(
+    *,
+    seed: int = 11,
+    n_assets: int = 10,
+    n_periods: int = 760,
+) -> list[dict[str, str]]:
+    """Generate a point-in-time synthetic market direction task."""
+    rng = random.Random(seed)
+    dates = business_dates(date(2019, 1, 2), n_periods)
+    returns_by_asset: dict[str, list[float]] = {}
+
+    for asset_idx in range(n_assets):
+        asset_id = f"asset_{asset_idx:02d}"
+        latent = rng.gauss(0, 0.2)
+        asset_bias = rng.gauss(0, 0.0005)
+        asset_returns: list[float] = []
+
+        for current_date in dates:
+            shock_regime = -0.006 if date(2020, 3, 2) <= current_date <= date(2020, 5, 29) else 0.001
+            latent = 0.88 * latent + rng.gauss(0, 0.35)
+            expected_return = asset_bias + 0.0035 * latent + shock_regime
+            realized_return = expected_return + rng.gauss(0, 0.018)
+            asset_returns.append(realized_return)
+
+        returns_by_asset[asset_id] = asset_returns
+
+    rows: list[dict[str, str]] = []
+    for asset_id, asset_returns in sorted(returns_by_asset.items()):
+        for idx in range(20, len(dates) - 1):
+            current_date = dates[idx]
+            ret_1d = asset_returns[idx]
+            ret_5d = sum(asset_returns[idx - 4 : idx + 1])
+            momentum_20d = sum(asset_returns[idx - 19 : idx + 1])
+            volatility_10d = std(asset_returns[idx - 9 : idx + 1])
+            market_regime_proxy = -1.0 if date(2020, 3, 2) <= current_date <= date(2020, 5, 29) else 1.0
+            next_return = asset_returns[idx + 1]
+            target = 1 if next_return > 0 else 0
+            split = predictive_split_for_date(current_date)
+
+            rows.append(
+                {
+                    "row_id": f"{current_date.isoformat()}_{asset_id}",
+                    "date": current_date.isoformat(),
+                    "asset_id": asset_id,
+                    "split": split,
+                    "ret_1d": f"{ret_1d:.8f}",
+                    "ret_5d": f"{ret_5d:.8f}",
+                    "momentum_20d": f"{momentum_20d:.8f}",
+                    "volatility_10d": f"{volatility_10d:.8f}",
+                    "market_regime_proxy": f"{market_regime_proxy:.1f}",
+                    "next_day_positive_return": str(target),
+                    "next_day_return": f"{next_return:.8f}",
+                }
+            )
+
+    return rows
+
+
+def write_synthetic_market_direction_task(
+    *,
+    output_dir: str | Path = "data/raw/synthetic_market_direction_v0",
+    private_dir: str | Path = "data/private/synthetic_market_direction_v0",
+    seed: int = 11,
+) -> SyntheticMarketPaths:
+    output_path = Path(output_dir)
+    private_path = Path(private_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    private_path.mkdir(parents=True, exist_ok=True)
+
+    rows = generate_synthetic_market_rows(seed=seed)
+    train_public = output_path / "train_public.csv"
+    holdout_features = output_path / "private_holdout_features.csv"
+    sample_submission = output_path / "sample_submission.csv"
+    metadata = output_path / "metadata.json"
+    answer_key = private_path / "answer_key.csv"
+
+    feature_fields = [
+        "row_id",
+        "date",
+        "asset_id",
+        "split",
+        "ret_1d",
+        "ret_5d",
+        "momentum_20d",
+        "volatility_10d",
+        "market_regime_proxy",
+    ]
+    public_fields = feature_fields + ["next_day_positive_return", "next_day_return"]
+    answer_fields = ["row_id", "date", "asset_id", "next_day_positive_return", "next_day_return"]
+
+    public_rows = [row for row in rows if row["split"] != "private_temporal_holdout"]
+    holdout_rows = [row for row in rows if row["split"] == "private_temporal_holdout"]
+
+    with train_public.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=public_fields)
+        writer.writeheader()
+        writer.writerows(public_rows)
+
+    with holdout_features.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=feature_fields)
+        writer.writeheader()
+        writer.writerows({field: row[field] for field in feature_fields} for row in holdout_rows)
+
+    with sample_submission.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["row_id", "prediction", "probability"])
+        writer.writeheader()
+        for row in holdout_rows:
+            writer.writerow({"row_id": row["row_id"], "prediction": "0", "probability": "0.5"})
+
+    with answer_key.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=answer_fields)
+        writer.writeheader()
+        writer.writerows({field: row[field] for field in answer_fields} for row in holdout_rows)
+
+    metadata.write_text(
+        json.dumps(
+            {
+                "task_id": "synthetic_market_direction_v0",
+                "seed": seed,
+                "splits": {
+                    "train": {"start": "2019-01-30", "end": "2020-12-31"},
+                    "public_validation": {"start": "2021-01-01", "end": "2021-06-30"},
+                    "private_temporal_holdout": {"start": "2021-07-01", "end": "2021-11-29"},
+                },
+                "target": "next_day_positive_return",
+                "forbidden_private_columns": [
+                    "next_day_positive_return",
+                    "next_day_return",
+                ],
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    return SyntheticMarketPaths(
+        train_public=train_public,
+        private_holdout_features=holdout_features,
+        sample_submission=sample_submission,
+        metadata=metadata,
         answer_key=answer_key,
     )
 

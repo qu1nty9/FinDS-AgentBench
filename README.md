@@ -86,6 +86,22 @@ PYTHONPATH=src python scripts/score_leakage_audit_temporal_split_v0.py \
 
 The generated `data/raw/`, `data/private/`, and `runs/` artifacts are ignored by git.
 
+The first runnable predictive slice is `synthetic_market_direction_v0`, a synthetic market panel with a private temporal holdout.
+
+Generate data:
+
+```bash
+PYTHONPATH=src python scripts/generate_synthetic_market_direction_v0.py --seed 11
+```
+
+Run and score the momentum baseline:
+
+```bash
+PYTHONPATH=src python baselines/synthetic_market_direction_v0/momentum_baseline.py
+PYTHONPATH=src python scripts/score_synthetic_market_direction_v0.py \
+  --submission runs/synthetic_market_direction_v0/momentum_baseline/predictions.csv
+```
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.

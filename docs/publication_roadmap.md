@@ -114,8 +114,8 @@ Acceptance criteria:
 
 ## Immediate Next Steps
 
-1. Harden the current synthetic leakage-audit vertical slice with notebook execution validation.
+1. Harden the current runnable slices with notebook execution validation.
 2. Select a license-safe data source for `return_direction_etf_v0`.
-3. Implement the first predictive-task download/generation script.
-4. Build the minimal evaluator for prediction submissions.
-5. Write naive/classical baselines for the first predictive task.
+3. Add a model-based baseline for `synthetic_market_direction_v0`.
+4. Add a leakage checker that detects private answer-key access in agent artifacts.
+5. Expand from 2 runnable tasks to the 8-12 task workshop pilot.

@@ -25,7 +25,10 @@ The pilot paper should use 8-12 tasks across:
 
 The pilot should avoid becoming a general finance benchmark. Its job is to prove that validity-gated evaluation reveals failures that ordinary predictive scoring hides.
 
-The first implemented vertical slice is `leakage_audit_temporal_split_v0`: a synthetic audit task with controlled future-feature leakage, random temporal split misuse, and full-dataset preprocessing leakage.
+The first implemented vertical slices are:
+
+- `leakage_audit_temporal_split_v0`: a synthetic audit task with controlled future-feature leakage, random temporal split misuse, and full-dataset preprocessing leakage.
+- `synthetic_market_direction_v0`: a synthetic predictive task with public train/validation labels and private temporal holdout labels.
 
 ## Stage 2 Scope
 
