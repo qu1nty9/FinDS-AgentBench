@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from finds_agentbench.leakage import scan_submission_for_leakage
+
 
 @dataclass(frozen=True)
 class ArtifactValidationResult:
@@ -12,6 +14,7 @@ class ArtifactValidationResult:
     errors: list[str]
     warnings: list[str]
     executed_notebook_path: str | None = None
+    leakage_findings: list[dict[str, str]] | None = None
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -19,6 +22,7 @@ class ArtifactValidationResult:
             "errors": self.errors,
             "warnings": self.warnings,
             "executed_notebook_path": self.executed_notebook_path,
+            "leakage_findings": self.leakage_findings or [],
         }
 
 
@@ -77,17 +81,21 @@ def validate_submission_artifacts(
     execute: bool = True,
     timeout: int = 120,
     executed_output: str | Path | None = None,
+    scan_leakage: bool = False,
+    leakage_terms: list[str] | None = None,
 ) -> ArtifactValidationResult:
     submission_path = Path(submission_dir)
     errors: list[str] = []
     warnings: list[str] = []
     executed_notebook_path: str | None = None
+    leakage_findings: list[dict[str, str]] = []
 
     if not submission_path.exists() or not submission_path.is_dir():
         return ArtifactValidationResult(
             ok=False,
             errors=[f"submission directory does not exist: {submission_path}"],
             warnings=[],
+            leakage_findings=[],
         )
 
     deliverables = task_spec.get("deliverables", {})
@@ -138,9 +146,21 @@ def validate_submission_artifacts(
                     f"{writeup_relative} has {word_count} words; max_words={max_words}"
                 )
 
+    if scan_leakage:
+        leakage_result = scan_submission_for_leakage(
+            submission_path,
+            forbidden_terms=leakage_terms,
+        )
+        leakage_findings = [finding.as_dict() for finding in leakage_result.findings]
+        if not leakage_result.ok:
+            errors.append(
+                f"leakage_scan_failed: {len(leakage_result.findings)} forbidden references found"
+            )
+
     return ArtifactValidationResult(
         ok=not errors,
         errors=errors,
         warnings=warnings,
         executed_notebook_path=executed_notebook_path,
+        leakage_findings=leakage_findings,
     )

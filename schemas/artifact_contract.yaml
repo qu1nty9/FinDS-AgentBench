@@ -12,6 +12,7 @@ required_validation_gates:
   - required_files_present
   - prediction_columns_valid
   - writeup_within_word_limit
+  - private_artifact_access_scan
 
 submission_layout:
   predictive_financial_ml:
@@ -43,5 +44,22 @@ failure_effects:
   missing_required_file: task_failure
   notebook_execution_error: task_failure
   invalid_prediction_columns: task_failure
+  forbidden_private_access: task_failure
   writeup_word_limit_exceeded: cap_writeup_validity
 
+leakage_scan:
+  default_forbidden_terms:
+    - data/private
+    - answer_key
+    - private_answer
+    - private_holdout_labels
+  scanned_suffixes:
+    - .ipynb
+    - .py
+    - .md
+    - .txt
+    - .log
+    - .json
+    - .yaml
+    - .yml
+    - .sh

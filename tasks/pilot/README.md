@@ -52,3 +52,11 @@ PYTHONPATH=src python scripts/validate_submission_artifacts.py \
 ```
 
 The validator executes the notebook when `deliverables.notebook.must_execute_cleanly` is true, then checks required files, prediction columns, and writeup length.
+
+Use `--scan-leakage` to fail submissions that reference forbidden private artifacts such as `data/private` or `answer_key`:
+
+```bash
+PYTHONPATH=src python scripts/validate_submission_artifacts.py \
+  tasks/pilot/synthetic_market_direction_v0.yaml path/to/submission_dir \
+  --scan-leakage
+```

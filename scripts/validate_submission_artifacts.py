@@ -16,6 +16,13 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=120)
     parser.add_argument("--skip-notebook-execution", action="store_true")
     parser.add_argument("--executed-output", type=Path, default=None)
+    parser.add_argument("--scan-leakage", action="store_true")
+    parser.add_argument(
+        "--forbidden-term",
+        action="append",
+        default=None,
+        help="Replacement forbidden leakage term. Can be passed multiple times.",
+    )
     args = parser.parse_args()
 
     task_spec = load_yaml(args.task)
@@ -25,6 +32,8 @@ def main() -> int:
         execute=not args.skip_notebook_execution,
         timeout=args.timeout,
         executed_output=args.executed_output,
+        scan_leakage=args.scan_leakage,
+        leakage_terms=args.forbidden_term,
     )
     print(json.dumps(result.as_dict(), indent=2))
     return 0 if result.ok else 1
@@ -32,4 +41,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

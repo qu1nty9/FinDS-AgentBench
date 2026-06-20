@@ -109,6 +109,20 @@ PYTHONPATH=src python scripts/validate_submission_artifacts.py \
   tasks/pilot/synthetic_market_direction_v0.yaml path/to/submission_dir
 ```
 
+Add leakage scanning for forbidden private-artifact access:
+
+```bash
+PYTHONPATH=src python scripts/validate_submission_artifacts.py \
+  tasks/pilot/synthetic_market_direction_v0.yaml path/to/submission_dir \
+  --scan-leakage
+```
+
+The standalone scanner is also available:
+
+```bash
+PYTHONPATH=src python scripts/scan_submission_leakage.py path/to/submission_dir
+```
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.
