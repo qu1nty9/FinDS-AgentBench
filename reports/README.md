@@ -34,8 +34,10 @@ PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py
 For repeated-run pilot experiments:
 
 ```bash
-PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py \
+PYTHONPATH=src python scripts/run_synthetic_market_baseline_suite.py \
   --repeat 3 \
   --seed 11 \
-  --run-label pilot_logistic
+  --run-label-prefix pilot
 ```
+
+The suite runner defaults to `runs/suites/synthetic_market_direction_v0_pilot` as its report root. Use a dedicated `--runs-root` for each controlled experiment so summary statistics do not mix prototype, smoke, and publication runs.

@@ -175,13 +175,15 @@ The logistic baseline fits preprocessing and the classifier on the chronological
 Run a repeated baseline protocol for uncertainty estimates:
 
 ```bash
-PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py \
+PYTHONPATH=src python scripts/run_synthetic_market_baseline_suite.py \
   --repeat 3 \
   --seed 11 \
-  --run-label pilot_logistic
+  --run-label-prefix pilot
 ```
 
 Repeated runs write separate run directories, preserve per-run `seed` and `run_label` metadata in `run_manifest.json`, and rebuild both `reports/generated/run_results.*` and `reports/generated/run_summary.*`. The summary tables aggregate by task, agent, and run type with count/mean/std/min/max for core metrics.
+
+The suite runner uses `runs/suites/synthetic_market_direction_v0_pilot` by default so paper-facing summaries do not mix prototype runs with controlled repeated-run experiments.
 
 ## Status
 

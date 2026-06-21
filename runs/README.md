@@ -29,6 +29,14 @@ runs/synthetic_market_direction_v0/logistic_regression_baseline/pilot_003_seed_1
 
 This keeps artifacts immutable per run and lets the report builder compute run-level and aggregate tables from manifests.
 
+For controlled paper-facing experiments, use a dedicated suite root such as:
+
+```text
+runs/suites/synthetic_market_direction_v0_pilot/synthetic_market_direction_v0/logistic_regression_baseline/pilot_001_seed_11/
+```
+
+Dedicated suite roots prevent summary reports from mixing controlled repeated runs with earlier prototype or smoke runs.
+
 Create a manifest:
 
 ```bash

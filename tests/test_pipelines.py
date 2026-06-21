@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from finds_agentbench.pipelines import (
+    run_synthetic_market_baseline_suite,
     run_synthetic_market_logistic_pipeline,
     run_synthetic_market_momentum_pipeline,
 )
@@ -137,4 +138,45 @@ def test_repeated_momentum_pipeline_writes_distinct_runs_and_summary(tmp_path: P
     assert summary_rows[0]["run_count"] == "2"
     assert summary_rows[0]["completed_count"] == "2"
     assert summary_rows[0]["score.overall_score.count"] == "2"
+    assert "score.overall_score.std" in summary_md.read_text(encoding="utf-8")
+
+
+def test_synthetic_market_baseline_suite_runs_all_baselines_with_repeats(tmp_path: Path):
+    runs_root = tmp_path / "runs"
+    report_csv = tmp_path / "reports" / "run_results.csv"
+    report_md = tmp_path / "reports" / "run_results.md"
+    summary_csv = tmp_path / "reports" / "run_summary.csv"
+    summary_md = tmp_path / "reports" / "run_summary.md"
+
+    result = run_synthetic_market_baseline_suite(
+        seed=31,
+        repeat=2,
+        run_label_prefix="suite",
+        data_output_dir=tmp_path / "data" / "raw",
+        private_dir=tmp_path / "data" / "private",
+        runs_root=runs_root,
+        report_csv_path=report_csv,
+        report_markdown_path=report_md,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_md,
+        execute_notebook=False,
+        command="test baseline suite",
+    )
+
+    with report_csv.open("r", encoding="utf-8", newline="") as handle:
+        result_rows = list(csv.DictReader(handle))
+    with summary_csv.open("r", encoding="utf-8", newline="") as handle:
+        summary_rows = list(csv.DictReader(handle))
+
+    assert result.status == "completed"
+    assert len(result.results) == 4
+    assert len(result_rows) == 4
+    assert len(summary_rows) == 2
+    assert sorted(row["agent_id"] for row in summary_rows) == [
+        "logistic_regression_baseline",
+        "momentum_baseline",
+    ]
+    assert {row["run_count"] for row in summary_rows} == {"2"}
+    assert {row["score.overall_score.count"] for row in summary_rows} == {"2"}
+    assert report_md.exists()
     assert "score.overall_score.std" in summary_md.read_text(encoding="utf-8")

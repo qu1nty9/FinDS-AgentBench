@@ -23,6 +23,12 @@ from finds_agentbench.runs import build_run_manifest, slugify, utc_now, write_ru
 from finds_agentbench.scoring import score_synthetic_market_submission
 from finds_agentbench.synthetic import write_synthetic_market_direction_task
 
+SYNTHETIC_MARKET_TASK_ID = "synthetic_market_direction_v0"
+MOMENTUM_BASELINE_ID = "momentum_baseline"
+LOGISTIC_BASELINE_ID = "logistic_regression_baseline"
+DEFAULT_SYNTHETIC_MARKET_BASELINES = (MOMENTUM_BASELINE_ID, LOGISTIC_BASELINE_ID)
+DEFAULT_SYNTHETIC_MARKET_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_direction_v0_pilot"
+
 
 @dataclass(frozen=True)
 class PipelineResult:
@@ -35,6 +41,33 @@ class PipelineResult:
     summary_csv_path: Path
     summary_markdown_path: Path
     status: str
+
+
+@dataclass(frozen=True)
+class BaselineSuiteResult:
+    results: list[PipelineResult]
+
+    @property
+    def status(self) -> str:
+        if all(result.status == "completed" for result in self.results):
+            return "completed"
+        return "failed"
+
+    @property
+    def report_csv_path(self) -> Path | None:
+        return self.results[-1].report_csv_path if self.results else None
+
+    @property
+    def report_markdown_path(self) -> Path | None:
+        return self.results[-1].report_markdown_path if self.results else None
+
+    @property
+    def summary_csv_path(self) -> Path | None:
+        return self.results[-1].summary_csv_path if self.results else None
+
+    @property
+    def summary_markdown_path(self) -> Path | None:
+        return self.results[-1].summary_markdown_path if self.results else None
 
 
 def write_json(path: Path, value: dict[str, Any]) -> Path:
@@ -153,8 +186,8 @@ def run_synthetic_market_momentum_pipeline(
     command_started_at = utc_now()
     command_completed_at = utc_now()
     manifest = build_run_manifest(
-        task_id="synthetic_market_direction_v0",
-        agent_id="momentum_baseline",
+        task_id=SYNTHETIC_MARKET_TASK_ID,
+        agent_id=MOMENTUM_BASELINE_ID,
         agent_version="0.1.0",
         submission_dir=run_path,
         run_type="baseline",
@@ -263,8 +296,8 @@ def run_synthetic_market_logistic_pipeline(
     command_started_at = utc_now()
     command_completed_at = utc_now()
     manifest = build_run_manifest(
-        task_id="synthetic_market_direction_v0",
-        agent_id="logistic_regression_baseline",
+        task_id=SYNTHETIC_MARKET_TASK_ID,
+        agent_id=LOGISTIC_BASELINE_ID,
         agent_version="0.1.0",
         submission_dir=run_path,
         run_type="baseline",
@@ -311,3 +344,82 @@ def run_synthetic_market_logistic_pipeline(
         summary_markdown_path=summary_markdown,
         status=status,
     )
+
+
+def run_synthetic_market_baseline_suite(
+    *,
+    seed: int = 11,
+    repeat: int = 3,
+    baselines: list[str] | tuple[str, ...] | None = None,
+    run_label_prefix: str = "pilot",
+    task_path: str | Path = "tasks/pilot/synthetic_market_direction_v0.yaml",
+    data_output_dir: str | Path = "data/raw/synthetic_market_direction_v0",
+    private_dir: str | Path = "data/private/synthetic_market_direction_v0",
+    runs_root: str | Path = DEFAULT_SYNTHETIC_MARKET_SUITE_RUNS_ROOT,
+    report_csv_path: str | Path = "reports/generated/run_results.csv",
+    report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
+    execute_notebook: bool = False,
+    command: str = "run_synthetic_market_baseline_suite",
+) -> BaselineSuiteResult:
+    if repeat < 1:
+        raise ValueError("repeat must be at least 1")
+
+    selected_baselines = tuple(baselines or DEFAULT_SYNTHETIC_MARKET_BASELINES)
+    unknown_baselines = sorted(set(selected_baselines) - set(DEFAULT_SYNTHETIC_MARKET_BASELINES))
+    if unknown_baselines:
+        raise ValueError(f"Unknown baselines: {unknown_baselines}")
+
+    root = Path(runs_root)
+    task_run_root = root / SYNTHETIC_MARKET_TASK_ID
+    results: list[PipelineResult] = []
+    for repeat_offset in range(repeat):
+        current_seed = seed + repeat_offset
+        run_label = f"{run_label_prefix}_{repeat_offset + 1:03d}_seed_{current_seed}"
+        repeat_data_dir = Path(data_output_dir) / run_label
+        repeat_private_dir = Path(private_dir) / run_label
+
+        if MOMENTUM_BASELINE_ID in selected_baselines:
+            results.append(
+                run_synthetic_market_momentum_pipeline(
+                    seed=current_seed,
+                    task_path=task_path,
+                    data_output_dir=repeat_data_dir,
+                    private_dir=repeat_private_dir,
+                    run_dir=task_run_root / MOMENTUM_BASELINE_ID,
+                    run_label=run_label,
+                    repeat_index=repeat_offset + 1,
+                    repeat_count=repeat,
+                    runs_root=root,
+                    report_csv_path=report_csv_path,
+                    report_markdown_path=report_markdown_path,
+                    summary_csv_path=summary_csv_path,
+                    summary_markdown_path=summary_markdown_path,
+                    execute_notebook=execute_notebook,
+                    command=command,
+                )
+            )
+
+        if LOGISTIC_BASELINE_ID in selected_baselines:
+            results.append(
+                run_synthetic_market_logistic_pipeline(
+                    seed=current_seed,
+                    task_path=task_path,
+                    data_output_dir=repeat_data_dir,
+                    private_dir=repeat_private_dir,
+                    run_dir=task_run_root / LOGISTIC_BASELINE_ID,
+                    run_label=run_label,
+                    repeat_index=repeat_offset + 1,
+                    repeat_count=repeat,
+                    runs_root=root,
+                    report_csv_path=report_csv_path,
+                    report_markdown_path=report_markdown_path,
+                    summary_csv_path=summary_csv_path,
+                    summary_markdown_path=summary_markdown_path,
+                    execute_notebook=execute_notebook,
+                    command=command,
+                )
+            )
+
+    return BaselineSuiteResult(results=results)
