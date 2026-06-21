@@ -27,6 +27,7 @@ from finds_agentbench.scoring import (
     score_synthetic_market_submission,
 )
 from finds_agentbench.synthetic import (
+    SyntheticEventPaths,
     SyntheticMarketPaths,
     write_synthetic_event_response_task,
     write_synthetic_market_direction_task,
@@ -40,6 +41,7 @@ EVENT_RULE_BASELINE_ID = "event_rule_baseline"
 DEFAULT_SYNTHETIC_MARKET_BASELINES = (MOMENTUM_BASELINE_ID, LOGISTIC_BASELINE_ID)
 DEFAULT_SYNTHETIC_MARKET_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_direction_v0_pilot"
 DEFAULT_SYNTHETIC_MARKET_AGENT_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_direction_v0_agents"
+DEFAULT_SYNTHETIC_EVENT_AGENT_SUITE_RUNS_ROOT = "runs/suites/synthetic_event_response_v0_agents"
 
 
 @dataclass(frozen=True)
@@ -109,15 +111,16 @@ class AgentSuiteResult:
         return self.results[-1].summary_markdown_path if self.results else None
 
 
-def synthetic_market_agent_env(
+def predictive_task_agent_env(
     *,
+    task_id: str,
     seed: int,
     task_path: str | Path,
-    data_paths: SyntheticMarketPaths,
+    data_paths: SyntheticMarketPaths | SyntheticEventPaths,
     submission_dir: str | Path,
 ) -> dict[str, str]:
     return {
-        "FINDS_TASK_ID": SYNTHETIC_MARKET_TASK_ID,
+        "FINDS_TASK_ID": task_id,
         "FINDS_RUN_SEED": str(seed),
         "FINDS_TASK_SPEC_PATH": str(Path(task_path)),
         "FINDS_PUBLIC_DATA_DIR": str(data_paths.train_public.parent),
@@ -128,6 +131,38 @@ def synthetic_market_agent_env(
         "FINDS_METADATA_PATH": str(data_paths.metadata),
         "FINDS_SUBMISSION_DIR": str(Path(submission_dir)),
     }
+
+
+def synthetic_market_agent_env(
+    *,
+    seed: int,
+    task_path: str | Path,
+    data_paths: SyntheticMarketPaths,
+    submission_dir: str | Path,
+) -> dict[str, str]:
+    return predictive_task_agent_env(
+        task_id=SYNTHETIC_MARKET_TASK_ID,
+        seed=seed,
+        task_path=task_path,
+        data_paths=data_paths,
+        submission_dir=submission_dir,
+    )
+
+
+def synthetic_event_agent_env(
+    *,
+    seed: int,
+    task_path: str | Path,
+    data_paths: SyntheticEventPaths,
+    submission_dir: str | Path,
+) -> dict[str, str]:
+    return predictive_task_agent_env(
+        task_id=SYNTHETIC_EVENT_TASK_ID,
+        seed=seed,
+        task_path=task_path,
+        data_paths=data_paths,
+        submission_dir=submission_dir,
+    )
 
 
 def write_json(path: Path, value: dict[str, Any]) -> Path:
@@ -668,6 +703,188 @@ def run_synthetic_market_agent_command_suite(
         run_label = f"{run_label_prefix}_{repeat_offset + 1:03d}_seed_{current_seed}"
         results.append(
             run_synthetic_market_agent_command(
+                agent_id=agent_id,
+                agent_version=agent_version,
+                agent_command=agent_command,
+                seed=current_seed,
+                task_path=task_path,
+                data_output_dir=Path(data_output_dir) / run_label,
+                private_dir=Path(private_dir) / run_label,
+                run_dir=task_run_root / agent_id,
+                run_label=run_label,
+                repeat_index=repeat_offset + 1,
+                repeat_count=repeat,
+                runs_root=root,
+                report_csv_path=report_csv_path,
+                report_markdown_path=report_markdown_path,
+                summary_csv_path=summary_csv_path,
+                summary_markdown_path=summary_markdown_path,
+                execute_notebook=execute_notebook,
+                command_timeout_seconds=command_timeout_seconds,
+                cwd=cwd,
+            )
+        )
+
+    return AgentSuiteResult(results=results)
+
+
+def run_synthetic_event_response_agent_command(
+    *,
+    agent_id: str,
+    agent_version: str,
+    agent_command: str | list[str] | tuple[str, ...],
+    seed: int = 23,
+    task_path: str | Path = "tasks/pilot/synthetic_event_response_v0.yaml",
+    data_output_dir: str | Path = "data/raw/synthetic_event_response_v0",
+    private_dir: str | Path = "data/private/synthetic_event_response_v0",
+    run_dir: str | Path | None = None,
+    run_label: str | None = None,
+    repeat_index: int | None = None,
+    repeat_count: int | None = None,
+    runs_root: str | Path | None = None,
+    report_csv_path: str | Path = "reports/generated/run_results.csv",
+    report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
+    execute_notebook: bool = False,
+    command_timeout_seconds: int = 1800,
+    cwd: str | Path | None = None,
+) -> PipelineResult:
+    data_paths = write_synthetic_event_response_task(
+        output_dir=data_output_dir,
+        private_dir=private_dir,
+        seed=seed,
+    )
+    base_run_dir = run_dir or Path("runs") / SYNTHETIC_EVENT_TASK_ID / agent_id
+    run_path = resolve_run_path(base_run_dir, run_label)
+    run_path.mkdir(parents=True, exist_ok=True)
+
+    command_result = run_agent_command(
+        command=agent_command,
+        env=synthetic_event_agent_env(
+            seed=seed,
+            task_path=task_path,
+            data_paths=data_paths,
+            submission_dir=run_path,
+        ),
+        cwd=cwd,
+        log_dir=run_path / "logs",
+        timeout_seconds=command_timeout_seconds,
+    )
+
+    score = score_synthetic_event_response_submission(
+        submission_path=run_path / "predictions.csv",
+        answer_key_path=data_paths.answer_key,
+    )
+    score_dict = score.as_dict()
+    score_path = write_json(run_path / "score.json", score_dict)
+
+    task_spec = load_yaml(task_path)
+    validation = validate_submission_artifacts(
+        task_spec=task_spec,
+        submission_dir=run_path,
+        execute=execute_notebook,
+        scan_leakage=True,
+        scan_methodology=True,
+    )
+    validation_dict = validation.as_dict()
+    validation_path = write_json(run_path / "artifact_validation.json", validation_dict)
+
+    failures = list(score.failures)
+    failures.extend(validation.errors)
+    if command_result.timed_out:
+        failures.append("agent_command_timed_out")
+        status = "timed_out"
+    elif command_result.exit_code != 0:
+        failures.append(f"agent_command_exit_code={command_result.exit_code}")
+        status = "failed_runtime"
+    elif not score.execution_success:
+        status = "failed_format"
+    elif not validation.ok:
+        status = "failed_validity_gate"
+    else:
+        status = "completed"
+
+    manifest = build_run_manifest(
+        task_id=SYNTHETIC_EVENT_TASK_ID,
+        agent_id=agent_id,
+        agent_version=agent_version,
+        submission_dir=run_path,
+        run_type="agent",
+        status=status,
+        started_at=command_result.started_at,
+        completed_at=command_result.completed_at,
+        tool_permissions=["filesystem:read_public_data", "filesystem:write_submission"],
+        commands=[command_result.as_manifest_command()],
+        validations={"artifact_validation": validation_dict},
+        scores=score_dict,
+        failures=failures,
+        trace=build_trace(
+            seed=seed,
+            run_label=run_label,
+            repeat_index=repeat_index,
+            repeat_count=repeat_count,
+            extra={
+                "command_timeout_seconds": command_timeout_seconds,
+                "public_data_dir": str(data_paths.train_public.parent),
+            },
+        ),
+    )
+    manifest_path = write_run_manifest(manifest, run_path / "run_manifest.json")
+
+    report_root = Path(runs_root) if runs_root is not None else infer_runs_root(run_path)
+    csv_path, markdown_path, summary_csv, summary_markdown = write_benchmark_reports(
+        runs_root=report_root,
+        report_csv_path=report_csv_path,
+        report_markdown_path=report_markdown_path,
+        summary_csv_path=summary_csv_path,
+        summary_markdown_path=summary_markdown_path,
+    )
+
+    return PipelineResult(
+        run_dir=run_path,
+        score_path=score_path,
+        validation_path=validation_path,
+        manifest_path=manifest_path,
+        report_csv_path=csv_path,
+        report_markdown_path=markdown_path,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_markdown,
+        status=status,
+    )
+
+
+def run_synthetic_event_response_agent_command_suite(
+    *,
+    agent_id: str,
+    agent_version: str,
+    agent_command: str | list[str] | tuple[str, ...],
+    seed: int = 23,
+    repeat: int = 3,
+    run_label_prefix: str = "agent",
+    task_path: str | Path = "tasks/pilot/synthetic_event_response_v0.yaml",
+    data_output_dir: str | Path = "data/raw/synthetic_event_response_v0",
+    private_dir: str | Path = "data/private/synthetic_event_response_v0",
+    runs_root: str | Path = DEFAULT_SYNTHETIC_EVENT_AGENT_SUITE_RUNS_ROOT,
+    report_csv_path: str | Path = "reports/generated/run_results.csv",
+    report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
+    execute_notebook: bool = False,
+    command_timeout_seconds: int = 1800,
+    cwd: str | Path | None = None,
+) -> AgentSuiteResult:
+    if repeat < 1:
+        raise ValueError("repeat must be at least 1")
+
+    root = Path(runs_root)
+    task_run_root = root / SYNTHETIC_EVENT_TASK_ID
+    results: list[PipelineResult] = []
+    for repeat_offset in range(repeat):
+        current_seed = seed + repeat_offset
+        run_label = f"{run_label_prefix}_{repeat_offset + 1:03d}_seed_{current_seed}"
+        results.append(
+            run_synthetic_event_response_agent_command(
                 agent_id=agent_id,
                 agent_version=agent_version,
                 agent_command=agent_command,

@@ -47,6 +47,16 @@ PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py \
   --repeat 3
 ```
 
+The event-response task uses the same artifact contract:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_event_response_agent_suite.py \
+  --agent-id event_rule_env_agent \
+  --agent-version 0.1.0 \
+  --agent-command "python agents/examples/event_rule_env_agent.py" \
+  --repeat 3
+```
+
 The command is parsed with `shlex` and runs with `FINDS_*` environment variables:
 
 - `FINDS_TASK_ID`

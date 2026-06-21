@@ -180,6 +180,18 @@ Run its rule baseline end to end:
 PYTHONPATH=src python scripts/run_synthetic_event_response_rule_pipeline.py
 ```
 
+Run a repeated external-agent evaluation on the event-response task:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_event_response_agent_suite.py \
+  --agent-id event_rule_env_agent \
+  --agent-version 0.1.0 \
+  --agent-command "python agents/examples/event_rule_env_agent.py" \
+  --repeat 3 \
+  --seed 23 \
+  --run-label-prefix pilot_event_agent
+```
+
 Run a repeated baseline protocol for uncertainty estimates:
 
 ```bash
