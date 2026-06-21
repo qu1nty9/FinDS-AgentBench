@@ -41,3 +41,15 @@ PYTHONPATH=src python scripts/run_synthetic_market_baseline_suite.py \
 ```
 
 The suite runner defaults to `runs/suites/synthetic_market_direction_v0_pilot` as its report root. Use a dedicated `--runs-root` for each controlled experiment so summary statistics do not mix prototype, smoke, and publication runs.
+
+For the cross-task pilot baseline suite:
+
+```bash
+PYTHONPATH=src python scripts/run_pilot_baseline_suite.py \
+  --repeat 3 \
+  --market-seed 11 \
+  --event-seed 23 \
+  --run-label-prefix pilot
+```
+
+This writes market and event-response baseline manifests under `runs/suites/pilot_baselines_v0` and rebuilds the shared detailed and summary reports.

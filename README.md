@@ -205,6 +205,18 @@ Repeated runs write separate run directories, preserve per-run `seed` and `run_l
 
 The suite runner uses `runs/suites/synthetic_market_direction_v0_pilot` by default so paper-facing summaries do not mix prototype runs with controlled repeated-run experiments.
 
+Run all implemented pilot baselines across runnable tasks:
+
+```bash
+PYTHONPATH=src python scripts/run_pilot_baseline_suite.py \
+  --repeat 3 \
+  --market-seed 11 \
+  --event-seed 23 \
+  --run-label-prefix pilot
+```
+
+This currently runs the market momentum baseline, market logistic regression baseline, and event-response rule baseline under one report root: `runs/suites/pilot_baselines_v0`.
+
 Run an external agent command through the synthetic-market harness:
 
 ```bash

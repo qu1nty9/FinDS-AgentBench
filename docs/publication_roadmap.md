@@ -117,7 +117,7 @@ Acceptance criteria:
 ## Immediate Next Steps
 
 1. Select a license-safe data source for `return_direction_etf_v0`.
-2. Run 3+ repeated seeds for each implemented baseline with the baseline suite runner and report mean/std.
+2. Run 3+ repeated seeds for each implemented baseline with the cross-task pilot suite runner and report mean/std.
 3. Run 3+ repeated seeds for each evaluated agent with the agent suite runner.
 4. Add richer static checks for suspicious feature/target construction.
 5. Expand from 2 runnable tasks to the 8-12 task workshop pilot.

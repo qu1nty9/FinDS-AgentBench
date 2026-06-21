@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 from finds_agentbench.pipelines import (
+    run_pilot_baseline_suite,
     run_synthetic_market_baseline_suite,
     run_synthetic_market_agent_command,
     run_synthetic_market_agent_command_suite,
@@ -394,6 +395,56 @@ def test_run_synthetic_event_response_rule_pipeline(tmp_path: Path):
     assert manifest["agent"]["agent_id"] == "event_rule_baseline"
     assert summary_csv.exists()
     assert "synthetic_event_response_v0" in summary_md.read_text(encoding="utf-8")
+
+
+def test_pilot_baseline_suite_runs_all_implemented_baselines(tmp_path: Path):
+    runs_root = tmp_path / "runs"
+    report_csv = tmp_path / "reports" / "run_results.csv"
+    report_md = tmp_path / "reports" / "run_results.md"
+    summary_csv = tmp_path / "reports" / "run_summary.csv"
+    summary_md = tmp_path / "reports" / "run_summary.md"
+
+    result = run_pilot_baseline_suite(
+        market_seed=91,
+        event_seed=101,
+        repeat=2,
+        run_label_prefix="pilot_suite",
+        market_data_output_dir=tmp_path / "data" / "market" / "raw",
+        market_private_dir=tmp_path / "data" / "market" / "private",
+        event_data_output_dir=tmp_path / "data" / "event" / "raw",
+        event_private_dir=tmp_path / "data" / "event" / "private",
+        runs_root=runs_root,
+        report_csv_path=report_csv,
+        report_markdown_path=report_md,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_md,
+        execute_notebook=False,
+        command="test pilot baseline suite",
+    )
+
+    with report_csv.open("r", encoding="utf-8", newline="") as handle:
+        result_rows = list(csv.DictReader(handle))
+    with summary_csv.open("r", encoding="utf-8", newline="") as handle:
+        summary_rows = list(csv.DictReader(handle))
+
+    assert result.status == "completed"
+    assert len(result.results) == 6
+    assert len(result_rows) == 6
+    assert len(summary_rows) == 3
+    assert {row["task_id"] for row in result_rows} == {
+        "synthetic_event_response_v0",
+        "synthetic_market_direction_v0",
+    }
+    assert sorted(row["agent_id"] for row in summary_rows) == [
+        "event_rule_baseline",
+        "logistic_regression_baseline",
+        "momentum_baseline",
+    ]
+    assert {row["run_count"] for row in summary_rows} == {"2"}
+    assert {row["score.overall_score.count"] for row in summary_rows} == {"2"}
+    assert report_md.exists()
+    assert "synthetic_event_response_v0" in summary_md.read_text(encoding="utf-8")
+    assert "synthetic_market_direction_v0" in summary_md.read_text(encoding="utf-8")
 
 
 def test_synthetic_event_response_agent_command_suite_repeats_agent_runs(tmp_path: Path):
