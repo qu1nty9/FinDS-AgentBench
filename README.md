@@ -124,6 +124,12 @@ The standalone scanner is also available:
 PYTHONPATH=src python scripts/scan_submission_leakage.py path/to/submission_dir
 ```
 
+Scan for temporal-validation and preprocessing methodology risks:
+
+```bash
+PYTHONPATH=src python scripts/scan_submission_methodology.py path/to/submission_dir
+```
+
 Create and validate a run manifest after scoring:
 
 ```bash

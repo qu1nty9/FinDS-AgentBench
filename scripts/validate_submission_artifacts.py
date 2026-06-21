@@ -17,6 +17,8 @@ def main() -> int:
     parser.add_argument("--skip-notebook-execution", action="store_true")
     parser.add_argument("--executed-output", type=Path, default=None)
     parser.add_argument("--scan-leakage", action="store_true")
+    parser.add_argument("--scan-methodology", action="store_true")
+    parser.add_argument("--methodology-fail-on-warnings", action="store_true")
     parser.add_argument(
         "--forbidden-term",
         action="append",
@@ -34,6 +36,8 @@ def main() -> int:
         executed_output=args.executed_output,
         scan_leakage=args.scan_leakage,
         leakage_terms=args.forbidden_term,
+        scan_methodology=args.scan_methodology,
+        methodology_fail_on_warnings=args.methodology_fail_on_warnings,
     )
     print(json.dumps(result.as_dict(), indent=2))
     return 0 if result.ok else 1

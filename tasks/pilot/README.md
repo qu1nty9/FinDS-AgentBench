@@ -66,5 +66,6 @@ Use `--scan-leakage` to fail submissions that reference forbidden private artifa
 ```bash
 PYTHONPATH=src python scripts/validate_submission_artifacts.py \
   tasks/pilot/synthetic_market_direction_v0.yaml path/to/submission_dir \
-  --scan-leakage
+  --scan-leakage \
+  --scan-methodology
 ```

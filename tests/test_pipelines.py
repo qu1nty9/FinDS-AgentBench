@@ -39,6 +39,7 @@ def test_run_synthetic_market_momentum_pipeline(tmp_path: Path):
 
     assert score["execution_success"] == 1.0
     assert validation["ok"] is True
+    assert validation["methodology_findings"] == []
     assert validate_run_manifest(manifest).ok
     assert manifest["scores"]["overall_score"] == score["overall_score"]
     assert "score.overall_score" in report_md.read_text(encoding="utf-8")
@@ -75,6 +76,6 @@ def test_run_synthetic_market_logistic_pipeline(tmp_path: Path):
     assert metadata["public_validation_rows"] > 0
     assert score["execution_success"] == 1.0
     assert validation["ok"] is True
+    assert validation["methodology_findings"] == []
     assert validate_run_manifest(manifest).ok
     assert manifest["agent"]["agent_id"] == "logistic_regression_baseline"
-

@@ -67,6 +67,7 @@ def run_synthetic_market_momentum_pipeline(
         submission_dir=run_path,
         execute=execute_notebook,
         scan_leakage=True,
+        scan_methodology=True,
     )
     validation_dict = validation.as_dict()
     validation_path = write_json(run_path / "artifact_validation.json", validation_dict)
@@ -158,6 +159,7 @@ def run_synthetic_market_logistic_pipeline(
         submission_dir=run_path,
         execute=execute_notebook,
         scan_leakage=True,
+        scan_methodology=True,
     )
     validation_dict = validation.as_dict()
     validation_path = write_json(run_path / "artifact_validation.json", validation_dict)

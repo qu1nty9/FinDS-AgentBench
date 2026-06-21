@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from finds_agentbench.leakage import scan_submission_for_leakage
+from finds_agentbench.methodology import scan_submission_methodology
 
 
 @dataclass(frozen=True)
@@ -15,6 +16,7 @@ class ArtifactValidationResult:
     warnings: list[str]
     executed_notebook_path: str | None = None
     leakage_findings: list[dict[str, str]] | None = None
+    methodology_findings: list[dict[str, str]] | None = None
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -23,6 +25,7 @@ class ArtifactValidationResult:
             "warnings": self.warnings,
             "executed_notebook_path": self.executed_notebook_path,
             "leakage_findings": self.leakage_findings or [],
+            "methodology_findings": self.methodology_findings or [],
         }
 
 
@@ -83,12 +86,15 @@ def validate_submission_artifacts(
     executed_output: str | Path | None = None,
     scan_leakage: bool = False,
     leakage_terms: list[str] | None = None,
+    scan_methodology: bool = False,
+    methodology_fail_on_warnings: bool = False,
 ) -> ArtifactValidationResult:
     submission_path = Path(submission_dir)
     errors: list[str] = []
     warnings: list[str] = []
     executed_notebook_path: str | None = None
     leakage_findings: list[dict[str, str]] = []
+    methodology_findings: list[dict[str, str]] = []
 
     if not submission_path.exists() or not submission_path.is_dir():
         return ArtifactValidationResult(
@@ -96,6 +102,7 @@ def validate_submission_artifacts(
             errors=[f"submission directory does not exist: {submission_path}"],
             warnings=[],
             leakage_findings=[],
+            methodology_findings=[],
         )
 
     deliverables = task_spec.get("deliverables", {})
@@ -157,10 +164,27 @@ def validate_submission_artifacts(
                 f"leakage_scan_failed: {len(leakage_result.findings)} forbidden references found"
             )
 
+    if scan_methodology:
+        methodology_result = scan_submission_methodology(
+            submission_path,
+            fail_on_warnings=methodology_fail_on_warnings,
+        )
+        methodology_findings = [finding.as_dict() for finding in methodology_result.findings]
+        warning_count = sum(1 for finding in methodology_result.findings if finding.severity == "warning")
+        error_count = sum(1 for finding in methodology_result.findings if finding.severity == "error")
+        if warning_count:
+            warnings.append(f"methodology_scan_warnings: {warning_count} findings")
+        if not methodology_result.ok:
+            errors.append(
+                "methodology_scan_failed: "
+                f"{error_count} errors and {warning_count} warnings found"
+            )
+
     return ArtifactValidationResult(
         ok=not errors,
         errors=errors,
         warnings=warnings,
         executed_notebook_path=executed_notebook_path,
         leakage_findings=leakage_findings,
+        methodology_findings=methodology_findings,
     )

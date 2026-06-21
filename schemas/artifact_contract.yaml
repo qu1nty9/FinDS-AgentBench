@@ -13,6 +13,7 @@ required_validation_gates:
   - prediction_columns_valid
   - writeup_within_word_limit
   - private_artifact_access_scan
+  - methodology_risk_scan
 
 submission_layout:
   predictive_financial_ml:
@@ -45,6 +46,8 @@ failure_effects:
   notebook_execution_error: task_failure
   invalid_prediction_columns: task_failure
   forbidden_private_access: task_failure
+  methodology_error: task_failure
+  methodology_warning: report_warning
   writeup_word_limit_exceeded: cap_writeup_validity
 
 leakage_scan:
@@ -63,3 +66,24 @@ leakage_scan:
     - .yaml
     - .yml
     - .sh
+
+methodology_scan:
+  default_rules:
+    - rule_id: random_train_test_split
+      severity: error
+      examples:
+        - train_test_split(
+    - rule_id: explicit_shuffle
+      severity: error
+      examples:
+        - shuffle=True
+    - rule_id: kfold_temporal_cv
+      severity: warning
+      examples:
+        - KFold(
+        - StratifiedKFold(
+        - cross_val_score(
+    - rule_id: fit_transform_preprocessing
+      severity: warning
+      examples:
+        - fit_transform(
