@@ -13,6 +13,12 @@ Pilot tasks should stay small enough to run repeatedly across agents while still
 
 The first target is 8-12 locked tasks across predictive financial ML, event-aware reasoning, and leakage audit.
 
+Build public task cards and evaluation cards for the current pilot specs:
+
+```bash
+PYTHONPATH=src python scripts/build_task_cards.py
+```
+
 ## Runnable Vertical Slice
 
 `leakage_audit_temporal_split_v0.yaml` is the first runnable task spec.

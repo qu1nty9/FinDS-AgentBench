@@ -1,0 +1,94 @@
+[
+  {
+    "data_access": "bundled",
+    "license_status": "usable",
+    "primary_metric": "audit_correctness_score",
+    "required_files": [
+      "corrected_notebook.ipynb",
+      "audit_note.md",
+      "before_after_metrics.csv"
+    ],
+    "source_spec": "tasks/pilot/leakage_audit_temporal_split_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "leakage",
+      "audit",
+      "replication",
+      "validation"
+    ],
+    "task_id": "leakage_audit_temporal_split_v0",
+    "title": "Audit a Financial ML Notebook for Temporal Leakage",
+    "track": "research_replication_and_audit",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "license_status": "pending_review",
+    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+    "required_files": [
+      "notebook.ipynb",
+      "predictions.csv",
+      "writeup.md"
+    ],
+    "source_spec": "tasks/pilot/return_direction_etf_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "equities",
+      "etf",
+      "classification",
+      "temporal_validation"
+    ],
+    "task_id": "return_direction_etf_v0",
+    "title": "Daily ETF Return Direction Under Point-in-Time Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "synthetic_generator",
+    "license_status": "usable",
+    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+    "required_files": [
+      "notebook.ipynb",
+      "predictions.csv",
+      "writeup.md"
+    ],
+    "source_spec": "tasks/pilot/synthetic_event_response_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "synthetic",
+      "event_response",
+      "classification",
+      "temporal_validation"
+    ],
+    "task_id": "synthetic_event_response_v0",
+    "title": "Synthetic Event Response Direction Prediction",
+    "track": "event_aware_time_series_reasoning",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "synthetic_generator",
+    "license_status": "usable",
+    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+    "required_files": [
+      "notebook.ipynb",
+      "predictions.csv",
+      "writeup.md"
+    ],
+    "source_spec": "tasks/pilot/synthetic_market_direction_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "synthetic",
+      "market_panel",
+      "classification",
+      "temporal_validation"
+    ],
+    "task_id": "synthetic_market_direction_v0",
+    "title": "Synthetic Market Next-Day Direction Prediction",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  }
+]

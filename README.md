@@ -20,6 +20,14 @@ The project is staged intentionally:
 
 The public roadmap is tracked in `docs/publication_roadmap.md`.
 
+Public task cards and evaluation cards can be generated from the YAML task specs:
+
+```bash
+PYTHONPATH=src python scripts/build_task_cards.py
+```
+
+This builds `docs/cards/README.md`, per-task cards, per-task evaluation cards, and a machine-readable task registry.
+
 
 ## Core Evaluation Dimensions
 
