@@ -81,3 +81,5 @@ PYTHONPATH=src python scripts/validate_submission_artifacts.py \
   --scan-leakage \
   --scan-methodology
 ```
+
+The methodology scan also flags suspicious feature/target construction patterns such as `shift(-1)`, centered rolling windows, backfilling, and target-like columns appearing in feature definitions.

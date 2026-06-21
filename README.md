@@ -130,6 +130,8 @@ Scan for temporal-validation and preprocessing methodology risks:
 PYTHONPATH=src python scripts/scan_submission_methodology.py path/to/submission_dir
 ```
 
+The methodology scanner now flags obvious temporal anti-patterns such as random splits, K-fold on temporal data, negative shifts like `shift(-1)`, centered rolling windows, backfilling, and feature construction that appears to reference target-like columns.
+
 Create and validate a run manifest after scoring:
 
 ```bash

@@ -44,6 +44,57 @@ def test_scan_random_split_methodology_error(tmp_path: Path):
     }
 
 
+def test_scan_suspicious_feature_construction_warnings(tmp_path: Path):
+    submission_dir = tmp_path / "submission"
+    submission_dir.mkdir()
+    (submission_dir / "model.py").write_text(
+        "future_signal = returns.shift(-1)\n"
+        "rolling_mean = price.rolling(5, center=True).mean()\n"
+        "filled = feature_frame.bfill()\n",
+        encoding="utf-8",
+    )
+
+    result = scan_submission_methodology(submission_dir)
+
+    assert result.ok
+    assert {finding.rule_id for finding in result.findings} == {
+        "backfill_future_imputation",
+        "centered_rolling_window",
+        "negative_shift_future_construction",
+    }
+
+
+def test_scan_target_like_feature_warning_can_fail_on_warnings(tmp_path: Path):
+    submission_dir = tmp_path / "submission"
+    submission_dir.mkdir()
+    (submission_dir / "model.py").write_text(
+        "feature_columns = ['lagged_signal', 'target']\n"
+        "X = df[feature_columns]\n",
+        encoding="utf-8",
+    )
+
+    result = scan_submission_methodology(submission_dir, fail_on_warnings=True)
+
+    assert not result.ok
+    assert {finding.rule_id for finding in result.findings} == {
+        "target_like_feature_construction",
+    }
+
+
+def test_scan_writeup_does_not_trigger_code_only_methodology_rules(tmp_path: Path):
+    submission_dir = tmp_path / "submission"
+    submission_dir.mkdir()
+    (submission_dir / "writeup.md").write_text(
+        "We considered shift(-1), bfill(), and centered rolling windows as invalid.\n",
+        encoding="utf-8",
+    )
+
+    result = scan_submission_methodology(submission_dir)
+
+    assert result.ok
+    assert result.findings == []
+
+
 def test_scan_notebook_methodology_warning(tmp_path: Path):
     submission_dir = tmp_path / "submission"
     submission_dir.mkdir()
@@ -82,4 +133,3 @@ def test_artifact_validation_can_fail_on_methodology_error(tmp_path: Path):
     assert not result.ok
     assert any("methodology_scan_failed" in error for error in result.errors)
     assert result.methodology_findings
-
