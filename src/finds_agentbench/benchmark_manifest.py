@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from finds_agentbench.data_manifest import build_data_manifests
 from finds_agentbench.task_cards import build_task_cards, markdown_table
 
 
@@ -96,9 +97,10 @@ class BenchmarkManifestBuildResult:
     manifest_path: Path
     readme_path: Path
     cards_index_path: Path
+    data_manifests_readme_path: Path
 
 
-def build_task_release_entry(entry: dict[str, Any]) -> dict[str, Any]:
+def build_task_release_entry(entry: dict[str, Any], *, data_entry: dict[str, Any] | None) -> dict[str, Any]:
     task_id = entry["task_id"]
     release_metadata = TASK_RELEASE_METADATA.get(
         task_id,
@@ -117,6 +119,10 @@ def build_task_release_entry(entry: dict[str, Any]) -> dict[str, Any]:
         "default_commands": release_metadata["default_commands"],
         "task_card_path": f"docs/cards/tasks/{task_id}.md",
         "evaluation_card_path": f"docs/cards/evaluations/{task_id}.md",
+        "data_manifest_path": f"docs/data_manifests/pilot_v0/{task_id}.json",
+        "public_data_present": data_entry["public_data_present"] if data_entry is not None else False,
+        "public_file_count": data_entry["public_file_count"] if data_entry is not None else 0,
+        "public_total_size_bytes": data_entry["public_total_size_bytes"] if data_entry is not None else 0,
     }
 
 
@@ -128,8 +134,10 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
             task["status"],
             task["release_status"],
             "yes" if task["runnable"] else "no",
+            "yes" if task["public_data_present"] else "no",
             f"[task](../../cards/tasks/{task['task_id']}.md)",
             f"[evaluation](../../cards/evaluations/{task['task_id']}.md)",
+            f"[data](../../data_manifests/pilot_v0/{task['task_id']}.json)",
         ]
         for task in manifest["tasks"]
     ]
@@ -164,6 +172,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Task Count", manifest["task_count"]],
                     ["Runnable Task Count", manifest["runnable_task_count"]],
                     ["Cards Index", "../../cards/README.md"],
+                    ["Data Manifests Index", "../../data_manifests/pilot_v0/README.md"],
                 ],
             ).strip(),
             "",
@@ -174,7 +183,17 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
             "## Tasks",
             "",
             markdown_table(
-                ["Task ID", "Track", "Spec Status", "Release Status", "Runnable", "Task Card", "Evaluation Card"],
+                [
+                    "Task ID",
+                    "Track",
+                    "Spec Status",
+                    "Release Status",
+                    "Runnable",
+                    "Public Data Present",
+                    "Task Card",
+                    "Evaluation Card",
+                    "Data Manifest",
+                ],
                 task_rows,
             ).strip(),
             "",
@@ -197,11 +216,24 @@ def build_benchmark_manifest(
     *,
     tasks_root: str | Path = "tasks/pilot",
     cards_root: str | Path = "docs/cards",
+    data_manifests_root: str | Path = "docs/data_manifests/pilot_v0",
     output_root: str | Path = "docs/releases/pilot_v0",
 ) -> BenchmarkManifestBuildResult:
     cards_result = build_task_cards(tasks_root=tasks_root, output_root=cards_root)
+    data_result = build_data_manifests(
+        tasks_root=tasks_root,
+        output_root=data_manifests_root,
+        workspace_root=".",
+    )
     registry_entries = json.loads(cards_result.registry_json_path.read_text(encoding="utf-8"))
-    tasks = [build_task_release_entry(entry) for entry in registry_entries]
+    data_entries = {
+        entry["task_id"]: entry
+        for entry in json.loads(data_result.index_json_path.read_text(encoding="utf-8"))
+    }
+    tasks = [
+        build_task_release_entry(entry, data_entry=data_entries.get(entry["task_id"]))
+        for entry in registry_entries
+    ]
 
     tracks: list[dict[str, Any]] = []
     grouped: dict[str, list[str]] = {}
@@ -222,6 +254,7 @@ def build_benchmark_manifest(
         "release_stage": RELEASE_STAGE,
         "tasks_root": str(tasks_root),
         "cards_root": str(cards_root),
+        "data_manifests_root": str(data_manifests_root),
         "task_count": len(tasks),
         "runnable_task_count": sum(1 for task in tasks if task["runnable"]),
         "tracks": tracks,
@@ -240,4 +273,5 @@ def build_benchmark_manifest(
         manifest_path=manifest_path,
         readme_path=readme_path,
         cards_index_path=cards_result.index_path,
+        data_manifests_readme_path=data_result.readme_path,
     )

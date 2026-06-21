@@ -2,6 +2,7 @@
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
   "cards_root": "docs/cards",
+  "data_manifests_root": "docs/data_manifests/pilot_v0",
   "protocols": [
     {
       "command": "PYTHONPATH=src python scripts/run_pilot_baseline_suite.py --repeat 3 --market-seed 11 --event-seed 23 --run-label-prefix pilot",
@@ -51,6 +52,7 @@
     {
       "blocked_reason": null,
       "data_access": "bundled",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/leakage_audit_temporal_split_v0.json",
       "default_commands": [
         "PYTHONPATH=src python scripts/generate_leakage_audit_temporal_split_v0.py --seed 7",
         "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/leakage_audit_temporal_split_v0.yaml",
@@ -59,6 +61,9 @@
       "evaluation_card_path": "docs/cards/evaluations/leakage_audit_temporal_split_v0.md",
       "license_status": "usable",
       "primary_metric": "audit_correctness_score",
+      "public_data_present": true,
+      "public_file_count": 2,
+      "public_total_size_bytes": 379936,
       "release_status": "runnable_public_pilot",
       "required_files": [
         "corrected_notebook.ipynb",
@@ -84,12 +89,16 @@
     {
       "blocked_reason": "License-safe public data source is still pending review.",
       "data_access": "download_script",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/return_direction_etf_v0.json",
       "default_commands": [
         "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/return_direction_etf_v0.yaml"
       ],
       "evaluation_card_path": "docs/cards/evaluations/return_direction_etf_v0.md",
       "license_status": "pending_review",
       "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "public_data_present": false,
+      "public_file_count": 0,
+      "public_total_size_bytes": 0,
       "release_status": "spec_only_pending_data_review",
       "required_files": [
         "notebook.ipynb",
@@ -115,6 +124,7 @@
     {
       "blocked_reason": null,
       "data_access": "synthetic_generator",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/synthetic_event_response_v0.json",
       "default_commands": [
         "PYTHONPATH=src python scripts/generate_synthetic_event_response_v0.py --seed 23",
         "PYTHONPATH=src python scripts/run_synthetic_event_response_rule_pipeline.py",
@@ -123,6 +133,9 @@
       "evaluation_card_path": "docs/cards/evaluations/synthetic_event_response_v0.md",
       "license_status": "usable",
       "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "public_data_present": true,
+      "public_file_count": 4,
+      "public_total_size_bytes": 1383465,
       "release_status": "runnable_public_pilot",
       "required_files": [
         "notebook.ipynb",
@@ -148,6 +161,7 @@
     {
       "blocked_reason": null,
       "data_access": "synthetic_generator",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/synthetic_market_direction_v0.json",
       "default_commands": [
         "PYTHONPATH=src python scripts/generate_synthetic_market_direction_v0.py --seed 11",
         "PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py",
@@ -157,6 +171,9 @@
       "evaluation_card_path": "docs/cards/evaluations/synthetic_market_direction_v0.md",
       "license_status": "usable",
       "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "public_data_present": true,
+      "public_file_count": 4,
+      "public_total_size_bytes": 863506,
       "release_status": "runnable_public_pilot",
       "required_files": [
         "notebook.ipynb",

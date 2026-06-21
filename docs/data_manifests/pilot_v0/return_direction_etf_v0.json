@@ -1,0 +1,40 @@
+{
+  "data_access": "download_script",
+  "generator_script": {
+    "exists": false,
+    "path": "scripts/download_return_direction_etf_v0.py",
+    "sha256": null
+  },
+  "license_status": "pending_review",
+  "public_data_present": false,
+  "public_file_count": 0,
+  "public_local_paths": [
+    {
+      "exists": false,
+      "file_count": 0,
+      "files": [],
+      "ignored_subdirectories": [],
+      "is_dir": false,
+      "path": "data/raw/return_direction_etf_v0",
+      "total_size_bytes": 0
+    }
+  ],
+  "public_total_size_bytes": 0,
+  "source_spec": {
+    "path": "tasks/pilot/return_direction_etf_v0.yaml",
+    "sha256": "d6f7d04ef42ed0c427c9f6fda52a74d645c8cd6065c7c38117d68c196f1d5614"
+  },
+  "sources": [
+    {
+      "access": "download_script",
+      "license": "pending_review",
+      "name": "Public ETF OHLCV source",
+      "url_or_reference": "TBD"
+    }
+  ],
+  "status": "draft",
+  "task_id": "return_direction_etf_v0",
+  "title": "Daily ETF Return Direction Under Point-in-Time Features",
+  "track": "predictive_financial_ml",
+  "version": "0.1.0"
+}

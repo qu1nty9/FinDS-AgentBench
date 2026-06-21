@@ -19,6 +19,12 @@ Build public task cards and evaluation cards for the current pilot specs:
 PYTHONPATH=src python scripts/build_task_cards.py
 ```
 
+Build public data manifests and checksums:
+
+```bash
+PYTHONPATH=src python scripts/build_data_manifests.py
+```
+
 Build the canonical pilot release manifest:
 
 ```bash

@@ -1,0 +1,219 @@
+[
+  {
+    "data_access": "bundled",
+    "generator_script": {
+      "exists": true,
+      "path": "scripts/generate_leakage_audit_temporal_split_v0.py",
+      "sha256": "e6a227b38cf385574f0eb1058118c42d112693e951a92c7da6ff4e354ebd8cf9"
+    },
+    "license_status": "usable",
+    "public_data_present": true,
+    "public_file_count": 2,
+    "public_local_paths": [
+      {
+        "exists": true,
+        "file_count": 2,
+        "files": [
+          {
+            "path": "data/raw/leakage_audit_temporal_split_v0/flawed_workflow.json",
+            "sha256": "6d41f4909d76b99b5c14da40cd5dfcae1fa9ba596783c11ec33eeef6f83adf9d",
+            "size_bytes": 559
+          },
+          {
+            "path": "data/raw/leakage_audit_temporal_split_v0/panel.csv",
+            "sha256": "3ade4a2645dd80b9e2cbb0c3728f055ccd7d2bd7dcbeb627bf6e55bb7da17dc1",
+            "size_bytes": 379377
+          }
+        ],
+        "ignored_subdirectories": [],
+        "is_dir": true,
+        "path": "data/raw/leakage_audit_temporal_split_v0",
+        "total_size_bytes": 379936
+      }
+    ],
+    "public_total_size_bytes": 379936,
+    "source_spec": {
+      "path": "tasks/pilot/leakage_audit_temporal_split_v0.yaml",
+      "sha256": "7e064f8e97779b7cd7a30670286c9e31169a8aefacaf015075fad0e0708758f9"
+    },
+    "sources": [
+      {
+        "access": "synthetic_generator",
+        "license": "project_generated",
+        "name": "Synthetic financial panel with controlled leakage traps",
+        "url_or_reference": "generated locally"
+      }
+    ],
+    "status": "draft",
+    "task_id": "leakage_audit_temporal_split_v0",
+    "title": "Audit a Financial ML Notebook for Temporal Leakage",
+    "track": "research_replication_and_audit",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "generator_script": {
+      "exists": false,
+      "path": "scripts/download_return_direction_etf_v0.py",
+      "sha256": null
+    },
+    "license_status": "pending_review",
+    "public_data_present": false,
+    "public_file_count": 0,
+    "public_local_paths": [
+      {
+        "exists": false,
+        "file_count": 0,
+        "files": [],
+        "ignored_subdirectories": [],
+        "is_dir": false,
+        "path": "data/raw/return_direction_etf_v0",
+        "total_size_bytes": 0
+      }
+    ],
+    "public_total_size_bytes": 0,
+    "source_spec": {
+      "path": "tasks/pilot/return_direction_etf_v0.yaml",
+      "sha256": "d6f7d04ef42ed0c427c9f6fda52a74d645c8cd6065c7c38117d68c196f1d5614"
+    },
+    "sources": [
+      {
+        "access": "download_script",
+        "license": "pending_review",
+        "name": "Public ETF OHLCV source",
+        "url_or_reference": "TBD"
+      }
+    ],
+    "status": "draft",
+    "task_id": "return_direction_etf_v0",
+    "title": "Daily ETF Return Direction Under Point-in-Time Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "synthetic_generator",
+    "generator_script": {
+      "exists": true,
+      "path": "scripts/generate_synthetic_event_response_v0.py",
+      "sha256": "d3eb74b4ff450a7e42a4e424c53f0d474a676f50e79e3ea67d932914402a7716"
+    },
+    "license_status": "usable",
+    "public_data_present": true,
+    "public_file_count": 4,
+    "public_local_paths": [
+      {
+        "exists": true,
+        "file_count": 4,
+        "files": [
+          {
+            "path": "data/raw/synthetic_event_response_v0/metadata.json",
+            "sha256": "eaf0a1da3796cb14371fc1383e98c3e78c2cdbd7e05bd1c7dd27532d88bbb74e",
+            "size_bytes": 471
+          },
+          {
+            "path": "data/raw/synthetic_event_response_v0/private_holdout_features.csv",
+            "sha256": "3b905c683c26cd209fe95346d3e00790d443bb669cc7be7643d13dcd58af321b",
+            "size_bytes": 196756
+          },
+          {
+            "path": "data/raw/synthetic_event_response_v0/sample_submission.csv",
+            "sha256": "d48ad07a15aac0c2543e7d56601c04d6b19ad23926eadd7db7a8810dcb57d1f4",
+            "size_bytes": 35347
+          },
+          {
+            "path": "data/raw/synthetic_event_response_v0/train_public.csv",
+            "sha256": "26743a5c88007e74381c01459e63e848f4b9dc597ac6cbeb9f9d28f19df54204",
+            "size_bytes": 1150891
+          }
+        ],
+        "ignored_subdirectories": [],
+        "is_dir": true,
+        "path": "data/raw/synthetic_event_response_v0",
+        "total_size_bytes": 1383465
+      }
+    ],
+    "public_total_size_bytes": 1383465,
+    "source_spec": {
+      "path": "tasks/pilot/synthetic_event_response_v0.yaml",
+      "sha256": "fedab3eb2af721b20999a3667d75da47aa9b8705c95734dd5148f4028ff39ad4"
+    },
+    "sources": [
+      {
+        "access": "synthetic_generator",
+        "license": "project_generated",
+        "name": "Project-generated synthetic event response panel",
+        "url_or_reference": "generated locally"
+      }
+    ],
+    "status": "draft",
+    "task_id": "synthetic_event_response_v0",
+    "title": "Synthetic Event Response Direction Prediction",
+    "track": "event_aware_time_series_reasoning",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "synthetic_generator",
+    "generator_script": {
+      "exists": true,
+      "path": "scripts/generate_synthetic_market_direction_v0.py",
+      "sha256": "4078d04e4b96a5de23c64c162db7667b010c11f58c62f00389db0552f6f32bee"
+    },
+    "license_status": "usable",
+    "public_data_present": true,
+    "public_file_count": 4,
+    "public_local_paths": [
+      {
+        "exists": true,
+        "file_count": 4,
+        "files": [
+          {
+            "path": "data/raw/synthetic_market_direction_v0/metadata.json",
+            "sha256": "5c878fcf6a39da5d4a778539cad58b3cde2a78a0b0117e1636c5a3ef26a46d38",
+            "size_bytes": 475
+          },
+          {
+            "path": "data/raw/synthetic_market_direction_v0/private_holdout_features.csv",
+            "sha256": "720fd06430061e689367e384cb130a886397433485735b30d4d9fe116f1d9184",
+            "size_bytes": 124486
+          },
+          {
+            "path": "data/raw/synthetic_market_direction_v0/sample_submission.csv",
+            "sha256": "5ce3adfb2676d6f75bc6a85226480f5c7b00d3738cafc55254109a1f77c6070e",
+            "size_bytes": 29191
+          },
+          {
+            "path": "data/raw/synthetic_market_direction_v0/train_public.csv",
+            "sha256": "7926b467e218b2c4e2b5652fcee41bcb5e3a11579d92570c4f7577b9438a5140",
+            "size_bytes": 709354
+          }
+        ],
+        "ignored_subdirectories": [
+          "data/raw/synthetic_market_direction_v0/pilot_001_seed_11",
+          "data/raw/synthetic_market_direction_v0/pilot_002_seed_12",
+          "data/raw/synthetic_market_direction_v0/pilot_003_seed_13"
+        ],
+        "is_dir": true,
+        "path": "data/raw/synthetic_market_direction_v0",
+        "total_size_bytes": 863506
+      }
+    ],
+    "public_total_size_bytes": 863506,
+    "source_spec": {
+      "path": "tasks/pilot/synthetic_market_direction_v0.yaml",
+      "sha256": "fee96ac6cd670a9607894a8d9511dc9393aa5df36c52f062c3f7ba17c63b2036"
+    },
+    "sources": [
+      {
+        "access": "synthetic_generator",
+        "license": "project_generated",
+        "name": "Project-generated synthetic market panel",
+        "url_or_reference": "generated locally"
+      }
+    ],
+    "status": "draft",
+    "task_id": "synthetic_market_direction_v0",
+    "title": "Synthetic Market Next-Day Direction Prediction",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  }
+]

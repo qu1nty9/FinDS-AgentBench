@@ -1,0 +1,51 @@
+{
+  "data_access": "bundled",
+  "generator_script": {
+    "exists": true,
+    "path": "scripts/generate_leakage_audit_temporal_split_v0.py",
+    "sha256": "e6a227b38cf385574f0eb1058118c42d112693e951a92c7da6ff4e354ebd8cf9"
+  },
+  "license_status": "usable",
+  "public_data_present": true,
+  "public_file_count": 2,
+  "public_local_paths": [
+    {
+      "exists": true,
+      "file_count": 2,
+      "files": [
+        {
+          "path": "data/raw/leakage_audit_temporal_split_v0/flawed_workflow.json",
+          "sha256": "6d41f4909d76b99b5c14da40cd5dfcae1fa9ba596783c11ec33eeef6f83adf9d",
+          "size_bytes": 559
+        },
+        {
+          "path": "data/raw/leakage_audit_temporal_split_v0/panel.csv",
+          "sha256": "3ade4a2645dd80b9e2cbb0c3728f055ccd7d2bd7dcbeb627bf6e55bb7da17dc1",
+          "size_bytes": 379377
+        }
+      ],
+      "ignored_subdirectories": [],
+      "is_dir": true,
+      "path": "data/raw/leakage_audit_temporal_split_v0",
+      "total_size_bytes": 379936
+    }
+  ],
+  "public_total_size_bytes": 379936,
+  "source_spec": {
+    "path": "tasks/pilot/leakage_audit_temporal_split_v0.yaml",
+    "sha256": "7e064f8e97779b7cd7a30670286c9e31169a8aefacaf015075fad0e0708758f9"
+  },
+  "sources": [
+    {
+      "access": "synthetic_generator",
+      "license": "project_generated",
+      "name": "Synthetic financial panel with controlled leakage traps",
+      "url_or_reference": "generated locally"
+    }
+  ],
+  "status": "draft",
+  "task_id": "leakage_audit_temporal_split_v0",
+  "title": "Audit a Financial ML Notebook for Temporal Leakage",
+  "track": "research_replication_and_audit",
+  "version": "0.1.0"
+}

@@ -1,0 +1,5 @@
+task_id,title,track,version,status,data_access,license_status,public_data_present,public_file_count,public_total_size_bytes,manifest_path
+leakage_audit_temporal_split_v0,Audit a Financial ML Notebook for Temporal Leakage,research_replication_and_audit,0.1.0,draft,bundled,usable,True,2,379936,leakage_audit_temporal_split_v0.json
+return_direction_etf_v0,Daily ETF Return Direction Under Point-in-Time Features,predictive_financial_ml,0.1.0,draft,download_script,pending_review,False,0,0,return_direction_etf_v0.json
+synthetic_event_response_v0,Synthetic Event Response Direction Prediction,event_aware_time_series_reasoning,0.1.0,draft,synthetic_generator,usable,True,4,1383465,synthetic_event_response_v0.json
+synthetic_market_direction_v0,Synthetic Market Next-Day Direction Prediction,predictive_financial_ml,0.1.0,draft,synthetic_generator,usable,True,4,863506,synthetic_market_direction_v0.json

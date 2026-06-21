@@ -1,0 +1,61 @@
+{
+  "data_access": "synthetic_generator",
+  "generator_script": {
+    "exists": true,
+    "path": "scripts/generate_synthetic_event_response_v0.py",
+    "sha256": "d3eb74b4ff450a7e42a4e424c53f0d474a676f50e79e3ea67d932914402a7716"
+  },
+  "license_status": "usable",
+  "public_data_present": true,
+  "public_file_count": 4,
+  "public_local_paths": [
+    {
+      "exists": true,
+      "file_count": 4,
+      "files": [
+        {
+          "path": "data/raw/synthetic_event_response_v0/metadata.json",
+          "sha256": "eaf0a1da3796cb14371fc1383e98c3e78c2cdbd7e05bd1c7dd27532d88bbb74e",
+          "size_bytes": 471
+        },
+        {
+          "path": "data/raw/synthetic_event_response_v0/private_holdout_features.csv",
+          "sha256": "3b905c683c26cd209fe95346d3e00790d443bb669cc7be7643d13dcd58af321b",
+          "size_bytes": 196756
+        },
+        {
+          "path": "data/raw/synthetic_event_response_v0/sample_submission.csv",
+          "sha256": "d48ad07a15aac0c2543e7d56601c04d6b19ad23926eadd7db7a8810dcb57d1f4",
+          "size_bytes": 35347
+        },
+        {
+          "path": "data/raw/synthetic_event_response_v0/train_public.csv",
+          "sha256": "26743a5c88007e74381c01459e63e848f4b9dc597ac6cbeb9f9d28f19df54204",
+          "size_bytes": 1150891
+        }
+      ],
+      "ignored_subdirectories": [],
+      "is_dir": true,
+      "path": "data/raw/synthetic_event_response_v0",
+      "total_size_bytes": 1383465
+    }
+  ],
+  "public_total_size_bytes": 1383465,
+  "source_spec": {
+    "path": "tasks/pilot/synthetic_event_response_v0.yaml",
+    "sha256": "fedab3eb2af721b20999a3667d75da47aa9b8705c95734dd5148f4028ff39ad4"
+  },
+  "sources": [
+    {
+      "access": "synthetic_generator",
+      "license": "project_generated",
+      "name": "Project-generated synthetic event response panel",
+      "url_or_reference": "generated locally"
+    }
+  ],
+  "status": "draft",
+  "task_id": "synthetic_event_response_v0",
+  "title": "Synthetic Event Response Direction Prediction",
+  "track": "event_aware_time_series_reasoning",
+  "version": "0.1.0"
+}

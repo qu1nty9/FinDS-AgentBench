@@ -28,13 +28,21 @@ PYTHONPATH=src python scripts/build_task_cards.py
 
 This builds `docs/cards/README.md`, per-task cards, per-task evaluation cards, and a machine-readable task registry.
 
+Public data manifests and checksums can be generated with:
+
+```bash
+PYTHONPATH=src python scripts/build_data_manifests.py
+```
+
+This builds `docs/data_manifests/pilot_v0/README.md`, per-task public-data manifests, and machine-readable checksum indexes.
+
 The canonical pilot release manifest can then be built with:
 
 ```bash
 PYTHONPATH=src python scripts/build_benchmark_manifest.py
 ```
 
-This writes `docs/releases/pilot_v0/manifest.json` and `docs/releases/pilot_v0/README.md`, linking task cards, runnable status, and official pilot suite commands.
+This writes `docs/releases/pilot_v0/manifest.json` and `docs/releases/pilot_v0/README.md`, linking task cards, data manifests, runnable status, and official pilot suite commands.
 
 
 ## Core Evaluation Dimensions
