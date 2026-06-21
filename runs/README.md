@@ -26,6 +26,7 @@ PYTHONPATH=src python scripts/create_run_manifest.py \
   --agent-id momentum_baseline \
   --agent-version 0.1.0 \
   --submission-dir runs/synthetic_market_direction_v0/momentum_baseline \
+  --scores-json runs/synthetic_market_direction_v0/momentum_baseline/score.json \
   --output runs/synthetic_market_direction_v0/momentum_baseline/run_manifest.json
 ```
 

@@ -37,7 +37,8 @@ PYTHONPATH=src python scripts/generate_synthetic_market_direction_v0.py --seed 1
 PYTHONPATH=src python scripts/validate_task.py tasks/pilot/synthetic_market_direction_v0.yaml
 PYTHONPATH=src python baselines/synthetic_market_direction_v0/momentum_baseline.py
 PYTHONPATH=src python scripts/score_synthetic_market_direction_v0.py \
-  --submission runs/synthetic_market_direction_v0/momentum_baseline/predictions.csv
+  --submission runs/synthetic_market_direction_v0/momentum_baseline/predictions.csv \
+  --output-json runs/synthetic_market_direction_v0/momentum_baseline/score.json
 ```
 
 The public data contains train and public-validation labels. Private holdout labels are written only to `data/private/` and are ignored by git.

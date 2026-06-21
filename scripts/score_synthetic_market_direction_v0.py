@@ -16,16 +16,20 @@ def main() -> int:
         type=Path,
         default=Path("data/private/synthetic_market_direction_v0/answer_key.csv"),
     )
+    parser.add_argument("--output-json", type=Path, default=None)
     args = parser.parse_args()
 
     score = score_synthetic_market_submission(
         submission_path=args.submission,
         answer_key_path=args.answer_key,
     )
-    print(json.dumps(score.as_dict(), indent=2))
+    output = json.dumps(score.as_dict(), indent=2)
+    print(output)
+    if args.output_json is not None:
+        args.output_json.parent.mkdir(parents=True, exist_ok=True)
+        args.output_json.write_text(output + "\n", encoding="utf-8")
     return 0 if score.execution_success else 1
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

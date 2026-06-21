@@ -99,7 +99,8 @@ Run and score the momentum baseline:
 ```bash
 PYTHONPATH=src python baselines/synthetic_market_direction_v0/momentum_baseline.py
 PYTHONPATH=src python scripts/score_synthetic_market_direction_v0.py \
-  --submission runs/synthetic_market_direction_v0/momentum_baseline/predictions.csv
+  --submission runs/synthetic_market_direction_v0/momentum_baseline/predictions.csv \
+  --output-json runs/synthetic_market_direction_v0/momentum_baseline/score.json
 ```
 
 Validate a full submission directory, including notebook execution:
@@ -131,10 +132,20 @@ PYTHONPATH=src python scripts/create_run_manifest.py \
   --agent-id momentum_baseline \
   --agent-version 0.1.0 \
   --submission-dir runs/synthetic_market_direction_v0/momentum_baseline \
+  --scores-json runs/synthetic_market_direction_v0/momentum_baseline/score.json \
   --output runs/synthetic_market_direction_v0/momentum_baseline/run_manifest.json
 
 PYTHONPATH=src python scripts/validate_run_manifest.py \
   runs/synthetic_market_direction_v0/momentum_baseline/run_manifest.json
+```
+
+Build paper-ready run summary tables:
+
+```bash
+PYTHONPATH=src python scripts/build_run_report.py \
+  --runs-root runs \
+  --csv-output reports/generated/run_results.csv \
+  --markdown-output reports/generated/run_results.md
 ```
 
 ## Status

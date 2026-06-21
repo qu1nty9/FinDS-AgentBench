@@ -117,5 +117,5 @@ Acceptance criteria:
 1. Add a model-based baseline for `synthetic_market_direction_v0`.
 2. Select a license-safe data source for `return_direction_etf_v0`.
 3. Add static checks for suspicious preprocessing and random temporal splits.
-4. Add a report builder that aggregates run manifests into paper-ready tables.
+4. Add an end-to-end baseline runner that generates data, predicts, scores, validates, and writes a manifest in one command.
 5. Expand from 2 runnable tasks to the 8-12 task workshop pilot.
