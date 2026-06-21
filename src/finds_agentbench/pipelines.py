@@ -43,6 +43,7 @@ DEFAULT_SYNTHETIC_MARKET_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_directi
 DEFAULT_SYNTHETIC_MARKET_AGENT_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_direction_v0_agents"
 DEFAULT_SYNTHETIC_EVENT_AGENT_SUITE_RUNS_ROOT = "runs/suites/synthetic_event_response_v0_agents"
 DEFAULT_PILOT_BASELINE_SUITE_RUNS_ROOT = "runs/suites/pilot_baselines_v0"
+DEFAULT_PILOT_AGENT_SUITE_RUNS_ROOT = "runs/suites/pilot_agents_v0"
 
 
 @dataclass(frozen=True)
@@ -1084,3 +1085,95 @@ def run_pilot_baseline_suite(
         )
 
     return BaselineSuiteResult(results=results)
+
+
+def run_pilot_agent_suite(
+    *,
+    market_agent_id: str,
+    market_agent_version: str,
+    market_agent_command: str | list[str] | tuple[str, ...],
+    event_agent_id: str,
+    event_agent_version: str,
+    event_agent_command: str | list[str] | tuple[str, ...],
+    market_seed: int = 11,
+    event_seed: int = 23,
+    repeat: int = 3,
+    run_label_prefix: str = "pilot_agent",
+    market_task_path: str | Path = "tasks/pilot/synthetic_market_direction_v0.yaml",
+    event_task_path: str | Path = "tasks/pilot/synthetic_event_response_v0.yaml",
+    market_data_output_dir: str | Path = "data/raw/synthetic_market_direction_v0",
+    market_private_dir: str | Path = "data/private/synthetic_market_direction_v0",
+    event_data_output_dir: str | Path = "data/raw/synthetic_event_response_v0",
+    event_private_dir: str | Path = "data/private/synthetic_event_response_v0",
+    runs_root: str | Path = DEFAULT_PILOT_AGENT_SUITE_RUNS_ROOT,
+    report_csv_path: str | Path = "reports/generated/run_results.csv",
+    report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
+    execute_notebook: bool = False,
+    command_timeout_seconds: int = 1800,
+    cwd: str | Path | None = None,
+) -> AgentSuiteResult:
+    if repeat < 1:
+        raise ValueError("repeat must be at least 1")
+
+    root = Path(runs_root)
+    market_run_root = root / SYNTHETIC_MARKET_TASK_ID
+    event_run_root = root / SYNTHETIC_EVENT_TASK_ID
+    results: list[PipelineResult] = []
+
+    for repeat_offset in range(repeat):
+        repeat_index = repeat_offset + 1
+        current_market_seed = market_seed + repeat_offset
+        current_event_seed = event_seed + repeat_offset
+        market_label = f"{run_label_prefix}_market_{repeat_index:03d}_seed_{current_market_seed}"
+        event_label = f"{run_label_prefix}_event_{repeat_index:03d}_seed_{current_event_seed}"
+
+        results.append(
+            run_synthetic_market_agent_command(
+                agent_id=market_agent_id,
+                agent_version=market_agent_version,
+                agent_command=market_agent_command,
+                seed=current_market_seed,
+                task_path=market_task_path,
+                data_output_dir=Path(market_data_output_dir) / market_label,
+                private_dir=Path(market_private_dir) / market_label,
+                run_dir=market_run_root / market_agent_id,
+                run_label=market_label,
+                repeat_index=repeat_index,
+                repeat_count=repeat,
+                runs_root=root,
+                report_csv_path=report_csv_path,
+                report_markdown_path=report_markdown_path,
+                summary_csv_path=summary_csv_path,
+                summary_markdown_path=summary_markdown_path,
+                execute_notebook=execute_notebook,
+                command_timeout_seconds=command_timeout_seconds,
+                cwd=cwd,
+            )
+        )
+        results.append(
+            run_synthetic_event_response_agent_command(
+                agent_id=event_agent_id,
+                agent_version=event_agent_version,
+                agent_command=event_agent_command,
+                seed=current_event_seed,
+                task_path=event_task_path,
+                data_output_dir=Path(event_data_output_dir) / event_label,
+                private_dir=Path(event_private_dir) / event_label,
+                run_dir=event_run_root / event_agent_id,
+                run_label=event_label,
+                repeat_index=repeat_index,
+                repeat_count=repeat,
+                runs_root=root,
+                report_csv_path=report_csv_path,
+                report_markdown_path=report_markdown_path,
+                summary_csv_path=summary_csv_path,
+                summary_markdown_path=summary_markdown_path,
+                execute_notebook=execute_notebook,
+                command_timeout_seconds=command_timeout_seconds,
+                cwd=cwd,
+            )
+        )
+
+    return AgentSuiteResult(results=results)

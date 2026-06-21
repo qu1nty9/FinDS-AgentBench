@@ -53,3 +53,15 @@ PYTHONPATH=src python scripts/run_pilot_baseline_suite.py \
 ```
 
 This writes market and event-response baseline manifests under `runs/suites/pilot_baselines_v0` and rebuilds the shared detailed and summary reports.
+
+For the cross-task pilot agent suite:
+
+```bash
+PYTHONPATH=src python scripts/run_pilot_agent_suite.py \
+  --repeat 3 \
+  --market-seed 11 \
+  --event-seed 23 \
+  --run-label-prefix pilot_agent
+```
+
+This writes agent manifests under `runs/suites/pilot_agents_v0` and produces the same shared run-level and summary-level reports across both implemented pilot tasks.

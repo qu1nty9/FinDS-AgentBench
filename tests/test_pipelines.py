@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 from finds_agentbench.pipelines import (
+    run_pilot_agent_suite,
     run_pilot_baseline_suite,
     run_synthetic_market_baseline_suite,
     run_synthetic_market_agent_command,
@@ -527,3 +528,122 @@ print(os.environ["FINDS_TASK_ID"])
     assert summary_rows[0]["score.overall_score.count"] == "2"
     assert report_md.exists()
     assert summary_md.exists()
+
+
+def test_pilot_agent_suite_runs_all_implemented_agent_wrappers(tmp_path: Path):
+    market_agent_script = tmp_path / "market_agent.py"
+    market_agent_script.write_text(
+        """
+import csv
+import json
+import os
+from pathlib import Path
+
+features_path = Path(os.environ["FINDS_HOLDOUT_FEATURES_PATH"])
+submission_dir = Path(os.environ["FINDS_SUBMISSION_DIR"])
+submission_dir.mkdir(parents=True, exist_ok=True)
+
+with features_path.open("r", encoding="utf-8", newline="") as source:
+    rows = list(csv.DictReader(source))
+
+with (submission_dir / "predictions.csv").open("w", encoding="utf-8", newline="") as output:
+    writer = csv.DictWriter(output, fieldnames=["row_id", "prediction", "probability"])
+    writer.writeheader()
+    for row in rows:
+        writer.writerow({"row_id": row["row_id"], "prediction": 1, "probability": 0.51})
+
+(submission_dir / "writeup.md").write_text("Pilot market agent.\\n", encoding="utf-8")
+(submission_dir / "notebook.ipynb").write_text(
+    json.dumps({"cells": [], "metadata": {}, "nbformat": 4, "nbformat_minor": 5}),
+    encoding="utf-8",
+)
+""".lstrip(),
+        encoding="utf-8",
+    )
+    event_agent_script = tmp_path / "event_agent.py"
+    event_agent_script.write_text(
+        """
+import csv
+import json
+import os
+from pathlib import Path
+
+features_path = Path(os.environ["FINDS_HOLDOUT_FEATURES_PATH"])
+submission_dir = Path(os.environ["FINDS_SUBMISSION_DIR"])
+submission_dir.mkdir(parents=True, exist_ok=True)
+
+with features_path.open("r", encoding="utf-8", newline="") as source:
+    rows = list(csv.DictReader(source))
+
+with (submission_dir / "predictions.csv").open("w", encoding="utf-8", newline="") as output:
+    writer = csv.DictWriter(output, fieldnames=["row_id", "prediction", "probability"])
+    writer.writeheader()
+    for row in rows:
+        probability = 0.65 if float(row["event_surprise"]) >= 0 else 0.35
+        writer.writerow({
+            "row_id": row["row_id"],
+            "prediction": 1 if probability >= 0.5 else 0,
+            "probability": probability,
+        })
+
+(submission_dir / "writeup.md").write_text("Pilot event agent.\\n", encoding="utf-8")
+(submission_dir / "notebook.ipynb").write_text(
+    json.dumps({"cells": [], "metadata": {}, "nbformat": 4, "nbformat_minor": 5}),
+    encoding="utf-8",
+)
+""".lstrip(),
+        encoding="utf-8",
+    )
+    runs_root = tmp_path / "runs"
+    report_csv = tmp_path / "reports" / "run_results.csv"
+    report_md = tmp_path / "reports" / "run_results.md"
+    summary_csv = tmp_path / "reports" / "run_summary.csv"
+    summary_md = tmp_path / "reports" / "run_summary.md"
+
+    result = run_pilot_agent_suite(
+        market_agent_id="pilot_market_agent",
+        market_agent_version="0.0.1",
+        market_agent_command=[sys.executable, str(market_agent_script)],
+        event_agent_id="pilot_event_agent",
+        event_agent_version="0.0.1",
+        event_agent_command=[sys.executable, str(event_agent_script)],
+        market_seed=111,
+        event_seed=121,
+        repeat=2,
+        run_label_prefix="pilot_agent",
+        market_data_output_dir=tmp_path / "data" / "market" / "raw",
+        market_private_dir=tmp_path / "data" / "market" / "private",
+        event_data_output_dir=tmp_path / "data" / "event" / "raw",
+        event_private_dir=tmp_path / "data" / "event" / "private",
+        runs_root=runs_root,
+        report_csv_path=report_csv,
+        report_markdown_path=report_md,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_md,
+        execute_notebook=False,
+        command_timeout_seconds=60,
+    )
+
+    with report_csv.open("r", encoding="utf-8", newline="") as handle:
+        result_rows = list(csv.DictReader(handle))
+    with summary_csv.open("r", encoding="utf-8", newline="") as handle:
+        summary_rows = list(csv.DictReader(handle))
+
+    assert result.status == "completed"
+    assert len(result.results) == 4
+    assert len(result_rows) == 4
+    assert len(summary_rows) == 2
+    assert {row["task_id"] for row in result_rows} == {
+        "synthetic_event_response_v0",
+        "synthetic_market_direction_v0",
+    }
+    assert {row["run_type"] for row in result_rows} == {"agent"}
+    assert sorted(row["agent_id"] for row in summary_rows) == [
+        "pilot_event_agent",
+        "pilot_market_agent",
+    ]
+    assert {row["run_count"] for row in summary_rows} == {"2"}
+    assert {row["score.overall_score.count"] for row in summary_rows} == {"2"}
+    assert report_md.exists()
+    assert "synthetic_event_response_v0" in summary_md.read_text(encoding="utf-8")
+    assert "synthetic_market_direction_v0" in summary_md.read_text(encoding="utf-8")

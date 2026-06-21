@@ -243,6 +243,18 @@ PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py \
 
 The agent suite defaults to `runs/suites/synthetic_market_direction_v0_agents`, giving agent experiments the same count/mean/std reporting protocol as baseline suites.
 
+Run the cross-task pilot agent suite with the bundled example wrappers:
+
+```bash
+PYTHONPATH=src python scripts/run_pilot_agent_suite.py \
+  --repeat 3 \
+  --market-seed 11 \
+  --event-seed 23 \
+  --run-label-prefix pilot_agent
+```
+
+This runs `agents/examples/momentum_env_agent.py` and `agents/examples/event_rule_env_agent.py` under one report root: `runs/suites/pilot_agents_v0`.
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.
