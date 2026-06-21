@@ -148,6 +148,14 @@ PYTHONPATH=src python scripts/build_run_report.py \
   --markdown-output reports/generated/run_results.md
 ```
 
+Run the complete synthetic momentum baseline pipeline in one command:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py
+```
+
+This generates data, writes baseline submission artifacts, scores predictions, validates artifacts with leakage scanning, writes a run manifest, and rebuilds reports. Add `--execute-notebook` when the environment supports Jupyter kernel execution.
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.

@@ -14,3 +14,9 @@ PYTHONPATH=src python scripts/build_run_report.py \
 ```
 
 The CSV contains flattened manifest metadata, scores, validation results, artifact counts, and failure counts. The Markdown report is a compact paper-facing table.
+
+For the synthetic momentum baseline, the full generation-to-report path is:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py
+```

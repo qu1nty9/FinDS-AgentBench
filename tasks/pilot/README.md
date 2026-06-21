@@ -43,6 +43,12 @@ PYTHONPATH=src python scripts/score_synthetic_market_direction_v0.py \
 
 The public data contains train and public-validation labels. Private holdout labels are written only to `data/private/` and are ignored by git.
 
+The one-command baseline pipeline is:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py
+```
+
 ## Artifact Validation
 
 Submission directories can be checked before scoring:
