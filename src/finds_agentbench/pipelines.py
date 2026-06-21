@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from finds_agentbench.agent_runner import run_agent_command
 from finds_agentbench.artifacts import validate_submission_artifacts
 from finds_agentbench.baselines import (
     write_logistic_submission_artifacts,
@@ -21,7 +22,7 @@ from finds_agentbench.reports import (
 )
 from finds_agentbench.runs import build_run_manifest, slugify, utc_now, write_run_manifest
 from finds_agentbench.scoring import score_synthetic_market_submission
-from finds_agentbench.synthetic import write_synthetic_market_direction_task
+from finds_agentbench.synthetic import SyntheticMarketPaths, write_synthetic_market_direction_task
 
 SYNTHETIC_MARKET_TASK_ID = "synthetic_market_direction_v0"
 MOMENTUM_BASELINE_ID = "momentum_baseline"
@@ -68,6 +69,27 @@ class BaselineSuiteResult:
     @property
     def summary_markdown_path(self) -> Path | None:
         return self.results[-1].summary_markdown_path if self.results else None
+
+
+def synthetic_market_agent_env(
+    *,
+    seed: int,
+    task_path: str | Path,
+    data_paths: SyntheticMarketPaths,
+    submission_dir: str | Path,
+) -> dict[str, str]:
+    return {
+        "FINDS_TASK_ID": SYNTHETIC_MARKET_TASK_ID,
+        "FINDS_RUN_SEED": str(seed),
+        "FINDS_TASK_SPEC_PATH": str(Path(task_path)),
+        "FINDS_PUBLIC_DATA_DIR": str(data_paths.train_public.parent),
+        "FINDS_TRAIN_PUBLIC_PATH": str(data_paths.train_public),
+        "FINDS_HOLDOUT_FEATURES_PATH": str(data_paths.private_holdout_features),
+        "FINDS_PRIVATE_HOLDOUT_FEATURES_PATH": str(data_paths.private_holdout_features),
+        "FINDS_SAMPLE_SUBMISSION_PATH": str(data_paths.sample_submission),
+        "FINDS_METADATA_PATH": str(data_paths.metadata),
+        "FINDS_SUBMISSION_DIR": str(Path(submission_dir)),
+    }
 
 
 def write_json(path: Path, value: dict[str, Any]) -> Path:
@@ -320,6 +342,132 @@ def run_synthetic_market_logistic_pipeline(
             repeat_index=repeat_index,
             repeat_count=repeat_count,
             extra={"baseline_metadata": baseline_metadata},
+        ),
+    )
+    manifest_path = write_run_manifest(manifest, run_path / "run_manifest.json")
+
+    report_root = Path(runs_root) if runs_root is not None else infer_runs_root(run_path)
+    csv_path, markdown_path, summary_csv, summary_markdown = write_benchmark_reports(
+        runs_root=report_root,
+        report_csv_path=report_csv_path,
+        report_markdown_path=report_markdown_path,
+        summary_csv_path=summary_csv_path,
+        summary_markdown_path=summary_markdown_path,
+    )
+
+    return PipelineResult(
+        run_dir=run_path,
+        score_path=score_path,
+        validation_path=validation_path,
+        manifest_path=manifest_path,
+        report_csv_path=csv_path,
+        report_markdown_path=markdown_path,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_markdown,
+        status=status,
+    )
+
+
+def run_synthetic_market_agent_command(
+    *,
+    agent_id: str,
+    agent_version: str,
+    agent_command: str | list[str] | tuple[str, ...],
+    seed: int = 11,
+    task_path: str | Path = "tasks/pilot/synthetic_market_direction_v0.yaml",
+    data_output_dir: str | Path = "data/raw/synthetic_market_direction_v0",
+    private_dir: str | Path = "data/private/synthetic_market_direction_v0",
+    run_dir: str | Path | None = None,
+    run_label: str | None = None,
+    repeat_index: int | None = None,
+    repeat_count: int | None = None,
+    runs_root: str | Path | None = None,
+    report_csv_path: str | Path = "reports/generated/run_results.csv",
+    report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
+    execute_notebook: bool = False,
+    command_timeout_seconds: int = 1800,
+    cwd: str | Path | None = None,
+) -> PipelineResult:
+    data_paths = write_synthetic_market_direction_task(
+        output_dir=data_output_dir,
+        private_dir=private_dir,
+        seed=seed,
+    )
+    base_run_dir = run_dir or Path("runs") / SYNTHETIC_MARKET_TASK_ID / agent_id
+    run_path = resolve_run_path(base_run_dir, run_label)
+    run_path.mkdir(parents=True, exist_ok=True)
+
+    command_result = run_agent_command(
+        command=agent_command,
+        env=synthetic_market_agent_env(
+            seed=seed,
+            task_path=task_path,
+            data_paths=data_paths,
+            submission_dir=run_path,
+        ),
+        cwd=cwd,
+        log_dir=run_path / "logs",
+        timeout_seconds=command_timeout_seconds,
+    )
+
+    score = score_synthetic_market_submission(
+        submission_path=run_path / "predictions.csv",
+        answer_key_path=data_paths.answer_key,
+    )
+    score_dict = score.as_dict()
+    score_path = write_json(run_path / "score.json", score_dict)
+
+    task_spec = load_yaml(task_path)
+    validation = validate_submission_artifacts(
+        task_spec=task_spec,
+        submission_dir=run_path,
+        execute=execute_notebook,
+        scan_leakage=True,
+        scan_methodology=True,
+    )
+    validation_dict = validation.as_dict()
+    validation_path = write_json(run_path / "artifact_validation.json", validation_dict)
+
+    failures = list(score.failures)
+    failures.extend(validation.errors)
+    if command_result.timed_out:
+        failures.append("agent_command_timed_out")
+        status = "timed_out"
+    elif command_result.exit_code != 0:
+        failures.append(f"agent_command_exit_code={command_result.exit_code}")
+        status = "failed_runtime"
+    elif not score.execution_success:
+        status = "failed_format"
+    elif not validation.ok:
+        status = "failed_validity_gate"
+    else:
+        status = "completed"
+
+    manifest = build_run_manifest(
+        task_id=SYNTHETIC_MARKET_TASK_ID,
+        agent_id=agent_id,
+        agent_version=agent_version,
+        submission_dir=run_path,
+        run_type="agent",
+        status=status,
+        started_at=command_result.started_at,
+        completed_at=command_result.completed_at,
+        tool_permissions=["filesystem:read_public_data", "filesystem:write_submission"],
+        commands=[command_result.as_manifest_command()],
+        validations={"artifact_validation": validation_dict},
+        scores=score_dict,
+        failures=failures,
+        trace=build_trace(
+            seed=seed,
+            run_label=run_label,
+            repeat_index=repeat_index,
+            repeat_count=repeat_count,
+            extra={
+                "command_timeout_seconds": command_timeout_seconds,
+                "public_data_dir": str(data_paths.train_public.parent),
+            },
         ),
     )
     manifest_path = write_run_manifest(manifest, run_path / "run_manifest.json")

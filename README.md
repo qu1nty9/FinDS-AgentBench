@@ -185,6 +185,18 @@ Repeated runs write separate run directories, preserve per-run `seed` and `run_l
 
 The suite runner uses `runs/suites/synthetic_market_direction_v0_pilot` by default so paper-facing summaries do not mix prototype runs with controlled repeated-run experiments.
 
+Run an external agent command through the synthetic-market harness:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_agent_command.py \
+  --agent-id my_agent \
+  --agent-version dev \
+  --agent-command "python agents/my_agent.py" \
+  --run-label pilot_001_seed_11
+```
+
+The harness exposes only public task/data paths through `FINDS_*` environment variables, captures logs, scores the submission, validates artifacts, writes `run_manifest.json`, and rebuilds reports.
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.

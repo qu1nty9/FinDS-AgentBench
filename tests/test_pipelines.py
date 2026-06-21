@@ -1,9 +1,11 @@
 import csv
 import json
+import sys
 from pathlib import Path
 
 from finds_agentbench.pipelines import (
     run_synthetic_market_baseline_suite,
+    run_synthetic_market_agent_command,
     run_synthetic_market_logistic_pipeline,
     run_synthetic_market_momentum_pipeline,
 )
@@ -180,3 +182,97 @@ def test_synthetic_market_baseline_suite_runs_all_baselines_with_repeats(tmp_pat
     assert {row["score.overall_score.count"] for row in summary_rows} == {"2"}
     assert report_md.exists()
     assert "score.overall_score.std" in summary_md.read_text(encoding="utf-8")
+
+
+def test_synthetic_market_agent_command_pipeline_captures_artifacts(tmp_path: Path):
+    agent_script = tmp_path / "dummy_agent.py"
+    agent_script.write_text(
+        """
+import csv
+import json
+import os
+from pathlib import Path
+
+if "FINDS_ANSWER_KEY_PATH" in os.environ:
+    raise SystemExit("private answer key leaked to agent env")
+
+features_path = Path(os.environ["FINDS_HOLDOUT_FEATURES_PATH"])
+submission_dir = Path(os.environ["FINDS_SUBMISSION_DIR"])
+submission_dir.mkdir(parents=True, exist_ok=True)
+
+with features_path.open("r", encoding="utf-8", newline="") as source:
+    rows = list(csv.DictReader(source))
+
+with (submission_dir / "predictions.csv").open("w", encoding="utf-8", newline="") as output:
+    writer = csv.DictWriter(output, fieldnames=["row_id", "prediction", "probability"])
+    writer.writeheader()
+    for row in rows:
+        writer.writerow({"row_id": row["row_id"], "prediction": 1, "probability": 0.51})
+
+(submission_dir / "writeup.md").write_text(
+    "Dummy agent submission using public holdout features only.\\n",
+    encoding="utf-8",
+)
+(submission_dir / "notebook.ipynb").write_text(
+    json.dumps({
+        "cells": [],
+        "metadata": {},
+        "nbformat": 4,
+        "nbformat_minor": 5,
+    }),
+    encoding="utf-8",
+)
+print(f"wrote {len(rows)} predictions")
+""".lstrip(),
+        encoding="utf-8",
+    )
+    runs_root = tmp_path / "runs"
+    run_dir = runs_root / "synthetic_market_direction_v0" / "dummy_agent"
+    report_csv = tmp_path / "reports" / "run_results.csv"
+    report_md = tmp_path / "reports" / "run_results.md"
+    summary_csv = tmp_path / "reports" / "run_summary.csv"
+    summary_md = tmp_path / "reports" / "run_summary.md"
+
+    result = run_synthetic_market_agent_command(
+        agent_id="dummy_agent",
+        agent_version="0.0.1",
+        agent_command=[sys.executable, str(agent_script)],
+        seed=41,
+        data_output_dir=tmp_path / "data" / "raw",
+        private_dir=tmp_path / "data" / "private",
+        run_dir=run_dir,
+        run_label="agent_001",
+        runs_root=runs_root,
+        report_csv_path=report_csv,
+        report_markdown_path=report_md,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_md,
+        execute_notebook=False,
+        command_timeout_seconds=60,
+    )
+
+    manifest = load_run_manifest(result.manifest_path)
+    score = json.loads(result.score_path.read_text(encoding="utf-8"))
+    validation = json.loads(result.validation_path.read_text(encoding="utf-8"))
+
+    assert result.status == "completed"
+    assert score["execution_success"] == 1.0
+    assert validation["ok"] is True
+    assert validate_run_manifest(manifest).ok
+    assert manifest["run_type"] == "agent"
+    assert manifest["agent"]["agent_id"] == "dummy_agent"
+    assert manifest["commands"][0]["exit_code"] == 0
+    assert manifest["commands"][0]["timed_out"] is False
+    assert (result.run_dir / "logs" / "stdout.txt").exists()
+    assert "wrote" in (result.run_dir / "logs" / "stdout.txt").read_text(encoding="utf-8")
+    assert "FINDS_ANSWER_KEY_PATH" not in manifest["commands"][0]["command"]
+
+    with summary_csv.open("r", encoding="utf-8", newline="") as handle:
+        summary_rows = list(csv.DictReader(handle))
+
+    assert len(summary_rows) == 1
+    assert summary_rows[0]["agent_id"] == "dummy_agent"
+    assert summary_rows[0]["run_type"] == "agent"
+    assert summary_rows[0]["run_count"] == "1"
+    assert report_md.exists()
+    assert summary_md.exists()

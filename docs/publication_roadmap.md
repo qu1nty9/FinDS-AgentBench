@@ -44,6 +44,7 @@ Required outputs:
 - arXiv/workshop paper;
 - public pilot task suite;
 - minimal evaluator;
+- command-based agent harness;
 - baseline notebooks;
 - validity-adjusted result tables;
 - repeated-run summary tables with uncertainty estimates;
@@ -117,6 +118,6 @@ Acceptance criteria:
 
 1. Select a license-safe data source for `return_direction_etf_v0`.
 2. Run 3+ repeated seeds for each implemented baseline with the baseline suite runner and report mean/std.
-3. Generalize the one-command runner pattern to all pilot baselines.
+3. Add repeated agent runs through the command-based agent harness.
 4. Add richer static checks for suspicious feature/target construction.
 5. Expand from 2 runnable tasks to the 8-12 task workshop pilot.
