@@ -65,3 +65,15 @@ PYTHONPATH=src python scripts/run_pilot_agent_suite.py \
 ```
 
 This writes agent manifests under `runs/suites/pilot_agents_v0` and produces the same shared run-level and summary-level reports across both implemented pilot tasks.
+
+For the combined pilot protocol:
+
+```bash
+PYTHONPATH=src python scripts/run_pilot_protocol.py \
+  --repeat 3 \
+  --market-seed 11 \
+  --event-seed 23 \
+  --run-label-prefix pilot_protocol
+```
+
+This writes baseline and agent manifests under `runs/suites/pilot_protocol_v0` and rebuilds one shared set of reports that can be used directly for pilot-paper tables.

@@ -44,6 +44,7 @@ DEFAULT_SYNTHETIC_MARKET_AGENT_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_d
 DEFAULT_SYNTHETIC_EVENT_AGENT_SUITE_RUNS_ROOT = "runs/suites/synthetic_event_response_v0_agents"
 DEFAULT_PILOT_BASELINE_SUITE_RUNS_ROOT = "runs/suites/pilot_baselines_v0"
 DEFAULT_PILOT_AGENT_SUITE_RUNS_ROOT = "runs/suites/pilot_agents_v0"
+DEFAULT_PILOT_PROTOCOL_RUNS_ROOT = "runs/suites/pilot_protocol_v0"
 
 
 @dataclass(frozen=True)
@@ -111,6 +112,38 @@ class AgentSuiteResult:
     @property
     def summary_markdown_path(self) -> Path | None:
         return self.results[-1].summary_markdown_path if self.results else None
+
+
+@dataclass(frozen=True)
+class PilotProtocolResult:
+    baseline_result: BaselineSuiteResult
+    agent_result: AgentSuiteResult
+
+    @property
+    def results(self) -> list[PipelineResult]:
+        return [*self.baseline_result.results, *self.agent_result.results]
+
+    @property
+    def status(self) -> str:
+        if self.baseline_result.status == "completed" and self.agent_result.status == "completed":
+            return "completed"
+        return "failed"
+
+    @property
+    def report_csv_path(self) -> Path | None:
+        return self.agent_result.report_csv_path or self.baseline_result.report_csv_path
+
+    @property
+    def report_markdown_path(self) -> Path | None:
+        return self.agent_result.report_markdown_path or self.baseline_result.report_markdown_path
+
+    @property
+    def summary_csv_path(self) -> Path | None:
+        return self.agent_result.summary_csv_path or self.baseline_result.summary_csv_path
+
+    @property
+    def summary_markdown_path(self) -> Path | None:
+        return self.agent_result.summary_markdown_path or self.baseline_result.summary_markdown_path
 
 
 def predictive_task_agent_env(
@@ -1177,3 +1210,87 @@ def run_pilot_agent_suite(
         )
 
     return AgentSuiteResult(results=results)
+
+
+def run_pilot_protocol(
+    *,
+    market_agent_id: str,
+    market_agent_version: str,
+    market_agent_command: str | list[str] | tuple[str, ...],
+    event_agent_id: str,
+    event_agent_version: str,
+    event_agent_command: str | list[str] | tuple[str, ...],
+    market_seed: int = 11,
+    event_seed: int = 23,
+    repeat: int = 3,
+    run_label_prefix: str = "pilot_protocol",
+    market_task_path: str | Path = "tasks/pilot/synthetic_market_direction_v0.yaml",
+    event_task_path: str | Path = "tasks/pilot/synthetic_event_response_v0.yaml",
+    market_data_output_dir: str | Path = "data/raw/synthetic_market_direction_v0",
+    market_private_dir: str | Path = "data/private/synthetic_market_direction_v0",
+    event_data_output_dir: str | Path = "data/raw/synthetic_event_response_v0",
+    event_private_dir: str | Path = "data/private/synthetic_event_response_v0",
+    runs_root: str | Path = DEFAULT_PILOT_PROTOCOL_RUNS_ROOT,
+    report_csv_path: str | Path = "reports/generated/run_results.csv",
+    report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
+    execute_notebook: bool = False,
+    command_timeout_seconds: int = 1800,
+    cwd: str | Path | None = None,
+    command: str = "run_pilot_protocol",
+) -> PilotProtocolResult:
+    if repeat < 1:
+        raise ValueError("repeat must be at least 1")
+
+    root = Path(runs_root)
+    baseline_result = run_pilot_baseline_suite(
+        market_seed=market_seed,
+        event_seed=event_seed,
+        repeat=repeat,
+        run_label_prefix=f"{run_label_prefix}_baseline",
+        market_task_path=market_task_path,
+        event_task_path=event_task_path,
+        market_data_output_dir=Path(market_data_output_dir) / "baseline",
+        market_private_dir=Path(market_private_dir) / "baseline",
+        event_data_output_dir=Path(event_data_output_dir) / "baseline",
+        event_private_dir=Path(event_private_dir) / "baseline",
+        runs_root=root,
+        report_csv_path=report_csv_path,
+        report_markdown_path=report_markdown_path,
+        summary_csv_path=summary_csv_path,
+        summary_markdown_path=summary_markdown_path,
+        execute_notebook=execute_notebook,
+        command=command,
+    )
+    agent_result = run_pilot_agent_suite(
+        market_agent_id=market_agent_id,
+        market_agent_version=market_agent_version,
+        market_agent_command=market_agent_command,
+        event_agent_id=event_agent_id,
+        event_agent_version=event_agent_version,
+        event_agent_command=event_agent_command,
+        market_seed=market_seed,
+        event_seed=event_seed,
+        repeat=repeat,
+        run_label_prefix=f"{run_label_prefix}_agent",
+        market_task_path=market_task_path,
+        event_task_path=event_task_path,
+        market_data_output_dir=Path(market_data_output_dir) / "agent",
+        market_private_dir=Path(market_private_dir) / "agent",
+        event_data_output_dir=Path(event_data_output_dir) / "agent",
+        event_private_dir=Path(event_private_dir) / "agent",
+        runs_root=root,
+        report_csv_path=report_csv_path,
+        report_markdown_path=report_markdown_path,
+        summary_csv_path=summary_csv_path,
+        summary_markdown_path=summary_markdown_path,
+        execute_notebook=execute_notebook,
+        command_timeout_seconds=command_timeout_seconds,
+        cwd=cwd,
+    )
+
+    return PilotProtocolResult(
+        baseline_result=baseline_result,
+        agent_result=agent_result,
+    )

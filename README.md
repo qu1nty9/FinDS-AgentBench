@@ -257,6 +257,18 @@ PYTHONPATH=src python scripts/run_pilot_agent_suite.py \
 
 This runs `agents/examples/momentum_env_agent.py` and `agents/examples/event_rule_env_agent.py` under one report root: `runs/suites/pilot_agents_v0`.
 
+Run the combined pilot protocol across implemented baselines and example agents:
+
+```bash
+PYTHONPATH=src python scripts/run_pilot_protocol.py \
+  --repeat 3 \
+  --market-seed 11 \
+  --event-seed 23 \
+  --run-label-prefix pilot_protocol
+```
+
+This produces one shared publication-facing report root, `runs/suites/pilot_protocol_v0`, with both baseline and agent runs included in the same result and summary tables.
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.
