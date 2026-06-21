@@ -29,6 +29,7 @@ MOMENTUM_BASELINE_ID = "momentum_baseline"
 LOGISTIC_BASELINE_ID = "logistic_regression_baseline"
 DEFAULT_SYNTHETIC_MARKET_BASELINES = (MOMENTUM_BASELINE_ID, LOGISTIC_BASELINE_ID)
 DEFAULT_SYNTHETIC_MARKET_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_direction_v0_pilot"
+DEFAULT_SYNTHETIC_MARKET_AGENT_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_direction_v0_agents"
 
 
 @dataclass(frozen=True)
@@ -46,6 +47,33 @@ class PipelineResult:
 
 @dataclass(frozen=True)
 class BaselineSuiteResult:
+    results: list[PipelineResult]
+
+    @property
+    def status(self) -> str:
+        if all(result.status == "completed" for result in self.results):
+            return "completed"
+        return "failed"
+
+    @property
+    def report_csv_path(self) -> Path | None:
+        return self.results[-1].report_csv_path if self.results else None
+
+    @property
+    def report_markdown_path(self) -> Path | None:
+        return self.results[-1].report_markdown_path if self.results else None
+
+    @property
+    def summary_csv_path(self) -> Path | None:
+        return self.results[-1].summary_csv_path if self.results else None
+
+    @property
+    def summary_markdown_path(self) -> Path | None:
+        return self.results[-1].summary_markdown_path if self.results else None
+
+
+@dataclass(frozen=True)
+class AgentSuiteResult:
     results: list[PipelineResult]
 
     @property
@@ -492,6 +520,62 @@ def run_synthetic_market_agent_command(
         summary_markdown_path=summary_markdown,
         status=status,
     )
+
+
+def run_synthetic_market_agent_command_suite(
+    *,
+    agent_id: str,
+    agent_version: str,
+    agent_command: str | list[str] | tuple[str, ...],
+    seed: int = 11,
+    repeat: int = 3,
+    run_label_prefix: str = "agent",
+    task_path: str | Path = "tasks/pilot/synthetic_market_direction_v0.yaml",
+    data_output_dir: str | Path = "data/raw/synthetic_market_direction_v0",
+    private_dir: str | Path = "data/private/synthetic_market_direction_v0",
+    runs_root: str | Path = DEFAULT_SYNTHETIC_MARKET_AGENT_SUITE_RUNS_ROOT,
+    report_csv_path: str | Path = "reports/generated/run_results.csv",
+    report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
+    execute_notebook: bool = False,
+    command_timeout_seconds: int = 1800,
+    cwd: str | Path | None = None,
+) -> AgentSuiteResult:
+    if repeat < 1:
+        raise ValueError("repeat must be at least 1")
+
+    root = Path(runs_root)
+    task_run_root = root / SYNTHETIC_MARKET_TASK_ID
+    results: list[PipelineResult] = []
+    for repeat_offset in range(repeat):
+        current_seed = seed + repeat_offset
+        run_label = f"{run_label_prefix}_{repeat_offset + 1:03d}_seed_{current_seed}"
+        results.append(
+            run_synthetic_market_agent_command(
+                agent_id=agent_id,
+                agent_version=agent_version,
+                agent_command=agent_command,
+                seed=current_seed,
+                task_path=task_path,
+                data_output_dir=Path(data_output_dir) / run_label,
+                private_dir=Path(private_dir) / run_label,
+                run_dir=task_run_root / agent_id,
+                run_label=run_label,
+                repeat_index=repeat_offset + 1,
+                repeat_count=repeat,
+                runs_root=root,
+                report_csv_path=report_csv_path,
+                report_markdown_path=report_markdown_path,
+                summary_csv_path=summary_csv_path,
+                summary_markdown_path=summary_markdown_path,
+                execute_notebook=execute_notebook,
+                command_timeout_seconds=command_timeout_seconds,
+                cwd=cwd,
+            )
+        )
+
+    return AgentSuiteResult(results=results)
 
 
 def run_synthetic_market_baseline_suite(

@@ -6,6 +6,7 @@ from pathlib import Path
 from finds_agentbench.pipelines import (
     run_synthetic_market_baseline_suite,
     run_synthetic_market_agent_command,
+    run_synthetic_market_agent_command_suite,
     run_synthetic_market_logistic_pipeline,
     run_synthetic_market_momentum_pipeline,
 )
@@ -274,5 +275,81 @@ print(f"wrote {len(rows)} predictions")
     assert summary_rows[0]["agent_id"] == "dummy_agent"
     assert summary_rows[0]["run_type"] == "agent"
     assert summary_rows[0]["run_count"] == "1"
+    assert report_md.exists()
+    assert summary_md.exists()
+
+
+def test_synthetic_market_agent_command_suite_repeats_agent_runs(tmp_path: Path):
+    agent_script = tmp_path / "suite_agent.py"
+    agent_script.write_text(
+        """
+import csv
+import json
+import os
+from pathlib import Path
+
+features_path = Path(os.environ["FINDS_HOLDOUT_FEATURES_PATH"])
+submission_dir = Path(os.environ["FINDS_SUBMISSION_DIR"])
+submission_dir.mkdir(parents=True, exist_ok=True)
+
+with features_path.open("r", encoding="utf-8", newline="") as source:
+    rows = list(csv.DictReader(source))
+
+with (submission_dir / "predictions.csv").open("w", encoding="utf-8", newline="") as output:
+    writer = csv.DictWriter(output, fieldnames=["row_id", "prediction", "probability"])
+    writer.writeheader()
+    for row in rows:
+        writer.writerow({"row_id": row["row_id"], "prediction": 1, "probability": 0.51})
+
+(submission_dir / "writeup.md").write_text("Repeated dummy agent.\\n", encoding="utf-8")
+(submission_dir / "notebook.ipynb").write_text(
+    json.dumps({"cells": [], "metadata": {}, "nbformat": 4, "nbformat_minor": 5}),
+    encoding="utf-8",
+)
+print(os.environ["FINDS_RUN_SEED"])
+""".lstrip(),
+        encoding="utf-8",
+    )
+    runs_root = tmp_path / "runs"
+    report_csv = tmp_path / "reports" / "run_results.csv"
+    report_md = tmp_path / "reports" / "run_results.md"
+    summary_csv = tmp_path / "reports" / "run_summary.csv"
+    summary_md = tmp_path / "reports" / "run_summary.md"
+
+    result = run_synthetic_market_agent_command_suite(
+        agent_id="suite_agent",
+        agent_version="0.0.1",
+        agent_command=[sys.executable, str(agent_script)],
+        seed=51,
+        repeat=2,
+        run_label_prefix="agent_suite",
+        data_output_dir=tmp_path / "data" / "raw",
+        private_dir=tmp_path / "data" / "private",
+        runs_root=runs_root,
+        report_csv_path=report_csv,
+        report_markdown_path=report_md,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_md,
+        execute_notebook=False,
+        command_timeout_seconds=60,
+    )
+
+    with report_csv.open("r", encoding="utf-8", newline="") as handle:
+        result_rows = list(csv.DictReader(handle))
+    with summary_csv.open("r", encoding="utf-8", newline="") as handle:
+        summary_rows = list(csv.DictReader(handle))
+
+    assert result.status == "completed"
+    assert len(result.results) == 2
+    assert len(result_rows) == 2
+    assert sorted(row["trace.run_label"] for row in result_rows) == [
+        "agent_suite_001_seed_51",
+        "agent_suite_002_seed_52",
+    ]
+    assert {row["run_type"] for row in result_rows} == {"agent"}
+    assert len(summary_rows) == 1
+    assert summary_rows[0]["agent_id"] == "suite_agent"
+    assert summary_rows[0]["run_count"] == "2"
+    assert summary_rows[0]["score.overall_score.count"] == "2"
     assert report_md.exists()
     assert summary_md.exists()

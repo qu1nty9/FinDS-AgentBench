@@ -25,6 +25,28 @@ PYTHONPATH=src python scripts/run_synthetic_market_agent_command.py \
   --run-label pilot_001_seed_11
 ```
 
+Repeated agent evaluation uses the suite runner:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py \
+  --agent-id my_agent \
+  --agent-version dev \
+  --agent-command "python agents/my_agent.py" \
+  --repeat 3 \
+  --seed 11 \
+  --run-label-prefix pilot_agent
+```
+
+The repository includes a contract-only reference agent:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py \
+  --agent-id momentum_env_agent \
+  --agent-version 0.1.0 \
+  --agent-command "python agents/examples/momentum_env_agent.py" \
+  --repeat 3
+```
+
 The command is parsed with `shlex` and runs with `FINDS_*` environment variables:
 
 - `FINDS_TASK_ID`

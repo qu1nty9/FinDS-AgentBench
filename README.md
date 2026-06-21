@@ -197,6 +197,20 @@ PYTHONPATH=src python scripts/run_synthetic_market_agent_command.py \
 
 The harness exposes only public task/data paths through `FINDS_*` environment variables, captures logs, scores the submission, validates artifacts, writes `run_manifest.json`, and rebuilds reports.
 
+Run repeated external-agent evaluation:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py \
+  --agent-id momentum_env_agent \
+  --agent-version 0.1.0 \
+  --agent-command "python agents/examples/momentum_env_agent.py" \
+  --repeat 3 \
+  --seed 11 \
+  --run-label-prefix pilot_agent
+```
+
+The agent suite defaults to `runs/suites/synthetic_market_direction_v0_agents`, giving agent experiments the same count/mean/std reporting protocol as baseline suites.
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.
