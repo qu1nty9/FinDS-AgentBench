@@ -17,6 +17,17 @@ Each completed run should include a `run_manifest.json` with:
 - validation outputs;
 - scores;
 - failures.
+- trace metadata such as seed, run label, and repeat index.
+
+Repeated runs should use separate run directories under the same task/agent root:
+
+```text
+runs/synthetic_market_direction_v0/logistic_regression_baseline/pilot_001_seed_11/
+runs/synthetic_market_direction_v0/logistic_regression_baseline/pilot_002_seed_12/
+runs/synthetic_market_direction_v0/logistic_regression_baseline/pilot_003_seed_13/
+```
+
+This keeps artifacts immutable per run and lets the report builder compute run-level and aggregate tables from manifests.
 
 Create a manifest:
 

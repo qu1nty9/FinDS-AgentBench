@@ -2,16 +2,26 @@ import csv
 from pathlib import Path
 
 from finds_agentbench.reports import (
+    aggregate_result_rows,
     load_result_rows,
     results_to_markdown,
+    write_summary_csv,
+    write_summary_markdown,
     write_results_csv,
     write_results_markdown,
 )
 from finds_agentbench.runs import build_run_manifest, write_run_manifest
 
 
-def write_manifest(tmp_path: Path, *, task_id: str, agent_id: str, score: float) -> Path:
-    submission_dir = tmp_path / task_id / agent_id / "submission"
+def write_manifest(
+    tmp_path: Path,
+    *,
+    task_id: str,
+    agent_id: str,
+    score: float,
+    run_label: str = "run",
+) -> Path:
+    submission_dir = tmp_path / task_id / agent_id / run_label / "submission"
     submission_dir.mkdir(parents=True)
     (submission_dir / "predictions.csv").write_text(
         "row_id,prediction,probability\nrow_1,1,0.8\n",
@@ -22,15 +32,16 @@ def write_manifest(tmp_path: Path, *, task_id: str, agent_id: str, score: float)
         agent_id=agent_id,
         agent_version="0.1.0",
         submission_dir=submission_dir,
-        run_id=f"{task_id}_{agent_id}",
+        run_id=f"{task_id}_{agent_id}_{run_label}",
         scores={
             "overall_score": score,
             "balanced_accuracy": score,
             "execution_success": 1.0,
         },
         validations={"artifact_validation": {"ok": True}},
+        trace={"seed": 11, "run_label": run_label},
     )
-    output = tmp_path / task_id / agent_id / "run_manifest.json"
+    output = tmp_path / task_id / agent_id / run_label / "run_manifest.json"
     write_run_manifest(manifest, output)
     return output
 
@@ -52,6 +63,8 @@ def test_load_result_rows_flattens_scores_and_validations(tmp_path: Path):
     assert row["score.overall_score"] == 0.54
     assert row["score.execution_success"] == 1.0
     assert row["validation.artifact_validation.ok"] is True
+    assert row["trace.seed"] == 11
+    assert row["trace.run_label"] == "run"
     assert row["artifact_file_count"] == 1
     assert row["manifest_valid"] is True
 
@@ -88,3 +101,40 @@ def test_results_to_markdown_handles_empty_values():
 
     assert "| task_a | agent_a |  |" in markdown
 
+
+def test_aggregate_result_rows_computes_repeated_run_statistics(tmp_path: Path):
+    write_manifest(
+        tmp_path,
+        task_id="synthetic_market_direction_v0",
+        agent_id="momentum_baseline",
+        score=0.4,
+        run_label="seed_11",
+    )
+    write_manifest(
+        tmp_path,
+        task_id="synthetic_market_direction_v0",
+        agent_id="momentum_baseline",
+        score=0.6,
+        run_label="seed_12",
+    )
+    rows = load_result_rows(tmp_path, strict=True)
+    summary_rows = aggregate_result_rows(rows)
+    csv_output = tmp_path / "summary.csv"
+    markdown_output = tmp_path / "summary.md"
+
+    write_summary_csv(summary_rows, csv_output)
+    write_summary_markdown(summary_rows, markdown_output)
+
+    assert len(summary_rows) == 1
+    summary = summary_rows[0]
+    assert summary["task_id"] == "synthetic_market_direction_v0"
+    assert summary["agent_id"] == "momentum_baseline"
+    assert summary["run_count"] == 2
+    assert summary["completed_count"] == 2
+    assert summary["score.overall_score.count"] == 2
+    assert summary["score.overall_score.mean"] == 0.5
+    assert round(summary["score.overall_score.std"], 6) == 0.141421
+    assert "score.overall_score.mean" in csv_output.read_text(encoding="utf-8")
+    assert "| synthetic_market_direction_v0 | momentum_baseline |" in markdown_output.read_text(
+        encoding="utf-8"
+    )

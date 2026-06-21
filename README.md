@@ -151,7 +151,9 @@ Build paper-ready run summary tables:
 PYTHONPATH=src python scripts/build_run_report.py \
   --runs-root runs \
   --csv-output reports/generated/run_results.csv \
-  --markdown-output reports/generated/run_results.md
+  --markdown-output reports/generated/run_results.md \
+  --summary-csv-output reports/generated/run_summary.csv \
+  --summary-markdown-output reports/generated/run_summary.md
 ```
 
 Run the complete synthetic momentum baseline pipeline in one command:
@@ -169,6 +171,17 @@ PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py
 ```
 
 The logistic baseline fits preprocessing and the classifier on the chronological train split, selects the classification threshold on public validation, and only then predicts the private temporal holdout.
+
+Run a repeated baseline protocol for uncertainty estimates:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py \
+  --repeat 3 \
+  --seed 11 \
+  --run-label pilot_logistic
+```
+
+Repeated runs write separate run directories, preserve per-run `seed` and `run_label` metadata in `run_manifest.json`, and rebuild both `reports/generated/run_results.*` and `reports/generated/run_summary.*`. The summary tables aggregate by task, agent, and run type with count/mean/std/min/max for core metrics.
 
 ## Status
 

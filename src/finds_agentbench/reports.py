@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import csv
+from collections import defaultdict
 from pathlib import Path
+from statistics import mean, stdev
 from typing import Any
 
 from finds_agentbench.runs import load_run_manifest, validate_run_manifest
@@ -17,6 +19,33 @@ DEFAULT_MARKDOWN_COLUMNS = [
     "score.roc_auc",
     "score.execution_success",
     "failure_count",
+]
+
+DEFAULT_SUMMARY_GROUP_BY = ["task_id", "agent_id", "run_type"]
+
+DEFAULT_SUMMARY_METRICS = [
+    "score.overall_score",
+    "score.balanced_accuracy",
+    "score.roc_auc",
+    "score.log_loss",
+    "score.long_flat_mean_return",
+    "score.max_drawdown",
+    "score.turnover",
+    "score.execution_success",
+]
+
+DEFAULT_SUMMARY_MARKDOWN_COLUMNS = [
+    "task_id",
+    "agent_id",
+    "run_type",
+    "run_count",
+    "completed_count",
+    "score.overall_score.mean",
+    "score.overall_score.std",
+    "score.balanced_accuracy.mean",
+    "score.balanced_accuracy.std",
+    "score.roc_auc.mean",
+    "score.roc_auc.std",
 ]
 
 
@@ -40,12 +69,17 @@ def flatten_dict(value: dict[str, Any], *, prefix: str = "") -> dict[str, Any]:
     return rows
 
 
-def manifest_to_result_row(manifest: dict[str, Any], *, source_path: str | Path | None = None) -> dict[str, Any]:
+def manifest_to_result_row(
+    manifest: dict[str, Any],
+    *,
+    source_path: str | Path | None = None,
+) -> dict[str, Any]:
     agent = manifest.get("agent", {})
     timing = manifest.get("timing", {})
     artifacts = manifest.get("artifacts", {})
     validations = manifest.get("validations", {})
     scores = manifest.get("scores", {})
+    trace = manifest.get("trace", {})
     files = artifacts.get("files", []) if isinstance(artifacts, dict) else []
     failures = manifest.get("failures", [])
 
@@ -59,7 +93,9 @@ def manifest_to_result_row(manifest: dict[str, Any], *, source_path: str | Path 
         "status": manifest.get("status", ""),
         "started_at": timing.get("started_at", "") if isinstance(timing, dict) else "",
         "completed_at": timing.get("completed_at", "") if isinstance(timing, dict) else "",
-        "submission_dir": artifacts.get("submission_dir", "") if isinstance(artifacts, dict) else "",
+        "submission_dir": artifacts.get("submission_dir", "")
+        if isinstance(artifacts, dict)
+        else "",
         "artifact_file_count": len(files) if isinstance(files, list) else 0,
         "failure_count": len(failures) if isinstance(failures, list) else 0,
         "command_count": len(manifest.get("commands", []))
@@ -73,6 +109,8 @@ def manifest_to_result_row(manifest: dict[str, Any], *, source_path: str | Path 
         row.update({f"score.{key}": value for key, value in flatten_dict(scores).items()})
     if isinstance(validations, dict):
         row.update({f"validation.{key}": value for key, value in flatten_dict(validations).items()})
+    if isinstance(trace, dict):
+        row.update({f"trace.{key}": value for key, value in flatten_dict(trace).items()})
     return row
 
 
@@ -100,6 +138,73 @@ def write_results_csv(rows: list[dict[str, Any]], output_path: str | Path) -> Pa
         writer.writeheader()
         writer.writerows(rows)
     return path
+
+
+def to_float(value: Any) -> float | None:
+    if value is None or isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        stripped = value.strip()
+        if not stripped:
+            return None
+        try:
+            return float(stripped)
+        except ValueError:
+            return None
+    return None
+
+
+def aggregate_result_rows(
+    rows: list[dict[str, Any]],
+    *,
+    group_by: list[str] | None = None,
+    metrics: list[str] | None = None,
+) -> list[dict[str, Any]]:
+    selected_group_by = group_by or DEFAULT_SUMMARY_GROUP_BY
+    selected_metrics = metrics or DEFAULT_SUMMARY_METRICS
+    grouped: dict[tuple[Any, ...], list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        key = tuple(row.get(column, "") for column in selected_group_by)
+        grouped[key].append(row)
+
+    summary_rows: list[dict[str, Any]] = []
+    sorted_groups = sorted(
+        grouped.items(),
+        key=lambda item: tuple(str(part) for part in item[0]),
+    )
+    for key, group_rows in sorted_groups:
+        summary: dict[str, Any] = {
+            column: value for column, value in zip(selected_group_by, key, strict=True)
+        }
+        summary["run_count"] = len(group_rows)
+        summary["completed_count"] = sum(
+            1 for row in group_rows if row.get("status") == "completed"
+        )
+        summary["manifest_valid_count"] = sum(
+            1 for row in group_rows if row.get("manifest_valid") is True
+        )
+        summary["total_failure_count"] = int(
+            sum(to_float(row.get("failure_count")) or 0.0 for row in group_rows)
+        )
+
+        for metric in selected_metrics:
+            values = [
+                numeric
+                for numeric in (to_float(row.get(metric)) for row in group_rows)
+                if numeric is not None
+            ]
+            if not values:
+                continue
+            summary[f"{metric}.count"] = len(values)
+            summary[f"{metric}.mean"] = mean(values)
+            summary[f"{metric}.std"] = stdev(values) if len(values) > 1 else 0.0
+            summary[f"{metric}.min"] = min(values)
+            summary[f"{metric}.max"] = max(values)
+        summary_rows.append(summary)
+
+    return summary_rows
 
 
 def format_markdown_value(value: Any) -> str:
@@ -140,3 +245,16 @@ def write_results_markdown(
     path.write_text(results_to_markdown(rows, columns=columns), encoding="utf-8")
     return path
 
+
+def write_summary_csv(rows: list[dict[str, Any]], output_path: str | Path) -> Path:
+    return write_results_csv(rows, output_path)
+
+
+def write_summary_markdown(
+    rows: list[dict[str, Any]],
+    output_path: str | Path,
+    *,
+    columns: list[str] | None = None,
+) -> Path:
+    selected_columns = columns or DEFAULT_SUMMARY_MARKDOWN_COLUMNS
+    return write_results_markdown(rows, output_path, columns=selected_columns)

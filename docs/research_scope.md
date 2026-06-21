@@ -25,6 +25,8 @@ The pilot paper should use 8-12 tasks across:
 
 The pilot should avoid becoming a general finance benchmark. Its job is to prove that validity-gated evaluation reveals failures that ordinary predictive scoring hides.
 
+Pilot result tables should report repeated-run uncertainty, not only single-run scores. The run manifest trace records seed and run labels so benchmark summaries can aggregate count, mean, standard deviation, min, and max per task/agent configuration.
+
 The first implemented vertical slices are:
 
 - `leakage_audit_temporal_split_v0`: a synthetic audit task with controlled future-feature leakage, random temporal split misuse, and full-dataset preprocessing leakage.

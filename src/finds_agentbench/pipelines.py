@@ -11,8 +11,15 @@ from finds_agentbench.baselines import (
     write_momentum_submission_artifacts,
 )
 from finds_agentbench.io import load_yaml
-from finds_agentbench.reports import load_result_rows, write_results_csv, write_results_markdown
-from finds_agentbench.runs import build_run_manifest, utc_now, write_run_manifest
+from finds_agentbench.reports import (
+    aggregate_result_rows,
+    load_result_rows,
+    write_results_csv,
+    write_results_markdown,
+    write_summary_csv,
+    write_summary_markdown,
+)
+from finds_agentbench.runs import build_run_manifest, slugify, utc_now, write_run_manifest
 from finds_agentbench.scoring import score_synthetic_market_submission
 from finds_agentbench.synthetic import write_synthetic_market_direction_task
 
@@ -25,6 +32,8 @@ class PipelineResult:
     manifest_path: Path
     report_csv_path: Path
     report_markdown_path: Path
+    summary_csv_path: Path
+    summary_markdown_path: Path
     status: str
 
 
@@ -34,6 +43,60 @@ def write_json(path: Path, value: dict[str, Any]) -> Path:
     return path
 
 
+def resolve_run_path(run_dir: str | Path, run_label: str | None = None) -> Path:
+    base_path = Path(run_dir)
+    if run_label is None:
+        return base_path
+    return base_path / slugify(run_label)
+
+
+def infer_runs_root(run_path: Path) -> Path:
+    if "runs" in run_path.parts:
+        index = len(run_path.parts) - 1 - list(reversed(run_path.parts)).index("runs")
+        return Path(*run_path.parts[: index + 1])
+    if len(run_path.parents) >= 2:
+        return run_path.parent.parent
+    return run_path.parent
+
+
+def build_trace(
+    *,
+    seed: int,
+    run_label: str | None,
+    repeat_index: int | None,
+    repeat_count: int | None,
+    extra: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    trace: dict[str, Any] = {"seed": seed}
+    if run_label is not None:
+        trace["run_label"] = run_label
+        trace["run_label_slug"] = slugify(run_label)
+    if repeat_index is not None:
+        trace["repeat_index"] = repeat_index
+    if repeat_count is not None:
+        trace["repeat_count"] = repeat_count
+    if extra:
+        trace.update(extra)
+    return trace
+
+
+def write_benchmark_reports(
+    *,
+    runs_root: str | Path,
+    report_csv_path: str | Path,
+    report_markdown_path: str | Path,
+    summary_csv_path: str | Path,
+    summary_markdown_path: str | Path,
+) -> tuple[Path, Path, Path, Path]:
+    rows = load_result_rows(runs_root)
+    csv_path = write_results_csv(rows, report_csv_path)
+    markdown_path = write_results_markdown(rows, report_markdown_path)
+    summary_rows = aggregate_result_rows(rows)
+    summary_csv = write_summary_csv(summary_rows, summary_csv_path)
+    summary_markdown = write_summary_markdown(summary_rows, summary_markdown_path)
+    return csv_path, markdown_path, summary_csv, summary_markdown
+
+
 def run_synthetic_market_momentum_pipeline(
     *,
     seed: int = 11,
@@ -41,8 +104,14 @@ def run_synthetic_market_momentum_pipeline(
     data_output_dir: str | Path = "data/raw/synthetic_market_direction_v0",
     private_dir: str | Path = "data/private/synthetic_market_direction_v0",
     run_dir: str | Path = "runs/synthetic_market_direction_v0/momentum_baseline",
+    run_label: str | None = None,
+    repeat_index: int | None = None,
+    repeat_count: int | None = None,
+    runs_root: str | Path | None = None,
     report_csv_path: str | Path = "reports/generated/run_results.csv",
     report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
     execute_notebook: bool = False,
     command: str = "run_synthetic_market_momentum_pipeline",
 ) -> PipelineResult:
@@ -51,7 +120,7 @@ def run_synthetic_market_momentum_pipeline(
         private_dir=private_dir,
         seed=seed,
     )
-    run_path = Path(run_dir)
+    run_path = resolve_run_path(run_dir, run_label)
     write_momentum_submission_artifacts(data_paths.private_holdout_features, run_path)
 
     score = score_synthetic_market_submission(
@@ -102,13 +171,23 @@ def run_synthetic_market_momentum_pipeline(
         validations={"artifact_validation": validation_dict},
         scores=score_dict,
         failures=failures,
-        trace={"seed": seed},
+        trace=build_trace(
+            seed=seed,
+            run_label=run_label,
+            repeat_index=repeat_index,
+            repeat_count=repeat_count,
+        ),
     )
     manifest_path = write_run_manifest(manifest, run_path / "run_manifest.json")
 
-    rows = load_result_rows(run_path.parent.parent)
-    csv_path = write_results_csv(rows, report_csv_path)
-    markdown_path = write_results_markdown(rows, report_markdown_path)
+    report_root = Path(runs_root) if runs_root is not None else infer_runs_root(run_path)
+    csv_path, markdown_path, summary_csv, summary_markdown = write_benchmark_reports(
+        runs_root=report_root,
+        report_csv_path=report_csv_path,
+        report_markdown_path=report_markdown_path,
+        summary_csv_path=summary_csv_path,
+        summary_markdown_path=summary_markdown_path,
+    )
 
     return PipelineResult(
         run_dir=run_path,
@@ -117,6 +196,8 @@ def run_synthetic_market_momentum_pipeline(
         manifest_path=manifest_path,
         report_csv_path=csv_path,
         report_markdown_path=markdown_path,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_markdown,
         status=status,
     )
 
@@ -128,8 +209,14 @@ def run_synthetic_market_logistic_pipeline(
     data_output_dir: str | Path = "data/raw/synthetic_market_direction_v0",
     private_dir: str | Path = "data/private/synthetic_market_direction_v0",
     run_dir: str | Path = "runs/synthetic_market_direction_v0/logistic_regression_baseline",
+    run_label: str | None = None,
+    repeat_index: int | None = None,
+    repeat_count: int | None = None,
+    runs_root: str | Path | None = None,
     report_csv_path: str | Path = "reports/generated/run_results.csv",
     report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
     execute_notebook: bool = False,
     command: str = "run_synthetic_market_logistic_pipeline",
 ) -> PipelineResult:
@@ -138,7 +225,7 @@ def run_synthetic_market_logistic_pipeline(
         private_dir=private_dir,
         seed=seed,
     )
-    run_path = Path(run_dir)
+    run_path = resolve_run_path(run_dir, run_label)
     baseline_metadata = write_logistic_submission_artifacts(
         train_public_path=data_paths.train_public,
         holdout_features_path=data_paths.private_holdout_features,
@@ -194,13 +281,24 @@ def run_synthetic_market_logistic_pipeline(
         validations={"artifact_validation": validation_dict},
         scores=score_dict,
         failures=failures,
-        trace={"seed": seed, "baseline_metadata": baseline_metadata},
+        trace=build_trace(
+            seed=seed,
+            run_label=run_label,
+            repeat_index=repeat_index,
+            repeat_count=repeat_count,
+            extra={"baseline_metadata": baseline_metadata},
+        ),
     )
     manifest_path = write_run_manifest(manifest, run_path / "run_manifest.json")
 
-    rows = load_result_rows(run_path.parent.parent)
-    csv_path = write_results_csv(rows, report_csv_path)
-    markdown_path = write_results_markdown(rows, report_markdown_path)
+    report_root = Path(runs_root) if runs_root is not None else infer_runs_root(run_path)
+    csv_path, markdown_path, summary_csv, summary_markdown = write_benchmark_reports(
+        runs_root=report_root,
+        report_csv_path=report_csv_path,
+        report_markdown_path=report_markdown_path,
+        summary_csv_path=summary_csv_path,
+        summary_markdown_path=summary_markdown_path,
+    )
 
     return PipelineResult(
         run_dir=run_path,
@@ -209,5 +307,7 @@ def run_synthetic_market_logistic_pipeline(
         manifest_path=manifest_path,
         report_csv_path=csv_path,
         report_markdown_path=markdown_path,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_markdown,
         status=status,
     )

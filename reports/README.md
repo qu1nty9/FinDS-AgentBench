@@ -10,10 +10,14 @@ Build reports from run manifests:
 PYTHONPATH=src python scripts/build_run_report.py \
   --runs-root runs \
   --csv-output reports/generated/run_results.csv \
-  --markdown-output reports/generated/run_results.md
+  --markdown-output reports/generated/run_results.md \
+  --summary-csv-output reports/generated/run_summary.csv \
+  --summary-markdown-output reports/generated/run_summary.md
 ```
 
-The CSV contains flattened manifest metadata, scores, validation results, artifact counts, and failure counts. The Markdown report is a compact paper-facing table.
+The detailed CSV contains flattened manifest metadata, scores, validation results, artifact counts, failure counts, and trace fields such as `trace.seed` and `trace.run_label`. The detailed Markdown report is a compact run-level table.
+
+The summary CSV/Markdown aggregates repeated runs by `task_id`, `agent_id`, and `run_type`, reporting run counts plus mean/std/min/max for the core benchmark metrics.
 
 For the synthetic momentum baseline, the full generation-to-report path is:
 
@@ -25,4 +29,13 @@ For the synthetic logistic regression baseline:
 
 ```bash
 PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py
+```
+
+For repeated-run pilot experiments:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py \
+  --repeat 3 \
+  --seed 11 \
+  --run-label pilot_logistic
 ```

@@ -46,6 +46,7 @@ Required outputs:
 - minimal evaluator;
 - baseline notebooks;
 - validity-adjusted result tables;
+- repeated-run summary tables with uncertainty estimates;
 - failure taxonomy with examples.
 
 Stop rule:
@@ -115,7 +116,7 @@ Acceptance criteria:
 ## Immediate Next Steps
 
 1. Select a license-safe data source for `return_direction_etf_v0`.
-2. Generalize the one-command runner pattern to all pilot baselines.
-3. Add run variance support for repeated agent/baseline runs.
+2. Run 3+ repeated seeds for each implemented baseline and report mean/std.
+3. Generalize the one-command runner pattern to all pilot baselines.
 4. Add richer static checks for suspicious feature/target construction.
 5. Expand from 2 runnable tasks to the 8-12 task workshop pilot.

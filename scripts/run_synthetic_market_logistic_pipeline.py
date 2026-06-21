@@ -14,6 +14,17 @@ def main() -> int:
     )
     parser.add_argument("--seed", type=int, default=11)
     parser.add_argument(
+        "--repeat",
+        type=int,
+        default=1,
+        help="Number of sequential repeated runs. Seeds are seed + repeat_index.",
+    )
+    parser.add_argument(
+        "--run-label",
+        default=None,
+        help="Optional label for one run, or prefix for repeated runs.",
+    )
+    parser.add_argument(
         "--task",
         type=Path,
         default=Path("tasks/pilot/synthetic_market_direction_v0.yaml"),
@@ -33,6 +44,7 @@ def main() -> int:
         type=Path,
         default=Path("runs/synthetic_market_direction_v0/logistic_regression_baseline"),
     )
+    parser.add_argument("--runs-root", type=Path, default=Path("runs"))
     parser.add_argument(
         "--report-csv",
         type=Path,
@@ -43,30 +55,67 @@ def main() -> int:
         type=Path,
         default=Path("reports/generated/run_results.md"),
     )
+    parser.add_argument(
+        "--summary-csv",
+        type=Path,
+        default=Path("reports/generated/run_summary.csv"),
+    )
+    parser.add_argument(
+        "--summary-markdown",
+        type=Path,
+        default=Path("reports/generated/run_summary.md"),
+    )
     parser.add_argument("--execute-notebook", action="store_true")
     args = parser.parse_args()
 
-    result = run_synthetic_market_logistic_pipeline(
-        seed=args.seed,
-        task_path=args.task,
-        data_output_dir=args.data_output_dir,
-        private_dir=args.private_dir,
-        run_dir=args.run_dir,
-        report_csv_path=args.report_csv,
-        report_markdown_path=args.report_markdown,
-        execute_notebook=args.execute_notebook,
-        command=" ".join(sys.argv),
-    )
-    print(f"status: {result.status}")
-    print(f"run_dir: {result.run_dir}")
-    print(f"score: {result.score_path}")
-    print(f"validation: {result.validation_path}")
-    print(f"manifest: {result.manifest_path}")
-    print(f"report_csv: {result.report_csv_path}")
-    print(f"report_markdown: {result.report_markdown_path}")
-    return 0 if result.status == "completed" else 1
+    if args.repeat < 1:
+        parser.error("--repeat must be at least 1")
+
+    exit_code = 0
+    last_result = None
+    for repeat_offset in range(args.repeat):
+        current_seed = args.seed + repeat_offset
+        run_label = args.run_label
+        if args.repeat > 1:
+            prefix = args.run_label or "repeat"
+            run_label = f"{prefix}_{repeat_offset + 1:03d}_seed_{current_seed}"
+
+        data_output_dir = args.data_output_dir / run_label if run_label else args.data_output_dir
+        private_dir = args.private_dir / run_label if run_label else args.private_dir
+
+        result = run_synthetic_market_logistic_pipeline(
+            seed=current_seed,
+            task_path=args.task,
+            data_output_dir=data_output_dir,
+            private_dir=private_dir,
+            run_dir=args.run_dir,
+            run_label=run_label,
+            repeat_index=repeat_offset + 1,
+            repeat_count=args.repeat,
+            runs_root=args.runs_root,
+            report_csv_path=args.report_csv,
+            report_markdown_path=args.report_markdown,
+            summary_csv_path=args.summary_csv,
+            summary_markdown_path=args.summary_markdown,
+            execute_notebook=args.execute_notebook,
+            command=" ".join(sys.argv),
+        )
+        last_result = result
+        print(f"[{repeat_offset + 1}/{args.repeat}] status: {result.status}")
+        print(f"[{repeat_offset + 1}/{args.repeat}] run_dir: {result.run_dir}")
+        print(f"[{repeat_offset + 1}/{args.repeat}] score: {result.score_path}")
+        print(f"[{repeat_offset + 1}/{args.repeat}] validation: {result.validation_path}")
+        print(f"[{repeat_offset + 1}/{args.repeat}] manifest: {result.manifest_path}")
+        if result.status != "completed":
+            exit_code = 1
+
+    if last_result is not None:
+        print(f"report_csv: {last_result.report_csv_path}")
+        print(f"report_markdown: {last_result.report_markdown_path}")
+        print(f"summary_csv: {last_result.summary_csv_path}")
+        print(f"summary_markdown: {last_result.summary_markdown_path}")
+    return exit_code
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
