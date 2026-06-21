@@ -47,6 +47,7 @@ The one-command baseline pipeline is:
 
 ```bash
 PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py
+PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py
 ```
 
 ## Artifact Validation

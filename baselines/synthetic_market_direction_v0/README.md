@@ -21,3 +21,19 @@ The full pipeline can be run with:
 ```bash
 PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py
 ```
+
+## Logistic Regression Baseline
+
+This baseline fits `StandardScaler + LogisticRegression` on the chronological train split and selects the decision threshold on public validation only.
+
+Run standalone after generating task data:
+
+```bash
+PYTHONPATH=src python baselines/synthetic_market_direction_v0/logistic_regression_baseline.py
+```
+
+Run the full pipeline:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py
+```

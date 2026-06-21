@@ -156,6 +156,14 @@ PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py
 
 This generates data, writes baseline submission artifacts, scores predictions, validates artifacts with leakage scanning, writes a run manifest, and rebuilds reports. Add `--execute-notebook` when the environment supports Jupyter kernel execution.
 
+Run the model-based logistic regression baseline:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py
+```
+
+The logistic baseline fits preprocessing and the classifier on the chronological train split, selects the classification threshold on public validation, and only then predicts the private temporal holdout.
+
 ## Status
 
 Draft scaffold. APIs, task specs, and metrics are expected to evolve until the pilot benchmark is locked.

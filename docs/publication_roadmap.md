@@ -114,8 +114,8 @@ Acceptance criteria:
 
 ## Immediate Next Steps
 
-1. Add a model-based baseline for `synthetic_market_direction_v0`.
-2. Select a license-safe data source for `return_direction_etf_v0`.
-3. Add static checks for suspicious preprocessing and random temporal splits.
-4. Generalize the one-command runner pattern to all pilot baselines.
+1. Select a license-safe data source for `return_direction_etf_v0`.
+2. Add static checks for suspicious preprocessing and random temporal splits.
+3. Generalize the one-command runner pattern to all pilot baselines.
+4. Add run variance support for repeated agent/baseline runs.
 5. Expand from 2 runnable tasks to the 8-12 task workshop pilot.

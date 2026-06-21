@@ -20,3 +20,9 @@ For the synthetic momentum baseline, the full generation-to-report path is:
 ```bash
 PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py
 ```
+
+For the synthetic logistic regression baseline:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py
+```
