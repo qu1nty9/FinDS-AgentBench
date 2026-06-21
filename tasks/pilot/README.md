@@ -19,6 +19,12 @@ Build public task cards and evaluation cards for the current pilot specs:
 PYTHONPATH=src python scripts/build_task_cards.py
 ```
 
+Build the canonical pilot release manifest:
+
+```bash
+PYTHONPATH=src python scripts/build_benchmark_manifest.py
+```
+
 ## Runnable Vertical Slice
 
 `leakage_audit_temporal_split_v0.yaml` is the first runnable task spec.

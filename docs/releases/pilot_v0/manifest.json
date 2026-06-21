@@ -1,0 +1,208 @@
+{
+  "benchmark_id": "finds_agentbench_pilot_v0",
+  "benchmark_version": "0.1.0",
+  "cards_root": "docs/cards",
+  "protocols": [
+    {
+      "command": "PYTHONPATH=src python scripts/run_pilot_baseline_suite.py --repeat 3 --market-seed 11 --event-seed 23 --run-label-prefix pilot",
+      "protocol_id": "pilot_baseline_suite",
+      "run_types": [
+        "baseline"
+      ],
+      "runs_root": "runs/suites/pilot_baselines_v0",
+      "status": "active",
+      "task_ids": [
+        "synthetic_market_direction_v0",
+        "synthetic_event_response_v0"
+      ]
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/run_pilot_agent_suite.py --repeat 3 --market-seed 11 --event-seed 23 --run-label-prefix pilot_agent",
+      "protocol_id": "pilot_agent_suite",
+      "run_types": [
+        "agent"
+      ],
+      "runs_root": "runs/suites/pilot_agents_v0",
+      "status": "active",
+      "task_ids": [
+        "synthetic_market_direction_v0",
+        "synthetic_event_response_v0"
+      ]
+    },
+    {
+      "command": "PYTHONPATH=src python scripts/run_pilot_protocol.py --repeat 3 --market-seed 11 --event-seed 23 --run-label-prefix pilot_protocol",
+      "protocol_id": "pilot_protocol",
+      "run_types": [
+        "baseline",
+        "agent"
+      ],
+      "runs_root": "runs/suites/pilot_protocol_v0",
+      "status": "active",
+      "task_ids": [
+        "synthetic_market_direction_v0",
+        "synthetic_event_response_v0"
+      ]
+    }
+  ],
+  "release_stage": "pilot",
+  "runnable_task_count": 3,
+  "task_count": 4,
+  "tasks": [
+    {
+      "blocked_reason": null,
+      "data_access": "bundled",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/generate_leakage_audit_temporal_split_v0.py --seed 7",
+        "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/leakage_audit_temporal_split_v0.yaml",
+        "PYTHONPATH=src python scripts/score_leakage_audit_temporal_split_v0.py --submission-dir baselines/leakage_audit_temporal_split_v0/expert_submission"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/leakage_audit_temporal_split_v0.md",
+      "license_status": "usable",
+      "primary_metric": "audit_correctness_score",
+      "release_status": "runnable_public_pilot",
+      "required_files": [
+        "corrected_notebook.ipynb",
+        "audit_note.md",
+        "before_after_metrics.csv"
+      ],
+      "runnable": true,
+      "source_spec": "tasks/pilot/leakage_audit_temporal_split_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "leakage",
+        "audit",
+        "replication",
+        "validation"
+      ],
+      "task_card_path": "docs/cards/tasks/leakage_audit_temporal_split_v0.md",
+      "task_id": "leakage_audit_temporal_split_v0",
+      "title": "Audit a Financial ML Notebook for Temporal Leakage",
+      "track": "research_replication_and_audit",
+      "version": "0.1.0"
+    },
+    {
+      "blocked_reason": "License-safe public data source is still pending review.",
+      "data_access": "download_script",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/return_direction_etf_v0.yaml"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/return_direction_etf_v0.md",
+      "license_status": "pending_review",
+      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "release_status": "spec_only_pending_data_review",
+      "required_files": [
+        "notebook.ipynb",
+        "predictions.csv",
+        "writeup.md"
+      ],
+      "runnable": false,
+      "source_spec": "tasks/pilot/return_direction_etf_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "equities",
+        "etf",
+        "classification",
+        "temporal_validation"
+      ],
+      "task_card_path": "docs/cards/tasks/return_direction_etf_v0.md",
+      "task_id": "return_direction_etf_v0",
+      "title": "Daily ETF Return Direction Under Point-in-Time Features",
+      "track": "predictive_financial_ml",
+      "version": "0.1.0"
+    },
+    {
+      "blocked_reason": null,
+      "data_access": "synthetic_generator",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/generate_synthetic_event_response_v0.py --seed 23",
+        "PYTHONPATH=src python scripts/run_synthetic_event_response_rule_pipeline.py",
+        "PYTHONPATH=src python scripts/run_synthetic_event_response_agent_suite.py --agent-id event_rule_env_agent --agent-version 0.1.0 --agent-command \"python agents/examples/event_rule_env_agent.py\" --repeat 3 --seed 23 --run-label-prefix pilot_event_agent"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/synthetic_event_response_v0.md",
+      "license_status": "usable",
+      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "release_status": "runnable_public_pilot",
+      "required_files": [
+        "notebook.ipynb",
+        "predictions.csv",
+        "writeup.md"
+      ],
+      "runnable": true,
+      "source_spec": "tasks/pilot/synthetic_event_response_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "synthetic",
+        "event_response",
+        "classification",
+        "temporal_validation"
+      ],
+      "task_card_path": "docs/cards/tasks/synthetic_event_response_v0.md",
+      "task_id": "synthetic_event_response_v0",
+      "title": "Synthetic Event Response Direction Prediction",
+      "track": "event_aware_time_series_reasoning",
+      "version": "0.1.0"
+    },
+    {
+      "blocked_reason": null,
+      "data_access": "synthetic_generator",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/generate_synthetic_market_direction_v0.py --seed 11",
+        "PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py",
+        "PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py",
+        "PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py --agent-id momentum_env_agent --agent-version 0.1.0 --agent-command \"python agents/examples/momentum_env_agent.py\" --repeat 3 --seed 11 --run-label-prefix pilot_agent"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/synthetic_market_direction_v0.md",
+      "license_status": "usable",
+      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "release_status": "runnable_public_pilot",
+      "required_files": [
+        "notebook.ipynb",
+        "predictions.csv",
+        "writeup.md"
+      ],
+      "runnable": true,
+      "source_spec": "tasks/pilot/synthetic_market_direction_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "synthetic",
+        "market_panel",
+        "classification",
+        "temporal_validation"
+      ],
+      "task_card_path": "docs/cards/tasks/synthetic_market_direction_v0.md",
+      "task_id": "synthetic_market_direction_v0",
+      "title": "Synthetic Market Next-Day Direction Prediction",
+      "track": "predictive_financial_ml",
+      "version": "0.1.0"
+    }
+  ],
+  "tasks_root": "tasks/pilot",
+  "tracks": [
+    {
+      "task_count": 1,
+      "task_ids": [
+        "synthetic_event_response_v0"
+      ],
+      "track": "event_aware_time_series_reasoning"
+    },
+    {
+      "task_count": 2,
+      "task_ids": [
+        "return_direction_etf_v0",
+        "synthetic_market_direction_v0"
+      ],
+      "track": "predictive_financial_ml"
+    },
+    {
+      "task_count": 1,
+      "task_ids": [
+        "leakage_audit_temporal_split_v0"
+      ],
+      "track": "research_replication_and_audit"
+    }
+  ]
+}
