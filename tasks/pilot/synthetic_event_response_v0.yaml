@@ -1,0 +1,218 @@
+metadata:
+  task_id: synthetic_event_response_v0
+  title: Synthetic Event Response Direction Prediction
+  track: event_aware_time_series_reasoning
+  version: "0.1.0"
+  status: draft
+  owner: FinDS-AgentBench contributors
+  created_at: "2026-06-21"
+  last_updated_at: "2026-06-21"
+  tags:
+    - synthetic
+    - event_response
+    - classification
+    - temporal_validation
+
+research_prompt:
+  summary: Predict next-day asset reaction direction after timestamped synthetic events.
+  expected_research_question: Can an agent use event surprise, sentiment, importance, and pre-event market context without leaking future reactions?
+  instructions: >
+    Build a model that predicts whether each asset has a positive next-day
+    event reaction. Use train and public validation rows for development,
+    submit predictions for the private temporal holdout, compare against simple
+    event-rule baselines, and write a short research report.
+  prohibited_shortcuts:
+    - Do not use private holdout labels.
+    - Do not use next-day event reaction returns as features.
+    - Do not tune directly against private temporal holdout scores.
+    - Do not use random splits for final model selection.
+
+data:
+  license_status: usable
+  access: synthetic_generator
+  local_paths:
+    - data/raw/synthetic_event_response_v0/
+  download_or_generation_script: scripts/generate_synthetic_event_response_v0.py
+  sources:
+    - name: Project-generated synthetic event response panel
+      url_or_reference: generated locally
+      license: project_generated
+      access: synthetic_generator
+  data_dictionary:
+    - column: row_id
+      meaning: Unique date-asset event row id.
+      availability_lag: Known at prediction timestamp.
+    - column: date
+      meaning: Event date.
+      availability_lag: Known at prediction timestamp.
+    - column: asset_id
+      meaning: Synthetic asset identifier.
+      availability_lag: Known at prediction timestamp.
+    - column: sector
+      meaning: Synthetic asset sector bucket.
+      availability_lag: Known before event timestamp.
+    - column: event_type
+      meaning: Synthetic event category.
+      availability_lag: Known at event timestamp.
+    - column: event_surprise
+      meaning: Signed event surprise available at event timestamp.
+      availability_lag: Known at prediction timestamp.
+    - column: sentiment_score
+      meaning: Event text sentiment proxy available at event timestamp.
+      availability_lag: Known at prediction timestamp.
+    - column: event_importance
+      meaning: Ex ante event importance score.
+      availability_lag: Known at prediction timestamp.
+    - column: pre_event_momentum_5d
+      meaning: Five-day return momentum ending before the event reaction horizon.
+      availability_lag: Known before next-day reaction.
+    - column: volatility_20d
+      meaning: Twenty-day pre-event volatility.
+      availability_lag: Known before next-day reaction.
+    - column: sector_stress
+      meaning: Sector-level stress proxy known at event timestamp.
+      availability_lag: Known at prediction timestamp.
+    - column: event_reaction_positive
+      meaning: Binary target; hidden for private temporal holdout.
+      availability_lag: Known after next-day event reaction.
+
+information_set:
+  prediction_timestamp: After the event is observed on day t, before the next-day reaction return is known.
+  allowed_information:
+    - Event metadata and event surprise available at day t.
+    - Sentiment and importance proxies computed at day t.
+    - Pre-event momentum, volatility, and sector stress through day t.
+    - Labels only for train and public validation rows.
+  forbidden_information:
+    - Private holdout labels.
+    - next_day_return for private holdout rows.
+    - Any feature computed from day t+1 event reaction.
+  availability_calendar:
+    - item: Event surprise and sentiment
+      known_at: Event timestamp on day t.
+      usable_for_prediction_at: Next-day event reaction prediction.
+    - item: Pre-event market context
+      known_at: Through day t before next-day reaction.
+      usable_for_prediction_at: Next-day event reaction prediction.
+    - item: Day t+1 event reaction return
+      known_at: After day t+1 close.
+      usable_for_prediction_at: Not usable for day t+1 reaction prediction.
+  timestamp_alignment_rules:
+    - Pre-event rolling features must not include the next-day reaction.
+    - Target is aligned to the next business day after the event.
+
+target:
+  name: event_reaction_positive
+  definition: Binary label equal to 1 when next-day event reaction return is positive.
+  horizon: "1 business day"
+  label_construction: Compute next-day return after the event and align it to features known at the event timestamp.
+  positive_class: positive next-day event reaction
+  ranking_group: asset_id
+
+splits:
+  split_method: temporal
+  train:
+    start: "2019-01-02"
+    end: "2020-12-31"
+  public_validation:
+    start: "2021-01-01"
+    end: "2021-06-30"
+  private_temporal_holdout:
+    start: "2021-07-01"
+    end: "2021-11-29"
+  stress_tests:
+    - name: high_stress_regime
+      start: "2020-03-02"
+      end: "2020-05-29"
+  embargo_or_gap: One business day target horizon.
+
+deliverables:
+  required_files:
+    - notebook.ipynb
+    - predictions.csv
+    - writeup.md
+  notebook:
+    path: notebook.ipynb
+    must_execute_cleanly: true
+  predictions:
+    path: predictions.csv
+    required_columns:
+      - row_id
+      - prediction
+      - probability
+  writeup:
+    path: writeup.md
+    max_words: 1200
+  logs:
+    retain_agent_trace: true
+
+evaluation:
+  primary_metric: balanced_accuracy_on_private_temporal_holdout
+  secondary_metrics:
+    - roc_auc
+    - log_loss
+    - execution_success
+    - leakage_safety
+    - validation_correctness
+    - reproducibility
+  financial_metrics:
+    - long_flat_mean_return
+    - turnover
+    - max_drawdown
+  validity_gates:
+    - artifact_executable
+    - prediction_format_valid
+    - temporal_holdout_respected
+    - no_forbidden_features
+    - validation_protocol_valid
+    - reproducible_rerun
+  aggregation: report_vector_scores
+  minimum_success_conditions:
+    - Prediction file covers every private holdout row.
+    - Probabilities are in [0, 1].
+    - No private labels or next-day reaction returns are used.
+
+leakage_checks:
+  forbidden_columns:
+    - event_reaction_positive
+    - next_day_return
+    - future_event_reaction
+  temporal_alignment_checks:
+    - Event features must be known at day t.
+    - Pre-event market context must exclude day t+1 reaction.
+    - Train, validation, and private holdout are ordered chronologically.
+  validation_protocol_checks:
+    - Random train/test split is not allowed for final model selection.
+    - Hyperparameter tuning must use train/public validation only.
+  known_leakage_traps:
+    - Reading `data/private/synthetic_event_response_v0/answer_key.csv`.
+    - Joining private holdout features to event reaction labels before submission.
+    - Tuning directly against private holdout score.
+
+reproducibility:
+  environment: pyproject.toml
+  random_seed_policy: Generator and models must use fixed seeds.
+  rerun_command: python scripts/generate_synthetic_event_response_v0.py --seed 23
+  expected_runtime_limit: "30 minutes"
+  compute_limits:
+    cpu: "local_cpu"
+    memory: "4GB"
+
+audit:
+  artifact_retention:
+    - final notebook
+    - predictions
+    - writeup
+    - execution log
+  trace_requirements:
+    - Store commands and code execution errors.
+    - Store final selected features and validation protocol.
+  human_review_rubric:
+    - Does the writeup compare against a simple event-rule baseline?
+    - Does the notebook avoid private answer-key access?
+    - Does the validation protocol respect temporal ordering?
+  failure_taxonomy_refs:
+    - temporal_leakage
+    - invalid_validation
+    - weak_financial_reasoning
+    - reproducibility_failure

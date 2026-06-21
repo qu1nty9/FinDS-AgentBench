@@ -253,10 +253,13 @@ def turnover_by_asset(answer_rows: list[dict[str, str]], predictions: dict[str, 
     return changes / comparisons if comparisons else 0.0
 
 
-def score_synthetic_market_submission(
+def score_predictive_binary_submission(
     *,
     submission_path: str | Path,
     answer_key_path: str | Path,
+    task_id: str,
+    label_column: str,
+    return_column: str,
 ) -> PredictiveScore:
     failures: list[str] = []
     answer_rows = read_csv_rows(answer_key_path)
@@ -266,7 +269,7 @@ def score_synthetic_market_submission(
         submission_rows = read_csv_rows(submission_path)
     except FileNotFoundError:
         return PredictiveScore(
-            task_id="synthetic_market_direction_v0",
+            task_id=task_id,
             overall_score=0.0,
             balanced_accuracy=None,
             roc_auc=None,
@@ -322,8 +325,8 @@ def score_synthetic_market_submission(
                 break
 
             answer = answer_by_id[row_id]
-            label = int(answer["next_day_positive_return"])
-            next_return = float(answer["next_day_return"])
+            label = int(answer[label_column])
+            next_return = float(answer[return_column])
             y_true.append(label)
             y_pred.append(prediction)
             probabilities.append(probability)
@@ -332,7 +335,7 @@ def score_synthetic_market_submission(
 
     if failures:
         return PredictiveScore(
-            task_id="synthetic_market_direction_v0",
+            task_id=task_id,
             overall_score=0.0,
             balanced_accuracy=None,
             roc_auc=None,
@@ -353,7 +356,7 @@ def score_synthetic_market_submission(
     turnover = turnover_by_asset(answer_rows, prediction_by_id)
 
     return PredictiveScore(
-        task_id="synthetic_market_direction_v0",
+        task_id=task_id,
         overall_score=round(ba, 6),
         balanced_accuracy=round(ba, 6),
         roc_auc=round(auc, 6) if auc is not None else None,
@@ -366,3 +369,30 @@ def score_synthetic_market_submission(
         failures=[],
     )
 
+
+def score_synthetic_market_submission(
+    *,
+    submission_path: str | Path,
+    answer_key_path: str | Path,
+) -> PredictiveScore:
+    return score_predictive_binary_submission(
+        submission_path=submission_path,
+        answer_key_path=answer_key_path,
+        task_id="synthetic_market_direction_v0",
+        label_column="next_day_positive_return",
+        return_column="next_day_return",
+    )
+
+
+def score_synthetic_event_response_submission(
+    *,
+    submission_path: str | Path,
+    answer_key_path: str | Path,
+) -> PredictiveScore:
+    return score_predictive_binary_submission(
+        submission_path=submission_path,
+        answer_key_path=answer_key_path,
+        task_id="synthetic_event_response_v0",
+        label_column="event_reaction_positive",
+        return_column="next_day_return",
+    )

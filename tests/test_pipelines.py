@@ -7,6 +7,7 @@ from finds_agentbench.pipelines import (
     run_synthetic_market_baseline_suite,
     run_synthetic_market_agent_command,
     run_synthetic_market_agent_command_suite,
+    run_synthetic_event_response_rule_pipeline,
     run_synthetic_market_logistic_pipeline,
     run_synthetic_market_momentum_pipeline,
 )
@@ -353,3 +354,42 @@ print(os.environ["FINDS_RUN_SEED"])
     assert summary_rows[0]["score.overall_score.count"] == "2"
     assert report_md.exists()
     assert summary_md.exists()
+
+
+def test_run_synthetic_event_response_rule_pipeline(tmp_path: Path):
+    run_dir = tmp_path / "runs" / "synthetic_event_response_v0" / "event_rule_baseline"
+    report_csv = tmp_path / "reports" / "run_results.csv"
+    report_md = tmp_path / "reports" / "run_results.md"
+    summary_csv = tmp_path / "reports" / "run_summary.csv"
+    summary_md = tmp_path / "reports" / "run_summary.md"
+
+    result = run_synthetic_event_response_rule_pipeline(
+        data_output_dir=tmp_path / "data" / "raw",
+        private_dir=tmp_path / "data" / "private",
+        run_dir=run_dir,
+        report_csv_path=report_csv,
+        report_markdown_path=report_md,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_md,
+        execute_notebook=False,
+        command="test event rule pipeline",
+    )
+
+    assert result.status == "completed"
+    assert (run_dir / "predictions.csv").exists()
+    assert (run_dir / "writeup.md").exists()
+    assert (run_dir / "notebook.ipynb").exists()
+
+    score = json.loads(result.score_path.read_text(encoding="utf-8"))
+    validation = json.loads(result.validation_path.read_text(encoding="utf-8"))
+    manifest = load_run_manifest(result.manifest_path)
+
+    assert score["task_id"] == "synthetic_event_response_v0"
+    assert score["execution_success"] == 1.0
+    assert validation["ok"] is True
+    assert validation["methodology_findings"] == []
+    assert validate_run_manifest(manifest).ok
+    assert manifest["task_id"] == "synthetic_event_response_v0"
+    assert manifest["agent"]["agent_id"] == "event_rule_baseline"
+    assert summary_csv.exists()
+    assert "synthetic_event_response_v0" in summary_md.read_text(encoding="utf-8")

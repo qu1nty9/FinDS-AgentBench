@@ -50,6 +50,18 @@ PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py
 PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py
 ```
 
+`synthetic_event_response_v0.yaml` is the first runnable event-aware temporal reasoning task spec.
+
+Commands:
+
+```bash
+PYTHONPATH=src python scripts/generate_synthetic_event_response_v0.py --seed 23
+PYTHONPATH=src python scripts/validate_task.py tasks/pilot/synthetic_event_response_v0.yaml
+PYTHONPATH=src python scripts/run_synthetic_event_response_rule_pipeline.py
+```
+
+The task asks agents to predict next-day event reaction direction using event surprise, sentiment, event importance, and pre-event market context. Private event-reaction labels are written only to `data/private/` and are ignored by git.
+
 ## Artifact Validation
 
 Submission directories can be checked before scoring:

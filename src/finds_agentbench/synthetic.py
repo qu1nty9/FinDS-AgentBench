@@ -25,6 +25,15 @@ class SyntheticMarketPaths:
     answer_key: Path
 
 
+@dataclass(frozen=True)
+class SyntheticEventPaths:
+    train_public: Path
+    private_holdout_features: Path
+    sample_submission: Path
+    metadata: Path
+    answer_key: Path
+
+
 def business_dates(start: date, periods: int) -> list[date]:
     """Return the first `periods` weekdays at or after `start`."""
     values: list[date] = []
@@ -347,3 +356,172 @@ def write_synthetic_market_direction_task(
         answer_key=answer_key,
     )
 
+
+def event_split_for_date(value: date) -> str:
+    if value <= date(2020, 12, 31):
+        return "train"
+    if value <= date(2021, 6, 30):
+        return "public_validation"
+    return "private_temporal_holdout"
+
+
+def generate_synthetic_event_rows(
+    *,
+    seed: int = 23,
+    n_assets: int = 12,
+    n_periods: int = 760,
+) -> list[dict[str, str]]:
+    rng = random.Random(seed)
+    dates = business_dates(date(2019, 1, 2), n_periods)
+    event_types = ["earnings", "macro", "guidance"]
+    event_type_effect = {"earnings": 0.95, "macro": 0.55, "guidance": 1.20}
+    sector_by_asset = {
+        f"asset_{asset_idx:02d}": ["growth", "defensive", "cyclical"][asset_idx % 3]
+        for asset_idx in range(n_assets)
+    }
+    sector_effect = {"growth": 0.18, "defensive": -0.04, "cyclical": 0.10}
+    latent_by_asset = {asset_id: rng.gauss(0, 0.3) for asset_id in sector_by_asset}
+    returns_by_asset = {asset_id: [rng.gauss(0, 0.012)] * 20 for asset_id in sector_by_asset}
+
+    rows: list[dict[str, str]] = []
+    for current_date in dates:
+        regime = -0.55 if date(2020, 3, 2) <= current_date <= date(2020, 5, 29) else 0.20
+        for asset_id in sorted(sector_by_asset):
+            sector = sector_by_asset[asset_id]
+            latent_by_asset[asset_id] = 0.80 * latent_by_asset[asset_id] + rng.gauss(0, 0.35)
+            event_type = rng.choice(event_types)
+            event_surprise = rng.gauss(0.0, 1.0)
+            sentiment_score = 0.50 * event_surprise + rng.gauss(0.0, 0.75)
+            event_importance = min(max(rng.betavariate(2.0, 2.2), 0.05), 0.98)
+            previous_returns = returns_by_asset[asset_id]
+            pre_event_momentum_5d = sum(previous_returns[-5:])
+            volatility_20d = std(previous_returns[-20:])
+            sector_stress = regime + rng.gauss(0.0, 0.20)
+            signal = (
+                event_type_effect[event_type] * event_surprise * event_importance
+                + 0.42 * sentiment_score
+                + 5.0 * pre_event_momentum_5d
+                - 6.0 * volatility_20d
+                + sector_effect[sector]
+                + 0.28 * sector_stress
+                + 0.35 * latent_by_asset[asset_id]
+            )
+            probability = sigmoid(signal)
+            target = 1 if rng.random() < probability else 0
+            next_return = (
+                0.0025 * (2 * target - 1)
+                + 0.0040 * event_surprise * event_importance
+                + 0.0010 * sector_stress
+                + rng.gauss(0.0, 0.018)
+            )
+            returns_by_asset[asset_id].append(next_return)
+            rows.append(
+                {
+                    "row_id": f"{current_date.isoformat()}_{asset_id}",
+                    "date": current_date.isoformat(),
+                    "asset_id": asset_id,
+                    "sector": sector,
+                    "split": event_split_for_date(current_date),
+                    "event_type": event_type,
+                    "event_surprise": f"{event_surprise:.8f}",
+                    "sentiment_score": f"{sentiment_score:.8f}",
+                    "event_importance": f"{event_importance:.8f}",
+                    "pre_event_momentum_5d": f"{pre_event_momentum_5d:.8f}",
+                    "volatility_20d": f"{volatility_20d:.8f}",
+                    "sector_stress": f"{sector_stress:.8f}",
+                    "event_reaction_positive": str(target),
+                    "next_day_return": f"{next_return:.8f}",
+                }
+            )
+
+    return rows
+
+
+def write_synthetic_event_response_task(
+    *,
+    output_dir: str | Path = "data/raw/synthetic_event_response_v0",
+    private_dir: str | Path = "data/private/synthetic_event_response_v0",
+    seed: int = 23,
+) -> SyntheticEventPaths:
+    output_path = Path(output_dir)
+    private_path = Path(private_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    private_path.mkdir(parents=True, exist_ok=True)
+
+    rows = generate_synthetic_event_rows(seed=seed)
+    train_public = output_path / "train_public.csv"
+    holdout_features = output_path / "private_holdout_features.csv"
+    sample_submission = output_path / "sample_submission.csv"
+    metadata = output_path / "metadata.json"
+    answer_key = private_path / "answer_key.csv"
+
+    feature_fields = [
+        "row_id",
+        "date",
+        "asset_id",
+        "sector",
+        "split",
+        "event_type",
+        "event_surprise",
+        "sentiment_score",
+        "event_importance",
+        "pre_event_momentum_5d",
+        "volatility_20d",
+        "sector_stress",
+    ]
+    public_fields = feature_fields + ["event_reaction_positive", "next_day_return"]
+    answer_fields = ["row_id", "date", "asset_id", "event_reaction_positive", "next_day_return"]
+
+    public_rows = [row for row in rows if row["split"] != "private_temporal_holdout"]
+    holdout_rows = [row for row in rows if row["split"] == "private_temporal_holdout"]
+
+    with train_public.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=public_fields)
+        writer.writeheader()
+        writer.writerows(public_rows)
+
+    with holdout_features.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=feature_fields)
+        writer.writeheader()
+        writer.writerows({field: row[field] for field in feature_fields} for row in holdout_rows)
+
+    with sample_submission.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["row_id", "prediction", "probability"])
+        writer.writeheader()
+        for row in holdout_rows:
+            writer.writerow({"row_id": row["row_id"], "prediction": "0", "probability": "0.5"})
+
+    with answer_key.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=answer_fields)
+        writer.writeheader()
+        writer.writerows({field: row[field] for field in answer_fields} for row in holdout_rows)
+
+    metadata.write_text(
+        json.dumps(
+            {
+                "task_id": "synthetic_event_response_v0",
+                "seed": seed,
+                "splits": {
+                    "train": {"start": "2019-01-02", "end": "2020-12-31"},
+                    "public_validation": {"start": "2021-01-01", "end": "2021-06-30"},
+                    "private_temporal_holdout": {"start": "2021-07-01", "end": "2021-11-29"},
+                },
+                "target": "event_reaction_positive",
+                "forbidden_private_columns": [
+                    "event_reaction_positive",
+                    "next_day_return",
+                ],
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    return SyntheticEventPaths(
+        train_public=train_public,
+        private_holdout_features=holdout_features,
+        sample_submission=sample_submission,
+        metadata=metadata,
+        answer_key=answer_key,
+    )

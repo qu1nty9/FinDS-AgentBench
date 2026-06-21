@@ -8,6 +8,7 @@ from typing import Any
 from finds_agentbench.agent_runner import run_agent_command
 from finds_agentbench.artifacts import validate_submission_artifacts
 from finds_agentbench.baselines import (
+    write_event_rule_submission_artifacts,
     write_logistic_submission_artifacts,
     write_momentum_submission_artifacts,
 )
@@ -21,12 +22,21 @@ from finds_agentbench.reports import (
     write_summary_markdown,
 )
 from finds_agentbench.runs import build_run_manifest, slugify, utc_now, write_run_manifest
-from finds_agentbench.scoring import score_synthetic_market_submission
-from finds_agentbench.synthetic import SyntheticMarketPaths, write_synthetic_market_direction_task
+from finds_agentbench.scoring import (
+    score_synthetic_event_response_submission,
+    score_synthetic_market_submission,
+)
+from finds_agentbench.synthetic import (
+    SyntheticMarketPaths,
+    write_synthetic_event_response_task,
+    write_synthetic_market_direction_task,
+)
 
 SYNTHETIC_MARKET_TASK_ID = "synthetic_market_direction_v0"
+SYNTHETIC_EVENT_TASK_ID = "synthetic_event_response_v0"
 MOMENTUM_BASELINE_ID = "momentum_baseline"
 LOGISTIC_BASELINE_ID = "logistic_regression_baseline"
+EVENT_RULE_BASELINE_ID = "event_rule_baseline"
 DEFAULT_SYNTHETIC_MARKET_BASELINES = (MOMENTUM_BASELINE_ID, LOGISTIC_BASELINE_ID)
 DEFAULT_SYNTHETIC_MARKET_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_direction_v0_pilot"
 DEFAULT_SYNTHETIC_MARKET_AGENT_SUITE_RUNS_ROOT = "runs/suites/synthetic_market_direction_v0_agents"
@@ -370,6 +380,111 @@ def run_synthetic_market_logistic_pipeline(
             repeat_index=repeat_index,
             repeat_count=repeat_count,
             extra={"baseline_metadata": baseline_metadata},
+        ),
+    )
+    manifest_path = write_run_manifest(manifest, run_path / "run_manifest.json")
+
+    report_root = Path(runs_root) if runs_root is not None else infer_runs_root(run_path)
+    csv_path, markdown_path, summary_csv, summary_markdown = write_benchmark_reports(
+        runs_root=report_root,
+        report_csv_path=report_csv_path,
+        report_markdown_path=report_markdown_path,
+        summary_csv_path=summary_csv_path,
+        summary_markdown_path=summary_markdown_path,
+    )
+
+    return PipelineResult(
+        run_dir=run_path,
+        score_path=score_path,
+        validation_path=validation_path,
+        manifest_path=manifest_path,
+        report_csv_path=csv_path,
+        report_markdown_path=markdown_path,
+        summary_csv_path=summary_csv,
+        summary_markdown_path=summary_markdown,
+        status=status,
+    )
+
+
+def run_synthetic_event_response_rule_pipeline(
+    *,
+    seed: int = 23,
+    task_path: str | Path = "tasks/pilot/synthetic_event_response_v0.yaml",
+    data_output_dir: str | Path = "data/raw/synthetic_event_response_v0",
+    private_dir: str | Path = "data/private/synthetic_event_response_v0",
+    run_dir: str | Path = "runs/synthetic_event_response_v0/event_rule_baseline",
+    run_label: str | None = None,
+    repeat_index: int | None = None,
+    repeat_count: int | None = None,
+    runs_root: str | Path | None = None,
+    report_csv_path: str | Path = "reports/generated/run_results.csv",
+    report_markdown_path: str | Path = "reports/generated/run_results.md",
+    summary_csv_path: str | Path = "reports/generated/run_summary.csv",
+    summary_markdown_path: str | Path = "reports/generated/run_summary.md",
+    execute_notebook: bool = False,
+    command: str = "run_synthetic_event_response_rule_pipeline",
+) -> PipelineResult:
+    data_paths = write_synthetic_event_response_task(
+        output_dir=data_output_dir,
+        private_dir=private_dir,
+        seed=seed,
+    )
+    run_path = resolve_run_path(run_dir, run_label)
+    write_event_rule_submission_artifacts(data_paths.private_holdout_features, run_path)
+
+    score = score_synthetic_event_response_submission(
+        submission_path=run_path / "predictions.csv",
+        answer_key_path=data_paths.answer_key,
+    )
+    score_dict = score.as_dict()
+    score_path = write_json(run_path / "score.json", score_dict)
+
+    task_spec = load_yaml(task_path)
+    validation = validate_submission_artifacts(
+        task_spec=task_spec,
+        submission_dir=run_path,
+        execute=execute_notebook,
+        scan_leakage=True,
+        scan_methodology=True,
+    )
+    validation_dict = validation.as_dict()
+    validation_path = write_json(run_path / "artifact_validation.json", validation_dict)
+
+    failures = list(score.failures)
+    failures.extend(validation.errors)
+    if not score.execution_success:
+        status = "failed_format"
+    elif not validation.ok:
+        status = "failed_validity_gate"
+    else:
+        status = "completed"
+
+    command_started_at = utc_now()
+    command_completed_at = utc_now()
+    manifest = build_run_manifest(
+        task_id=SYNTHETIC_EVENT_TASK_ID,
+        agent_id=EVENT_RULE_BASELINE_ID,
+        agent_version="0.1.0",
+        submission_dir=run_path,
+        run_type="baseline",
+        status=status,
+        tool_permissions=["filesystem:read", "filesystem:write"],
+        commands=[
+            {
+                "command": command,
+                "started_at": command_started_at,
+                "completed_at": command_completed_at,
+                "exit_code": 0 if status == "completed" else 1,
+            }
+        ],
+        validations={"artifact_validation": validation_dict},
+        scores=score_dict,
+        failures=failures,
+        trace=build_trace(
+            seed=seed,
+            run_label=run_label,
+            repeat_index=repeat_index,
+            repeat_count=repeat_count,
         ),
     )
     manifest_path = write_run_manifest(manifest, run_path / "run_manifest.json")

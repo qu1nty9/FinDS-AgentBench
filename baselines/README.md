@@ -11,3 +11,8 @@ Planned baseline classes:
 - portfolio baselines such as equal-weight, buy-and-hold, and volatility targeting;
 - expert-written notebooks for selected flagship tasks.
 
+Implemented runnable baselines:
+
+- `synthetic_market_direction_v0/momentum_baseline.py`
+- `synthetic_market_direction_v0/logistic_regression_baseline.py`
+- `synthetic_event_response_v0/event_rule_baseline.py`

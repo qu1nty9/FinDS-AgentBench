@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import json
+import math
 from pathlib import Path
 
 import nbformat
@@ -240,3 +241,81 @@ def write_logistic_submission_artifacts(
     )
     return metadata
 
+
+def event_probability(row: dict[str, str]) -> float:
+    event_type_weight = {
+        "earnings": 0.95,
+        "macro": 0.55,
+        "guidance": 1.20,
+    }.get(row["event_type"], 0.75)
+    signal = (
+        event_type_weight * float(row["event_surprise"]) * float(row["event_importance"])
+        + 0.35 * float(row["sentiment_score"])
+        + 3.0 * float(row["pre_event_momentum_5d"])
+        - 4.0 * float(row["volatility_20d"])
+        + 0.20 * float(row["sector_stress"])
+    )
+    probability = 1.0 / (1.0 + math.exp(-signal))
+    return min(max(probability, 0.03), 0.97)
+
+
+def write_event_rule_predictions(features_path: Path, output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with features_path.open("r", encoding="utf-8", newline="") as source:
+        reader = csv.DictReader(source)
+        with output_path.open("w", encoding="utf-8", newline="") as target:
+            writer = csv.DictWriter(target, fieldnames=["row_id", "prediction", "probability"])
+            writer.writeheader()
+            for row in reader:
+                probability = event_probability(row)
+                writer.writerow(
+                    {
+                        "row_id": row["row_id"],
+                        "prediction": "1" if probability >= 0.5 else "0",
+                        "probability": f"{probability:.8f}",
+                    }
+                )
+
+
+def write_event_rule_writeup(output_path: Path) -> None:
+    output_path.write_text(
+        "\n".join(
+            [
+                "# Event Response Rule Baseline",
+                "",
+                "This baseline predicts event response direction using only",
+                "label-free holdout features.",
+                "The rule combines event surprise, event importance, sentiment, recent momentum,",
+                "volatility, and sector stress into a bounded probability.",
+                "",
+                "It does not read private labels, answer keys, next-day returns, or future events.",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def write_event_rule_notebook(output_path: Path) -> None:
+    notebook = nbformat.v4.new_notebook()
+    notebook.cells = [
+        nbformat.v4.new_markdown_cell("# Event Response Rule Baseline Submission Check"),
+        nbformat.v4.new_code_cell(
+            "\n".join(
+                [
+                    "from pathlib import Path",
+                    "assert Path('predictions.csv').exists(), 'missing predictions.csv'",
+                    "assert Path('writeup.md').exists(), 'missing writeup.md'",
+                    "print('Event response rule baseline artifacts are present.')",
+                ]
+            )
+        ),
+    ]
+    nbformat.write(notebook, output_path)
+
+
+def write_event_rule_submission_artifacts(features_path: Path, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    write_event_rule_predictions(features_path, output_dir / "predictions.csv")
+    write_event_rule_writeup(output_dir / "writeup.md")
+    write_event_rule_notebook(output_dir / "notebook.ipynb")

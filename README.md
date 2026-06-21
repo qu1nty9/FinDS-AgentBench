@@ -172,6 +172,14 @@ PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py
 
 The logistic baseline fits preprocessing and the classifier on the chronological train split, selects the classification threshold on public validation, and only then predicts the private temporal holdout.
 
+The first runnable event-aware slice is `synthetic_event_response_v0`, a synthetic event panel with event surprise, sentiment, importance, pre-event context, and a private temporal holdout.
+
+Run its rule baseline end to end:
+
+```bash
+PYTHONPATH=src python scripts/run_synthetic_event_response_rule_pipeline.py
+```
+
 Run a repeated baseline protocol for uncertainty estimates:
 
 ```bash
