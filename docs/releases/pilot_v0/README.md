@@ -98,6 +98,7 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | Seed Subset | audits/pilot_v0/adjudicated_subset.json |
 | Reviews Workflow | audits/pilot_v0/reviews/README.md |
 | Independent Reviewer Handoff | audits/pilot_v0/reviews/independent_reviewer_handoff.md |
+| Independent Reviewer Packet Manifest | audits/pilot_v0/reviews/independent_reviewer_packet_manifest.md |
 | Seed Reviewer Packet | audits/pilot_v0/reviews/reviewer_1_seed.csv |
 | Blank Reviewer Template | audits/pilot_v0/reviews/reviewer_2_blank_template.csv |
 | Shadow Demo Reviewer Packet | audits/pilot_v0/reviews/reviewer_2_shadow_demo.csv |

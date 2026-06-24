@@ -36,6 +36,7 @@ jobs:
             tests/test_pipelines.py \
             tests/test_benchmark_manifest.py \
             tests/test_task_cards.py \
+            tests/test_manual_audit.py \
             tests/test_external_agents.py \
             tests/test_pilot_release.py \
             tests/test_release_archive.py \

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from finds_agentbench.io import load_yaml
+from finds_agentbench.runs import file_sha256
 
 
 DEFAULT_MANUAL_AUDIT_RUBRIC_PATH = Path("audits/pilot_v0/manual_audit_rubric.yaml")
@@ -48,6 +49,12 @@ DEFAULT_INDEPENDENT_REVIEWER_PACKET_VALIDATION_JSON_PATH = (
 )
 DEFAULT_INDEPENDENT_REVIEWER_PACKET_VALIDATION_MARKDOWN_PATH = (
     DEFAULT_MANUAL_AUDIT_REPORTS_DIR / "independent_reviewer_packet_validation.md"
+)
+DEFAULT_INDEPENDENT_REVIEWER_PACKET_MANIFEST_JSON_PATH = (
+    DEFAULT_MANUAL_AUDIT_REVIEWS_DIR / "independent_reviewer_packet_manifest.json"
+)
+DEFAULT_INDEPENDENT_REVIEWER_PACKET_MANIFEST_MARKDOWN_PATH = (
+    DEFAULT_MANUAL_AUDIT_REVIEWS_DIR / "independent_reviewer_packet_manifest.md"
 )
 
 
@@ -816,6 +823,225 @@ def write_independent_reviewer_packet_validation_artifacts(
     return {"json_path": json_path, "markdown_path": markdown_path}
 
 
+def manual_audit_file_entry(
+    *,
+    role: str,
+    path: str | Path,
+    workspace_root: str | Path = ".",
+) -> dict[str, Any]:
+    file_path = Path(path)
+    workspace = Path(workspace_root).resolve()
+    return {
+        "role": role,
+        "path": _relative_path_string(file_path, workspace_root=workspace),
+        "size_bytes": file_path.stat().st_size,
+        "sha256": file_sha256(file_path),
+    }
+
+
+def build_independent_reviewer_packet_manifest(
+    *,
+    bundle: ManualAuditBundle,
+    reviews_readme_path: str | Path,
+    independent_reviewer_handoff_path: str | Path,
+    reviewer_2_template_path: str | Path,
+    reviewer_1_seed_path: str | Path,
+    reviewer_2_shadow_path: str | Path,
+    workspace_root: str | Path = ".",
+) -> dict[str, Any]:
+    template_rows = load_review_packet_csv(reviewer_2_template_path)
+    case_rows = [
+        {
+            "case_id": row["case_id"],
+            "task_id": row["task_id"],
+            "track": row["track"],
+            "run_type": row["run_type"],
+            "agent_id": row["agent_id"],
+            "run_label": row["run_label"],
+            "artifact_root": row["artifact_root"],
+        }
+        for row in template_rows
+    ]
+    reviewer_facing_files = [
+        manual_audit_file_entry(
+            role="review_packet_manifest_readme",
+            path=reviews_readme_path,
+            workspace_root=workspace_root,
+        ),
+        manual_audit_file_entry(
+            role="independent_reviewer_handoff",
+            path=independent_reviewer_handoff_path,
+            workspace_root=workspace_root,
+        ),
+        manual_audit_file_entry(
+            role="blank_reviewer_packet",
+            path=reviewer_2_template_path,
+            workspace_root=workspace_root,
+        ),
+        manual_audit_file_entry(
+            role="scoring_rubric",
+            path=bundle.rubric_path,
+            workspace_root=workspace_root,
+        ),
+    ]
+    excluded_files = [
+        {
+            **manual_audit_file_entry(
+                role="benchmark_author_seed_packet",
+                path=reviewer_1_seed_path,
+                workspace_root=workspace_root,
+            ),
+            "reason": "Author seed review; not reviewer-facing intake material.",
+        },
+        {
+            **manual_audit_file_entry(
+                role="synthetic_shadow_packet",
+                path=reviewer_2_shadow_path,
+                workspace_root=workspace_root,
+            ),
+            "reason": "Synthetic dry-run packet; not official independent-review evidence.",
+        },
+        {
+            **manual_audit_file_entry(
+                role="author_adjudicated_subset",
+                path=bundle.subset_path,
+                workspace_root=workspace_root,
+            ),
+            "reason": "Author-adjudicated source subset; not reviewer-facing intake material.",
+        },
+    ]
+    complete_intake = (
+        len(case_rows) == bundle.summary["case_count"]
+        and all(entry["size_bytes"] > 0 for entry in reviewer_facing_files)
+    )
+    return {
+        "status": (
+            "ready_for_independent_review_intake"
+            if complete_intake
+            else "invalid_independent_review_intake"
+        ),
+        "ready_for_reviewer_distribution": complete_intake,
+        "claim_boundary": {
+            "allowed_current_claim": (
+                "A frozen blank reviewer packet and reviewer-facing handoff are available."
+            ),
+            "disallowed_current_claim": (
+                "Independent inter-rater reliability or completed second-reviewer evidence."
+            ),
+        },
+        "case_count": len(case_rows),
+        "expected_case_count": bundle.summary["case_count"],
+        "dimension_ids": bundle.summary["dimension_ids"],
+        "target_cases": case_rows,
+        "reviewer_facing_files": reviewer_facing_files,
+        "excluded_from_reviewer_packet": excluded_files,
+        "completion_requirements": [
+            "Copy reviewer_2_blank_template.csv to a reviewer-specific filename.",
+            "Use one non-author reviewer_id throughout the packet.",
+            "Set reviewer_role=independent_reviewer, review_status=complete, and an independent review_source for every row.",
+            "Fill every rubric score, evidence field, overall_label, and primary_manual_findings.",
+            "Validate with scripts/validate_manual_audit_review_packet.py before submitting the packet.",
+        ],
+        "validation_command": (
+            "PYTHONPATH=src python scripts/validate_manual_audit_review_packet.py "
+            "--packet audits/pilot_v0/reviews/reviewer_2_completed.csv"
+        ),
+    }
+
+
+def render_independent_reviewer_packet_manifest_markdown(manifest: dict[str, Any]) -> str:
+    file_rows = [
+        [entry["role"], f"`{entry['path']}`", entry["size_bytes"], f"`{entry['sha256']}`"]
+        for entry in manifest["reviewer_facing_files"]
+    ]
+    excluded_rows = [
+        [entry["role"], f"`{entry['path']}`", entry["reason"]]
+        for entry in manifest["excluded_from_reviewer_packet"]
+    ]
+    case_rows = [
+        [
+            case["case_id"],
+            case["task_id"],
+            case["run_type"],
+            case["agent_id"],
+            f"`{case['artifact_root']}`",
+        ]
+        for case in manifest["target_cases"]
+    ]
+    lines = [
+        "# Independent Reviewer Packet Manifest",
+        "",
+        "Checksum manifest for the reviewer-facing manual-audit intake packet.",
+        "",
+        "## Status",
+        "",
+        render_markdown_table(
+            ["Field", "Value"],
+            [
+                ["Status", f"`{manifest['status']}`"],
+                [
+                    "Ready for reviewer distribution",
+                    "yes" if manifest["ready_for_reviewer_distribution"] else "no",
+                ],
+                ["Cases", f"{manifest['case_count']} / {manifest['expected_case_count']}"],
+                ["Dimensions", ", ".join(manifest["dimension_ids"])],
+            ],
+        ),
+        "",
+        "## Claim Boundary",
+        "",
+        f"- Allowed current claim: {manifest['claim_boundary']['allowed_current_claim']}",
+        f"- Disallowed current claim: {manifest['claim_boundary']['disallowed_current_claim']}",
+        "",
+        "## Reviewer-Facing Files",
+        "",
+        render_markdown_table(["Role", "Path", "Size Bytes", "SHA256"], file_rows),
+        "",
+        "## Excluded Files",
+        "",
+        render_markdown_table(["Role", "Path", "Reason"], excluded_rows),
+        "",
+        "## Target Cases",
+        "",
+        render_markdown_table(["Case", "Task", "Run Type", "Agent", "Artifact Root"], case_rows),
+        "",
+        "## Completion Requirements",
+        "",
+    ]
+    lines.extend(f"- {item}" for item in manifest["completion_requirements"])
+    lines.extend(
+        [
+            "",
+            "## Validation Command",
+            "",
+            "```bash",
+            manifest["validation_command"],
+            "```",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def write_independent_reviewer_packet_manifest_artifacts(
+    *,
+    manifest: dict[str, Any],
+    output_json_path: str | Path = DEFAULT_INDEPENDENT_REVIEWER_PACKET_MANIFEST_JSON_PATH,
+    output_markdown_path: str | Path = DEFAULT_INDEPENDENT_REVIEWER_PACKET_MANIFEST_MARKDOWN_PATH,
+) -> dict[str, Path]:
+    json_path = Path(output_json_path)
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    markdown_path = Path(output_markdown_path)
+    markdown_path.parent.mkdir(parents=True, exist_ok=True)
+    markdown_path.write_text(
+        render_independent_reviewer_packet_manifest_markdown(manifest) + "\n",
+        encoding="utf-8",
+    )
+    return {"json_path": json_path, "markdown_path": markdown_path}
+
+
 def load_review_packets(reviews_dir: str | Path, rubric: dict[str, Any]) -> list[dict[str, Any]]:
     root = Path(reviews_dir)
     if not root.exists():
@@ -1094,14 +1320,16 @@ def render_reviews_readme(bundle: ManualAuditBundle) -> str:
             "- `reviewer_2_blank_template.csv`: blank packet for an independent second reviewer.",
             "- `reviewer_2_shadow_demo.csv`: synthetic dry-run second reviewer packet for exercising agreement and adjudication code paths. This file is not eligible for official benchmark agreement claims.",
             "- `independent_reviewer_handoff.md`: reviewer-facing instructions and validation protocol.",
+            "- `independent_reviewer_packet_manifest.md`: checksum manifest for the reviewer-facing intake packet.",
             "",
             "## Workflow",
             "",
             "1. Copy `reviewer_2_blank_template.csv` to a reviewer-specific filename.",
-            "2. Fill one row per case, including all rubric scores, evidence snippets, primary findings, and the overall label.",
-            "3. Validate the completed packet with `scripts/validate_manual_audit_review_packet.py`.",
-            "4. Rebuild the audit workflow artifacts to refresh the agreement and adjudication reports.",
-            "5. Once two complete official reviewer packets exist, adjudicate disagreements into the canonical subset.",
+            "2. Verify the template checksum against `independent_reviewer_packet_manifest.md`.",
+            "3. Fill one row per case, including all rubric scores, evidence snippets, primary findings, and the overall label.",
+            "4. Validate the completed packet with `scripts/validate_manual_audit_review_packet.py`.",
+            "5. Rebuild the audit workflow artifacts to refresh the agreement and adjudication reports.",
+            "6. Once two complete official reviewer packets exist, adjudicate disagreements into the canonical subset.",
             "",
             "The shadow demo packet exists only to prove the pipeline works end to end before a real second reviewer is available.",
             "",
@@ -1133,6 +1361,7 @@ def render_independent_reviewer_handoff(bundle: ManualAuditBundle) -> str:
             "## Required Inputs",
             "",
             "- Start from `audits/pilot_v0/reviews/reviewer_2_blank_template.csv`.",
+            "- Verify the blank template against `audits/pilot_v0/reviews/independent_reviewer_packet_manifest.md` before editing.",
             "- Copy it to a reviewer-specific filename such as `reviewer_2_completed.csv`.",
             "- Keep exactly one reviewer ID across the file.",
             "- Set `reviewer_role` to `independent_reviewer` for every row.",
@@ -1587,6 +1816,8 @@ def build_manual_audit_workflow_artifacts(
     reviewer_readiness_markdown_path: str | Path | None = None,
     independent_reviewer_packet_validation_json_path: str | Path | None = None,
     independent_reviewer_packet_validation_markdown_path: str | Path | None = None,
+    independent_reviewer_packet_manifest_json_path: str | Path | None = None,
+    independent_reviewer_packet_manifest_markdown_path: str | Path | None = None,
 ) -> dict[str, Any]:
     audit_bundle = bundle or load_manual_audit_bundle(
         rubric_path=rubric_path,
@@ -1659,6 +1890,30 @@ def build_manual_audit_workflow_artifacts(
         reviewer_2_shadow_rows,
         audit_bundle.rubric,
         reviewer_2_shadow_output,
+    )
+    packet_manifest = build_independent_reviewer_packet_manifest(
+        bundle=audit_bundle,
+        reviews_readme_path=reviews_readme,
+        independent_reviewer_handoff_path=independent_reviewer_handoff,
+        reviewer_2_template_path=reviewer_2_template_csv,
+        reviewer_1_seed_path=reviewer_1_seed_csv,
+        reviewer_2_shadow_path=reviewer_2_shadow_csv,
+        workspace_root=workspace_root,
+    )
+    packet_manifest_json = (
+        Path(independent_reviewer_packet_manifest_json_path)
+        if independent_reviewer_packet_manifest_json_path is not None
+        else reviews_root / "independent_reviewer_packet_manifest.json"
+    )
+    packet_manifest_markdown = (
+        Path(independent_reviewer_packet_manifest_markdown_path)
+        if independent_reviewer_packet_manifest_markdown_path is not None
+        else reviews_root / "independent_reviewer_packet_manifest.md"
+    )
+    packet_manifest_outputs = write_independent_reviewer_packet_manifest_artifacts(
+        manifest=packet_manifest,
+        output_json_path=packet_manifest_json,
+        output_markdown_path=packet_manifest_markdown,
     )
 
     review_packets = load_review_packets(reviews_root, audit_bundle.rubric)
@@ -1773,6 +2028,9 @@ def build_manual_audit_workflow_artifacts(
     return {
         "reviews_readme_path": reviews_readme,
         "independent_reviewer_handoff_path": independent_reviewer_handoff,
+        "independent_reviewer_packet_manifest_json_path": packet_manifest_outputs["json_path"],
+        "independent_reviewer_packet_manifest_markdown_path": packet_manifest_outputs["markdown_path"],
+        "independent_reviewer_packet_manifest": packet_manifest,
         "reviewer_1_seed_path": reviewer_1_seed_csv,
         "reviewer_2_template_path": reviewer_2_template_csv,
         "reviewer_2_shadow_path": reviewer_2_shadow_csv,

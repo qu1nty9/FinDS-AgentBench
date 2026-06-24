@@ -5,6 +5,7 @@ Use this packet to collect a submission-strength second manual-audit review.
 ## Required Inputs
 
 - Start from `audits/pilot_v0/reviews/reviewer_2_blank_template.csv`.
+- Verify the blank template against `audits/pilot_v0/reviews/independent_reviewer_packet_manifest.md` before editing.
 - Copy it to a reviewer-specific filename such as `reviewer_2_completed.csv`.
 - Keep exactly one reviewer ID across the file.
 - Set `reviewer_role` to `independent_reviewer` for every row.

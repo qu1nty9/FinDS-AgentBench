@@ -29,6 +29,14 @@ def main() -> int:
     )
     print(f"reviews_readme: {result['reviews_readme_path']}")
     print(f"independent_reviewer_handoff: {result['independent_reviewer_handoff_path']}")
+    print(
+        "independent_reviewer_packet_manifest_json: "
+        f"{result['independent_reviewer_packet_manifest_json_path']}"
+    )
+    print(
+        "independent_reviewer_packet_manifest_markdown: "
+        f"{result['independent_reviewer_packet_manifest_markdown_path']}"
+    )
     print(f"reviewer_1_seed: {result['reviewer_1_seed_path']}")
     print(f"reviewer_2_template: {result['reviewer_2_template_path']}")
     print(f"reviewer_2_shadow: {result['reviewer_2_shadow_path']}")

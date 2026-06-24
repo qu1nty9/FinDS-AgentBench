@@ -1,0 +1,131 @@
+{
+  "case_count": 6,
+  "claim_boundary": {
+    "allowed_current_claim": "A frozen blank reviewer packet and reviewer-facing handoff are available.",
+    "disallowed_current_claim": "Independent inter-rater reliability or completed second-reviewer evidence."
+  },
+  "completion_requirements": [
+    "Copy reviewer_2_blank_template.csv to a reviewer-specific filename.",
+    "Use one non-author reviewer_id throughout the packet.",
+    "Set reviewer_role=independent_reviewer, review_status=complete, and an independent review_source for every row.",
+    "Fill every rubric score, evidence field, overall_label, and primary_manual_findings.",
+    "Validate with scripts/validate_manual_audit_review_packet.py before submitting the packet."
+  ],
+  "dimension_ids": [
+    "temporal_protocol_correctness",
+    "leakage_awareness_and_feature_hygiene",
+    "quantitative_evidence_use",
+    "baseline_comparison_or_counterfactual_context",
+    "claim_discipline",
+    "reproducibility_trace_completeness"
+  ],
+  "excluded_from_reviewer_packet": [
+    {
+      "path": "audits/pilot_v0/reviews/reviewer_1_seed.csv",
+      "reason": "Author seed review; not reviewer-facing intake material.",
+      "role": "benchmark_author_seed_packet",
+      "sha256": "cf85a1fbb10384a35bc88620602094d6b273b985d10118fde20490c08b9ded47",
+      "size_bytes": 8947
+    },
+    {
+      "path": "audits/pilot_v0/reviews/reviewer_2_shadow_demo.csv",
+      "reason": "Synthetic dry-run packet; not official independent-review evidence.",
+      "role": "synthetic_shadow_packet",
+      "sha256": "1dc9855996bd393a3cf09ea2d37063f56fbe5c0c88ac0cae3ae1d85cd98e644f",
+      "size_bytes": 9785
+    },
+    {
+      "path": "audits/pilot_v0/adjudicated_subset.json",
+      "reason": "Author-adjudicated source subset; not reviewer-facing intake material.",
+      "role": "author_adjudicated_subset",
+      "sha256": "e7826edefa2bcd89d49c23049e42e17ecd37126a2cfb2b38d92729b75e925d67",
+      "size_bytes": 21591
+    }
+  ],
+  "expected_case_count": 6,
+  "ready_for_reviewer_distribution": true,
+  "reviewer_facing_files": [
+    {
+      "path": "audits/pilot_v0/reviews/README.md",
+      "role": "review_packet_manifest_readme",
+      "sha256": "a71009823aad755f4207d2a869462ceeb516f863c06727b1b2f3db2beda0f915",
+      "size_bytes": 1755
+    },
+    {
+      "path": "audits/pilot_v0/reviews/independent_reviewer_handoff.md",
+      "role": "independent_reviewer_handoff",
+      "sha256": "c676a1a4a8f8683d6adbf84b4a76e3e66682abada753f309a780c7beddb00c85",
+      "size_bytes": 2830
+    },
+    {
+      "path": "audits/pilot_v0/reviews/reviewer_2_blank_template.csv",
+      "role": "blank_reviewer_packet",
+      "sha256": "c2adadf512f888cd5873e6df6bd200079afa2a7a7a774d14b7353da0c9a58299",
+      "size_bytes": 3117
+    },
+    {
+      "path": "audits/pilot_v0/manual_audit_rubric.yaml",
+      "role": "scoring_rubric",
+      "sha256": "34f29a90f2a396448682e647bd79bd2b8c0bd956f6ef87ee585924f2084d5bbe",
+      "size_bytes": 5608
+    }
+  ],
+  "status": "ready_for_independent_review_intake",
+  "target_cases": [
+    {
+      "agent_id": "momentum_baseline",
+      "artifact_root": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/momentum_baseline/release_pilot_market_001_seed_11",
+      "case_id": "pilot_market_momentum_baseline_release_001",
+      "run_label": "release_pilot_market_001_seed_11",
+      "run_type": "baseline",
+      "task_id": "synthetic_market_direction_v0",
+      "track": "predictive_financial_ml"
+    },
+    {
+      "agent_id": "logistic_regression_baseline",
+      "artifact_root": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/logistic_regression_baseline/release_pilot_market_001_seed_11",
+      "case_id": "pilot_market_logistic_baseline_release_001",
+      "run_label": "release_pilot_market_001_seed_11",
+      "run_type": "baseline",
+      "task_id": "synthetic_market_direction_v0",
+      "track": "predictive_financial_ml"
+    },
+    {
+      "agent_id": "event_rule_baseline",
+      "artifact_root": "runs/suites/pilot_baselines_v0/synthetic_event_response_v0/event_rule_baseline/release_pilot_event_001_seed_23",
+      "case_id": "pilot_event_rule_baseline_release_001",
+      "run_label": "release_pilot_event_001_seed_23",
+      "run_type": "baseline",
+      "task_id": "synthetic_event_response_v0",
+      "track": "event_aware_time_series_reasoning"
+    },
+    {
+      "agent_id": "event_rule_env_agent",
+      "artifact_root": "runs/suites/pilot_protocol_v0/synthetic_event_response_v0/event_rule_env_agent/release_protocol_agent_event_001_seed_23",
+      "case_id": "pilot_event_rule_env_agent_protocol_001",
+      "run_label": "release_protocol_agent_event_001_seed_23",
+      "run_type": "agent",
+      "task_id": "synthetic_event_response_v0",
+      "track": "event_aware_time_series_reasoning"
+    },
+    {
+      "agent_id": "previous_day_direction_baseline",
+      "artifact_root": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/previous_day_direction_baseline/release_pilot_treasury_001_seed_29",
+      "case_id": "pilot_treasury_previous_day_baseline_release_001",
+      "run_label": "release_pilot_treasury_001_seed_29",
+      "run_type": "baseline",
+      "task_id": "yield_direction_treasury10y_v0",
+      "track": "predictive_financial_ml"
+    },
+    {
+      "agent_id": "logistic_regression_baseline",
+      "artifact_root": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/logistic_regression_baseline/release_pilot_treasury_001_seed_29",
+      "case_id": "pilot_treasury_logistic_baseline_release_001",
+      "run_label": "release_pilot_treasury_001_seed_29",
+      "run_type": "baseline",
+      "task_id": "yield_direction_treasury10y_v0",
+      "track": "predictive_financial_ml"
+    }
+  ],
+  "validation_command": "PYTHONPATH=src python scripts/validate_manual_audit_review_packet.py --packet audits/pilot_v0/reviews/reviewer_2_completed.csv"
+}

@@ -54,6 +54,8 @@ def test_build_manual_audit_workflow_artifacts_writes_seed_template_and_report(t
 
     assert result["reviews_readme_path"].exists()
     assert result["independent_reviewer_handoff_path"].exists()
+    assert result["independent_reviewer_packet_manifest_json_path"].exists()
+    assert result["independent_reviewer_packet_manifest_markdown_path"].exists()
     assert result["reviewer_1_seed_path"].exists()
     assert result["reviewer_2_template_path"].exists()
     assert result["reviewer_2_shadow_path"].exists()
@@ -89,6 +91,29 @@ def test_build_manual_audit_workflow_artifacts_writes_seed_template_and_report(t
         result["independent_reviewer_packet_validation"]["status"]
         == "invalid_or_incomplete"
     )
+    packet_manifest = json.loads(
+        result["independent_reviewer_packet_manifest_json_path"].read_text(encoding="utf-8")
+    )
+    packet_manifest_markdown = result[
+        "independent_reviewer_packet_manifest_markdown_path"
+    ].read_text(encoding="utf-8")
+    assert packet_manifest["status"] == "ready_for_independent_review_intake"
+    assert packet_manifest["ready_for_reviewer_distribution"] is True
+    assert packet_manifest["case_count"] == bundle.summary["case_count"]
+    reviewer_facing_paths = {
+        item["path"] for item in packet_manifest["reviewer_facing_files"]
+    }
+    assert any(path.endswith("reviewer_2_blank_template.csv") for path in reviewer_facing_paths)
+    assert not any(path.endswith("reviewer_1_seed.csv") for path in reviewer_facing_paths)
+    excluded_paths = {
+        item["path"] for item in packet_manifest["excluded_from_reviewer_packet"]
+    }
+    assert any(path.endswith("reviewer_1_seed.csv") for path in excluded_paths)
+    assert any(path.endswith("reviewer_2_shadow_demo.csv") for path in excluded_paths)
+    assert any(path.endswith("adjudicated_subset.json") for path in excluded_paths)
+    assert "Checksum manifest" in packet_manifest_markdown
+    assert "reviewer_1_seed.csv" in packet_manifest_markdown
+    assert "adjudicated_subset.json" in packet_manifest_markdown
     assert "reviewer_2_shadow_demo.csv" in readiness_markdown
     assert "must not be cited as official inter-rater agreement" in readiness_markdown
     handoff = result["independent_reviewer_handoff_path"].read_text(encoding="utf-8")
@@ -107,6 +132,14 @@ def test_build_manual_audit_workflow_artifacts_honors_custom_roots(tmp_path):
     assert (
         result["independent_reviewer_handoff_path"]
         == tmp_path / "custom_reviews" / "independent_reviewer_handoff.md"
+    )
+    assert (
+        result["independent_reviewer_packet_manifest_json_path"]
+        == tmp_path / "custom_reviews" / "independent_reviewer_packet_manifest.json"
+    )
+    assert (
+        result["independent_reviewer_packet_manifest_markdown_path"]
+        == tmp_path / "custom_reviews" / "independent_reviewer_packet_manifest.md"
     )
     assert result["reviewer_1_seed_path"] == tmp_path / "custom_reviews" / "reviewer_1_seed.csv"
     assert (

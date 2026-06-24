@@ -424,6 +424,10 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Seed Subset", manual_audit["subset_path"]],
                     ["Reviews Workflow", manual_audit["reviews_readme_path"]],
                     ["Independent Reviewer Handoff", manual_audit["independent_reviewer_handoff_path"]],
+                    [
+                        "Independent Reviewer Packet Manifest",
+                        manual_audit["independent_reviewer_packet_manifest_markdown_path"],
+                    ],
                     ["Seed Reviewer Packet", manual_audit["reviewer_1_seed_path"]],
                     ["Blank Reviewer Template", manual_audit["reviewer_2_template_path"]],
                     ["Shadow Demo Reviewer Packet", manual_audit["reviewer_2_shadow_path"]],
@@ -554,6 +558,15 @@ def build_benchmark_manifest(
             "independent_reviewer_handoff_path": str(
                 manual_audit_workflow["independent_reviewer_handoff_path"]
             ),
+            "independent_reviewer_packet_manifest_json_path": str(
+                manual_audit_workflow["independent_reviewer_packet_manifest_json_path"]
+            ),
+            "independent_reviewer_packet_manifest_markdown_path": str(
+                manual_audit_workflow["independent_reviewer_packet_manifest_markdown_path"]
+            ),
+            "independent_reviewer_packet_manifest_status": manual_audit_workflow[
+                "independent_reviewer_packet_manifest"
+            ]["status"],
             "reviewer_1_seed_path": str(manual_audit_workflow["reviewer_1_seed_path"]),
             "reviewer_2_template_path": str(manual_audit_workflow["reviewer_2_template_path"]),
             "reviewer_2_shadow_path": str(manual_audit_workflow["reviewer_2_shadow_path"]),
