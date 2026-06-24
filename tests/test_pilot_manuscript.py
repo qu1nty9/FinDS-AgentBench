@@ -183,9 +183,11 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert "Complete at least one independent reviewer packet" in checklist
     assert "Validate the completed second-reviewer packet" in checklist
     assert "External-agent protocol and readiness report" in checklist
+    assert "External-agent handoff, registration template, and registry-evidence validator" in checklist
     assert "External-Agent Gate Blockers" in checklist
     assert "Submission readiness status" in checklist
     assert "Register and run at least one non-author external agent" in checklist
+    assert "Validate external-agent registry evidence" in checklist
     assert metadata["overall_baseline_higher_count"] == 1
     assert metadata["overall_tie_count"] == 1
     assert metadata["reviewer_readiness_status"] == "not_ready_seed_only"

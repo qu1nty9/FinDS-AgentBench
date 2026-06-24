@@ -1,0 +1,20 @@
+# Copy this object under `external_agent_configurations` in
+# `agents/external_agent_registry.yaml` after a non-author external agent has
+# completed the required pilot runs.
+agent_id: external_agent_slug
+version: "YYYY-MM-DD"
+provenance: external_submission
+maintainer_type: external
+agent_type: llm_research_agent
+status: completed
+included_in_reference_results: true
+stronger_external_evidence: true
+task_ids:
+  - synthetic_market_direction_v0
+completed_runs_per_task:
+  synthetic_market_direction_v0: 3
+command_family: scripts/run_synthetic_market_agent_suite.py
+run_manifest_paths:
+  - runs/suites/external_agents_v0/synthetic_market_direction_v0/external_agent_slug/run_001/run_manifest.json
+  - runs/suites/external_agents_v0/synthetic_market_direction_v0/external_agent_slug/run_002/run_manifest.json
+  - runs/suites/external_agents_v0/synthetic_market_direction_v0/external_agent_slug/run_003/run_manifest.json

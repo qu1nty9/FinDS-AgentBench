@@ -11,11 +11,18 @@ DEFAULT_EXTERNAL_AGENT_REGISTRY_PATH = Path("agents/external_agent_registry.yaml
 DEFAULT_EXTERNAL_AGENT_PROTOCOL_MARKDOWN_PATH = Path(
     "docs/releases/pilot_v0/external_agent_protocol.md"
 )
+DEFAULT_EXTERNAL_AGENT_HANDOFF_MARKDOWN_PATH = Path("agents/external_agent_handoff.md")
 DEFAULT_EXTERNAL_AGENT_READINESS_JSON_PATH = Path(
     "docs/releases/pilot_v0/external_agent_readiness.json"
 )
 DEFAULT_EXTERNAL_AGENT_READINESS_MARKDOWN_PATH = Path(
     "docs/releases/pilot_v0/external_agent_readiness.md"
+)
+DEFAULT_EXTERNAL_AGENT_REGISTRATION_VALIDATION_JSON_PATH = Path(
+    "docs/releases/pilot_v0/external_agent_registration_validation.json"
+)
+DEFAULT_EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH = Path(
+    "docs/releases/pilot_v0/external_agent_registration_validation.md"
 )
 
 REQUIRED_AGENT_ENV_VARS = [
@@ -36,6 +43,8 @@ REQUIRED_AGENT_ARTIFACTS = [
     "predictions.csv",
     "writeup.md",
 ]
+
+EXTERNAL_AGENT_TEMPLATE_PATH = Path("agents/external_agent_registration_template.yaml")
 
 
 def load_external_agent_registry(path: str | Path = DEFAULT_EXTERNAL_AGENT_REGISTRY_PATH) -> dict[str, Any]:
@@ -70,15 +79,26 @@ def validate_external_agent_registry(registry: dict[str, Any]) -> list[str]:
         errors.append("required_for_workshop_submission must be an object")
         requirement = {}
     minimum_external = int(requirement.get("minimum_external_agent_configurations", 0) or 0)
+    minimum_completed_runs = int(requirement.get("minimum_completed_runs_per_task", 0) or 0)
     if minimum_external < 1:
         errors.append("minimum_external_agent_configurations must be >= 1")
+    if minimum_completed_runs < 1:
+        errors.append("minimum_completed_runs_per_task must be >= 1")
     expected_tasks = requirement.get("expected_task_ids", [])
     if not isinstance(expected_tasks, list) or not expected_tasks:
         errors.append("expected_task_ids must be a non-empty list")
 
     for idx, config in enumerate(registry_agent_configurations(registry)):
         context = f"agent_configurations[{idx}]"
-        for key in ("agent_id", "version", "provenance", "maintainer_type", "agent_type", "status"):
+        for key in (
+            "agent_id",
+            "version",
+            "provenance",
+            "maintainer_type",
+            "agent_type",
+            "status",
+            "command_family",
+        ):
             if not str(config.get(key, "")).strip():
                 errors.append(f"{context}.{key} must be non-empty")
         task_ids = config.get("task_ids", [])
@@ -88,6 +108,17 @@ def validate_external_agent_registry(registry: dict[str, Any]) -> list[str]:
             errors.append(f"{context}.included_in_reference_results must be boolean")
         if not isinstance(config.get("stronger_external_evidence", False), bool):
             errors.append(f"{context}.stronger_external_evidence must be boolean")
+        if is_external_agent_configuration(config) and str(config.get("status", "")).strip() in {
+            "completed",
+            "completed_reference",
+        }:
+            errors.extend(
+                f"{context}.{error}"
+                for error in external_agent_completed_evidence_errors(
+                    config,
+                    minimum_completed_runs_per_task=minimum_completed_runs,
+                )
+            )
     return errors
 
 
@@ -106,6 +137,48 @@ def is_completed_external_agent_configuration(config: dict[str, Any]) -> bool:
     )
 
 
+def external_agent_completed_evidence_errors(
+    config: dict[str, Any],
+    *,
+    minimum_completed_runs_per_task: int,
+) -> list[str]:
+    errors: list[str] = []
+    task_ids = [str(task_id) for task_id in config.get("task_ids", [])]
+    completed_runs = config.get("completed_runs_per_task", {})
+    if not isinstance(completed_runs, dict) or not completed_runs:
+        errors.append("completed_runs_per_task must be a non-empty object for completed external configs")
+        completed_runs = {}
+    for task_id in task_ids:
+        try:
+            completed_count = int(completed_runs.get(task_id, 0))
+        except (TypeError, ValueError):
+            completed_count = 0
+        if completed_count < minimum_completed_runs_per_task:
+            errors.append(
+                f"completed_runs_per_task.{task_id} must be >= {minimum_completed_runs_per_task}"
+            )
+
+    run_manifest_paths = config.get("run_manifest_paths", [])
+    if not isinstance(run_manifest_paths, list) or not run_manifest_paths:
+        errors.append("run_manifest_paths must be a non-empty list for completed external configs")
+        run_manifest_paths = []
+    elif any(not str(path).strip() for path in run_manifest_paths):
+        errors.append("run_manifest_paths entries must be non-empty strings")
+
+    required_run_manifest_count = sum(
+        int(completed_runs.get(task_id, 0) or 0)
+        for task_id in task_ids
+        if str(task_id) in completed_runs
+    )
+    if run_manifest_paths and len(run_manifest_paths) < required_run_manifest_count:
+        errors.append(
+            "run_manifest_paths must include at least one manifest per completed run "
+            f"({len(run_manifest_paths)} < {required_run_manifest_count})"
+        )
+
+    return errors
+
+
 def build_external_agent_readiness_report(registry: dict[str, Any]) -> dict[str, Any]:
     validation_errors = validate_external_agent_registry(registry)
     if validation_errors:
@@ -121,7 +194,13 @@ def build_external_agent_readiness_report(registry: dict[str, Any]) -> dict[str,
     ]
     external_configs = [config for config in configurations if is_external_agent_configuration(config)]
     completed_external_configs = [
-        config for config in configurations if is_completed_external_agent_configuration(config)
+        config
+        for config in configurations
+        if is_completed_external_agent_configuration(config)
+        and not external_agent_completed_evidence_errors(
+            config,
+            minimum_completed_runs_per_task=minimum_completed_runs,
+        )
     ]
 
     covered_external_tasks = sorted(
@@ -238,6 +317,223 @@ def render_external_agent_protocol_markdown(
     )
 
 
+def build_external_agent_registration_validation_report(
+    registry: dict[str, Any],
+    *,
+    workspace_root: str | Path = ".",
+) -> dict[str, Any]:
+    workspace = Path(workspace_root)
+    validation_errors = validate_external_agent_registry(registry)
+    readiness: dict[str, Any] | None = None
+    if not validation_errors:
+        readiness = build_external_agent_readiness_report(registry)
+
+    external_configs = [
+        config for config in registry_agent_configurations(registry) if is_external_agent_configuration(config)
+    ]
+    path_errors: list[str] = []
+    for config in external_configs:
+        for path_value in config.get("run_manifest_paths", []) or []:
+            path = Path(str(path_value))
+            candidate = path if path.is_absolute() else workspace / path
+            if not candidate.exists():
+                path_errors.append(
+                    f"{config.get('agent_id', 'unknown')}: run_manifest_path does not exist: {path_value}"
+                )
+
+    blocking_items: list[str] = []
+    if not external_configs:
+        blocking_items.append("No external_agent_configurations entries are registered.")
+    if validation_errors:
+        blocking_items.extend(validation_errors)
+    if path_errors:
+        blocking_items.extend(path_errors)
+    if readiness and readiness["blocking_items"]:
+        blocking_items.extend(readiness["blocking_items"])
+
+    if validation_errors or path_errors:
+        status = "invalid_external_agent_registration"
+    elif readiness and readiness["ready_for_external_agent_claims"]:
+        status = "ready_for_external_agent_claims"
+    elif external_configs:
+        status = "registered_but_not_ready_for_claims"
+    else:
+        status = "no_external_agent_registered"
+
+    config_rows = []
+    for config in external_configs:
+        completed_runs = config.get("completed_runs_per_task", {})
+        if isinstance(completed_runs, dict):
+            completed_runs_text = ", ".join(
+                f"{task_id}:{count}" for task_id, count in sorted(completed_runs.items())
+            )
+        else:
+            completed_runs_text = "invalid"
+        config_rows.append(
+            {
+                "agent_id": str(config.get("agent_id", "")),
+                "status": str(config.get("status", "")),
+                "maintainer_type": str(config.get("maintainer_type", "")),
+                "included_in_reference_results": bool(config.get("included_in_reference_results", False)),
+                "stronger_external_evidence": bool(config.get("stronger_external_evidence", False)),
+                "task_ids": [str(task_id) for task_id in config.get("task_ids", [])],
+                "completed_runs_per_task": completed_runs_text,
+                "run_manifest_path_count": len(config.get("run_manifest_paths", []) or []),
+            }
+        )
+
+    return {
+        "status": status,
+        "ready_for_external_agent_claims": bool(
+            readiness and readiness["ready_for_external_agent_claims"]
+        ),
+        "registry_id": registry.get("registry_id", ""),
+        "external_agent_configuration_count": len(external_configs),
+        "completed_external_agent_configuration_count": (
+            readiness["completed_external_agent_configuration_count"] if readiness else 0
+        ),
+        "external_task_coverage_count": readiness["external_task_coverage_count"] if readiness else 0,
+        "expected_task_count": readiness["expected_task_count"] if readiness else 0,
+        "validation_error_count": len(validation_errors),
+        "path_error_count": len(path_errors),
+        "blocking_items": blocking_items,
+        "external_configurations": config_rows,
+        "template_path": str(EXTERNAL_AGENT_TEMPLATE_PATH),
+        "next_actions": [
+            "Copy agents/external_agent_registration_template.yaml into an external_agent_configurations entry.",
+            "Run the external agent through the pilot command harness for the required repeated runs.",
+            "Record completed_runs_per_task and run_manifest_paths for every completed run.",
+            "Re-run scripts/validate_external_agent_registry.py and rebuild release artifacts.",
+        ]
+        if not (readiness and readiness["ready_for_external_agent_claims"])
+        else [
+            "Inspect external-agent run manifests, artifact validation, and reference-result inclusion before submission."
+        ],
+    }
+
+
+def render_external_agent_registration_validation_markdown(report: dict[str, Any]) -> str:
+    summary_rows = [
+        ["Status", f"`{report['status']}`"],
+        [
+            "Ready for external-agent claims",
+            "yes" if report["ready_for_external_agent_claims"] else "no",
+        ],
+        ["External configurations", report["external_agent_configuration_count"]],
+        [
+            "Completed external configurations",
+            report["completed_external_agent_configuration_count"],
+        ],
+        [
+            "External task coverage",
+            f"{report['external_task_coverage_count']} / {report['expected_task_count']}",
+        ],
+        ["Validation errors", report["validation_error_count"]],
+        ["Path errors", report["path_error_count"]],
+        ["Template", report["template_path"]],
+    ]
+    config_rows = [
+        [
+            config["agent_id"],
+            config["status"],
+            config["maintainer_type"],
+            "yes" if config["included_in_reference_results"] else "no",
+            "yes" if config["stronger_external_evidence"] else "no",
+            ", ".join(config["task_ids"]),
+            config["completed_runs_per_task"],
+            config["run_manifest_path_count"],
+        ]
+        for config in report["external_configurations"]
+    ]
+    lines = [
+        "# External Agent Registration Validation",
+        "",
+        "Validation report for non-author external-agent registration and run evidence.",
+        "",
+        "## Status",
+        "",
+        render_markdown_table(["Field", "Value"], summary_rows),
+        "",
+        "## External Configurations",
+        "",
+        render_markdown_table(
+            [
+                "Agent",
+                "Status",
+                "Maintainer",
+                "In Reference Results",
+                "Stronger Evidence",
+                "Tasks",
+                "Completed Runs",
+                "Run Manifests",
+            ],
+            config_rows
+            or [["(none)", "n/a", "n/a", "no", "no", "n/a", "n/a", 0]],
+        ),
+        "",
+        "## Blocking Items",
+        "",
+    ]
+    if report["blocking_items"]:
+        lines.extend(f"- {item}" for item in report["blocking_items"])
+    else:
+        lines.append("- None.")
+    lines.extend(["", "## Next Actions", ""])
+    lines.extend(f"- {item}" for item in report["next_actions"])
+    return "\n".join(lines) + "\n"
+
+
+def render_external_agent_handoff_markdown(
+    registry: dict[str, Any],
+    readiness: dict[str, Any],
+) -> str:
+    expected_tasks = readiness["expected_task_ids"]
+    command_rows = [
+        [config["agent_id"], config["command_family"], ", ".join(config["task_ids"])]
+        for config in registry_agent_configurations(registry)
+        if str(config.get("provenance", "")) == "bundled_reference"
+    ]
+    return "\n".join(
+        [
+            "# External Agent Handoff",
+            "",
+            "Use this protocol to register and run a non-author external agent for FinDS-AgentBench.",
+            "",
+            "## Claim Boundary",
+            "",
+            "- Bundled reference agents are benchmark-maintained examples.",
+            "- A submission-strength external-agent claim requires a non-author configuration with completed run evidence.",
+            "- Do not mark `stronger_external_evidence: true` until the run manifests are included in reference results.",
+            "",
+            "## Registration",
+            "",
+            "- Start from `agents/external_agent_registration_template.yaml`.",
+            "- Add the completed entry under `external_agent_configurations` in `agents/external_agent_registry.yaml`.",
+            "- Set `maintainer_type: external` and `provenance: external_submission`.",
+            "- Record `completed_runs_per_task` and every `run_manifest_path` after the harness finishes.",
+            "",
+            "## Required Coverage",
+            "",
+            f"- Minimum external configurations: `{readiness['minimum_external_agent_configurations']}`",
+            f"- Minimum completed runs per task: `{readiness['minimum_completed_runs_per_task']}`",
+            f"- Expected task IDs: `{', '.join(expected_tasks)}`",
+            "",
+            "## Validation",
+            "",
+            "```bash",
+            "PYTHONPATH=src python scripts/validate_external_agent_registry.py",
+            "```",
+            "",
+            "The registry is eligible for external-agent claims only when the validation report and readiness report both say ready.",
+            "",
+            "## Existing Harness Families",
+            "",
+            render_markdown_table(["Bundled Agent", "Command Family", "Tasks"], command_rows),
+            "",
+        ]
+    )
+
+
 def render_external_agent_readiness_markdown(readiness: dict[str, Any]) -> str:
     summary_rows = [
         ["Status", f"`{readiness['status']}`"],
@@ -296,16 +592,35 @@ def build_external_agent_readiness_artifacts(
     *,
     registry_path: str | Path = DEFAULT_EXTERNAL_AGENT_REGISTRY_PATH,
     protocol_markdown_path: str | Path = DEFAULT_EXTERNAL_AGENT_PROTOCOL_MARKDOWN_PATH,
+    handoff_markdown_path: str | Path = DEFAULT_EXTERNAL_AGENT_HANDOFF_MARKDOWN_PATH,
     readiness_json_path: str | Path = DEFAULT_EXTERNAL_AGENT_READINESS_JSON_PATH,
     readiness_markdown_path: str | Path = DEFAULT_EXTERNAL_AGENT_READINESS_MARKDOWN_PATH,
+    registration_validation_json_path: str | Path = (
+        DEFAULT_EXTERNAL_AGENT_REGISTRATION_VALIDATION_JSON_PATH
+    ),
+    registration_validation_markdown_path: str | Path = (
+        DEFAULT_EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH
+    ),
+    workspace_root: str | Path = ".",
 ) -> dict[str, Any]:
     registry = load_external_agent_registry(registry_path)
     readiness = build_external_agent_readiness_report(registry)
+    registration_validation = build_external_agent_registration_validation_report(
+        registry,
+        workspace_root=workspace_root,
+    )
 
     protocol_path = Path(protocol_markdown_path)
     protocol_path.parent.mkdir(parents=True, exist_ok=True)
     protocol_path.write_text(
         render_external_agent_protocol_markdown(registry, readiness),
+        encoding="utf-8",
+    )
+
+    handoff_path = Path(handoff_markdown_path)
+    handoff_path.parent.mkdir(parents=True, exist_ok=True)
+    handoff_path.write_text(
+        render_external_agent_handoff_markdown(registry, readiness),
         encoding="utf-8",
     )
 
@@ -323,10 +638,28 @@ def build_external_agent_readiness_artifacts(
         encoding="utf-8",
     )
 
+    registration_validation_json = Path(registration_validation_json_path)
+    registration_validation_json.parent.mkdir(parents=True, exist_ok=True)
+    registration_validation_json.write_text(
+        json.dumps(registration_validation, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    registration_validation_markdown = Path(registration_validation_markdown_path)
+    registration_validation_markdown.parent.mkdir(parents=True, exist_ok=True)
+    registration_validation_markdown.write_text(
+        render_external_agent_registration_validation_markdown(registration_validation),
+        encoding="utf-8",
+    )
+
     return {
         "registry_path": Path(registry_path),
         "protocol_markdown_path": protocol_path,
+        "handoff_markdown_path": handoff_path,
         "readiness_json_path": readiness_json,
         "readiness_markdown_path": readiness_markdown,
+        "registration_validation_json_path": registration_validation_json,
+        "registration_validation_markdown_path": registration_validation_markdown,
+        "registration_validation": registration_validation,
         "readiness": readiness,
     }

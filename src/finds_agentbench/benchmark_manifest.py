@@ -376,7 +376,12 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ],
                     ["Registry", external_agents["registry_path"]],
                     ["Protocol", external_agents["protocol_markdown_path"]],
+                    ["External Agent Handoff", external_agents["handoff_markdown_path"]],
                     ["Readiness Report", external_agents["readiness_markdown_path"]],
+                    [
+                        "Registration Validation",
+                        external_agents["registration_validation_markdown_path"],
+                    ],
                 ],
             ).strip(),
             "",
@@ -489,8 +494,18 @@ def build_benchmark_manifest(
         "external_agents": {
             "registry_path": EXTERNAL_AGENT_REGISTRY_PATH,
             "protocol_markdown_path": str(external_agent_artifacts["protocol_markdown_path"]),
+            "handoff_markdown_path": str(external_agent_artifacts["handoff_markdown_path"]),
             "readiness_json_path": str(external_agent_artifacts["readiness_json_path"]),
             "readiness_markdown_path": str(external_agent_artifacts["readiness_markdown_path"]),
+            "registration_validation_json_path": str(
+                external_agent_artifacts["registration_validation_json_path"]
+            ),
+            "registration_validation_markdown_path": str(
+                external_agent_artifacts["registration_validation_markdown_path"]
+            ),
+            "registration_validation_status": external_agent_artifacts["registration_validation"][
+                "status"
+            ],
             "readiness_status": external_agent_artifacts["readiness"]["status"],
             "ready_for_external_agent_claims": external_agent_artifacts["readiness"][
                 "ready_for_external_agent_claims"

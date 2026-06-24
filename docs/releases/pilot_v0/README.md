@@ -76,7 +76,9 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | External Task Coverage | 0 / 8 |
 | Registry | agents/external_agent_registry.yaml |
 | Protocol | docs/releases/pilot_v0/external_agent_protocol.md |
+| External Agent Handoff | agents/external_agent_handoff.md |
 | Readiness Report | docs/releases/pilot_v0/external_agent_readiness.md |
+| Registration Validation | docs/releases/pilot_v0/external_agent_registration_validation.md |
 
 ## Manual Audit
 

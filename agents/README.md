@@ -7,6 +7,12 @@ The generated external-agent submission contract is tracked in
 registry that distinguishes bundled reference agents from independent external
 submissions is `agents/external_agent_registry.yaml`.
 
+For non-author external agents:
+
+- start from `agents/external_agent_handoff.md`;
+- copy `agents/external_agent_registration_template.yaml` into `external_agent_configurations`;
+- validate the registry evidence with `PYTHONPATH=src python scripts/validate_external_agent_registry.py`.
+
 Every agent run should record:
 
 - model and agent framework;

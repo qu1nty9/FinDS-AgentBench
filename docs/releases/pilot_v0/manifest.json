@@ -13,6 +13,7 @@
     "expected_task_count": 8,
     "external_agent_configuration_count": 0,
     "external_task_coverage_count": 0,
+    "handoff_markdown_path": "agents/external_agent_handoff.md",
     "missing_external_task_ids": [
       "front_end_spread_widening_v0",
       "synthetic_event_response_v0",
@@ -28,6 +29,9 @@
     "readiness_markdown_path": "docs/releases/pilot_v0/external_agent_readiness.md",
     "readiness_status": "not_ready_no_external_agents",
     "ready_for_external_agent_claims": false,
+    "registration_validation_json_path": "docs/releases/pilot_v0/external_agent_registration_validation.json",
+    "registration_validation_markdown_path": "docs/releases/pilot_v0/external_agent_registration_validation.md",
+    "registration_validation_status": "no_external_agent_registered",
     "registry_path": "agents/external_agent_registry.yaml"
   },
   "manual_audit": {

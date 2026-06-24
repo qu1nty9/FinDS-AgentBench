@@ -44,9 +44,18 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
         manifest["external_agents"]["protocol_markdown_path"]
         == str(output_root / "external_agent_protocol.md")
     )
+    assert manifest["external_agents"]["handoff_markdown_path"] == "agents/external_agent_handoff.md"
     assert (
         manifest["external_agents"]["readiness_markdown_path"]
         == str(output_root / "external_agent_readiness.md")
+    )
+    assert (
+        manifest["external_agents"]["registration_validation_markdown_path"]
+        == "docs/releases/pilot_v0/external_agent_registration_validation.md"
+    )
+    assert (
+        manifest["external_agents"]["registration_validation_status"]
+        == "no_external_agent_registered"
     )
     assert manifest["external_agents"]["readiness_status"] == "not_ready_no_external_agents"
     assert manifest["external_agents"]["ready_for_external_agent_claims"] is False
@@ -191,7 +200,9 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert "paper_artifacts/README.md" in readme
     assert "statistical_artifacts/README.md" in readme
     assert "External Agent Protocol" in readme
+    assert "External Agent Handoff" in readme
     assert "External Agent Readiness" in readme
+    assert "Registration Validation" in readme
     assert "Submission Readiness" in readme
     assert "not_ready_no_external_agents" in readme
     assert "not_ready_for_workshop_submission" in readme
