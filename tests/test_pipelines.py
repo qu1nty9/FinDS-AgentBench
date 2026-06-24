@@ -7,7 +7,6 @@ from finds_agentbench.pipelines import (
     AgentSuiteResult,
     BaselineSuiteResult,
     run_front_end_spread_widening_v0_agent_command,
-    run_front_end_spread_widening_v0_agent_command_suite,
     run_front_end_spread_widening_v0_baseline_suite,
     run_front_end_spread_widening_v0_random_forest_pipeline,
     run_pilot_agent_suite,
