@@ -117,7 +117,13 @@ Acceptance criteria:
 ## Immediate Next Steps
 
 1. Fill an independent second-reviewer packet from `audits/pilot_v0/reviews/reviewer_2_blank_template.csv`, rebuild the agreement report, and adjudicate disagreements back into the canonical subset.
-2. Fill `audits/methodology_calibration/reviews/calibration_review_packet.csv`, then fold confirmed false-positive / false-negative cases back into the heuristic set and severity policy.
-3. Add at least one stronger external agent beyond environment-wrapped baseline logic.
-4. Push past the current 7 predictive/event runnable tasks plus the leakage-audit task toward the upper half of the 8-12 task workshop pilot range.
-5. Freeze a stage-ready benchmark snapshot only after the stronger agent, independent second review packet, and larger pilot task set are in place.
+2. Add at least one stronger external agent beyond environment-wrapped baseline logic.
+3. Audit the generated related-work citations, add any venue-specific neighboring benchmarks, and tighten the positioning narrative.
+4. Expand qualitative examples after independent second-reviewer adjudication.
+5. Freeze a stage-ready benchmark snapshot only after the stronger agent, independent second review packet, and release-readiness gates are in place.
+
+## Recently Completed
+
+- Completed `audits/methodology_calibration/reviews/calibration_review_packet.csv` as an author calibration review and rebuilt the methodology calibration summary.
+- Added preservation of completed methodology-calibration review annotations during workflow rebuilds.
+- Closed the methodology-calibration submission-readiness gate; remaining workshop blockers are independent manual-audit review, external-agent evidence, and final release tag/archive.

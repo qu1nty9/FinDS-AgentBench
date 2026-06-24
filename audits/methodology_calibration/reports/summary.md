@@ -1,20 +1,22 @@
 # Methodology Calibration Summary
 
-- Corpus entry count: `101`
+- Corpus entry count: `116`
 - Flagged entry count: `4`
-- Clean entry count: `97`
+- Clean entry count: `112`
 - Total methodology findings: `5`
-- Scanned files: `617`
-- Skipped files: `97`
-- Clean-control review rows: `14`
+- Scanned files: `713`
+- Skipped files: `112`
+- Clean-control review rows: `16`
+- Review packet status: `complete`
+- Completed review rows: `21 / 21`
 
 ## Corpus Coverage
 
 | Corpus | Entries | Flagged | Clean | Findings |
 | --- | --- | --- | --- | --- |
 | curated_fixtures | 4 | 4 | 0 | 5 |
-| pilot_agents | 21 | 0 | 21 | 0 |
-| pilot_baselines | 76 | 0 | 76 | 0 |
+| pilot_agents | 24 | 0 | 24 | 0 |
+| pilot_baselines | 88 | 0 | 88 | 0 |
 
 ## Task Coverage
 
@@ -26,6 +28,7 @@
 | usd_afe_vs_eme_relative_direction_v0 | 15 | 0 | 15 | 0 |
 | usd_broad_direction_v0 | 15 | 0 | 15 | 0 |
 | yield_curve_10y2y_steepening_v0 | 15 | 0 | 15 | 0 |
+| yield_curve_10y3mo_steepening_v0 | 15 | 0 | 15 | 0 |
 | yield_direction_treasury10y_v0 | 20 | 1 | 19 | 1 |
 
 ## Rule Counts
@@ -55,6 +58,17 @@
 | front_end_forward_merge_asof_positive | front_end_spread_widening_v0 | true_positive | 1 | forward_merge_asof_direction | - |
 | treasury_forbidden_target_feature_positive | yield_direction_treasury10y_v0 | true_positive | 1 | task_forbidden_feature_reference__next_day_change_bp | - |
 
+## Review Packet Completion
+
+- Status: `complete`
+- Completed rows: `21 / 21`
+- Invalid decision rows: `0`
+
+| Decision | Count |
+| --- | --- |
+| true_negative | 16 |
+| true_positive | 5 |
+
 ## Next Review Action
 
-Fill `audits/methodology_calibration/reviews/calibration_review_packet.csv` to label finding rows as true or false positives and clean-control rows as true or false negatives.
+The methodology calibration review packet is complete. Fold any confirmed false positives or false negatives back into the heuristic set and severity policy before broadening the corpus.

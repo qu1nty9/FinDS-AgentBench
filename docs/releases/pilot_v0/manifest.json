@@ -187,20 +187,19 @@
   "runnable_task_count": 9,
   "statistical_artifacts_path": "docs/releases/pilot_v0/statistical_artifacts/README.md",
   "submission_readiness": {
-    "blocking_gate_count": 4,
+    "blocking_gate_count": 3,
     "blocking_items": [
       "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
       "Rebuild official agreement reporting after an independent completed packet is available.",
       "Register and run at least one non-author external agent configuration through the pilot harness.",
       "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
-      "Complete audits/methodology_calibration/reviews/calibration_review_packet.csv and rebuild the methodology calibration workflow.",
       "Create a release tag and archive the release artifact bundle after the remaining gates pass."
     ],
     "gate_count": 6,
     "json_path": "docs/releases/pilot_v0/submission_readiness.json",
     "markdown_path": "docs/releases/pilot_v0/submission_readiness.md",
     "ready_for_workshop_submission": false,
-    "ready_gate_count": 2,
+    "ready_gate_count": 3,
     "status": "not_ready_for_workshop_submission"
   },
   "task_count": 9,

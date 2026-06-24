@@ -40,9 +40,16 @@ def methodology_review_ready(review_rows: list[dict[str, str]]) -> bool:
     if not review_rows:
         return False
     for row in review_rows:
+        review_type = str(row.get("review_type", "")).strip()
         status = str(row.get("review_status", "")).strip()
         decision = str(row.get("review_decision", "")).strip()
-        if status != "complete" or not decision:
+        if review_type == "finding_review":
+            valid_decisions = {"true_positive", "false_positive"}
+        elif review_type == "clean_control_review":
+            valid_decisions = {"true_negative", "false_negative"}
+        else:
+            valid_decisions = set()
+        if status != "complete" or decision not in valid_decisions:
             return False
     return True
 

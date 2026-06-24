@@ -56,6 +56,12 @@ def main() -> int:
     print(f"entry_count: {result['summary']['counts']['entry_count']}")
     print(f"finding_count: {result['summary']['counts']['finding_count']}")
     print(f"clean_control_rows: {result['summary']['review_packet']['clean_control_row_count']}")
+    print(f"review_packet_status: {result['summary']['review_packet']['completion']['status']}")
+    print(
+        "review_packet_completed_rows: "
+        f"{result['summary']['review_packet']['completion']['completed_row_count']}/"
+        f"{result['summary']['review_packet']['row_count']}"
+    )
     return 0
 
 

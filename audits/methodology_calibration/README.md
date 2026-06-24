@@ -15,6 +15,16 @@ The workflow serves two purposes:
 - `reports/summary.json`: machine-readable calibration summary.
 - `reports/summary.md`: human-readable calibration summary.
 
+## Current Review State
+
+The current calibration review packet is complete as an author calibration review:
+
+- 5 curated-fixture findings are labeled `true_positive`;
+- 16 clean-control rows are labeled `true_negative`;
+- 0 false positives and 0 false negatives are currently confirmed in the calibration corpus.
+
+This review closes the internal methodology-calibration gate. It does not replace the independent manual-audit reviewer packet required for submission-strength audit agreement claims.
+
 ## Current Design
 
 The calibration corpus combines:
@@ -35,3 +45,5 @@ After rebuilding, fill `reviews/calibration_review_packet.csv`:
 - mark finding rows as `true_positive` or `false_positive`;
 - mark clean-control rows as `true_negative` or `false_negative`;
 - record reviewer notes for any heuristic miss or unjustified warning.
+
+The rebuild preserves existing review annotations by `review_case_id`, so completed decisions should survive routine corpus refreshes.

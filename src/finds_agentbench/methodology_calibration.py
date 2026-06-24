@@ -12,6 +12,10 @@ from finds_agentbench.methodology import methodology_rules_for_task, scan_submis
 from finds_agentbench.runs import load_run_manifest
 
 
+REVIEW_ANNOTATION_FIELDS = ("review_status", "review_decision", "review_notes")
+FINDING_REVIEW_DECISIONS = ("true_positive", "false_positive")
+CLEAN_CONTROL_REVIEW_DECISIONS = ("true_negative", "false_negative")
+
 DEFAULT_METHODOLOGY_CALIBRATION_ROOT = Path("audits/methodology_calibration")
 DEFAULT_METHODOLOGY_CALIBRATION_CONFIG_PATH = DEFAULT_METHODOLOGY_CALIBRATION_ROOT / "corpus.yaml"
 DEFAULT_METHODOLOGY_CALIBRATION_REVIEWS_DIR = DEFAULT_METHODOLOGY_CALIBRATION_ROOT / "reviews"
@@ -561,10 +565,104 @@ def write_review_packet_csv(rows: list[dict[str, Any]], output_path: str | Path)
         "review_notes",
     ]
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     return path
+
+
+def load_existing_review_annotations(path: str | Path) -> dict[str, dict[str, str]]:
+    review_path = Path(path)
+    if not review_path.exists():
+        return {}
+
+    annotations: dict[str, dict[str, str]] = {}
+    with review_path.open("r", encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            case_id = str(row.get("review_case_id", "")).strip()
+            if not case_id:
+                continue
+            annotation = {
+                field: str(row.get(field, "") or "").strip()
+                for field in REVIEW_ANNOTATION_FIELDS
+            }
+            if any(annotation.values()):
+                annotations[case_id] = annotation
+    return annotations
+
+
+def apply_existing_review_annotations(
+    rows: list[dict[str, Any]],
+    annotations: dict[str, dict[str, str]],
+) -> list[dict[str, Any]]:
+    if not annotations:
+        return rows
+
+    annotated_rows: list[dict[str, Any]] = []
+    for row in rows:
+        next_row = dict(row)
+        case_id = str(next_row.get("review_case_id", "")).strip()
+        annotation = annotations.get(case_id)
+        if annotation:
+            for field in REVIEW_ANNOTATION_FIELDS:
+                next_row[field] = annotation.get(field, "")
+        annotated_rows.append(next_row)
+    return annotated_rows
+
+
+def valid_review_decisions_for_row(row: dict[str, Any]) -> tuple[str, ...]:
+    review_type = str(row.get("review_type", "")).strip()
+    if review_type == "finding_review":
+        return FINDING_REVIEW_DECISIONS
+    if review_type == "clean_control_review":
+        return CLEAN_CONTROL_REVIEW_DECISIONS
+    return ()
+
+
+def summarize_review_packet_completion(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    completed_row_count = 0
+    invalid_decision_rows: list[str] = []
+    decision_counts: dict[str, int] = defaultdict(int)
+
+    for row in rows:
+        case_id = str(row.get("review_case_id", "")).strip()
+        status = str(row.get("review_status", "")).strip()
+        decision = str(row.get("review_decision", "")).strip()
+        valid_decisions = valid_review_decisions_for_row(row)
+        if decision:
+            decision_counts[decision] += 1
+        if status == "complete" and decision in valid_decisions:
+            completed_row_count += 1
+        elif status != "template" or decision:
+            invalid_decision_rows.append(case_id)
+
+    row_count = len(rows)
+    complete = row_count > 0 and completed_row_count == row_count and not invalid_decision_rows
+    if complete:
+        status = "complete"
+        blocking_items: list[str] = []
+    else:
+        status = "incomplete"
+        blocking_items = [
+            "Complete every methodology calibration review row with a valid decision."
+        ]
+        if invalid_decision_rows:
+            blocking_items.append(
+                "Fix invalid methodology calibration review decisions for: "
+                + ", ".join(invalid_decision_rows)
+            )
+
+    return {
+        "status": status,
+        "complete": complete,
+        "row_count": row_count,
+        "completed_row_count": completed_row_count,
+        "incomplete_row_count": row_count - completed_row_count,
+        "invalid_decision_row_count": len(invalid_decision_rows),
+        "invalid_decision_rows": invalid_decision_rows,
+        "decision_counts": dict(sorted(decision_counts.items())),
+        "blocking_items": blocking_items,
+    }
 
 
 def render_methodology_calibration_summary_markdown(summary: dict[str, Any]) -> str:
@@ -578,6 +676,12 @@ def render_methodology_calibration_summary_markdown(summary: dict[str, Any]) -> 
         f"- Scanned files: `{summary['counts']['scanned_file_count']}`",
         f"- Skipped files: `{summary['counts']['skipped_file_count']}`",
         f"- Clean-control review rows: `{summary['review_packet']['clean_control_row_count']}`",
+        f"- Review packet status: `{summary['review_packet']['completion']['status']}`",
+        (
+            f"- Completed review rows: "
+            f"`{summary['review_packet']['completion']['completed_row_count']} / "
+            f"{summary['review_packet']['row_count']}`"
+        ),
         "",
     ]
 
@@ -685,14 +789,43 @@ def render_methodology_calibration_summary_markdown(summary: dict[str, Any]) -> 
             ]
         )
 
+    lines.extend(["## Review Packet Completion", ""])
+    completion = summary["review_packet"]["completion"]
+    decision_rows = [
+        [decision, count]
+        for decision, count in completion["decision_counts"].items()
+    ]
     lines.extend(
         [
-            "## Next Review Action",
-            "",
-            "Fill `audits/methodology_calibration/reviews/calibration_review_packet.csv` to label finding rows as true or false positives and clean-control rows as true or false negatives.",
+            f"- Status: `{completion['status']}`",
+            f"- Completed rows: `{completion['completed_row_count']} / {completion['row_count']}`",
+            f"- Invalid decision rows: `{completion['invalid_decision_row_count']}`",
             "",
         ]
     )
+    if decision_rows:
+        lines.extend(
+            [
+                markdown_table(["Decision", "Count"], decision_rows),
+                "",
+            ]
+        )
+
+    lines.extend(["## Next Review Action", ""])
+    if completion["complete"]:
+        lines.extend(
+            [
+                "The methodology calibration review packet is complete. Fold any confirmed false positives or false negatives back into the heuristic set and severity policy before broadening the corpus.",
+                "",
+            ]
+        )
+    else:
+        lines.extend(
+            [
+                "Fill `audits/methodology_calibration/reviews/calibration_review_packet.csv` to label finding rows as true or false positives and clean-control rows as true or false negatives.",
+                "",
+            ]
+        )
     return "\n".join(lines)
 
 
@@ -723,10 +856,15 @@ def build_methodology_calibration_workflow(
     scans = scan_methodology_calibration_entries(entries, tasks_root=tasks_root_path)
     counts = summarize_counts(scans, workspace_root=workspace_root_path)
     fixture_evaluation = evaluate_fixture_expectations(scans, workspace_root=workspace_root_path)
-    review_packet_rows = build_methodology_calibration_review_packet_rows(
+    generated_review_packet_rows = build_methodology_calibration_review_packet_rows(
         scans,
         workspace_root=workspace_root_path,
         clean_control_per_group=clean_control_per_group,
+    )
+    existing_annotations = load_existing_review_annotations(review_packet_path)
+    review_packet_rows = apply_existing_review_annotations(
+        generated_review_packet_rows,
+        existing_annotations,
     )
     review_packet = {
         "row_count": len(review_packet_rows),
@@ -734,6 +872,12 @@ def build_methodology_calibration_workflow(
         "clean_control_row_count": sum(
             1 for row in review_packet_rows if row["review_type"] == "clean_control_review"
         ),
+        "preserved_review_annotation_count": sum(
+            1
+            for row in review_packet_rows
+            if str(row.get("review_case_id", "")).strip() in existing_annotations
+        ),
+        "completion": summarize_review_packet_completion(review_packet_rows),
     }
     summary = {
         "config_path": relative_to_workspace(config_file, workspace_root_path),

@@ -1,13 +1,12 @@
 {
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
-  "blocking_gate_count": 4,
+  "blocking_gate_count": 3,
   "blocking_items": [
     "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
     "Rebuild official agreement reporting after an independent completed packet is available.",
     "Register and run at least one non-author external agent configuration through the pilot harness.",
     "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
-    "Complete audits/methodology_calibration/reviews/calibration_review_packet.csv and rebuild the methodology calibration workflow.",
     "Create a release tag and archive the release artifact bundle after the remaining gates pass."
   ],
   "gate_count": 6,
@@ -65,19 +64,17 @@
       "title": "External Agent Evidence"
     },
     {
-      "blockers": [
-        "Complete audits/methodology_calibration/reviews/calibration_review_packet.csv and rebuild the methodology calibration workflow."
-      ],
+      "blockers": [],
       "evidence": {
-        "clean_control_row_count": 14,
+        "clean_control_row_count": 16,
         "finding_row_count": 5,
         "fixture_true_positives": 4,
-        "review_packet_row_count": 19,
-        "scanned_file_count": 617
+        "review_packet_row_count": 21,
+        "scanned_file_count": 713
       },
       "gate_id": "methodology_calibration_review",
-      "ready": false,
-      "status": "not_ready_template_review_packet",
+      "ready": true,
+      "status": "ready",
       "title": "Methodology Calibration Review"
     },
     {
@@ -95,7 +92,7 @@
     }
   ],
   "ready_for_workshop_submission": false,
-  "ready_gate_count": 2,
+  "ready_gate_count": 3,
   "release_stage": "pilot",
   "status": "not_ready_for_workshop_submission"
 }

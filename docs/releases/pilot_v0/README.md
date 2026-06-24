@@ -60,8 +60,8 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | --- | --- |
 | Status | not_ready_for_workshop_submission |
 | Ready for Workshop Submission | no |
-| Ready Gates | 2 / 6 |
-| Blocking Gates | 4 |
+| Ready Gates | 3 / 6 |
+| Blocking Gates | 3 |
 | Report | docs/releases/pilot_v0/submission_readiness.md |
 
 ## External Agents

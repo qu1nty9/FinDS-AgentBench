@@ -55,9 +55,9 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
         "submission_readiness": {
             "status": "not_ready_for_workshop_submission",
             "ready_for_workshop_submission": False,
-            "ready_gate_count": 2,
+            "ready_gate_count": 3,
             "gate_count": 6,
-            "blocking_gate_count": 4,
+            "blocking_gate_count": 3,
         },
         "release_build_command": "PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3",
     }

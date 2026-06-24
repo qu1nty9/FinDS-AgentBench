@@ -3,8 +3,16 @@ from finds_agentbench.submission_readiness import build_submission_readiness_rep
 
 def complete_review_rows() -> list[dict[str, str]]:
     return [
-        {"review_status": "complete", "review_decision": "true_positive"},
-        {"review_status": "complete", "review_decision": "true_negative"},
+        {
+            "review_type": "finding_review",
+            "review_status": "complete",
+            "review_decision": "true_positive",
+        },
+        {
+            "review_type": "clean_control_review",
+            "review_status": "complete",
+            "review_decision": "true_negative",
+        },
     ]
 
 

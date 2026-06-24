@@ -32,7 +32,7 @@ This checklist tracks work that should be complete before treating the workshop 
 - External-agent readiness status: `not_ready_no_external_agents`.
 - Completed external agent configurations: `0`.
 - Submission readiness status: `not_ready_for_workshop_submission`.
-- Submission gates ready: `2 / 6`.
+- Submission gates ready: `3 / 6`.
 - Pilot repeated-run count is small; statistical claims must remain caveated.
 - Bundled example agents should not be framed as a comprehensive model leaderboard.
 

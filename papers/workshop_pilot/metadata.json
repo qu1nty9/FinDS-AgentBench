@@ -40,10 +40,10 @@
     3
   ],
   "runnable_task_count": 9,
-  "submission_blocking_gate_count": 4,
+  "submission_blocking_gate_count": 3,
   "submission_gate_count": 6,
   "submission_readiness_status": "not_ready_for_workshop_submission",
-  "submission_ready_gate_count": 2,
+  "submission_ready_gate_count": 3,
   "task_count": 9,
   "track_count": 3,
   "track_names": [

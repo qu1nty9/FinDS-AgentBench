@@ -220,6 +220,8 @@ def test_build_methodology_calibration_workflow_writes_summary_and_review_packet
     assert summary["fixture_evaluation"]["false_negative_count"] == 0
     assert summary["review_packet"]["finding_row_count"] == 1
     assert summary["review_packet"]["clean_control_row_count"] == 1
+    assert summary["review_packet"]["completion"]["status"] == "incomplete"
+    assert summary["review_packet"]["completion"]["completed_row_count"] == 0
 
     with result["review_packet_path"].open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
@@ -235,3 +237,78 @@ def test_build_methodology_calibration_workflow_writes_summary_and_review_packet
     assert "Methodology Calibration Summary" in result["summary_markdown_path"].read_text(
         encoding="utf-8"
     )
+
+
+def test_methodology_calibration_workflow_preserves_completed_review_annotations(
+    tmp_path: Path,
+):
+    workspace_root = tmp_path
+    tasks_root = workspace_root / "tasks" / "pilot"
+    write_task_spec(
+        tasks_root / "front_end_spread_widening_v0.yaml",
+        target_name="next_day_front_end_widening",
+        horizon="1 business day",
+        forbidden_columns=["next_day_front_end_change_bp"],
+    )
+    run_root = workspace_root / "runs" / "suites" / "pilot_baselines_v0"
+    write_run_submission(
+        workspace_root,
+        run_root=run_root,
+        task_id="front_end_spread_widening_v0",
+        agent_id="clean_baseline",
+        run_label="run_001",
+    )
+    fixture_dir = workspace_root / "audits" / "methodology_calibration" / "fixtures" / "future_join"
+    fixture_dir.mkdir(parents=True, exist_ok=True)
+    (fixture_dir / "model.py").write_text(
+        'joined = features.merge(next_day_policy_frame, on="date", how="left")\n',
+        encoding="utf-8",
+    )
+    config_path = workspace_root / "audits" / "methodology_calibration" / "corpus.yaml"
+    write_config(config_path, run_root, fixture_dir)
+    review_packet_path = (
+        workspace_root / "audits" / "methodology_calibration" / "reviews" / "calibration_review_packet.csv"
+    )
+    summary_json_path = workspace_root / "audits" / "methodology_calibration" / "reports" / "summary.json"
+    summary_markdown_path = workspace_root / "audits" / "methodology_calibration" / "reports" / "summary.md"
+
+    first_result = build_methodology_calibration_workflow(
+        config_path=config_path,
+        tasks_root=tasks_root,
+        review_packet_path=review_packet_path,
+        summary_json_path=summary_json_path,
+        summary_markdown_path=summary_markdown_path,
+        clean_control_per_group=1,
+        workspace_root=workspace_root,
+    )
+
+    with first_result["review_packet_path"].open("r", encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+        fieldnames = list(rows[0].keys())
+    for row in rows:
+        row["review_status"] = "complete"
+        row["review_decision"] = (
+            "true_positive" if row["review_type"] == "finding_review" else "true_negative"
+        )
+        row["review_notes"] = "Preserved calibration decision."
+    with first_result["review_packet_path"].open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    second_result = build_methodology_calibration_workflow(
+        config_path=config_path,
+        tasks_root=tasks_root,
+        review_packet_path=review_packet_path,
+        summary_json_path=summary_json_path,
+        summary_markdown_path=summary_markdown_path,
+        clean_control_per_group=1,
+        workspace_root=workspace_root,
+    )
+
+    assert second_result["summary"]["review_packet"]["preserved_review_annotation_count"] == 2
+    assert second_result["summary"]["review_packet"]["completion"]["status"] == "complete"
+    assert second_result["summary"]["review_packet"]["completion"]["completed_row_count"] == 2
+    with second_result["review_packet_path"].open("r", encoding="utf-8", newline="") as handle:
+        rebuilt_rows = list(csv.DictReader(handle))
+    assert {row["review_notes"] for row in rebuilt_rows} == {"Preserved calibration decision."}

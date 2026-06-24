@@ -69,10 +69,14 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert manifest["submission_readiness"]["status"] == "not_ready_for_workshop_submission"
     assert manifest["submission_readiness"]["ready_for_workshop_submission"] is False
     assert manifest["submission_readiness"]["gate_count"] == 6
-    assert manifest["submission_readiness"]["ready_gate_count"] == 2
-    assert manifest["submission_readiness"]["blocking_gate_count"] == 4
+    assert manifest["submission_readiness"]["ready_gate_count"] == 3
+    assert manifest["submission_readiness"]["blocking_gate_count"] == 3
     assert any(
         "Complete at least one independent reviewer packet" in item
+        for item in manifest["submission_readiness"]["blocking_items"]
+    )
+    assert not any(
+        "methodology calibration" in item.lower()
         for item in manifest["submission_readiness"]["blocking_items"]
     )
     assert manifest["manual_audit"]["rubric_path"] == "audits/pilot_v0/manual_audit_rubric.yaml"
