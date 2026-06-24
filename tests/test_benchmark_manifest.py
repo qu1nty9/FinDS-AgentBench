@@ -39,6 +39,18 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
         manifest["statistical_artifacts_path"]
         == "docs/releases/pilot_v0/statistical_artifacts/README.md"
     )
+    assert (
+        manifest["release_archive_path"]
+        == "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz"
+    )
+    assert (
+        manifest["release_archive_manifest_json_path"]
+        == "docs/releases/pilot_v0/archive_manifest.json"
+    )
+    assert (
+        manifest["release_archive_manifest_markdown_path"]
+        == "docs/releases/pilot_v0/archive_manifest.md"
+    )
     assert manifest["external_agents"]["registry_path"] == "agents/external_agent_registry.yaml"
     assert (
         manifest["external_agents"]["protocol_markdown_path"]

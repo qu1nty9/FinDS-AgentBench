@@ -16,6 +16,7 @@ data/private/*
 runs/*
 reports/generated/*
 reports/release_runs/*
+dist/*
 tmp/*
 
 # Keep directory docs/placeholders

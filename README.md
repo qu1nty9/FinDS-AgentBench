@@ -73,6 +73,14 @@ PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py \
 
 This builds the pilot release twice on isolated roots and compares deterministic publication-facing outputs: suite summaries, reference results, paper artifacts, statistical artifacts, benchmark manifest, task cards, and public data manifests.
 
+The pilot release candidate can be packaged as a deterministic archive with file-level checksums:
+
+```bash
+PYTHONPATH=src python scripts/build_release_archive.py
+```
+
+This writes a generated archive under `dist/release_archives/` and records the archive checksum and per-file SHA256 manifest in `docs/releases/pilot_v0/archive_manifest.json` and `docs/releases/pilot_v0/archive_manifest.md`. The archive remains marked as a candidate until the independent-review, external-agent, and final tag gates pass.
+
 If only the manifest/cards/data indexes need to be refreshed, the canonical pilot release manifest can be built with:
 
 ```bash

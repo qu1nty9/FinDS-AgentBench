@@ -31,6 +31,11 @@ EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH = (
 )
 SUBMISSION_READINESS_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_readiness.json"
 SUBMISSION_READINESS_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_readiness.md"
+RELEASE_ARCHIVE_PATH = (
+    f"dist/release_archives/{BENCHMARK_ID}-{BENCHMARK_VERSION}-{RELEASE_STAGE}.tar.gz"
+)
+RELEASE_ARCHIVE_MANIFEST_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/archive_manifest.json"
+RELEASE_ARCHIVE_MANIFEST_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/archive_manifest.md"
 
 TASK_RELEASE_METADATA: dict[str, dict[str, Any]] = {
     "leakage_audit_temporal_split_v0": {
@@ -306,6 +311,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Reference Results", "reference_results.md"],
                     ["Paper Artifacts", "paper_artifacts/README.md"],
                     ["Statistical Artifacts", "statistical_artifacts/README.md"],
+                    ["Release Archive Manifest", "archive_manifest.md"],
                     ["Manual Audit", manual_audit["readme_path"]],
                     ["Agreement Report", manual_audit["agreement_report_markdown_path"]],
                     ["Adjudication Queue", manual_audit["adjudication_report_markdown_path"]],
@@ -503,6 +509,9 @@ def build_benchmark_manifest(
         "reference_results_path": f"{PILOT_RELEASE_DOCS_ROOT}/reference_results.md",
         "paper_artifacts_path": f"{PILOT_RELEASE_DOCS_ROOT}/paper_artifacts/README.md",
         "statistical_artifacts_path": f"{PILOT_RELEASE_DOCS_ROOT}/statistical_artifacts/README.md",
+        "release_archive_path": RELEASE_ARCHIVE_PATH,
+        "release_archive_manifest_json_path": RELEASE_ARCHIVE_MANIFEST_JSON_PATH,
+        "release_archive_manifest_markdown_path": RELEASE_ARCHIVE_MANIFEST_MARKDOWN_PATH,
         "external_agents": {
             "registry_path": EXTERNAL_AGENT_REGISTRY_PATH,
             "protocol_markdown_path": EXTERNAL_AGENT_PROTOCOL_MARKDOWN_PATH,

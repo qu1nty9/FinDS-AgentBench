@@ -127,3 +127,4 @@ Acceptance criteria:
 - Completed `audits/methodology_calibration/reviews/calibration_review_packet.csv` as an author calibration review and rebuilt the methodology calibration summary.
 - Added preservation of completed methodology-calibration review annotations during workflow rebuilds.
 - Closed the methodology-calibration submission-readiness gate; remaining workshop blockers are independent manual-audit review, external-agent evidence, and final release tag/archive.
+- Added deterministic release-archive tooling with archive-level and file-level SHA256 manifests; final archive/tag readiness still waits on the independent-review and external-agent gates.

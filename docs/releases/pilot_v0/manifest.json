@@ -189,6 +189,9 @@
     }
   ],
   "reference_results_path": "docs/releases/pilot_v0/reference_results.md",
+  "release_archive_manifest_json_path": "docs/releases/pilot_v0/archive_manifest.json",
+  "release_archive_manifest_markdown_path": "docs/releases/pilot_v0/archive_manifest.md",
+  "release_archive_path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
   "release_build_command": "PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-outputs",
   "release_stage": "pilot",
   "runnable_task_count": 9,
