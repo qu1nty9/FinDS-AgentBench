@@ -99,6 +99,7 @@ def summarize_reference_results(
     )
     manual_audit = manifest["manual_audit"]
     external_agents = manifest.get("external_agents", {})
+    submission_readiness = manifest.get("submission_readiness", {})
     return {
         "benchmark_id": manifest["benchmark_id"],
         "benchmark_version": manifest["benchmark_version"],
@@ -147,6 +148,13 @@ def summarize_reference_results(
             external_agents.get("completed_external_agent_configuration_count", 0)
         ),
         "external_agent_blocking_items": external_agents.get("blocking_items", []),
+        "submission_readiness_status": submission_readiness.get("status", "unknown"),
+        "ready_for_workshop_submission": bool(
+            submission_readiness.get("ready_for_workshop_submission", False)
+        ),
+        "submission_ready_gate_count": int(submission_readiness.get("ready_gate_count", 0)),
+        "submission_gate_count": int(submission_readiness.get("gate_count", 0)),
+        "submission_blocking_gate_count": int(submission_readiness.get("blocking_gate_count", 0)),
         "agreement_status": manual_audit["agreement_status"],
         "exploratory_agreement_status": manual_audit["exploratory_agreement_status"],
         "release_build_command": manifest["release_build_command"],
@@ -495,6 +503,7 @@ def render_readme(summary: dict[str, Any]) -> str:
             f"| Overall Tie Cases | {summary['overall_tie_count']} |",
             f"| Reviewer Readiness | {summary['reviewer_readiness_status']} |",
             f"| External Agent Readiness | {summary['external_agent_readiness_status']} |",
+            f"| Submission Readiness | {summary['submission_readiness_status']} |",
             "",
             "## Build",
             "",
@@ -526,6 +535,7 @@ def render_submission_checklist(summary: dict[str, Any]) -> str:
             "- Seed manual-audit rubric and adjudication workflow.",
             "- Reviewer-readiness report that separates seed-only audit status from submission-strength agreement claims.",
             "- External-agent protocol and readiness report that separate bundled reference agents from independent external-agent evidence.",
+            "- Unified submission-readiness gate for the workshop manuscript.",
             "- Generated qualitative failure examples with exact task/run/artifact references.",
             "",
             "## Required Before Submission",
@@ -545,6 +555,11 @@ def render_submission_checklist(summary: dict[str, Any]) -> str:
             f"- Independent agreement status: `{summary['agreement_status']}`.",
             f"- External-agent readiness status: `{summary['external_agent_readiness_status']}`.",
             f"- Completed external agent configurations: `{summary['completed_external_agent_configuration_count']}`.",
+            f"- Submission readiness status: `{summary['submission_readiness_status']}`.",
+            (
+                f"- Submission gates ready: `{summary['submission_ready_gate_count']} / "
+                f"{summary['submission_gate_count']}`."
+            ),
             "- Pilot repeated-run count is small; statistical claims must remain caveated.",
             "- Bundled example agents should not be framed as a comprehensive model leaderboard.",
             "",

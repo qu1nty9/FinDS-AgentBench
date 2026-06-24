@@ -22,6 +22,7 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | Reviewer Readiness | audits/pilot_v0/reports/reviewer_readiness.md |
 | External Agent Protocol | docs/releases/pilot_v0/external_agent_protocol.md |
 | External Agent Readiness | docs/releases/pilot_v0/external_agent_readiness.md |
+| Submission Readiness | docs/releases/pilot_v0/submission_readiness.md |
 
 ## Tracks
 
@@ -52,6 +53,16 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | pilot_baseline_suite | baseline | synthetic_market_direction_v0, synthetic_event_response_v0, yield_direction_treasury10y_v0, yield_curve_10y2y_steepening_v0, yield_curve_10y3mo_steepening_v0, front_end_spread_widening_v0, usd_broad_direction_v0, usd_afe_vs_eme_relative_direction_v0 | runs/suites/pilot_baselines_v0 | active |
 | pilot_agent_suite | agent | synthetic_market_direction_v0, synthetic_event_response_v0, yield_direction_treasury10y_v0, yield_curve_10y2y_steepening_v0, yield_curve_10y3mo_steepening_v0, front_end_spread_widening_v0, usd_broad_direction_v0, usd_afe_vs_eme_relative_direction_v0 | runs/suites/pilot_agents_v0 | active |
 | pilot_protocol | baseline, agent | synthetic_market_direction_v0, synthetic_event_response_v0, yield_direction_treasury10y_v0, yield_curve_10y2y_steepening_v0, yield_curve_10y3mo_steepening_v0, front_end_spread_widening_v0, usd_broad_direction_v0, usd_afe_vs_eme_relative_direction_v0 | runs/suites/pilot_protocol_v0 | active |
+
+## Submission Readiness
+
+| Field | Value |
+| --- | --- |
+| Status | not_ready_for_workshop_submission |
+| Ready for Workshop Submission | no |
+| Ready Gates | 2 / 6 |
+| Blocking Gates | 4 |
+| Report | docs/releases/pilot_v0/submission_readiness.md |
 
 ## External Agents
 

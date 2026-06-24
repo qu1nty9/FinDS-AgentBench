@@ -52,6 +52,13 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
                 "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
             ],
         },
+        "submission_readiness": {
+            "status": "not_ready_for_workshop_submission",
+            "ready_for_workshop_submission": False,
+            "ready_gate_count": 2,
+            "gate_count": 6,
+            "blocking_gate_count": 4,
+        },
         "release_build_command": "PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3",
     }
     reference_results = {
@@ -159,6 +166,7 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert "Workshop Pilot Manuscript" in readme
     assert "Reviewer Readiness" in readme
     assert "External Agent Readiness" in readme
+    assert "Submission Readiness" in readme
     assert result.related_work_tex_path.exists()
     assert result.references_bib_path.exists()
     assert result.audit_failure_examples_tex_path.exists()
@@ -174,8 +182,10 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert "Complete at least one independent reviewer packet" in checklist
     assert "External-agent protocol and readiness report" in checklist
     assert "External-Agent Gate Blockers" in checklist
+    assert "Submission readiness status" in checklist
     assert "Register and run at least one non-author external agent" in checklist
     assert metadata["overall_baseline_higher_count"] == 1
     assert metadata["overall_tie_count"] == 1
     assert metadata["reviewer_readiness_status"] == "not_ready_seed_only"
     assert metadata["external_agent_readiness_status"] == "not_ready_no_external_agents"
+    assert metadata["submission_readiness_status"] == "not_ready_for_workshop_submission"

@@ -27,6 +27,7 @@
   "protocol_task_count": 8,
   "ready_for_external_agent_claims": false,
   "ready_for_submission_claims": false,
+  "ready_for_workshop_submission": false,
   "release_build_command": "PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-outputs",
   "release_stage": "pilot",
   "reviewer_readiness_blocking_items": [
@@ -39,6 +40,10 @@
     3
   ],
   "runnable_task_count": 9,
+  "submission_blocking_gate_count": 4,
+  "submission_gate_count": 6,
+  "submission_readiness_status": "not_ready_for_workshop_submission",
+  "submission_ready_gate_count": 2,
   "task_count": 9,
   "track_count": 3,
   "track_names": [

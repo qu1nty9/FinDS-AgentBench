@@ -28,6 +28,7 @@ Generated manuscript scaffold for the FinDS-AgentBench arXiv/workshop pilot pape
 | Overall Tie Cases | 2 |
 | Reviewer Readiness | not_ready_seed_only |
 | External Agent Readiness | not_ready_no_external_agents |
+| Submission Readiness | not_ready_for_workshop_submission |
 
 ## Build
 

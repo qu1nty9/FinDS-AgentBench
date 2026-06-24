@@ -11,6 +11,7 @@ This checklist tracks work that should be complete before treating the workshop 
 - Seed manual-audit rubric and adjudication workflow.
 - Reviewer-readiness report that separates seed-only audit status from submission-strength agreement claims.
 - External-agent protocol and readiness report that separate bundled reference agents from independent external-agent evidence.
+- Unified submission-readiness gate for the workshop manuscript.
 - Generated qualitative failure examples with exact task/run/artifact references.
 
 ## Required Before Submission
@@ -30,6 +31,8 @@ This checklist tracks work that should be complete before treating the workshop 
 - Independent agreement status: `insufficient_independent_overlap`.
 - External-agent readiness status: `not_ready_no_external_agents`.
 - Completed external agent configurations: `0`.
+- Submission readiness status: `not_ready_for_workshop_submission`.
+- Submission gates ready: `2 / 6`.
 - Pilot repeated-run count is small; statistical claims must remain caveated.
 - Bundled example agents should not be framed as a comprehensive model leaderboard.
 

@@ -15,6 +15,8 @@ data/processed/*
 data/private/*
 runs/*
 reports/generated/*
+reports/release_runs/*
+tmp/*
 
 # Keep directory docs/placeholders
 !data/README.md

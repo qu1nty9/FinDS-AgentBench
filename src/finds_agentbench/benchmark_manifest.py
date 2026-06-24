@@ -8,6 +8,7 @@ from typing import Any
 from finds_agentbench.data_manifest import build_data_manifests
 from finds_agentbench.external_agents import build_external_agent_readiness_artifacts
 from finds_agentbench.manual_audit import build_manual_audit_workflow_artifacts, load_manual_audit_bundle
+from finds_agentbench.submission_readiness import build_submission_readiness_artifacts
 from finds_agentbench.task_cards import build_task_cards, markdown_table
 
 
@@ -271,6 +272,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
     ]
     manual_audit = manifest["manual_audit"]
     external_agents = manifest["external_agents"]
+    submission_readiness = manifest["submission_readiness"]
     return "\n".join(
         [
             f"# {manifest['benchmark_id']}",
@@ -298,6 +300,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Reviewer Readiness", manual_audit["reviewer_readiness_markdown_path"]],
                     ["External Agent Protocol", external_agents["protocol_markdown_path"]],
                     ["External Agent Readiness", external_agents["readiness_markdown_path"]],
+                    ["Submission Readiness", submission_readiness["markdown_path"]],
                 ],
             ).strip(),
             "",
@@ -327,6 +330,22 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
             markdown_table(
                 ["Protocol", "Run Types", "Task IDs", "Runs Root", "Status"],
                 protocol_rows,
+            ).strip(),
+            "",
+            "## Submission Readiness",
+            "",
+            markdown_table(
+                ["Field", "Value"],
+                [
+                    ["Status", submission_readiness["status"]],
+                    [
+                        "Ready for Workshop Submission",
+                        "yes" if submission_readiness["ready_for_workshop_submission"] else "no",
+                    ],
+                    ["Ready Gates", f"{submission_readiness['ready_gate_count']} / {submission_readiness['gate_count']}"],
+                    ["Blocking Gates", submission_readiness["blocking_gate_count"]],
+                    ["Report", submission_readiness["markdown_path"]],
+                ],
             ).strip(),
             "",
             "## External Agents",
@@ -551,6 +570,23 @@ def build_benchmark_manifest(
         "tracks": tracks,
         "tasks": tasks,
         "protocols": PILOT_PROTOCOLS,
+    }
+    submission_readiness_artifacts = build_submission_readiness_artifacts(
+        manifest=manifest,
+        output_json_path=output_path / "submission_readiness.json",
+        output_markdown_path=output_path / "submission_readiness.md",
+    )
+    manifest["submission_readiness"] = {
+        "json_path": str(submission_readiness_artifacts["json_path"]),
+        "markdown_path": str(submission_readiness_artifacts["markdown_path"]),
+        "status": submission_readiness_artifacts["report"]["status"],
+        "ready_for_workshop_submission": submission_readiness_artifacts["report"][
+            "ready_for_workshop_submission"
+        ],
+        "gate_count": submission_readiness_artifacts["report"]["gate_count"],
+        "ready_gate_count": submission_readiness_artifacts["report"]["ready_gate_count"],
+        "blocking_gate_count": submission_readiness_artifacts["report"]["blocking_gate_count"],
+        "blocking_items": submission_readiness_artifacts["report"]["blocking_items"],
     }
 
     output_path.mkdir(parents=True, exist_ok=True)

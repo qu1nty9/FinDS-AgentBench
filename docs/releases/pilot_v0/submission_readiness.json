@@ -1,0 +1,101 @@
+{
+  "benchmark_id": "finds_agentbench_pilot_v0",
+  "benchmark_version": "0.1.0",
+  "blocking_gate_count": 4,
+  "blocking_items": [
+    "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
+    "Rebuild official agreement reporting after an independent completed packet is available.",
+    "Register and run at least one non-author external agent configuration through the pilot harness.",
+    "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
+    "Complete audits/methodology_calibration/reviews/calibration_review_packet.csv and rebuild the methodology calibration workflow.",
+    "Create a release tag and archive the release artifact bundle after the remaining gates pass."
+  ],
+  "gate_count": 6,
+  "gates": [
+    {
+      "blockers": [],
+      "evidence": {
+        "runnable_task_count": 9,
+        "target_range": "8-12 runnable pilot tasks",
+        "task_count": 9
+      },
+      "gate_id": "pilot_release_scope",
+      "ready": true,
+      "status": "ready",
+      "title": "Pilot Release Scope"
+    },
+    {
+      "blockers": [],
+      "evidence": {
+        "path": "docs/releases/pilot_v0/statistical_artifacts/README.md"
+      },
+      "gate_id": "statistical_artifacts",
+      "ready": true,
+      "status": "ready",
+      "title": "Statistical Artifacts"
+    },
+    {
+      "blockers": [
+        "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
+        "Rebuild official agreement reporting after an independent completed packet is available."
+      ],
+      "evidence": {
+        "agreement_status": "insufficient_independent_overlap",
+        "case_count": 6,
+        "independent_completed_reviewer_packet_count": 0
+      },
+      "gate_id": "manual_audit_independent_review",
+      "ready": false,
+      "status": "not_ready_seed_only",
+      "title": "Manual Audit Independent Review"
+    },
+    {
+      "blockers": [
+        "Register and run at least one non-author external agent configuration through the pilot harness.",
+        "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset."
+      ],
+      "evidence": {
+        "completed_external_agent_configuration_count": 0,
+        "expected_task_count": 8,
+        "external_task_coverage_count": 0
+      },
+      "gate_id": "external_agent_evidence",
+      "ready": false,
+      "status": "not_ready_no_external_agents",
+      "title": "External Agent Evidence"
+    },
+    {
+      "blockers": [
+        "Complete audits/methodology_calibration/reviews/calibration_review_packet.csv and rebuild the methodology calibration workflow."
+      ],
+      "evidence": {
+        "clean_control_row_count": 14,
+        "finding_row_count": 5,
+        "fixture_true_positives": 4,
+        "review_packet_row_count": 19,
+        "scanned_file_count": 617
+      },
+      "gate_id": "methodology_calibration_review",
+      "ready": false,
+      "status": "not_ready_template_review_packet",
+      "title": "Methodology Calibration Review"
+    },
+    {
+      "blockers": [
+        "Create a release tag and archive the release artifact bundle after the remaining gates pass."
+      ],
+      "evidence": {
+        "archive_required": true,
+        "expected_tag": "v0.1.0-pilot"
+      },
+      "gate_id": "release_tag_and_archive",
+      "ready": false,
+      "status": "not_ready_unfrozen",
+      "title": "Release Tag and Archive"
+    }
+  ],
+  "ready_for_workshop_submission": false,
+  "ready_gate_count": 2,
+  "release_stage": "pilot",
+  "status": "not_ready_for_workshop_submission"
+}

@@ -58,6 +58,23 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert any(
         "non-author external agent" in item for item in manifest["external_agents"]["blocking_items"]
     )
+    assert (
+        manifest["submission_readiness"]["markdown_path"]
+        == str(output_root / "submission_readiness.md")
+    )
+    assert (
+        manifest["submission_readiness"]["json_path"]
+        == str(output_root / "submission_readiness.json")
+    )
+    assert manifest["submission_readiness"]["status"] == "not_ready_for_workshop_submission"
+    assert manifest["submission_readiness"]["ready_for_workshop_submission"] is False
+    assert manifest["submission_readiness"]["gate_count"] == 6
+    assert manifest["submission_readiness"]["ready_gate_count"] == 2
+    assert manifest["submission_readiness"]["blocking_gate_count"] == 4
+    assert any(
+        "Complete at least one independent reviewer packet" in item
+        for item in manifest["submission_readiness"]["blocking_items"]
+    )
     assert manifest["manual_audit"]["rubric_path"] == "audits/pilot_v0/manual_audit_rubric.yaml"
     assert manifest["manual_audit"]["subset_path"] == "audits/pilot_v0/adjudicated_subset.json"
     assert manifest["manual_audit"]["readme_path"] == "audits/pilot_v0/README.md"
@@ -163,7 +180,9 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert "statistical_artifacts/README.md" in readme
     assert "External Agent Protocol" in readme
     assert "External Agent Readiness" in readme
+    assert "Submission Readiness" in readme
     assert "not_ready_no_external_agents" in readme
+    assert "not_ready_for_workshop_submission" in readme
     assert "0 / 8" in readme
     assert "scripts/build_pilot_release.py" in readme
     assert "audits/pilot_v0/README.md" in readme
