@@ -87,6 +87,14 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
         manifest["submission_readiness"]["json_path"]
         == "docs/releases/pilot_v0/submission_readiness.json"
     )
+    assert (
+        manifest["submission_readiness"]["evidence_ledger_markdown_path"]
+        == "docs/releases/pilot_v0/submission_evidence_ledger.md"
+    )
+    assert (
+        manifest["submission_readiness"]["evidence_ledger_status"]
+        == "submission_evidence_incomplete"
+    )
     assert manifest["submission_readiness"]["status"] == "not_ready_for_workshop_submission"
     assert manifest["submission_readiness"]["ready_for_workshop_submission"] is False
     assert manifest["submission_readiness"]["gate_count"] == 6
@@ -224,6 +232,8 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert "External Agent Readiness" in readme
     assert "Registration Validation" in readme
     assert "Submission Readiness" in readme
+    assert "Submission Evidence Ledger" in readme
+    assert "docs/releases/pilot_v0/submission_evidence_ledger.md" in readme
     assert "not_ready_no_external_agents" in readme
     assert "not_ready_for_workshop_submission" in readme
     assert "0 / 8" in readme

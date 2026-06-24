@@ -15,6 +15,46 @@ DEFAULT_METHODOLOGY_CALIBRATION_REVIEW_PACKET_PATH = Path(
 )
 DEFAULT_SUBMISSION_READINESS_JSON_PATH = Path("docs/releases/pilot_v0/submission_readiness.json")
 DEFAULT_SUBMISSION_READINESS_MARKDOWN_PATH = Path("docs/releases/pilot_v0/submission_readiness.md")
+DEFAULT_SUBMISSION_EVIDENCE_LEDGER_JSON_PATH = Path(
+    "docs/releases/pilot_v0/submission_evidence_ledger.json"
+)
+DEFAULT_SUBMISSION_EVIDENCE_LEDGER_MARKDOWN_PATH = Path(
+    "docs/releases/pilot_v0/submission_evidence_ledger.md"
+)
+
+
+GATE_CLAIM_POLICIES: dict[str, dict[str, str]] = {
+    "pilot_release_scope": {
+        "allowed_when_ready": "The pilot release is within the planned 8-12 runnable-task workshop scope.",
+        "allowed_while_blocked": "The pilot release scope gate has a machine-readable status report.",
+        "disallowed_when_blocked": "The public pilot task suite is complete and runnable for workshop release.",
+    },
+    "statistical_artifacts": {
+        "allowed_when_ready": "Pilot uncertainty and paired-comparison statistical artifacts are generated.",
+        "allowed_while_blocked": "The statistical-artifact gate has a machine-readable status report.",
+        "disallowed_when_blocked": "Pilot result claims are backed by generated uncertainty artifacts.",
+    },
+    "manual_audit_independent_review": {
+        "allowed_when_ready": "The manual-audit subset has completed independent-review evidence and official agreement reporting.",
+        "allowed_while_blocked": "Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.",
+        "disallowed_when_blocked": "Independent manual-audit agreement or submission-strength second-reviewer evidence.",
+    },
+    "external_agent_evidence": {
+        "allowed_when_ready": "At least one non-author external-agent configuration has completed the registered pilot evidence protocol.",
+        "allowed_while_blocked": "External-agent registration, handoff, and readiness gates are available.",
+        "disallowed_when_blocked": "Independent external-agent performance evidence.",
+    },
+    "methodology_calibration_review": {
+        "allowed_when_ready": "Methodology-calibration findings have a completed author review packet.",
+        "allowed_while_blocked": "Methodology-calibration fixtures and review-packet workflow are available.",
+        "disallowed_when_blocked": "Methodology-calibration findings have completed review adjudication.",
+    },
+    "release_tag_and_archive": {
+        "allowed_when_ready": "The release archive is ready to tag under the expected release tag.",
+        "allowed_while_blocked": "A deterministic candidate archive and archive manifest can be built before final tagging.",
+        "disallowed_when_blocked": "A frozen tagged release archive exists.",
+    },
+}
 
 
 def load_json(path: str | Path) -> dict[str, Any]:
@@ -200,6 +240,281 @@ def build_submission_readiness_report(
     }
 
 
+def artifact_entry(role: str, path: Any, *, note: str = "") -> dict[str, str]:
+    entry = {
+        "role": role,
+        "path": Path(str(path)).as_posix(),
+    }
+    if note:
+        entry["note"] = note
+    return entry
+
+
+def dedupe_artifact_entries(entries: list[dict[str, str]]) -> list[dict[str, str]]:
+    deduped: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for entry in entries:
+        path = str(entry.get("path", "")).strip()
+        role = str(entry.get("role", "")).strip()
+        if not path or not role:
+            continue
+        key = (role, path)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(entry)
+    return deduped
+
+
+def evidence_artifacts_for_gate(gate_id: str, manifest: dict[str, Any]) -> list[dict[str, str]]:
+    manual_audit = manifest.get("manual_audit", {})
+    external_agents = manifest.get("external_agents", {})
+    artifacts: dict[str, list[dict[str, str]]] = {
+        "pilot_release_scope": [
+            artifact_entry("release_manifest", "docs/releases/pilot_v0/manifest.json"),
+            artifact_entry("release_readme", "docs/releases/pilot_v0/README.md"),
+            artifact_entry("task_registry_json", "docs/cards/task_registry.json"),
+            artifact_entry("task_registry_csv", "docs/cards/task_registry.csv"),
+            artifact_entry("task_cards_index", manifest.get("cards_root", "docs/cards")),
+            artifact_entry(
+                "data_manifests_index",
+                manifest.get("data_manifests_root", "docs/data_manifests/pilot_v0"),
+            ),
+        ],
+        "statistical_artifacts": [
+            artifact_entry(
+                "statistical_artifacts_index",
+                manifest.get("statistical_artifacts_path", "docs/releases/pilot_v0/statistical_artifacts/README.md"),
+            ),
+            artifact_entry(
+                "summary_uncertainty",
+                "docs/releases/pilot_v0/statistical_artifacts/summary_uncertainty.md",
+            ),
+            artifact_entry(
+                "agent_vs_best_baseline",
+                "docs/releases/pilot_v0/statistical_artifacts/agent_vs_best_baseline.md",
+            ),
+            artifact_entry(
+                "statistical_methods",
+                "docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.md",
+            ),
+        ],
+        "manual_audit_independent_review": [
+            artifact_entry("manual_audit_readme", manual_audit.get("readme_path", "audits/pilot_v0/README.md")),
+            artifact_entry("rubric", manual_audit.get("rubric_path", "audits/pilot_v0/manual_audit_rubric.yaml")),
+            artifact_entry("seed_subset", manual_audit.get("subset_path", "audits/pilot_v0/adjudicated_subset.json")),
+            artifact_entry("reviews_workflow", manual_audit.get("reviews_readme_path", "")),
+            artifact_entry("reviewer_readiness", manual_audit.get("reviewer_readiness_markdown_path", "")),
+            artifact_entry("agreement_report", manual_audit.get("agreement_report_markdown_path", "")),
+            artifact_entry("adjudication_queue", manual_audit.get("adjudication_report_markdown_path", "")),
+            artifact_entry("independent_handoff", manual_audit.get("independent_reviewer_handoff_path", "")),
+            artifact_entry(
+                "independent_packet_manifest",
+                manual_audit.get("independent_reviewer_packet_manifest_markdown_path", ""),
+            ),
+            artifact_entry(
+                "independent_packet_validation",
+                manual_audit.get("independent_reviewer_packet_validation_markdown_path", ""),
+            ),
+        ],
+        "external_agent_evidence": [
+            artifact_entry("external_agent_registry", external_agents.get("registry_path", "")),
+            artifact_entry("external_agent_handoff", external_agents.get("handoff_markdown_path", "")),
+            artifact_entry("external_agent_protocol", external_agents.get("protocol_markdown_path", "")),
+            artifact_entry("external_agent_readiness", external_agents.get("readiness_markdown_path", "")),
+            artifact_entry(
+                "external_agent_registration_validation",
+                external_agents.get("registration_validation_markdown_path", ""),
+            ),
+        ],
+        "methodology_calibration_review": [
+            artifact_entry("methodology_calibration_readme", "audits/methodology_calibration/README.md"),
+            artifact_entry("methodology_calibration_corpus", "audits/methodology_calibration/corpus.yaml"),
+            artifact_entry("methodology_calibration_summary", str(DEFAULT_METHODOLOGY_CALIBRATION_SUMMARY_PATH)),
+            artifact_entry(
+                "methodology_calibration_review_packet",
+                str(DEFAULT_METHODOLOGY_CALIBRATION_REVIEW_PACKET_PATH),
+            ),
+        ],
+        "release_tag_and_archive": [
+            artifact_entry("release_archive", manifest.get("release_archive_path", "")),
+            artifact_entry("release_archive_manifest_json", manifest.get("release_archive_manifest_json_path", "")),
+            artifact_entry(
+                "release_archive_manifest_markdown",
+                manifest.get("release_archive_manifest_markdown_path", ""),
+            ),
+        ],
+    }
+    return dedupe_artifact_entries(artifacts.get(gate_id, []))
+
+
+def verification_commands_for_gate(gate_id: str) -> list[str]:
+    commands = {
+        "pilot_release_scope": [
+            "PYTHONPATH=src python scripts/build_task_cards.py",
+            "PYTHONPATH=src python scripts/build_data_manifests.py",
+            "PYTHONPATH=src python scripts/build_benchmark_manifest.py",
+        ],
+        "statistical_artifacts": [
+            "PYTHONPATH=src python scripts/build_pilot_statistical_artifacts.py",
+        ],
+        "manual_audit_independent_review": [
+            "PYTHONPATH=src python scripts/build_manual_audit_workflow.py",
+            "PYTHONPATH=src python scripts/validate_manual_audit_review_packet.py --packet audits/pilot_v0/reviews/reviewer_2_completed.csv",
+        ],
+        "external_agent_evidence": [
+            "PYTHONPATH=src python scripts/validate_external_agent_registry.py",
+            "PYTHONPATH=src python scripts/build_external_agent_readiness.py",
+        ],
+        "methodology_calibration_review": [
+            "PYTHONPATH=src python scripts/build_methodology_calibration_workflow.py",
+        ],
+        "release_tag_and_archive": [
+            "PYTHONPATH=src python scripts/build_release_archive.py",
+            "PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py --repeat 1 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21",
+        ],
+    }
+    return commands.get(gate_id, [])
+
+
+def build_submission_evidence_ledger(
+    *,
+    report: dict[str, Any],
+    manifest: dict[str, Any],
+) -> dict[str, Any]:
+    gate_entries: list[dict[str, Any]] = []
+    for gate in report["gates"]:
+        gate_id = gate["gate_id"]
+        policy = GATE_CLAIM_POLICIES.get(
+            gate_id,
+            {
+                "allowed_when_ready": f"{gate_id} is ready.",
+                "allowed_while_blocked": f"{gate_id} has a machine-readable status report.",
+                "disallowed_when_blocked": f"{gate_id} is ready.",
+            },
+        )
+        ready = bool(gate["ready"])
+        gate_entries.append(
+            {
+                "gate_id": gate_id,
+                "title": gate["title"],
+                "ready": ready,
+                "status": gate["status"],
+                "claim_status": "claim_allowed" if ready else "claim_blocked",
+                "current_allowed_claim": (
+                    policy["allowed_when_ready"] if ready else policy["allowed_while_blocked"]
+                ),
+                "current_disallowed_claim": None if ready else policy["disallowed_when_blocked"],
+                "evidence": gate["evidence"],
+                "evidence_artifacts": evidence_artifacts_for_gate(gate_id, manifest),
+                "verification_commands": verification_commands_for_gate(gate_id),
+                "blockers": gate["blockers"],
+            }
+        )
+
+    return {
+        "benchmark_id": report["benchmark_id"],
+        "benchmark_version": report["benchmark_version"],
+        "release_stage": report["release_stage"],
+        "status": (
+            "submission_evidence_ready"
+            if report["ready_for_workshop_submission"]
+            else "submission_evidence_incomplete"
+        ),
+        "submission_readiness_status": report["status"],
+        "ready_for_workshop_submission": report["ready_for_workshop_submission"],
+        "gate_count": report["gate_count"],
+        "ready_gate_count": report["ready_gate_count"],
+        "blocking_gate_count": report["blocking_gate_count"],
+        "current_allowed_claims": [entry["current_allowed_claim"] for entry in gate_entries],
+        "current_disallowed_claims": [
+            entry["current_disallowed_claim"]
+            for entry in gate_entries
+            if entry["current_disallowed_claim"]
+        ],
+        "gates": gate_entries,
+    }
+
+
+def render_submission_evidence_ledger_markdown(ledger: dict[str, Any]) -> str:
+    gate_rows = [
+        [
+            gate["gate_id"],
+            "yes" if gate["ready"] else "no",
+            f"`{gate['status']}`",
+            f"`{gate['claim_status']}`",
+            len(gate["evidence_artifacts"]),
+            len(gate["verification_commands"]),
+        ]
+        for gate in ledger["gates"]
+    ]
+    lines = [
+        "# Submission Evidence Ledger",
+        "",
+        "Machine-readable claim boundary and evidence index for the workshop submission gates.",
+        "",
+        "## Status",
+        "",
+        render_markdown_table(
+            ["Field", "Value"],
+            [
+                ["Ledger status", f"`{ledger['status']}`"],
+                ["Submission readiness", f"`{ledger['submission_readiness_status']}`"],
+                ["Ready for workshop submission", "yes" if ledger["ready_for_workshop_submission"] else "no"],
+                ["Ready gates", f"{ledger['ready_gate_count']} / {ledger['gate_count']}"],
+                ["Blocking gates", ledger["blocking_gate_count"]],
+            ],
+        ),
+        "",
+        "## Allowed Current Claims",
+        "",
+    ]
+    lines.extend(f"- {claim}" for claim in ledger["current_allowed_claims"])
+    lines.extend(["", "## Disallowed Current Claims", ""])
+    if ledger["current_disallowed_claims"]:
+        lines.extend(f"- {claim}" for claim in ledger["current_disallowed_claims"])
+    else:
+        lines.append("- None.")
+    lines.extend(
+        [
+            "",
+            "## Gate Summary",
+            "",
+            render_markdown_table(
+                ["Gate", "Ready", "Status", "Claim Status", "Evidence Artifacts", "Verification Commands"],
+                gate_rows,
+            ),
+            "",
+            "## Gate Evidence",
+            "",
+        ]
+    )
+    for gate in ledger["gates"]:
+        lines.extend(
+            [
+                f"### {gate['gate_id']}",
+                "",
+                f"- Current allowed claim: {gate['current_allowed_claim']}",
+            ]
+        )
+        if gate["current_disallowed_claim"]:
+            lines.append(f"- Current disallowed claim: {gate['current_disallowed_claim']}")
+        if gate["blockers"]:
+            lines.append("- Blockers:")
+            lines.extend(f"  - {blocker}" for blocker in gate["blockers"])
+        else:
+            lines.append("- Blockers: none")
+        lines.append("- Evidence artifacts:")
+        lines.extend(
+            f"  - `{entry['path']}` ({entry['role']})"
+            for entry in gate["evidence_artifacts"]
+        )
+        lines.append("- Verification commands:")
+        lines.extend(f"  - `{command}`" for command in gate["verification_commands"])
+        lines.append("")
+    return "\n".join(lines) + "\n"
+
+
 def render_submission_readiness_markdown(report: dict[str, Any]) -> str:
     gate_rows = [
         [
@@ -248,6 +563,8 @@ def build_submission_readiness_artifacts(
     methodology_calibration_review_packet_path: str | Path = DEFAULT_METHODOLOGY_CALIBRATION_REVIEW_PACKET_PATH,
     output_json_path: str | Path = DEFAULT_SUBMISSION_READINESS_JSON_PATH,
     output_markdown_path: str | Path = DEFAULT_SUBMISSION_READINESS_MARKDOWN_PATH,
+    evidence_ledger_json_path: str | Path = DEFAULT_SUBMISSION_EVIDENCE_LEDGER_JSON_PATH,
+    evidence_ledger_markdown_path: str | Path = DEFAULT_SUBMISSION_EVIDENCE_LEDGER_MARKDOWN_PATH,
     manifest: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     manifest_payload = manifest or load_json(manifest_path)
@@ -267,8 +584,29 @@ def build_submission_readiness_artifacts(
     markdown_path.parent.mkdir(parents=True, exist_ok=True)
     markdown_path.write_text(render_submission_readiness_markdown(report), encoding="utf-8")
 
+    evidence_ledger = build_submission_evidence_ledger(
+        report=report,
+        manifest=manifest_payload,
+    )
+    ledger_json_path = Path(evidence_ledger_json_path)
+    ledger_json_path.parent.mkdir(parents=True, exist_ok=True)
+    ledger_json_path.write_text(
+        json.dumps(evidence_ledger, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    ledger_markdown_path = Path(evidence_ledger_markdown_path)
+    ledger_markdown_path.parent.mkdir(parents=True, exist_ok=True)
+    ledger_markdown_path.write_text(
+        render_submission_evidence_ledger_markdown(evidence_ledger),
+        encoding="utf-8",
+    )
+
     return {
         "json_path": json_path,
         "markdown_path": markdown_path,
         "report": report,
+        "evidence_ledger_json_path": ledger_json_path,
+        "evidence_ledger_markdown_path": ledger_markdown_path,
+        "evidence_ledger": evidence_ledger,
     }

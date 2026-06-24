@@ -24,6 +24,7 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | External Agent Protocol | docs/releases/pilot_v0/external_agent_protocol.md |
 | External Agent Readiness | docs/releases/pilot_v0/external_agent_readiness.md |
 | Submission Readiness | docs/releases/pilot_v0/submission_readiness.md |
+| Submission Evidence Ledger | docs/releases/pilot_v0/submission_evidence_ledger.md |
 
 ## Tracks
 
@@ -64,6 +65,7 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | Ready Gates | 3 / 6 |
 | Blocking Gates | 3 |
 | Report | docs/releases/pilot_v0/submission_readiness.md |
+| Evidence Ledger | docs/releases/pilot_v0/submission_evidence_ledger.md |
 
 ## External Agents
 

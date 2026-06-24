@@ -1,0 +1,286 @@
+{
+  "benchmark_id": "finds_agentbench_pilot_v0",
+  "benchmark_version": "0.1.0",
+  "blocking_gate_count": 3,
+  "current_allowed_claims": [
+    "The pilot release is within the planned 8-12 runnable-task workshop scope.",
+    "Pilot uncertainty and paired-comparison statistical artifacts are generated.",
+    "Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.",
+    "External-agent registration, handoff, and readiness gates are available.",
+    "Methodology-calibration findings have a completed author review packet.",
+    "A deterministic candidate archive and archive manifest can be built before final tagging."
+  ],
+  "current_disallowed_claims": [
+    "Independent manual-audit agreement or submission-strength second-reviewer evidence.",
+    "Independent external-agent performance evidence.",
+    "A frozen tagged release archive exists."
+  ],
+  "gate_count": 6,
+  "gates": [
+    {
+      "blockers": [],
+      "claim_status": "claim_allowed",
+      "current_allowed_claim": "The pilot release is within the planned 8-12 runnable-task workshop scope.",
+      "current_disallowed_claim": null,
+      "evidence": {
+        "runnable_task_count": 9,
+        "target_range": "8-12 runnable pilot tasks",
+        "task_count": 9
+      },
+      "evidence_artifacts": [
+        {
+          "path": "docs/releases/pilot_v0/manifest.json",
+          "role": "release_manifest"
+        },
+        {
+          "path": "docs/releases/pilot_v0/README.md",
+          "role": "release_readme"
+        },
+        {
+          "path": "docs/cards/task_registry.json",
+          "role": "task_registry_json"
+        },
+        {
+          "path": "docs/cards/task_registry.csv",
+          "role": "task_registry_csv"
+        },
+        {
+          "path": "docs/cards",
+          "role": "task_cards_index"
+        },
+        {
+          "path": "docs/data_manifests/pilot_v0",
+          "role": "data_manifests_index"
+        }
+      ],
+      "gate_id": "pilot_release_scope",
+      "ready": true,
+      "status": "ready",
+      "title": "Pilot Release Scope",
+      "verification_commands": [
+        "PYTHONPATH=src python scripts/build_task_cards.py",
+        "PYTHONPATH=src python scripts/build_data_manifests.py",
+        "PYTHONPATH=src python scripts/build_benchmark_manifest.py"
+      ]
+    },
+    {
+      "blockers": [],
+      "claim_status": "claim_allowed",
+      "current_allowed_claim": "Pilot uncertainty and paired-comparison statistical artifacts are generated.",
+      "current_disallowed_claim": null,
+      "evidence": {
+        "path": "docs/releases/pilot_v0/statistical_artifacts/README.md"
+      },
+      "evidence_artifacts": [
+        {
+          "path": "docs/releases/pilot_v0/statistical_artifacts/README.md",
+          "role": "statistical_artifacts_index"
+        },
+        {
+          "path": "docs/releases/pilot_v0/statistical_artifacts/summary_uncertainty.md",
+          "role": "summary_uncertainty"
+        },
+        {
+          "path": "docs/releases/pilot_v0/statistical_artifacts/agent_vs_best_baseline.md",
+          "role": "agent_vs_best_baseline"
+        },
+        {
+          "path": "docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.md",
+          "role": "statistical_methods"
+        }
+      ],
+      "gate_id": "statistical_artifacts",
+      "ready": true,
+      "status": "ready",
+      "title": "Statistical Artifacts",
+      "verification_commands": [
+        "PYTHONPATH=src python scripts/build_pilot_statistical_artifacts.py"
+      ]
+    },
+    {
+      "blockers": [
+        "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
+        "Rebuild official agreement reporting after an independent completed packet is available."
+      ],
+      "claim_status": "claim_blocked",
+      "current_allowed_claim": "Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.",
+      "current_disallowed_claim": "Independent manual-audit agreement or submission-strength second-reviewer evidence.",
+      "evidence": {
+        "agreement_status": "insufficient_independent_overlap",
+        "case_count": 6,
+        "independent_completed_reviewer_packet_count": 0
+      },
+      "evidence_artifacts": [
+        {
+          "path": "audits/pilot_v0/README.md",
+          "role": "manual_audit_readme"
+        },
+        {
+          "path": "audits/pilot_v0/manual_audit_rubric.yaml",
+          "role": "rubric"
+        },
+        {
+          "path": "audits/pilot_v0/adjudicated_subset.json",
+          "role": "seed_subset"
+        },
+        {
+          "path": "audits/pilot_v0/reviews/README.md",
+          "role": "reviews_workflow"
+        },
+        {
+          "path": "audits/pilot_v0/reports/reviewer_readiness.md",
+          "role": "reviewer_readiness"
+        },
+        {
+          "path": "audits/pilot_v0/reports/agreement_summary.md",
+          "role": "agreement_report"
+        },
+        {
+          "path": "audits/pilot_v0/reports/adjudication_queue.md",
+          "role": "adjudication_queue"
+        },
+        {
+          "path": "audits/pilot_v0/reviews/independent_reviewer_handoff.md",
+          "role": "independent_handoff"
+        },
+        {
+          "path": "audits/pilot_v0/reviews/independent_reviewer_packet_manifest.md",
+          "role": "independent_packet_manifest"
+        },
+        {
+          "path": "audits/pilot_v0/reports/independent_reviewer_packet_validation.md",
+          "role": "independent_packet_validation"
+        }
+      ],
+      "gate_id": "manual_audit_independent_review",
+      "ready": false,
+      "status": "not_ready_seed_only",
+      "title": "Manual Audit Independent Review",
+      "verification_commands": [
+        "PYTHONPATH=src python scripts/build_manual_audit_workflow.py",
+        "PYTHONPATH=src python scripts/validate_manual_audit_review_packet.py --packet audits/pilot_v0/reviews/reviewer_2_completed.csv"
+      ]
+    },
+    {
+      "blockers": [
+        "Register and run at least one non-author external agent configuration through the pilot harness.",
+        "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset."
+      ],
+      "claim_status": "claim_blocked",
+      "current_allowed_claim": "External-agent registration, handoff, and readiness gates are available.",
+      "current_disallowed_claim": "Independent external-agent performance evidence.",
+      "evidence": {
+        "completed_external_agent_configuration_count": 0,
+        "expected_task_count": 8,
+        "external_task_coverage_count": 0
+      },
+      "evidence_artifacts": [
+        {
+          "path": "agents/external_agent_registry.yaml",
+          "role": "external_agent_registry"
+        },
+        {
+          "path": "agents/external_agent_handoff.md",
+          "role": "external_agent_handoff"
+        },
+        {
+          "path": "docs/releases/pilot_v0/external_agent_protocol.md",
+          "role": "external_agent_protocol"
+        },
+        {
+          "path": "docs/releases/pilot_v0/external_agent_readiness.md",
+          "role": "external_agent_readiness"
+        },
+        {
+          "path": "docs/releases/pilot_v0/external_agent_registration_validation.md",
+          "role": "external_agent_registration_validation"
+        }
+      ],
+      "gate_id": "external_agent_evidence",
+      "ready": false,
+      "status": "not_ready_no_external_agents",
+      "title": "External Agent Evidence",
+      "verification_commands": [
+        "PYTHONPATH=src python scripts/validate_external_agent_registry.py",
+        "PYTHONPATH=src python scripts/build_external_agent_readiness.py"
+      ]
+    },
+    {
+      "blockers": [],
+      "claim_status": "claim_allowed",
+      "current_allowed_claim": "Methodology-calibration findings have a completed author review packet.",
+      "current_disallowed_claim": null,
+      "evidence": {
+        "clean_control_row_count": 16,
+        "finding_row_count": 5,
+        "fixture_true_positives": 4,
+        "review_packet_row_count": 21,
+        "scanned_file_count": 713
+      },
+      "evidence_artifacts": [
+        {
+          "path": "audits/methodology_calibration/README.md",
+          "role": "methodology_calibration_readme"
+        },
+        {
+          "path": "audits/methodology_calibration/corpus.yaml",
+          "role": "methodology_calibration_corpus"
+        },
+        {
+          "path": "audits/methodology_calibration/reports/summary.json",
+          "role": "methodology_calibration_summary"
+        },
+        {
+          "path": "audits/methodology_calibration/reviews/calibration_review_packet.csv",
+          "role": "methodology_calibration_review_packet"
+        }
+      ],
+      "gate_id": "methodology_calibration_review",
+      "ready": true,
+      "status": "ready",
+      "title": "Methodology Calibration Review",
+      "verification_commands": [
+        "PYTHONPATH=src python scripts/build_methodology_calibration_workflow.py"
+      ]
+    },
+    {
+      "blockers": [
+        "Create a release tag and archive the release artifact bundle after the remaining gates pass."
+      ],
+      "claim_status": "claim_blocked",
+      "current_allowed_claim": "A deterministic candidate archive and archive manifest can be built before final tagging.",
+      "current_disallowed_claim": "A frozen tagged release archive exists.",
+      "evidence": {
+        "archive_required": true,
+        "expected_tag": "v0.1.0-pilot"
+      },
+      "evidence_artifacts": [
+        {
+          "path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
+          "role": "release_archive"
+        },
+        {
+          "path": "docs/releases/pilot_v0/archive_manifest.json",
+          "role": "release_archive_manifest_json"
+        },
+        {
+          "path": "docs/releases/pilot_v0/archive_manifest.md",
+          "role": "release_archive_manifest_markdown"
+        }
+      ],
+      "gate_id": "release_tag_and_archive",
+      "ready": false,
+      "status": "not_ready_unfrozen",
+      "title": "Release Tag and Archive",
+      "verification_commands": [
+        "PYTHONPATH=src python scripts/build_release_archive.py",
+        "PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py --repeat 1 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21"
+      ]
+    }
+  ],
+  "ready_for_workshop_submission": false,
+  "ready_gate_count": 3,
+  "release_stage": "pilot",
+  "status": "submission_evidence_incomplete",
+  "submission_readiness_status": "not_ready_for_workshop_submission"
+}

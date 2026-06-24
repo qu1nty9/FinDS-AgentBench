@@ -30,6 +30,16 @@ def main() -> int:
         type=Path,
         default=Path("docs/releases/pilot_v0/submission_readiness.md"),
     )
+    parser.add_argument(
+        "--evidence-ledger-json",
+        type=Path,
+        default=Path("docs/releases/pilot_v0/submission_evidence_ledger.json"),
+    )
+    parser.add_argument(
+        "--evidence-ledger-markdown",
+        type=Path,
+        default=Path("docs/releases/pilot_v0/submission_evidence_ledger.md"),
+    )
     args = parser.parse_args()
 
     result = build_submission_readiness_artifacts(
@@ -38,10 +48,15 @@ def main() -> int:
         methodology_calibration_review_packet_path=args.methodology_review_packet,
         output_json_path=args.output_json,
         output_markdown_path=args.output_markdown,
+        evidence_ledger_json_path=args.evidence_ledger_json,
+        evidence_ledger_markdown_path=args.evidence_ledger_markdown,
     )
     print(f"submission_readiness_json: {result['json_path']}")
     print(f"submission_readiness_markdown: {result['markdown_path']}")
+    print(f"submission_evidence_ledger_json: {result['evidence_ledger_json_path']}")
+    print(f"submission_evidence_ledger_markdown: {result['evidence_ledger_markdown_path']}")
     print(f"submission_readiness_status: {result['report']['status']}")
+    print(f"submission_evidence_ledger_status: {result['evidence_ledger']['status']}")
     print(f"ready_gates: {result['report']['ready_gate_count']}/{result['report']['gate_count']}")
     return 0
 

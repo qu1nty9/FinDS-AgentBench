@@ -31,6 +31,8 @@ EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH = (
 )
 SUBMISSION_READINESS_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_readiness.json"
 SUBMISSION_READINESS_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_readiness.md"
+SUBMISSION_EVIDENCE_LEDGER_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_evidence_ledger.json"
+SUBMISSION_EVIDENCE_LEDGER_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_evidence_ledger.md"
 RELEASE_ARCHIVE_PATH = (
     f"dist/release_archives/{BENCHMARK_ID}-{BENCHMARK_VERSION}-{RELEASE_STAGE}.tar.gz"
 )
@@ -319,6 +321,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["External Agent Protocol", external_agents["protocol_markdown_path"]],
                     ["External Agent Readiness", external_agents["readiness_markdown_path"]],
                     ["Submission Readiness", submission_readiness["markdown_path"]],
+                    ["Submission Evidence Ledger", submission_readiness["evidence_ledger_markdown_path"]],
                 ],
             ).strip(),
             "",
@@ -363,6 +366,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Ready Gates", f"{submission_readiness['ready_gate_count']} / {submission_readiness['gate_count']}"],
                     ["Blocking Gates", submission_readiness["blocking_gate_count"]],
                     ["Report", submission_readiness["markdown_path"]],
+                    ["Evidence Ledger", submission_readiness["evidence_ledger_markdown_path"]],
                 ],
             ).strip(),
             "",
@@ -634,10 +638,15 @@ def build_benchmark_manifest(
         manifest=manifest,
         output_json_path=output_path / "submission_readiness.json",
         output_markdown_path=output_path / "submission_readiness.md",
+        evidence_ledger_json_path=output_path / "submission_evidence_ledger.json",
+        evidence_ledger_markdown_path=output_path / "submission_evidence_ledger.md",
     )
     manifest["submission_readiness"] = {
         "json_path": SUBMISSION_READINESS_JSON_PATH,
         "markdown_path": SUBMISSION_READINESS_MARKDOWN_PATH,
+        "evidence_ledger_json_path": SUBMISSION_EVIDENCE_LEDGER_JSON_PATH,
+        "evidence_ledger_markdown_path": SUBMISSION_EVIDENCE_LEDGER_MARKDOWN_PATH,
+        "evidence_ledger_status": submission_readiness_artifacts["evidence_ledger"]["status"],
         "status": submission_readiness_artifacts["report"]["status"],
         "ready_for_workshop_submission": submission_readiness_artifacts["report"][
             "ready_for_workshop_submission"
@@ -645,6 +654,9 @@ def build_benchmark_manifest(
         "gate_count": submission_readiness_artifacts["report"]["gate_count"],
         "ready_gate_count": submission_readiness_artifacts["report"]["ready_gate_count"],
         "blocking_gate_count": submission_readiness_artifacts["report"]["blocking_gate_count"],
+        "disallowed_current_claim_count": len(
+            submission_readiness_artifacts["evidence_ledger"]["current_disallowed_claims"]
+        ),
         "blocking_items": submission_readiness_artifacts["report"]["blocking_items"],
     }
 

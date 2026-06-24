@@ -1,8 +1,8 @@
 {
   "archive_mtime_policy": "tar and gzip mtimes are normalized to 0",
   "archive_path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
-  "archive_sha256": "94060f2aa40f42db4b325d6b3f33f7ee87ab4fbe51a88671d1c974d466bcbe3d",
-  "archive_size_bytes": 262415,
+  "archive_sha256": "d6daac97d0acfdb48437e2df94b7d6653322eea02656e1039e321ede1293eeb0",
+  "archive_size_bytes": 267274,
   "archive_status": "candidate_unfrozen",
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
@@ -11,7 +11,7 @@
     "docs/releases/pilot_v0/archive_manifest.md"
   ],
   "expected_tag": "v0.1.0-pilot",
-  "file_count": 283,
+  "file_count": 285,
   "files": [
     {
       "path": "README.md",
@@ -560,8 +560,8 @@
     },
     {
       "path": "docs/releases/pilot_v0/README.md",
-      "sha256": "da4fc915012831a42516e516c069cb3397d91aa92bea1f1b53a9140f1e22c605",
-      "size_bytes": 9642
+      "sha256": "d1ec88f8554fbc89aeddd5f3220f3233f6d7c45708c8dccdfe74b3975fbefc9f",
+      "size_bytes": 9803
     },
     {
       "path": "docs/releases/pilot_v0/external_agent_protocol.md",
@@ -590,8 +590,8 @@
     },
     {
       "path": "docs/releases/pilot_v0/manifest.json",
-      "sha256": "80ec737030a4b921e4dad02c155e30bbec986bcf7324bffd0d59f1e51546cce3",
-      "size_bytes": 30897
+      "sha256": "89af5045cc894d13ccafcaaf0ce6004c55e57ccc266643babca242a9f9401f93",
+      "size_bytes": 31186
     },
     {
       "path": "docs/releases/pilot_v0/paper_artifacts/README.md",
@@ -692,6 +692,16 @@
       "path": "docs/releases/pilot_v0/statistical_artifacts/tables/summary_uncertainty_overall_score.tex",
       "sha256": "7ba894464398f1282bfe6737cf50576efd7e4df24dbe88540cc2a8b92d7c8072",
       "size_bytes": 2995
+    },
+    {
+      "path": "docs/releases/pilot_v0/submission_evidence_ledger.json",
+      "sha256": "0a9f577161c9556bfd5cd67482eec4bafff7a313079e0da5a19f227b765116ed",
+      "size_bytes": 10760
+    },
+    {
+      "path": "docs/releases/pilot_v0/submission_evidence_ledger.md",
+      "sha256": "526511a62ca11b3d512cba6b2fec24f4f21f55ce8b51b735f76fdf0b22c90927",
+      "size_bytes": 7199
     },
     {
       "path": "docs/releases/pilot_v0/submission_readiness.json",
@@ -795,8 +805,8 @@
     },
     {
       "path": "scripts/build_submission_readiness.py",
-      "sha256": "863e25c65caad560a830ad00fb9466dc138d59aa0a2f48e31c04d08a92e8e092",
-      "size_bytes": 1816
+      "sha256": "14ea635f9b828695fffaf58386be283433cc9e18603224d9bfdd89cf3daacaa5",
+      "size_bytes": 2541
     },
     {
       "path": "scripts/build_task_cards.py",
@@ -1225,8 +1235,8 @@
     },
     {
       "path": "src/finds_agentbench/benchmark_manifest.py",
-      "sha256": "f1488b51cbaec28e86779ae4c97560f7f9c007c20ec7c1d2b178d5d367d9a239",
-      "size_bytes": 36992
+      "sha256": "be4fb81c5c4468a10ed1af289173cd65ba401c944fb95708005a3581af16618f",
+      "size_bytes": 37967
     },
     {
       "path": "src/finds_agentbench/curve_10y3mo.py",
@@ -1340,8 +1350,8 @@
     },
     {
       "path": "src/finds_agentbench/submission_readiness.py",
-      "sha256": "1151fa7a63d760955a0a17067e516714d24f93e267eaaff7cbcf26d3c0b3c7a6",
-      "size_bytes": 11134
+      "sha256": "37ca3362909b1b6c2ba3d04dc557f802e711976b4a105d0b9c8dcd26bbce0a84",
+      "size_bytes": 26747
     },
     {
       "path": "src/finds_agentbench/synthetic.py",
@@ -1450,5 +1460,5 @@
     "ready_for_workshop_submission": false,
     "status": "not_ready_for_workshop_submission"
   },
-  "total_uncompressed_size_bytes": 2252405
+  "total_uncompressed_size_bytes": 2288127
 }
