@@ -33,10 +33,14 @@ def main() -> int:
         type=Path,
         default=DEFAULT_EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH,
     )
+    parser.add_argument("--workspace-root", type=Path, default=Path("."))
     args = parser.parse_args()
 
     registry = load_external_agent_registry(args.registry)
-    report = build_external_agent_registration_validation_report(registry)
+    report = build_external_agent_registration_validation_report(
+        registry,
+        workspace_root=args.workspace_root,
+    )
 
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
     args.output_json.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")

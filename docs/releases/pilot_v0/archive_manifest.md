@@ -12,9 +12,9 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | Archive Status | `candidate_unfrozen` |
 | Expected Tag | `v0.1.0-pilot` |
 | Archive Path | `dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz` |
-| Archive SHA256 | `1f9ad1ec2757fd1c338154246c8de77daec600c69f67c27b2ed84c8467e45d74` |
+| Archive SHA256 | `5fa01fee95e39d07a7b0409cddc83f23bb8c93d2cd95936a115ad9920007268f` |
 | File Count | 281 |
-| Total Uncompressed Size | 2222092 bytes |
+| Total Uncompressed Size | 2230549 bytes |
 
 ## Submission Readiness
 
@@ -139,8 +139,8 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `docs/releases/pilot_v0/external_agent_protocol.md` | 2037 | `6552a6d995d557e90a2f950dfd5dafbf16247137fbc39e3d39106e6e296ef53a` |
 | `docs/releases/pilot_v0/external_agent_readiness.json` | 2474 | `f4591b6db6c5d2d4201020dc6c436d8380a99f44c381d3990504d41f9b962920` |
 | `docs/releases/pilot_v0/external_agent_readiness.md` | 1812 | `f023225f3c55da31b0c0b9f9bab7a5072ec833424ea430f095508c9116254dcd` |
-| `docs/releases/pilot_v0/external_agent_registration_validation.json` | 1191 | `e5ce8d090cd7effdd1018409f08f3a113b4c0099460876303c9d8d32bca78be3` |
-| `docs/releases/pilot_v0/external_agent_registration_validation.md` | 1383 | `3b5445064781cee36a6290f00a4e3aa7d77b4a5de36ac5dbcf295ecf769e8969` |
+| `docs/releases/pilot_v0/external_agent_registration_validation.json` | 1380 | `3161fe42d4e2cdeec76a9c5469786a727156e74f268d38ad9b818f1a1cf99612` |
+| `docs/releases/pilot_v0/external_agent_registration_validation.md` | 1589 | `5e68b3344a61162b1f1e707e4ac182fcb4b4c0e15ac5977d58c6ada7228a898d` |
 | `docs/releases/pilot_v0/manifest.json` | 30559 | `01382f5fde1db555f5a5054dc3dc138f1f4fa68beeb9dc8b75d27b4bfeb79bf8` |
 | `docs/releases/pilot_v0/paper_artifacts/README.md` | 550 | `a6fbd930530651a15f35f8655614b6ab68b93e52ca2247addc128cccaa298f21` |
 | `docs/releases/pilot_v0/paper_artifacts/figures/pilot_agent_suite_overall_score.svg` | 7211 | `9adf7337992a63c56faeecf102f84494618850ff0054ae097a2795307c6409b0` |
@@ -259,7 +259,7 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `scripts/score_yield_curve_10y2y_steepening_v0.py` | 1150 | `96a505625816a50d021a10946f298be46a26ee80894e99cf16cc38e64911373a` |
 | `scripts/score_yield_curve_10y3mo_steepening_v0.py` | 1154 | `c1324ec0ebcbc6439f2733b3e9ba69ba9bcc110e3e6edbcbb0e73bf298520e40` |
 | `scripts/score_yield_direction_treasury10y_v0.py` | 1146 | `a1afe8b5a6c5581d2450c45c9185ac25839b918db0646e6b2e5e7f7dc10bee39` |
-| `scripts/validate_external_agent_registry.py` | 2013 | `bb352a7c852bee956c8d4c703ad1f75891d675e1a2c99264288b2967ab94d82d` |
+| `scripts/validate_external_agent_registry.py` | 2146 | `a35a95c452e63ff4976250da7008e3074bfc413646097e5702dbff6b203037bb` |
 | `scripts/validate_manual_audit_review_packet.py` | 1768 | `e15cd376f0170d675fe4a59d66bad9c99e8e57bd919f1ab6fcb39a0cbdf4df25` |
 | `scripts/validate_run_manifest.py` | 616 | `ad0863925109e61004167218ed1540a43bb23f37c2be9e3483a1512f95126ec6` |
 | `scripts/validate_submission_artifacts.py` | 1773 | `829e157f7c92fbc13cbe828ae8360c7082ecad698d838168a2f17582ef733ebc` |
@@ -271,7 +271,7 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `src/finds_agentbench/benchmark_manifest.py` | 36281 | `af70486bcf5bd88b240665a674123b80dafbea0c17cd09d017345fde1644ac04` |
 | `src/finds_agentbench/curve_10y3mo.py` | 27660 | `5a003174a27e4d32027afa1a302db2ff772403a9118f1a5cc0f353c8ac33d926` |
 | `src/finds_agentbench/data_manifest.py` | 8373 | `20396abc44b9ede3c0ec3da38c294dbf8bad8a5c6cbb9ff656f9fc4d2b3c1860` |
-| `src/finds_agentbench/external_agents.py` | 28603 | `6a0893d541188a887a1340f3fb18308c373f328b312832cb3ab51153887c820e` |
+| `src/finds_agentbench/external_agents.py` | 36532 | `b55dc472eedc0800df1e3005fdf1e1587d1dc8b74d10eee0fcff8a0800047c3b` |
 | `src/finds_agentbench/front_end.py` | 28091 | `3c66b9e0958081568d248da523dbf6822bc1b74ddeb743265467719e122ce3f3` |
 | `src/finds_agentbench/io.py` | 683 | `934ae5e625c83ac994bdad1067c1154755ea9f3e6bc3c82e9953a2e2f24edac4` |
 | `src/finds_agentbench/leakage.py` | 3952 | `07dd0ea04f7725ec94d0b9776577655e7c172ecf1fb4a8dac39dab1be6be775e` |

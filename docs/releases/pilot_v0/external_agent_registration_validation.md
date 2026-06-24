@@ -13,13 +13,15 @@ Validation report for non-author external-agent registration and run evidence.
 | External task coverage | 0 / 8 |
 | Validation errors | 0 |
 | Path errors | 0 |
+| Evidence errors | 0 |
+| Valid run manifests | 0 |
 | Template | agents/external_agent_registration_template.yaml |
 
 ## External Configurations
 
-| Agent | Status | Maintainer | In Reference Results | Stronger Evidence | Tasks | Completed Runs | Run Manifests |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| (none) | n/a | n/a | no | no | n/a | n/a | 0 |
+| Agent | Status | Maintainer | In Reference Results | Stronger Evidence | Tasks | Completed Runs | Run Manifests | Valid Run Manifests |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| (none) | n/a | n/a | no | no | n/a | n/a | 0 | 0 |
 
 ## Blocking Items
 
@@ -32,4 +34,5 @@ Validation report for non-author external-agent registration and run evidence.
 - Copy agents/external_agent_registration_template.yaml into an external_agent_configurations entry.
 - Run the external agent through the pilot command harness for the required repeated runs.
 - Record completed_runs_per_task and run_manifest_paths for every completed run.
+- Ensure every run_manifest.json validates, matches the registered agent/task, and reports completed artifact validation.
 - Re-run scripts/validate_external_agent_registry.py and rebuild release artifacts.

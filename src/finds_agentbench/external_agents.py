@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from finds_agentbench.io import load_yaml
+from finds_agentbench.runs import load_run_manifest, validate_run_manifest
 
 
 DEFAULT_EXTERNAL_AGENT_REGISTRY_PATH = Path("agents/external_agent_registry.yaml")
@@ -179,6 +180,125 @@ def external_agent_completed_evidence_errors(
     return errors
 
 
+def resolve_external_agent_evidence_path(path_value: str | Path, *, workspace_root: Path) -> Path:
+    path = Path(str(path_value))
+    return path if path.is_absolute() else workspace_root / path
+
+
+def external_agent_run_manifest_evidence_errors(
+    config: dict[str, Any],
+    manifest_path: str | Path,
+    *,
+    workspace_root: str | Path = ".",
+) -> tuple[list[str], dict[str, Any] | None]:
+    workspace = Path(workspace_root)
+    path = resolve_external_agent_evidence_path(manifest_path, workspace_root=workspace)
+    if not path.exists():
+        return [f"run_manifest_path does not exist: {manifest_path}"], None
+
+    try:
+        manifest = load_run_manifest(path)
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        return [f"run_manifest_path is not a readable run manifest: {manifest_path}: {exc}"], None
+
+    validation = validate_run_manifest(manifest)
+    errors = [f"run_manifest schema error: {error}" for error in validation.errors]
+
+    agent = manifest.get("agent", {})
+    expected_agent_id = str(config.get("agent_id", ""))
+    expected_version = str(config.get("version", ""))
+    if isinstance(agent, dict):
+        if str(agent.get("agent_id", "")) != expected_agent_id:
+            errors.append(
+                f"run_manifest agent.agent_id must be {expected_agent_id!r}, "
+                f"got {agent.get('agent_id')!r}"
+            )
+        if str(agent.get("agent_version", "")) != expected_version:
+            errors.append(
+                f"run_manifest agent.agent_version must be {expected_version!r}, "
+                f"got {agent.get('agent_version')!r}"
+            )
+
+    task_ids = {str(task_id) for task_id in config.get("task_ids", [])}
+    manifest_task_id = str(manifest.get("task_id", ""))
+    if manifest_task_id not in task_ids:
+        errors.append(
+            f"run_manifest task_id must be one of {sorted(task_ids)}, got {manifest_task_id!r}"
+        )
+
+    if manifest.get("run_type") != "agent":
+        errors.append(f"run_manifest run_type must be 'agent', got {manifest.get('run_type')!r}")
+    if manifest.get("status") != "completed":
+        errors.append(f"run_manifest status must be 'completed', got {manifest.get('status')!r}")
+
+    validations = manifest.get("validations", {})
+    artifact_validation = validations.get("artifact_validation", {}) if isinstance(validations, dict) else {}
+    if not isinstance(artifact_validation, dict) or artifact_validation.get("ok") is not True:
+        errors.append("run_manifest validations.artifact_validation.ok must be true")
+
+    scores = manifest.get("scores", {})
+    if not isinstance(scores, dict) or not scores:
+        errors.append("run_manifest scores must be a non-empty object")
+    elif "execution_success" in scores and not bool(scores["execution_success"]):
+        errors.append("run_manifest scores.execution_success must be truthy when present")
+
+    artifacts = manifest.get("artifacts", {})
+    files = artifacts.get("files", []) if isinstance(artifacts, dict) else []
+    file_names = {
+        str(item.get("path", ""))
+        for item in files
+        if isinstance(item, dict) and str(item.get("path", ""))
+    }
+    missing_artifacts = sorted(set(REQUIRED_AGENT_ARTIFACTS) - file_names)
+    if missing_artifacts:
+        errors.append(
+            "run_manifest artifact inventory missing required files: "
+            + ", ".join(missing_artifacts)
+        )
+
+    return errors, manifest
+
+
+def unique_preserving_order(items: list[str]) -> list[str]:
+    seen: set[str] = set()
+    output: list[str] = []
+    for item in items:
+        if item in seen:
+            continue
+        seen.add(item)
+        output.append(item)
+    return output
+
+
+def apply_registration_validation_to_readiness(
+    readiness: dict[str, Any],
+    registration_validation: dict[str, Any],
+) -> dict[str, Any]:
+    if (
+        not readiness.get("ready_for_external_agent_claims", False)
+        or registration_validation.get("ready_for_external_agent_claims", False)
+    ):
+        return readiness
+
+    combined = dict(readiness)
+    combined["status"] = "not_ready_invalid_external_agent_evidence"
+    combined["ready_for_external_agent_claims"] = False
+    combined["blocking_items"] = unique_preserving_order(
+        [
+            *list(readiness.get("blocking_items", [])),
+            *list(registration_validation.get("blocking_items", [])),
+        ]
+    )
+    combined["claim_boundary"] = {
+        "allowed_current_claim": (
+            "The registry declares a candidate external-agent configuration, but run-manifest "
+            "evidence has not passed validation."
+        ),
+        "disallowed_current_claim": "Ready external-agent evidence or stronger external-agent claims.",
+    }
+    return combined
+
+
 def build_external_agent_readiness_report(registry: dict[str, Any]) -> dict[str, Any]:
     validation_errors = validate_external_agent_registry(registry)
     if validation_errors:
@@ -332,14 +452,57 @@ def build_external_agent_registration_validation_report(
         config for config in registry_agent_configurations(registry) if is_external_agent_configuration(config)
     ]
     path_errors: list[str] = []
+    evidence_errors: list[str] = []
+    valid_run_manifest_count_by_agent: dict[str, int] = {}
+    valid_run_manifest_count_by_agent_task: dict[tuple[str, str], int] = {}
+    seen_run_ids: dict[str, str] = {}
     for config in external_configs:
+        agent_id = str(config.get("agent_id", "unknown"))
         for path_value in config.get("run_manifest_paths", []) or []:
-            path = Path(str(path_value))
-            candidate = path if path.is_absolute() else workspace / path
-            if not candidate.exists():
-                path_errors.append(
-                    f"{config.get('agent_id', 'unknown')}: run_manifest_path does not exist: {path_value}"
+            evidence_path = resolve_external_agent_evidence_path(path_value, workspace_root=workspace)
+            errors, manifest = external_agent_run_manifest_evidence_errors(
+                config,
+                path_value,
+                workspace_root=workspace,
+            )
+            if errors:
+                if any(error.startswith("run_manifest_path does not exist") for error in errors):
+                    path_errors.extend(f"{agent_id}: {error}" for error in errors)
+                else:
+                    evidence_errors.extend(f"{agent_id}: {path_value}: {error}" for error in errors)
+                continue
+
+            assert manifest is not None
+            run_id = str(manifest.get("run_id", ""))
+            if run_id in seen_run_ids:
+                evidence_errors.append(
+                    f"{agent_id}: {path_value}: duplicate run_id {run_id!r}; "
+                    f"already seen in {seen_run_ids[run_id]}"
                 )
+                continue
+            seen_run_ids[run_id] = str(evidence_path)
+            task_id = str(manifest.get("task_id", ""))
+            valid_run_manifest_count_by_agent[agent_id] = (
+                valid_run_manifest_count_by_agent.get(agent_id, 0) + 1
+            )
+            key = (agent_id, task_id)
+            valid_run_manifest_count_by_agent_task[key] = (
+                valid_run_manifest_count_by_agent_task.get(key, 0) + 1
+            )
+
+        completed_runs = config.get("completed_runs_per_task", {})
+        if isinstance(completed_runs, dict):
+            for task_id, declared_count in completed_runs.items():
+                try:
+                    expected_count = int(declared_count)
+                except (TypeError, ValueError):
+                    expected_count = 0
+                actual_count = valid_run_manifest_count_by_agent_task.get((agent_id, str(task_id)), 0)
+                if actual_count < expected_count:
+                    evidence_errors.append(
+                        f"{agent_id}: valid run manifests for {task_id} are below declared "
+                        f"completed_runs_per_task ({actual_count} < {expected_count})"
+                    )
 
     blocking_items: list[str] = []
     if not external_configs:
@@ -348,12 +511,22 @@ def build_external_agent_registration_validation_report(
         blocking_items.extend(validation_errors)
     if path_errors:
         blocking_items.extend(path_errors)
+    if evidence_errors:
+        blocking_items.extend(evidence_errors)
     if readiness and readiness["blocking_items"]:
         blocking_items.extend(readiness["blocking_items"])
 
-    if validation_errors or path_errors:
+    registration_ready = bool(
+        readiness
+        and readiness["ready_for_external_agent_claims"]
+        and not validation_errors
+        and not path_errors
+        and not evidence_errors
+    )
+
+    if validation_errors or path_errors or evidence_errors:
         status = "invalid_external_agent_registration"
-    elif readiness and readiness["ready_for_external_agent_claims"]:
+    elif registration_ready:
         status = "ready_for_external_agent_claims"
     elif external_configs:
         status = "registered_but_not_ready_for_claims"
@@ -379,14 +552,16 @@ def build_external_agent_registration_validation_report(
                 "task_ids": [str(task_id) for task_id in config.get("task_ids", [])],
                 "completed_runs_per_task": completed_runs_text,
                 "run_manifest_path_count": len(config.get("run_manifest_paths", []) or []),
+                "valid_run_manifest_count": valid_run_manifest_count_by_agent.get(
+                    str(config.get("agent_id", "")),
+                    0,
+                ),
             }
         )
 
     return {
         "status": status,
-        "ready_for_external_agent_claims": bool(
-            readiness and readiness["ready_for_external_agent_claims"]
-        ),
+        "ready_for_external_agent_claims": registration_ready,
         "registry_id": registry.get("registry_id", ""),
         "external_agent_configuration_count": len(external_configs),
         "completed_external_agent_configuration_count": (
@@ -396,6 +571,8 @@ def build_external_agent_registration_validation_report(
         "expected_task_count": readiness["expected_task_count"] if readiness else 0,
         "validation_error_count": len(validation_errors),
         "path_error_count": len(path_errors),
+        "evidence_error_count": len(evidence_errors),
+        "valid_run_manifest_count": sum(valid_run_manifest_count_by_agent.values()),
         "blocking_items": blocking_items,
         "external_configurations": config_rows,
         "template_path": str(EXTERNAL_AGENT_TEMPLATE_PATH),
@@ -403,6 +580,7 @@ def build_external_agent_registration_validation_report(
             "Copy agents/external_agent_registration_template.yaml into an external_agent_configurations entry.",
             "Run the external agent through the pilot command harness for the required repeated runs.",
             "Record completed_runs_per_task and run_manifest_paths for every completed run.",
+            "Ensure every run_manifest.json validates, matches the registered agent/task, and reports completed artifact validation.",
             "Re-run scripts/validate_external_agent_registry.py and rebuild release artifacts.",
         ]
         if not (readiness and readiness["ready_for_external_agent_claims"])
@@ -430,6 +608,8 @@ def render_external_agent_registration_validation_markdown(report: dict[str, Any
         ],
         ["Validation errors", report["validation_error_count"]],
         ["Path errors", report["path_error_count"]],
+        ["Evidence errors", report["evidence_error_count"]],
+        ["Valid run manifests", report["valid_run_manifest_count"]],
         ["Template", report["template_path"]],
     ]
     config_rows = [
@@ -442,6 +622,7 @@ def render_external_agent_registration_validation_markdown(report: dict[str, Any
             ", ".join(config["task_ids"]),
             config["completed_runs_per_task"],
             config["run_manifest_path_count"],
+            config["valid_run_manifest_count"],
         ]
         for config in report["external_configurations"]
     ]
@@ -466,9 +647,10 @@ def render_external_agent_registration_validation_markdown(report: dict[str, Any
                 "Tasks",
                 "Completed Runs",
                 "Run Manifests",
+                "Valid Run Manifests",
             ],
             config_rows
-            or [["(none)", "n/a", "n/a", "no", "no", "n/a", "n/a", 0]],
+            or [["(none)", "n/a", "n/a", "no", "no", "n/a", "n/a", 0, 0]],
         ),
         "",
         "## Blocking Items",
@@ -609,6 +791,7 @@ def build_external_agent_readiness_artifacts(
         registry,
         workspace_root=workspace_root,
     )
+    readiness = apply_registration_validation_to_readiness(readiness, registration_validation)
 
     protocol_path = Path(protocol_markdown_path)
     protocol_path.parent.mkdir(parents=True, exist_ok=True)

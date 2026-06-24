@@ -1,8 +1,8 @@
 {
   "archive_mtime_policy": "tar and gzip mtimes are normalized to 0",
   "archive_path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
-  "archive_sha256": "1f9ad1ec2757fd1c338154246c8de77daec600c69f67c27b2ed84c8467e45d74",
-  "archive_size_bytes": 257004,
+  "archive_sha256": "5fa01fee95e39d07a7b0409cddc83f23bb8c93d2cd95936a115ad9920007268f",
+  "archive_size_bytes": 258913,
   "archive_status": "candidate_unfrozen",
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
@@ -570,13 +570,13 @@
     },
     {
       "path": "docs/releases/pilot_v0/external_agent_registration_validation.json",
-      "sha256": "e5ce8d090cd7effdd1018409f08f3a113b4c0099460876303c9d8d32bca78be3",
-      "size_bytes": 1191
+      "sha256": "3161fe42d4e2cdeec76a9c5469786a727156e74f268d38ad9b818f1a1cf99612",
+      "size_bytes": 1380
     },
     {
       "path": "docs/releases/pilot_v0/external_agent_registration_validation.md",
-      "sha256": "3b5445064781cee36a6290f00a4e3aa7d77b4a5de36ac5dbcf295ecf769e8969",
-      "size_bytes": 1383
+      "sha256": "5e68b3344a61162b1f1e707e4ac182fcb4b4c0e15ac5977d58c6ada7228a898d",
+      "size_bytes": 1589
     },
     {
       "path": "docs/releases/pilot_v0/manifest.json",
@@ -1170,8 +1170,8 @@
     },
     {
       "path": "scripts/validate_external_agent_registry.py",
-      "sha256": "bb352a7c852bee956c8d4c703ad1f75891d675e1a2c99264288b2967ab94d82d",
-      "size_bytes": 2013
+      "sha256": "a35a95c452e63ff4976250da7008e3074bfc413646097e5702dbff6b203037bb",
+      "size_bytes": 2146
     },
     {
       "path": "scripts/validate_manual_audit_review_packet.py",
@@ -1230,8 +1230,8 @@
     },
     {
       "path": "src/finds_agentbench/external_agents.py",
-      "sha256": "6a0893d541188a887a1340f3fb18308c373f328b312832cb3ab51153887c820e",
-      "size_bytes": 28603
+      "sha256": "b55dc472eedc0800df1e3005fdf1e1587d1dc8b74d10eee0fcff8a0800047c3b",
+      "size_bytes": 36532
     },
     {
       "path": "src/finds_agentbench/front_end.py",
@@ -1440,5 +1440,5 @@
     "ready_for_workshop_submission": false,
     "status": "not_ready_for_workshop_submission"
   },
-  "total_uncompressed_size_bytes": 2222092
+  "total_uncompressed_size_bytes": 2230549
 }

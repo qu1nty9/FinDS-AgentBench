@@ -5,6 +5,7 @@
     "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset."
   ],
   "completed_external_agent_configuration_count": 0,
+  "evidence_error_count": 0,
   "expected_task_count": 8,
   "external_agent_configuration_count": 0,
   "external_configurations": [],
@@ -13,6 +14,7 @@
     "Copy agents/external_agent_registration_template.yaml into an external_agent_configurations entry.",
     "Run the external agent through the pilot command harness for the required repeated runs.",
     "Record completed_runs_per_task and run_manifest_paths for every completed run.",
+    "Ensure every run_manifest.json validates, matches the registered agent/task, and reports completed artifact validation.",
     "Re-run scripts/validate_external_agent_registry.py and rebuild release artifacts."
   ],
   "path_error_count": 0,
@@ -20,5 +22,6 @@
   "registry_id": "finds_agentbench_external_agents_pilot_v0",
   "status": "no_external_agent_registered",
   "template_path": "agents/external_agent_registration_template.yaml",
+  "valid_run_manifest_count": 0,
   "validation_error_count": 0
 }
