@@ -396,3 +396,87 @@ def score_synthetic_event_response_submission(
         label_column="event_reaction_positive",
         return_column="next_day_return",
     )
+
+
+def score_yield_direction_treasury10y_submission(
+    *,
+    submission_path: str | Path,
+    answer_key_path: str | Path,
+) -> PredictiveScore:
+    return score_predictive_binary_submission(
+        submission_path=submission_path,
+        answer_key_path=answer_key_path,
+        task_id="yield_direction_treasury10y_v0",
+        label_column="next_day_yield_up",
+        return_column="next_day_directional_return",
+    )
+
+
+def score_yield_curve_10y2y_steepening_submission(
+    *,
+    submission_path: str | Path,
+    answer_key_path: str | Path,
+) -> PredictiveScore:
+    return score_predictive_binary_submission(
+        submission_path=submission_path,
+        answer_key_path=answer_key_path,
+        task_id="yield_curve_10y2y_steepening_v0",
+        label_column="next_day_curve_steepening",
+        return_column="next_day_directional_return",
+    )
+
+
+def score_yield_curve_10y3mo_steepening_submission(
+    *,
+    submission_path: str | Path,
+    answer_key_path: str | Path,
+) -> PredictiveScore:
+    return score_predictive_binary_submission(
+        submission_path=submission_path,
+        answer_key_path=answer_key_path,
+        task_id="yield_curve_10y3mo_steepening_v0",
+        label_column="next_day_curve_10y3mo_steepening",
+        return_column="next_day_directional_return",
+    )
+
+
+def score_front_end_spread_widening_submission(
+    *,
+    submission_path: str | Path,
+    answer_key_path: str | Path,
+) -> PredictiveScore:
+    return score_predictive_binary_submission(
+        submission_path=submission_path,
+        answer_key_path=answer_key_path,
+        task_id="front_end_spread_widening_v0",
+        label_column="next_day_front_end_widening",
+        return_column="next_day_directional_return",
+    )
+
+
+def score_usd_broad_direction_submission(
+    *,
+    submission_path: str | Path,
+    answer_key_path: str | Path,
+) -> PredictiveScore:
+    return score_predictive_binary_submission(
+        submission_path=submission_path,
+        answer_key_path=answer_key_path,
+        task_id="usd_broad_direction_v0",
+        label_column="next_day_usd_broad_up",
+        return_column="next_day_return",
+    )
+
+
+def score_usd_afe_vs_eme_relative_submission(
+    *,
+    submission_path: str | Path,
+    answer_key_path: str | Path,
+) -> PredictiveScore:
+    return score_predictive_binary_submission(
+        submission_path=submission_path,
+        answer_key_path=answer_key_path,
+        task_id="usd_afe_vs_eme_relative_direction_v0",
+        label_column="next_day_afe_outperforms_eme",
+        return_column="next_day_relative_return",
+    )

@@ -1,0 +1,121 @@
+{
+  "entries": [
+    {
+      "case_id": "pilot_event_rule_baseline_release_001",
+      "differing_dimensions": [
+        "temporal_protocol_correctness"
+      ],
+      "label_disagreement": false,
+      "left_overall_label": "minimally_defensible",
+      "left_total_score": 6,
+      "reviewer_pair": [
+        "reviewer_1_seed",
+        "reviewer_2_shadow_demo"
+      ],
+      "reviewer_roles": [
+        "benchmark_author_seed_reviewer",
+        "synthetic_shadow_reviewer"
+      ],
+      "right_overall_label": "minimally_defensible",
+      "right_total_score": 7
+    },
+    {
+      "case_id": "pilot_event_rule_env_agent_protocol_001",
+      "differing_dimensions": [
+        "reproducibility_trace_completeness"
+      ],
+      "label_disagreement": false,
+      "left_overall_label": "minimally_defensible",
+      "left_total_score": 7,
+      "reviewer_pair": [
+        "reviewer_1_seed",
+        "reviewer_2_shadow_demo"
+      ],
+      "reviewer_roles": [
+        "benchmark_author_seed_reviewer",
+        "synthetic_shadow_reviewer"
+      ],
+      "right_overall_label": "minimally_defensible",
+      "right_total_score": 6
+    },
+    {
+      "case_id": "pilot_market_logistic_baseline_release_001",
+      "differing_dimensions": [
+        "baseline_comparison_or_counterfactual_context"
+      ],
+      "label_disagreement": true,
+      "left_overall_label": "strong_but_incomplete",
+      "left_total_score": 10,
+      "reviewer_pair": [
+        "reviewer_1_seed",
+        "reviewer_2_shadow_demo"
+      ],
+      "reviewer_roles": [
+        "benchmark_author_seed_reviewer",
+        "synthetic_shadow_reviewer"
+      ],
+      "right_overall_label": "near_camera_ready",
+      "right_total_score": 11
+    },
+    {
+      "case_id": "pilot_market_momentum_baseline_release_001",
+      "differing_dimensions": [
+        "quantitative_evidence_use"
+      ],
+      "label_disagreement": false,
+      "left_overall_label": "minimally_defensible",
+      "left_total_score": 6,
+      "reviewer_pair": [
+        "reviewer_1_seed",
+        "reviewer_2_shadow_demo"
+      ],
+      "reviewer_roles": [
+        "benchmark_author_seed_reviewer",
+        "synthetic_shadow_reviewer"
+      ],
+      "right_overall_label": "minimally_defensible",
+      "right_total_score": 7
+    },
+    {
+      "case_id": "pilot_treasury_logistic_baseline_release_001",
+      "differing_dimensions": [
+        "quantitative_evidence_use",
+        "baseline_comparison_or_counterfactual_context"
+      ],
+      "label_disagreement": false,
+      "left_overall_label": "strong_but_incomplete",
+      "left_total_score": 10,
+      "reviewer_pair": [
+        "reviewer_1_seed",
+        "reviewer_2_shadow_demo"
+      ],
+      "reviewer_roles": [
+        "benchmark_author_seed_reviewer",
+        "synthetic_shadow_reviewer"
+      ],
+      "right_overall_label": "strong_but_incomplete",
+      "right_total_score": 10
+    },
+    {
+      "case_id": "pilot_treasury_previous_day_baseline_release_001",
+      "differing_dimensions": [
+        "claim_discipline"
+      ],
+      "label_disagreement": false,
+      "left_overall_label": "strong_but_incomplete",
+      "left_total_score": 10,
+      "reviewer_pair": [
+        "reviewer_1_seed",
+        "reviewer_2_shadow_demo"
+      ],
+      "reviewer_roles": [
+        "benchmark_author_seed_reviewer",
+        "synthetic_shadow_reviewer"
+      ],
+      "right_overall_label": "strong_but_incomplete",
+      "right_total_score": 9
+    }
+  ],
+  "entry_count": 6,
+  "status": "adjudication_queue_ready"
+}

@@ -2,6 +2,11 @@
 
 This directory holds wrappers and protocol notes for evaluated agents.
 
+The generated external-agent submission contract is tracked in
+`docs/releases/pilot_v0/external_agent_protocol.md`; the machine-readable
+registry that distinguishes bundled reference agents from independent external
+submissions is `agents/external_agent_registry.yaml`.
+
 Every agent run should record:
 
 - model and agent framework;
@@ -37,13 +42,13 @@ PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py \
   --run-label-prefix pilot_agent
 ```
 
-The repository includes a contract-only reference agent:
+The repository includes a task-aware reference agent that sweeps public baselines and selects the best candidate on public validation:
 
 ```bash
 PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py \
-  --agent-id momentum_env_agent \
-  --agent-version 0.1.0 \
-  --agent-command "python agents/examples/momentum_env_agent.py" \
+  --agent-id market_research_sweep_env_agent \
+  --agent-version 0.2.0 \
+  --agent-command "python agents/examples/research_sweep_env_agent.py" \
   --repeat 3
 ```
 
@@ -56,6 +61,8 @@ PYTHONPATH=src python scripts/run_synthetic_event_response_agent_suite.py \
   --agent-command "python agents/examples/event_rule_env_agent.py" \
   --repeat 3
 ```
+
+The same `agents/examples/research_sweep_env_agent.py` entrypoint also works for `yield_direction_treasury10y_v0` and `usd_broad_direction_v0`; the harness passes `FINDS_TASK_ID`, and the agent switches candidate families by task.
 
 The command is parsed with `shlex` and runs with `FINDS_*` environment variables:
 

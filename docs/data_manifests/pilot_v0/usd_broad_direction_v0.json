@@ -1,0 +1,100 @@
+{
+  "data_access": "download_script",
+  "generator_script": {
+    "exists": true,
+    "path": "scripts/download_usd_broad_direction_v0.py",
+    "sha256": "c0b8e0cbe58f59df050cd56cc9e0bdc99a172602bea75eedf01f9359ec5fab83"
+  },
+  "license_status": "public_domain_citation_requested",
+  "public_data_present": true,
+  "public_file_count": 4,
+  "public_local_paths": [
+    {
+      "exists": true,
+      "file_count": 4,
+      "files": [
+        {
+          "path": "data/raw/usd_broad_direction_v0/metadata.json",
+          "sha256": "afaa0906148a87760c77d7950adb3b3c4db224efcfe4f8be65d67711f9a1cf6e",
+          "size_bytes": 1318
+        },
+        {
+          "path": "data/raw/usd_broad_direction_v0/private_holdout_features.csv",
+          "sha256": "b8f0a47081940adea06786bf8d8eda50153d36e6c677d62a44c5fe4e9f75aadd",
+          "size_bytes": 283031
+        },
+        {
+          "path": "data/raw/usd_broad_direction_v0/sample_submission.csv",
+          "sha256": "8afb3985c10df22e15376ba5081c5a37d3922877625513a47a5d62a8bf42bf71",
+          "size_bytes": 41030
+        },
+        {
+          "path": "data/raw/usd_broad_direction_v0/train_public.csv",
+          "sha256": "677851e27d5580324e27fba3ac19200693013475cc04026995319ce946d59252",
+          "size_bytes": 1103290
+        }
+      ],
+      "ignored_subdirectories": [
+        "data/raw/usd_broad_direction_v0/agent",
+        "data/raw/usd_broad_direction_v0/baseline",
+        "data/raw/usd_broad_direction_v0/pilot_agent_usd_001_seed_37",
+        "data/raw/usd_broad_direction_v0/pilot_agent_usd_002_seed_38",
+        "data/raw/usd_broad_direction_v0/pilot_agent_usd_003_seed_39",
+        "data/raw/usd_broad_direction_v0/pilot_usd_001_seed_37",
+        "data/raw/usd_broad_direction_v0/pilot_usd_002_seed_38",
+        "data/raw/usd_broad_direction_v0/pilot_usd_003_seed_39"
+      ],
+      "is_dir": true,
+      "path": "data/raw/usd_broad_direction_v0",
+      "total_size_bytes": 1428669
+    }
+  ],
+  "public_total_size_bytes": 1428669,
+  "source_spec": {
+    "path": "tasks/pilot/usd_broad_direction_v0.yaml",
+    "sha256": "80700e070d15081c715d162d968d11216e2afc6a65cbea0061100ee653e1441c"
+  },
+  "sources": [
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DTWEXBGS from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXBGS&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DTWEXAFEGS from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXAFEGS&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DTWEXEMEGS from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXEMEGS&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS2 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS10 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DFF from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+    }
+  ],
+  "status": "draft",
+  "task_id": "usd_broad_direction_v0",
+  "title": "Broad U.S. Dollar Index Next-Day Direction Under Point-in-Time H.10 and H.15 Features",
+  "track": "predictive_financial_ml",
+  "version": "0.1.0"
+}

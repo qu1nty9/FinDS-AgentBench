@@ -1,0 +1,67 @@
+{
+  "data_access": "download_script",
+  "generator_script": {
+    "exists": true,
+    "path": "scripts/download_yield_curve_10y3mo_steepening_v0.py",
+    "sha256": "241b80a53a0afbdac496c446c12feff570c2fd31e2ccc9e2ede0965affacecd8"
+  },
+  "license_status": "public_domain_citation_requested",
+  "public_data_present": false,
+  "public_file_count": 0,
+  "public_local_paths": [
+    {
+      "exists": true,
+      "file_count": 0,
+      "files": [],
+      "ignored_subdirectories": [
+        "data/raw/yield_curve_10y3mo_steepening_v0/agent",
+        "data/raw/yield_curve_10y3mo_steepening_v0/baseline",
+        "data/raw/yield_curve_10y3mo_steepening_v0/pilot_agent_curve3mo_001_seed_33",
+        "data/raw/yield_curve_10y3mo_steepening_v0/pilot_agent_curve3mo_002_seed_34",
+        "data/raw/yield_curve_10y3mo_steepening_v0/pilot_agent_curve3mo_003_seed_35",
+        "data/raw/yield_curve_10y3mo_steepening_v0/pilot_curve3mo_001_seed_33",
+        "data/raw/yield_curve_10y3mo_steepening_v0/pilot_curve3mo_002_seed_34",
+        "data/raw/yield_curve_10y3mo_steepening_v0/pilot_curve3mo_003_seed_35"
+      ],
+      "is_dir": true,
+      "path": "data/raw/yield_curve_10y3mo_steepening_v0",
+      "total_size_bytes": 0
+    }
+  ],
+  "public_total_size_bytes": 0,
+  "source_spec": {
+    "path": "tasks/pilot/yield_curve_10y3mo_steepening_v0.yaml",
+    "sha256": "58ec86ead130d9384535df0ad1035698f873eefb153c3e4f7fea2df9d15a34e3"
+  },
+  "sources": [
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS10 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS2 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS3MO from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS3MO&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DFF from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+    }
+  ],
+  "status": "draft",
+  "task_id": "yield_curve_10y3mo_steepening_v0",
+  "title": "U.S. 10Y-3M Treasury Curve Next-Day Steepening Under Point-in-Time H.15 Features",
+  "track": "predictive_financial_ml",
+  "version": "0.1.0"
+}

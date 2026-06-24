@@ -78,3 +78,24 @@ def test_validate_submission_reports_notebook_execution_failure(tmp_path: Path):
 
     assert not result.ok
     assert any("notebook_execution_failed" in error for error in result.errors)
+
+
+def test_validate_submission_rejects_forbidden_prediction_columns(tmp_path: Path):
+    task_spec = load_yaml("tasks/pilot/yield_direction_treasury10y_v0.yaml")
+    submission_dir = tmp_path / "submission"
+    submission_dir.mkdir()
+    write_notebook(submission_dir / "notebook.ipynb", "print('ok')")
+    (submission_dir / "writeup.md").write_text("short", encoding="utf-8")
+    (submission_dir / "predictions.csv").write_text(
+        "row_id,prediction,probability,next_day_yield_up\nrow_1,1,0.7,1\n",
+        encoding="utf-8",
+    )
+
+    result = validate_submission_artifacts(
+        task_spec=task_spec,
+        submission_dir=submission_dir,
+        execute=False,
+    )
+
+    assert not result.ok
+    assert any("contains forbidden columns" in error for error in result.errors)

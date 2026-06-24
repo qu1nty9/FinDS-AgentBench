@@ -35,9 +35,17 @@
         }
       ],
       "ignored_subdirectories": [
+        "data/raw/synthetic_market_direction_v0/agent",
+        "data/raw/synthetic_market_direction_v0/baseline",
         "data/raw/synthetic_market_direction_v0/pilot_001_seed_11",
         "data/raw/synthetic_market_direction_v0/pilot_002_seed_12",
-        "data/raw/synthetic_market_direction_v0/pilot_003_seed_13"
+        "data/raw/synthetic_market_direction_v0/pilot_003_seed_13",
+        "data/raw/synthetic_market_direction_v0/pilot_agent_market_001_seed_11",
+        "data/raw/synthetic_market_direction_v0/pilot_agent_market_002_seed_12",
+        "data/raw/synthetic_market_direction_v0/pilot_agent_market_003_seed_13",
+        "data/raw/synthetic_market_direction_v0/pilot_market_001_seed_11",
+        "data/raw/synthetic_market_direction_v0/pilot_market_002_seed_12",
+        "data/raw/synthetic_market_direction_v0/pilot_market_003_seed_13"
       ],
       "is_dir": true,
       "path": "data/raw/synthetic_market_direction_v0",

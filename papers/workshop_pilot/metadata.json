@@ -1,0 +1,49 @@
+{
+  "agent_cell_count": 8,
+  "agreement_status": "insufficient_independent_overlap",
+  "baseline_cell_count": 27,
+  "benchmark_id": "finds_agentbench_pilot_v0",
+  "benchmark_version": "0.1.0",
+  "completed_counts": [
+    3
+  ],
+  "completed_external_agent_configuration_count": 0,
+  "exploratory_agreement_status": "pairwise_agreement_available",
+  "external_agent_blocking_items": [
+    "Register and run at least one non-author external agent configuration through the pilot harness.",
+    "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset."
+  ],
+  "external_agent_configuration_count": 0,
+  "external_agent_readiness_status": "not_ready_no_external_agents",
+  "independent_completed_reviewer_packet_count": 0,
+  "manual_audit_case_count": 6,
+  "manual_audit_reviewed_task_count": 3,
+  "manual_audit_status": "seed_author_adjudication_only",
+  "overall_agent_higher_count": 0,
+  "overall_baseline_higher_count": 6,
+  "overall_comparison_count": 8,
+  "overall_tie_count": 2,
+  "protocol_cell_count": 35,
+  "protocol_task_count": 8,
+  "ready_for_external_agent_claims": false,
+  "ready_for_submission_claims": false,
+  "release_build_command": "PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-outputs",
+  "release_stage": "pilot",
+  "reviewer_readiness_blocking_items": [
+    "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
+    "Rebuild official agreement reporting after an independent completed packet is available."
+  ],
+  "reviewer_readiness_markdown_path": "audits/pilot_v0/reports/reviewer_readiness.md",
+  "reviewer_readiness_status": "not_ready_seed_only",
+  "run_counts": [
+    3
+  ],
+  "runnable_task_count": 9,
+  "task_count": 9,
+  "track_count": 3,
+  "track_names": [
+    "event_aware_time_series_reasoning",
+    "predictive_financial_ml",
+    "research_replication_and_audit"
+  ]
+}

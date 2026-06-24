@@ -9,17 +9,18 @@ from finds_agentbench.pipelines import (
     DEFAULT_PILOT_PROTOCOL_RUNS_ROOT,
     run_pilot_protocol,
 )
+from finds_agentbench.treasury import DEFAULT_REALTIME_SNAPSHOT_DATE
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Run the combined pilot protocol across implemented baseline and agent tasks."
     )
-    parser.add_argument("--market-agent-id", default="momentum_env_agent")
-    parser.add_argument("--market-agent-version", default="0.1.0")
+    parser.add_argument("--market-agent-id", default="market_research_sweep_env_agent")
+    parser.add_argument("--market-agent-version", default="0.2.0")
     parser.add_argument(
         "--market-agent-command",
-        default=f"{sys.executable} agents/examples/momentum_env_agent.py",
+        default=f"{sys.executable} agents/examples/research_sweep_env_agent.py",
         help="Command string parsed with shlex for synthetic_market_direction_v0.",
     )
     parser.add_argument("--event-agent-id", default="event_rule_env_agent")
@@ -29,8 +30,48 @@ def main() -> int:
         default=f"{sys.executable} agents/examples/event_rule_env_agent.py",
         help="Command string parsed with shlex for synthetic_event_response_v0.",
     )
+    parser.add_argument("--treasury-agent-id", default="treasury_research_sweep_env_agent")
+    parser.add_argument("--treasury-agent-version", default="0.2.0")
+    parser.add_argument(
+        "--treasury-agent-command",
+        default=f"{sys.executable} agents/examples/research_sweep_env_agent.py",
+        help="Command string parsed with shlex for yield_direction_treasury10y_v0.",
+    )
+    parser.add_argument("--curve-agent-id", default="treasury_curve_research_sweep_env_agent")
+    parser.add_argument("--curve-agent-version", default="0.2.0")
+    parser.add_argument(
+        "--curve-agent-command",
+        default=f"{sys.executable} agents/examples/research_sweep_env_agent.py",
+        help="Command string parsed with shlex for yield_curve_10y2y_steepening_v0.",
+    )
+    parser.add_argument("--curve3mo-agent-id", default="treasury_curve_10y3mo_research_sweep_env_agent")
+    parser.add_argument("--curve3mo-agent-version", default="0.2.0")
+    parser.add_argument(
+        "--curve3mo-agent-command",
+        default=f"{sys.executable} agents/examples/research_sweep_env_agent.py",
+        help="Command string parsed with shlex for yield_curve_10y3mo_steepening_v0.",
+    )
+    parser.add_argument("--front-end-agent-id", default="treasury_front_end_research_sweep_env_agent")
+    parser.add_argument("--front-end-agent-version", default="0.2.0")
+    parser.add_argument(
+        "--front-end-agent-command",
+        default=f"{sys.executable} agents/examples/research_sweep_env_agent.py",
+        help="Command string parsed with shlex for front_end_spread_widening_v0.",
+    )
+    parser.add_argument("--usd-agent-id", default="usd_research_sweep_env_agent")
+    parser.add_argument("--usd-agent-version", default="0.2.0")
+    parser.add_argument(
+        "--usd-agent-command",
+        default=f"{sys.executable} agents/examples/research_sweep_env_agent.py",
+        help="Command string parsed with shlex for usd_broad_direction_v0.",
+    )
     parser.add_argument("--market-seed", type=int, default=11)
     parser.add_argument("--event-seed", type=int, default=23)
+    parser.add_argument("--treasury-seed", type=int, default=29)
+    parser.add_argument("--curve-seed", type=int, default=31)
+    parser.add_argument("--curve3mo-seed", type=int, default=33)
+    parser.add_argument("--front-end-seed", type=int, default=31)
+    parser.add_argument("--usd-seed", type=int, default=37)
     parser.add_argument(
         "--repeat",
         type=int,
@@ -47,6 +88,31 @@ def main() -> int:
         "--event-task",
         type=Path,
         default=Path("tasks/pilot/synthetic_event_response_v0.yaml"),
+    )
+    parser.add_argument(
+        "--treasury-task",
+        type=Path,
+        default=Path("tasks/pilot/yield_direction_treasury10y_v0.yaml"),
+    )
+    parser.add_argument(
+        "--curve-task",
+        type=Path,
+        default=Path("tasks/pilot/yield_curve_10y2y_steepening_v0.yaml"),
+    )
+    parser.add_argument(
+        "--curve3mo-task",
+        type=Path,
+        default=Path("tasks/pilot/yield_curve_10y3mo_steepening_v0.yaml"),
+    )
+    parser.add_argument(
+        "--front-end-task",
+        type=Path,
+        default=Path("tasks/pilot/front_end_spread_widening_v0.yaml"),
+    )
+    parser.add_argument(
+        "--usd-task",
+        type=Path,
+        default=Path("tasks/pilot/usd_broad_direction_v0.yaml"),
     )
     parser.add_argument(
         "--market-data-output-dir",
@@ -69,10 +135,61 @@ def main() -> int:
         default=Path("data/private/synthetic_event_response_v0"),
     )
     parser.add_argument(
+        "--treasury-data-output-dir",
+        type=Path,
+        default=Path("data/raw/yield_direction_treasury10y_v0"),
+    )
+    parser.add_argument(
+        "--treasury-private-dir",
+        type=Path,
+        default=Path("data/private/yield_direction_treasury10y_v0"),
+    )
+    parser.add_argument(
+        "--curve-data-output-dir",
+        type=Path,
+        default=Path("data/raw/yield_curve_10y2y_steepening_v0"),
+    )
+    parser.add_argument(
+        "--curve-private-dir",
+        type=Path,
+        default=Path("data/private/yield_curve_10y2y_steepening_v0"),
+    )
+    parser.add_argument(
+        "--curve3mo-data-output-dir",
+        type=Path,
+        default=Path("data/raw/yield_curve_10y3mo_steepening_v0"),
+    )
+    parser.add_argument(
+        "--curve3mo-private-dir",
+        type=Path,
+        default=Path("data/private/yield_curve_10y3mo_steepening_v0"),
+    )
+    parser.add_argument(
+        "--front-end-data-output-dir",
+        type=Path,
+        default=Path("data/raw/front_end_spread_widening_v0"),
+    )
+    parser.add_argument(
+        "--front-end-private-dir",
+        type=Path,
+        default=Path("data/private/front_end_spread_widening_v0"),
+    )
+    parser.add_argument(
+        "--usd-data-output-dir",
+        type=Path,
+        default=Path("data/raw/usd_broad_direction_v0"),
+    )
+    parser.add_argument(
+        "--usd-private-dir",
+        type=Path,
+        default=Path("data/private/usd_broad_direction_v0"),
+    )
+    parser.add_argument(
         "--runs-root",
         type=Path,
         default=Path(DEFAULT_PILOT_PROTOCOL_RUNS_ROOT),
     )
+    parser.add_argument("--clean-existing-runs", action="store_true")
     parser.add_argument(
         "--report-csv",
         type=Path,
@@ -93,6 +210,36 @@ def main() -> int:
         type=Path,
         default=Path("reports/generated/run_summary.md"),
     )
+    parser.add_argument(
+        "--treasury-snapshot-date",
+        type=str,
+        default=DEFAULT_REALTIME_SNAPSHOT_DATE,
+    )
+    parser.add_argument("--treasury-api-key", default=None)
+    parser.add_argument(
+        "--curve-snapshot-date",
+        type=str,
+        default=DEFAULT_REALTIME_SNAPSHOT_DATE,
+    )
+    parser.add_argument("--curve-api-key", default=None)
+    parser.add_argument(
+        "--curve3mo-snapshot-date",
+        type=str,
+        default=DEFAULT_REALTIME_SNAPSHOT_DATE,
+    )
+    parser.add_argument("--curve3mo-api-key", default=None)
+    parser.add_argument(
+        "--front-end-snapshot-date",
+        type=str,
+        default=DEFAULT_REALTIME_SNAPSHOT_DATE,
+    )
+    parser.add_argument("--front-end-api-key", default=None)
+    parser.add_argument(
+        "--usd-snapshot-date",
+        type=str,
+        default=DEFAULT_REALTIME_SNAPSHOT_DATE,
+    )
+    parser.add_argument("--usd-api-key", default=None)
     parser.add_argument("--execute-notebook", action="store_true")
     parser.add_argument("--timeout-seconds", type=int, default=1800)
     parser.add_argument("--cwd", type=Path, default=None)
@@ -108,17 +255,53 @@ def main() -> int:
         event_agent_id=args.event_agent_id,
         event_agent_version=args.event_agent_version,
         event_agent_command=args.event_agent_command,
+        treasury_agent_id=args.treasury_agent_id,
+        treasury_agent_version=args.treasury_agent_version,
+        treasury_agent_command=args.treasury_agent_command,
+        curve_agent_id=args.curve_agent_id,
+        curve_agent_version=args.curve_agent_version,
+        curve_agent_command=args.curve_agent_command,
+        curve3mo_agent_id=args.curve3mo_agent_id,
+        curve3mo_agent_version=args.curve3mo_agent_version,
+        curve3mo_agent_command=args.curve3mo_agent_command,
+        front_end_agent_id=args.front_end_agent_id,
+        front_end_agent_version=args.front_end_agent_version,
+        front_end_agent_command=args.front_end_agent_command,
+        usd_agent_id=args.usd_agent_id,
+        usd_agent_version=args.usd_agent_version,
+        usd_agent_command=args.usd_agent_command,
         market_seed=args.market_seed,
         event_seed=args.event_seed,
+        treasury_seed=args.treasury_seed,
+        curve_seed=args.curve_seed,
+        curve3mo_seed=args.curve3mo_seed,
+        front_end_seed=args.front_end_seed,
+        usd_seed=args.usd_seed,
         repeat=args.repeat,
         run_label_prefix=args.run_label_prefix,
         market_task_path=args.market_task,
         event_task_path=args.event_task,
+        treasury_task_path=args.treasury_task,
+        curve_task_path=args.curve_task,
+        curve3mo_task_path=args.curve3mo_task,
+        front_end_task_path=args.front_end_task,
+        usd_task_path=args.usd_task,
         market_data_output_dir=args.market_data_output_dir,
         market_private_dir=args.market_private_dir,
         event_data_output_dir=args.event_data_output_dir,
         event_private_dir=args.event_private_dir,
+        treasury_data_output_dir=args.treasury_data_output_dir,
+        treasury_private_dir=args.treasury_private_dir,
+        curve_data_output_dir=args.curve_data_output_dir,
+        curve_private_dir=args.curve_private_dir,
+        curve3mo_data_output_dir=args.curve3mo_data_output_dir,
+        curve3mo_private_dir=args.curve3mo_private_dir,
+        front_end_data_output_dir=args.front_end_data_output_dir,
+        front_end_private_dir=args.front_end_private_dir,
+        usd_data_output_dir=args.usd_data_output_dir,
+        usd_private_dir=args.usd_private_dir,
         runs_root=args.runs_root,
+        clean_existing_runs=args.clean_existing_runs,
         report_csv_path=args.report_csv,
         report_markdown_path=args.report_markdown,
         summary_csv_path=args.summary_csv,
@@ -127,6 +310,16 @@ def main() -> int:
         command_timeout_seconds=args.timeout_seconds,
         cwd=args.cwd,
         command=" ".join(sys.argv),
+        treasury_snapshot_date=args.treasury_snapshot_date,
+        treasury_api_key=args.treasury_api_key,
+        curve_snapshot_date=args.curve_snapshot_date,
+        curve_api_key=args.curve_api_key,
+        curve3mo_snapshot_date=args.curve3mo_snapshot_date,
+        curve3mo_api_key=args.curve3mo_api_key,
+        front_end_snapshot_date=args.front_end_snapshot_date,
+        front_end_api_key=args.front_end_api_key,
+        usd_snapshot_date=args.usd_snapshot_date,
+        usd_api_key=args.usd_api_key,
     )
 
     for index, pipeline_result in enumerate(result.results, start=1):

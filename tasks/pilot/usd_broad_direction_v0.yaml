@@ -1,0 +1,264 @@
+metadata:
+  task_id: usd_broad_direction_v0
+  title: Broad U.S. Dollar Index Next-Day Direction Under Point-in-Time H.10 and H.15 Features
+  track: predictive_financial_ml
+  version: "0.1.0"
+  status: draft
+  owner: FinDS-AgentBench contributors
+  created_at: "2026-06-22"
+  last_updated_at: "2026-06-22"
+  tags:
+    - fx
+    - macro_finance
+    - dollar
+    - classification
+    - temporal_validation
+
+research_prompt:
+  summary: Predict whether the broad nominal U.S. dollar index will rise on the next business day using only point-in-time Board of Governors H.10 FX index observations and same-day H.15 rates information available by the prediction timestamp.
+  expected_research_question: Can an agent build a leakage-safe next-day dollar direction model that improves on simple chronological baselines on a private temporal holdout?
+  instructions: >
+    Build a model that predicts whether the broad nominal U.S. dollar index
+    rises on the next business day. Use only information available by the end
+    of day t from the Board of Governors H.10 dollar indexes and same-day H.15
+    rates context, validate temporally, compare against naive chronological
+    baselines, and produce a notebook, predictions file, and short writeup.
+  prohibited_shortcuts:
+    - Do not use next-day dollar index levels or next-day returns as features.
+    - Do not tune on the private temporal holdout.
+    - Do not use random train/test splits or full-sample preprocessing.
+
+data:
+  license_status: public_domain_citation_requested
+  access: download_script
+  local_paths:
+    - data/raw/usd_broad_direction_v0/
+  download_or_generation_script: scripts/download_usd_broad_direction_v0.py
+  sources:
+    - name: DTWEXBGS from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXBGS&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+    - name: DTWEXAFEGS from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXAFEGS&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+    - name: DTWEXEMEGS from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXEMEGS&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+    - name: DGS2 from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+    - name: DGS10 from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+    - name: DFF from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+  data_dictionary:
+    - column: date
+      meaning: Observation date for the end-of-day prediction timestamp.
+      availability_lag: Known after the daily H.10 and H.15 observations are published for day t.
+    - column: asset_id
+      meaning: Fixed benchmark asset identifier for the broad nominal U.S. dollar index.
+      availability_lag: Static metadata.
+    - column: split
+      meaning: Chronological split assignment.
+      availability_lag: Static benchmark metadata.
+    - column: usd_broad_level
+      meaning: Broad nominal U.S. dollar index level.
+      availability_lag: Known by prediction time on day t.
+    - column: usd_afe_level
+      meaning: Nominal U.S. dollar index against advanced foreign economies.
+      availability_lag: Known by prediction time on day t.
+    - column: usd_eme_level
+      meaning: Nominal U.S. dollar index against emerging market economies.
+      availability_lag: Known by prediction time on day t.
+    - column: dgs2_level
+      meaning: 2-year Treasury constant-maturity yield in percent.
+      availability_lag: Known by prediction time on day t.
+    - column: dgs10_level
+      meaning: 10-year Treasury constant-maturity yield in percent.
+      availability_lag: Known by prediction time on day t.
+    - column: dff_level
+      meaning: Effective federal funds rate in percent.
+      availability_lag: Known by prediction time on day t.
+    - column: usd_broad_return_1d
+      meaning: One-day simple return of the broad dollar index.
+      availability_lag: Computed from observations through day t only.
+    - column: usd_broad_return_5d
+      meaning: Five-day simple return of the broad dollar index.
+      availability_lag: Computed from observations through day t only.
+    - column: usd_afe_return_1d
+      meaning: One-day simple return of the advanced-foreign-economies dollar index.
+      availability_lag: Computed from observations through day t only.
+    - column: usd_eme_return_1d
+      meaning: One-day simple return of the emerging-markets dollar index.
+      availability_lag: Computed from observations through day t only.
+    - column: usd_afe_minus_eme
+      meaning: Level spread between the advanced-foreign-economies and emerging-markets dollar indexes.
+      availability_lag: Computed from day t observations only.
+    - column: usd_broad_minus_20d_mean
+      meaning: Broad dollar index minus its 20-day rolling mean.
+      availability_lag: Computed from observations through day t only.
+    - column: usd_broad_vol_5d
+      meaning: Rolling 5-day standard deviation of one-day broad-dollar returns.
+      availability_lag: Computed from observations through day t only.
+    - column: usd_broad_vol_20d
+      meaning: Rolling 20-day standard deviation of one-day broad-dollar returns.
+      availability_lag: Computed from observations through day t only.
+    - column: term_spread_10y_2y
+      meaning: 10-year minus 2-year Treasury slope.
+      availability_lag: Computed from day t observations only.
+    - column: front_end_spread
+      meaning: 2-year Treasury minus effective fed funds rate.
+      availability_lag: Computed from day t observations only.
+    - column: next_day_return
+      meaning: Next business-day simple return of the broad nominal U.S. dollar index.
+      availability_lag: Known only after day t+1 is observed; available in public train/validation labels and private answer key only.
+
+information_set:
+  prediction_timestamp: After day t H.10 and H.15 observations are available, before the next business-day broad dollar move is known.
+  allowed_information:
+    - H.10 broad, advanced-foreign-economies, and emerging-markets dollar index observations through day t only.
+    - H.15 rates observations through day t only.
+    - Lagged and rolling features computed from observations through day t only.
+    - Public benchmark metadata and split definitions.
+  forbidden_information:
+    - Day t+1 or later broad dollar index levels or returns.
+    - Any feature derived from next_day_usd_broad_up or next_day_return.
+    - Private temporal holdout labels.
+  availability_calendar:
+    - item: Day t H.10 dollar indexes
+      known_at: After the day t release is published.
+      usable_for_prediction_at: Prediction for the next business day.
+    - item: Day t H.15 rates context
+      known_at: After the day t release is published.
+      usable_for_prediction_at: Prediction for the next business day.
+    - item: Day t+1 broad dollar move
+      known_at: After the next business-day release is published.
+      usable_for_prediction_at: Not usable for the day t to t+1 prediction.
+  timestamp_alignment_rules:
+    - All lagged and rolling features must use observations through day t only.
+    - Target is sign(DTWEXBGS[t+1] / DTWEXBGS[t] - 1) over the next observed business day.
+
+target:
+  name: next_day_usd_broad_up
+  definition: Binary label equal to 1 when the broad nominal U.S. dollar index increases on the next business day.
+  horizon: "1 business day"
+  label_construction: Compute DTWEXBGS[t+1] / DTWEXBGS[t] - 1 and map positive values to class 1.
+  positive_class: positive next-day broad-dollar return
+  ranking_group: null
+
+splits:
+  split_method: temporal
+  train:
+    start: "2006-01-31"
+    end: "2018-12-31"
+  public_validation:
+    start: "2019-01-02"
+    end: "2021-12-30"
+  private_temporal_holdout:
+    start: "2022-01-03"
+    end: "2025-12-31"
+  stress_tests:
+    - name: usd_strength_cycle_2022_2024
+      start: "2022-03-01"
+      end: "2024-12-31"
+  embargo_or_gap: One business-day target horizon between feature cutoff and label realization.
+
+deliverables:
+  required_files:
+    - notebook.ipynb
+    - predictions.csv
+    - writeup.md
+  notebook:
+    path: notebook.ipynb
+    must_execute_cleanly: true
+  predictions:
+    path: predictions.csv
+    required_columns:
+      - row_id
+      - prediction
+      - probability
+  writeup:
+    path: writeup.md
+    max_words: 1200
+  logs:
+    retain_agent_trace: true
+
+evaluation:
+  primary_metric: balanced_accuracy_on_private_temporal_holdout
+  secondary_metrics:
+    - roc_auc
+    - log_loss
+    - execution_success
+    - leakage_safety
+    - validation_correctness
+    - reproducibility
+  financial_metrics:
+    - long_flat_mean_return
+    - turnover
+    - max_drawdown
+  validity_gates:
+    - artifact_executable
+    - prediction_format_valid
+    - temporal_holdout_respected
+    - no_forbidden_features
+    - validation_protocol_valid
+    - reproducible_rerun
+  aggregation: report_vector_scores
+  minimum_success_conditions:
+    - Notebook executes cleanly.
+    - Prediction file covers every private holdout row.
+    - No future H.10 or H.15 observations are used.
+
+leakage_checks:
+  forbidden_columns:
+    - next_day_usd_broad_up
+    - next_day_return
+    - usd_broad_t_plus_1
+    - future_usd_index
+    - future_fx_return
+  temporal_alignment_checks:
+    - All lagged and rolling features exclude day t+1 or later observations.
+    - Train, validation, and holdout rows are ordered chronologically.
+  validation_protocol_checks:
+    - Random train/test split is not allowed.
+    - Hyperparameter tuning must use train/public validation only.
+  known_leakage_traps:
+    - Using unshifted rolling windows that include the next-day return in normalization statistics.
+    - Standardizing features on the full dataset before chronological splitting.
+    - Joining later macro or policy annotations directly onto prediction rows.
+
+reproducibility:
+  environment: pyproject.toml
+  random_seed_policy: Fixed seeds required for all stochastic models.
+  rerun_command: python scripts/download_usd_broad_direction_v0.py --observation-start 2006-01-03 --observation-end 2026-01-02 --snapshot-date 2026-06-21
+  expected_runtime_limit: "10 minutes"
+  compute_limits:
+    cpu: "local_cpu"
+    memory: "4GB"
+
+audit:
+  artifact_retention:
+    - final notebook
+    - predictions
+    - writeup
+    - execution log
+  trace_requirements:
+    - Store all commands and code execution errors.
+    - Store final selected features and validation protocol.
+  human_review_rubric:
+    - Does the writeup compare against a chronological sign or logistic baseline?
+    - Does the writeup avoid causal claims that exceed the benchmark evidence?
+    - Does the notebook enforce point-in-time feature alignment?
+  failure_taxonomy_refs:
+    - temporal_leakage
+    - invalid_validation
+    - weak_macro_financial_reasoning
+    - unsupported_narrative

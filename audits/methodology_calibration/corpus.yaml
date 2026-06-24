@@ -1,0 +1,36 @@
+run_corpora:
+  - label: pilot_baselines
+    root: runs/suites/pilot_baselines_v0
+  - label: pilot_agents
+    root: runs/suites/pilot_agents_v0
+
+fixtures:
+  - fixture_id: synthetic_random_split_positive
+    task_id: synthetic_market_direction_v0
+    submission_dir: audits/methodology_calibration/fixtures/synthetic_random_split_positive
+    expected_flagged: true
+    expected_rule_ids:
+      - random_train_test_split
+      - explicit_shuffle
+    notes: Random split and explicit shuffling in a temporal predictive task.
+  - fixture_id: front_end_future_join_positive
+    task_id: front_end_spread_widening_v0
+    submission_dir: audits/methodology_calibration/fixtures/front_end_future_join_positive
+    expected_flagged: true
+    expected_rule_ids:
+      - future_aligned_merge_join
+    notes: Short-horizon task merges a clearly future-aligned next-day frame.
+  - fixture_id: front_end_forward_merge_asof_positive
+    task_id: front_end_spread_widening_v0
+    submission_dir: audits/methodology_calibration/fixtures/front_end_forward_merge_asof_positive
+    expected_flagged: true
+    expected_rule_ids:
+      - forward_merge_asof_direction
+    notes: Short-horizon task uses merge_asof with direction='forward'.
+  - fixture_id: treasury_forbidden_target_feature_positive
+    task_id: yield_direction_treasury10y_v0
+    submission_dir: audits/methodology_calibration/fixtures/treasury_forbidden_target_feature_positive
+    expected_flagged: true
+    expected_rule_ids:
+      - task_forbidden_feature_reference__next_day_change_bp
+    notes: Task-forbidden next-day change is directly included in feature columns.

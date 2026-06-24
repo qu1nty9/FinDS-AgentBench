@@ -116,8 +116,8 @@ Acceptance criteria:
 
 ## Immediate Next Steps
 
-1. Select a license-safe data source for `return_direction_etf_v0`.
-2. Run 3+ repeated seeds for each implemented baseline with the cross-task pilot suite runner and report mean/std.
-3. Run 3+ repeated seeds for each evaluated agent with the cross-task pilot agent suite runner.
-4. Add richer static checks for suspicious feature/target construction.
-5. Expand from 2 runnable tasks to the 8-12 task workshop pilot.
+1. Fill an independent second-reviewer packet from `audits/pilot_v0/reviews/reviewer_2_blank_template.csv`, rebuild the agreement report, and adjudicate disagreements back into the canonical subset.
+2. Fill `audits/methodology_calibration/reviews/calibration_review_packet.csv`, then fold confirmed false-positive / false-negative cases back into the heuristic set and severity policy.
+3. Add at least one stronger external agent beyond environment-wrapped baseline logic.
+4. Push past the current 7 predictive/event runnable tasks plus the leakage-audit task toward the upper half of the 8-12 task workshop pilot range.
+5. Freeze a stage-ready benchmark snapshot only after the stronger agent, independent second review packet, and larger pilot task set are in place.

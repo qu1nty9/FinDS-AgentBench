@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+\title{FinDS-AgentBench: A Pilot Benchmark for Financial Data-Science Agents}
+\author{FinDS-AgentBench Contributors}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We introduce FinDS-AgentBench, a benchmark for evaluating AI agents that perform end-to-end financial data-science research under temporal, leakage, reproducibility, and decision-quality constraints. The current pilot release contains 9 tasks, 9 runnable tasks, and 3 tracks. The repeated-run protocol covers 8 tasks and 35 task-system cells with fixed seeds and release-owned artifacts. In the pilot overall-score paired comparison against the best baseline per task, agents are higher in 0 cases, baselines are higher in 6 cases, and 2 cases are ties. The release ships task cards, data manifests, reference results, uncertainty tables, manual-audit artifacts, and a deterministic release reproducibility check.
+\end{abstract}
+
+\section{Introduction}
+Financial machine-learning research is unusually sensitive to timestamp discipline, point-in-time data availability, target leakage, validation design, transaction costs, and narrative overclaiming. Generic data-science and tool-use benchmarks do not isolate these failure modes. FinDS-AgentBench is designed to evaluate whether agents can produce auditable financial research artifacts rather than merely plausible notebooks.
+
+\paragraph{Contributions.}
+\begin{enumerate}[leftmargin=*]
+\item A pilot benchmark release with task specifications, public data manifests, task cards, and evaluation cards.
+\item A command-based agent and baseline protocol with repeated runs, fixed seeds, clean release builds, and manifest validation.
+\item Publication-facing reference results, uncertainty estimates, paired agent-vs-baseline comparisons, and paper-ready tables.
+\item A manual-audit workflow covering temporal protocol correctness, leakage awareness, evidence use, claim discipline, and reproducibility trace completeness.
+\end{enumerate}
+
+\input{related_work.tex}
+
+\section{Benchmark Design}
+The pilot release spans event\_aware\_time\_series\_reasoning, predictive\_financial\_ml, research\_replication\_and\_audit. Each task specification identifies the prediction timestamp, allowed public information, target horizon, temporal split, required submission artifacts, primary metric, and leakage constraints. The benchmark separates predictive performance from artifact validity so that a high private-holdout score does not erase reproducibility, leakage, or methodology failures.
+
+\section{Pilot Release}
+The release manifest records 9 tasks and 9 runnable tasks. The repeated-run pilot protocol covers 8 tasks, excluding the leakage-audit task from the predictive baseline/agent sweep because it uses an audit-style scoring surface rather than a standard prediction holdout.
+
+\section{Evaluation Protocol}
+The combined pilot protocol evaluates 27 baseline task-system cells and 8 agent task-system cells. Observed run counts per cell are 3. Baselines include naive and classical models; the bundled example agents are environment-wrapped systems that select among public candidate strategies before writing holdout predictions and research artifacts. The external-agent readiness gate is \texttt{not\_ready\_no\_external\_agents} with 0 completed external agent configurations.
+
+\input{../../docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.tex}
+
+\section{Results}
+Table~\ref{tab:pilot-agent-vs-best-baseline-score-overall-score} summarizes the paired overall-score comparison between each agent and the best completed-run baseline for the same task. Table~\ref{tab:pilot-uncertainty-score-overall-score} reports overall-score repeated-run uncertainty for all task-system cells.
+
+\input{../../docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex}
+
+\input{../../docs/releases/pilot_v0/statistical_artifacts/tables/summary_uncertainty_overall_score.tex}
+
+\section{Manual Audit and Validity Checks}
+The pilot manual-audit bundle currently includes 6 cases across 3 reviewed tasks. Its official status is \texttt{seed\_author\_adjudication\_only}; independent-overlap agreement status is \texttt{insufficient\_independent\_overlap}, with exploratory status \texttt{pairwise\_agreement\_available}. The reviewer-readiness gate is \texttt{not\_ready\_seed\_only} with 0 completed independent reviewer packets. This makes the current audit layer suitable as a seed adjudication workflow, while a submission-ready paper should add an independent second-reviewer packet.
+
+\input{audit_failure_examples.tex}
+
+\section{Reproducibility and Release Artifacts}
+The release build is intentionally scriptable. It rebuilds suite reports, reference results, statistical artifacts, paper artifacts, task cards, data manifests, and the canonical release manifest. A separate smoke check builds the pilot release twice in isolated roots and compares deterministic publication-facing outputs by content digest.
+
+\begin{verbatim}
+PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-outputs
+\end{verbatim}
+
+\section{Limitations}
+\begin{itemize}[leftmargin=*]
+\item The current pilot uses a small repeated-run count, so uncertainty artifacts should be read as transparency and regression checks rather than definitive significance claims.
+\item Bundled agents are controlled example wrappers, not a broad external-agent leaderboard.
+\item The manual-audit layer still needs independent second-reviewer completion before submission-strength claims.
+\item The task set is strong enough for a workshop pilot, but a top benchmark/dataset venue version should scale to a larger frozen suite with hidden temporal holdouts.
+\end{itemize}
+
+\section{Conclusion}
+FinDS-AgentBench frames financial data-science agent evaluation as a joint test of predictive performance, temporal validity, leakage resistance, reproducibility, and claim discipline. The pilot release provides the first reproducible scaffold for this evaluation and establishes the artifacts needed for an arXiv/workshop submission.
+
+\appendix
+\section{Full Pilot Protocol Reference Table}
+\input{../../docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

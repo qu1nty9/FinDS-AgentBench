@@ -1,0 +1,32 @@
+\section{Related Work}
+FinDS-AgentBench sits at the intersection of agent benchmarks, machine-learning experimentation benchmarks, finance-domain LLM evaluation, and leakage-aware temporal validation. General agent and software-engineering benchmarks such as ~\cite{agentbench2023,swebench2023} emphasize multi-step execution, but do not target financial ML research validity.
+ML-oriented agent benchmarks such as ~\cite{mlagentbench2023,mlebench2024,scienceagentbench2024,mlrbench2025} evaluate experimentation, engineering, or open-ended research automation. FinDS-AgentBench adopts their emphasis on executable artifacts while adding point-in-time finance data, temporal holdouts, leakage scanning, and writeup audit.
+Finance benchmarks such as ~\cite{financebench2023,finben2024,profitmirage2025,fintoolbench2026,finmcpbench2026,mbabench2026} cover financial QA, broad financial LLM capabilities, leakage in financial agents, tool use, and spreadsheet workflows. These are adjacent but do not provide an end-to-end financial ML research benchmark with task cards, private temporal labels, repeated-run uncertainty, reproducibility gates, and narrative-discipline scoring.
+Data-science and temporal-reasoning benchmarks such as ~\cite{ds10002022,temporalbench2026,swebench2023} motivate reliable code execution and time-aware evaluation. FinDS-AgentBench narrows that lens to finance, where temporal information availability and leakage-safe validation are central rather than incidental constraints.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llll}
+\toprule
+Work & Focus & Overlap & FinDS-AgentBench gap \\
+\midrule
+AgentBench~\cite{agentbench2023} & Interactive LLM-agent evaluation across multiple environments. & Frames LLMs as agents acting over multi-turn environments. & Not specialized for financial ML research artifacts, point-in-time data, leakage checks, or writeup validity. \\
+SWE-bench~\cite{swebench2023} & Repository-level issue resolution from real GitHub issues and pull requests. & Execution-based, artifact-producing agent evaluation. & Software engineering rather than financial data-science research with temporal holdouts and financial validity gates. \\
+DS-1000~\cite{ds10002022} & Data-science code generation with reliable functional tests. & Data analysis and modeling tasks with executable evaluation. & Short code-generation tasks rather than full financial research workflows with notebooks, writeups, and temporal validity checks. \\
+MLAgentBench~\cite{mlagentbench2023} & Language agents conducting ML experimentation tasks. & Long-horizon ML experimentation with file editing and code execution. & Not domain-specific to financial ML, point-in-time data availability, backtest realism, or claim audit. \\
+MLE-bench~\cite{mlebench2024} & Kaggle-style ML engineering competitions for agents. & Agentic ML engineering, leaderboard-style scoring, and contamination analysis. & Broad ML engineering rather than finance-specific temporal information sets, leakage-safe research notebooks, and validity-gated writeups. \\
+ScienceAgentBench~\cite{scienceagentbench2024} & Scientific workflow tasks extracted from peer-reviewed publications. & Research-style agent evaluation with code execution and expert validation. & Not specialized for market data, point-in-time financial constraints, financial metrics, or investment-style claim discipline. \\
+MLR-Bench~\cite{mlrbench2025} & Open-ended ML research tasks with proposal, experimentation, and paper-writing stages. & Evaluates research automation and paper-style outputs. & Not focused on finance-specific leakage, temporal validation, private holdouts, or financial model-risk framing. \\
+FinanceBench~\cite{financebench2023} & Open-book financial QA over company documents. & Finance-domain LLM evaluation with evidence requirements. & QA rather than executable financial ML research with notebooks, temporal holdouts, and private scoring. \\
+FinBen~\cite{finben2024} & Broad financial LLM benchmark across language, QA, forecasting, risk, and decision tasks. & Finance-specific LLM evaluation across heterogeneous task types. & Broad LLM capability suite rather than validity-gated end-to-end financial ML research artifacts. \\
+Profit Mirage / FinLake-Bench~\cite{profitmirage2025} & Information leakage in LLM-based financial agents and leakage-robust evaluation. & Closest finance-agent neighbor for leakage-aware evaluation. & Focuses on leakage and trading-agent generalization; FinDS-AgentBench broadens to reproducible ML research artifacts, task/evaluation cards, writeup audit, and multi-track validity scoring. \\
+TemporalBench~\cite{temporalbench2026} & Contextual and event-informed time-series reasoning across multiple domains. & Temporal reasoning and event-conditioned prediction. & Multi-domain time-series reasoning rather than financial ML research artifacts with point-in-time market data, leakage scanning, and narrative audit. \\
+FinToolBench~\cite{fintoolbench2026} & Financial tool-learning agents over executable financial tools. & Auditable financial agent execution and finance-specific tool use. & Tool invocation rather than leakage-safe financial ML research notebooks and validity-gated result claims. \\
+FinMCP-Bench~\cite{finmcpbench2026} & Financial tool invocation through model context protocol servers. & Financial agent execution with real and synthetic tool-use queries. & MCP/tool-use benchmark rather than end-to-end financial ML research with temporal holdouts and artifact audit. \\
+MBABench~\cite{mbabench2026} & End-to-end financial spreadsheet construction and review. & Finance workflow artifacts and multidimensional professional-quality evaluation. & Spreadsheet modeling rather than financial ML research with temporal prediction tasks, private holdouts, and leakage/reproducibility gates. \\
+\bottomrule
+\end{tabular}
+\caption{Related benchmark positioning. FinDS-AgentBench targets the missing intersection of end-to-end financial ML research artifacts, temporal information discipline, leakage resistance, reproducibility, and writeup validity.}
+\label{tab:related-work-positioning}
+\end{table}

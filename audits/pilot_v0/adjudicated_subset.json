@@ -1,0 +1,406 @@
+{
+  "subset_id": "pilot_v0_seed_manual_audit_subset",
+  "version": "0.1.0",
+  "status": "seed_author_adjudication_only",
+  "created_on": "2026-06-22",
+  "rubric_path": "audits/pilot_v0/manual_audit_rubric.yaml",
+  "scope_note": "Seed manual-audit subset built from committed release artifacts. This is a rubric shakeout pack, not yet a dual-review agreement sample.",
+  "cases": [
+    {
+      "case_id": "pilot_market_momentum_baseline_release_001",
+      "task_id": "synthetic_market_direction_v0",
+      "track": "predictive_financial_ml",
+      "run_type": "baseline",
+      "agent_id": "momentum_baseline",
+      "run_label": "release_pilot_market_001_seed_11",
+      "artifact_root": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/momentum_baseline/release_pilot_market_001_seed_11",
+      "source_paths": {
+        "run_manifest": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/momentum_baseline/release_pilot_market_001_seed_11/run_manifest.json",
+        "artifact_validation": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/momentum_baseline/release_pilot_market_001_seed_11/artifact_validation.json",
+        "score": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/momentum_baseline/release_pilot_market_001_seed_11/score.json",
+        "writeup": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/momentum_baseline/release_pilot_market_001_seed_11/writeup.md",
+        "notebook": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/momentum_baseline/release_pilot_market_001_seed_11/notebook.ipynb"
+      },
+      "review_metadata": {
+        "reviewer_count": 1,
+        "review_mode": "benchmark_author_seed_review",
+        "adjudication_status": "seed_single_reviewer"
+      },
+      "automated_findings_snapshot": {
+        "artifact_validation_ok": true,
+        "leakage_findings_count": 0,
+        "methodology_findings_count": 0
+      },
+      "benchmark_scores": {
+        "overall_score": 0.540659,
+        "balanced_accuracy": 0.540659,
+        "roc_auc": 0.543311,
+        "log_loss": 0.708815
+      },
+      "rubric_scores": {
+        "temporal_protocol_correctness": {
+          "score": 1,
+          "evidence": "The writeup says the baseline is point-in-time and avoids random splits, but it does not explain train-validation calibration or why a fixed 0.5 threshold is acceptable."
+        },
+        "leakage_awareness_and_feature_hygiene": {
+          "score": 2,
+          "evidence": "The narrative explicitly rules out private labels, answer keys, future returns, and random splits."
+        },
+        "quantitative_evidence_use": {
+          "score": 0,
+          "evidence": "No validation metric, threshold calibration, or holdout interpretation is reported in the writeup."
+        },
+        "baseline_comparison_or_counterfactual_context": {
+          "score": 0,
+          "evidence": "The submission does not compare the momentum rule to any simpler or more expressive alternative."
+        },
+        "claim_discipline": {
+          "score": 2,
+          "evidence": "Claims stay narrow and describe only the benchmark prediction setup without deployment language."
+        },
+        "reproducibility_trace_completeness": {
+          "score": 1,
+          "evidence": "The package has notebook, predictions, score, and validation outputs, but the writeup itself offers little trace detail beyond a short method description."
+        }
+      },
+      "total_score": 6,
+      "overall_label": "minimally_defensible",
+      "primary_manual_findings": [
+        "No quantitative support in the writeup.",
+        "No baseline or counterfactual comparison.",
+        "Temporal protocol rationale is thinner than the artifact package itself."
+      ],
+      "adjudication_note": "Useful as a sanity-check baseline, but not yet strong enough as a paper-facing methodological narrative."
+    },
+    {
+      "case_id": "pilot_market_logistic_baseline_release_001",
+      "task_id": "synthetic_market_direction_v0",
+      "track": "predictive_financial_ml",
+      "run_type": "baseline",
+      "agent_id": "logistic_regression_baseline",
+      "run_label": "release_pilot_market_001_seed_11",
+      "artifact_root": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/logistic_regression_baseline/release_pilot_market_001_seed_11",
+      "source_paths": {
+        "run_manifest": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/logistic_regression_baseline/release_pilot_market_001_seed_11/run_manifest.json",
+        "artifact_validation": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/logistic_regression_baseline/release_pilot_market_001_seed_11/artifact_validation.json",
+        "score": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/logistic_regression_baseline/release_pilot_market_001_seed_11/score.json",
+        "writeup": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/logistic_regression_baseline/release_pilot_market_001_seed_11/writeup.md",
+        "notebook": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/logistic_regression_baseline/release_pilot_market_001_seed_11/notebook.ipynb"
+      },
+      "review_metadata": {
+        "reviewer_count": 1,
+        "review_mode": "benchmark_author_seed_review",
+        "adjudication_status": "seed_single_reviewer"
+      },
+      "automated_findings_snapshot": {
+        "artifact_validation_ok": true,
+        "leakage_findings_count": 0,
+        "methodology_findings_count": 0
+      },
+      "benchmark_scores": {
+        "overall_score": 0.532441,
+        "balanced_accuracy": 0.532441,
+        "roc_auc": 0.559947,
+        "log_loss": 0.683802
+      },
+      "rubric_scores": {
+        "temporal_protocol_correctness": {
+          "score": 2,
+          "evidence": "The writeup explicitly states chronological training only, train-fitted scaling, and threshold selection on public validation only."
+        },
+        "leakage_awareness_and_feature_hygiene": {
+          "score": 2,
+          "evidence": "The submission clearly says private labels and answer keys are not read during prediction generation."
+        },
+        "quantitative_evidence_use": {
+          "score": 2,
+          "evidence": "The narrative reports both the selected threshold and public-validation balanced accuracy, tying them to model selection."
+        },
+        "baseline_comparison_or_counterfactual_context": {
+          "score": 0,
+          "evidence": "Even though a momentum baseline exists in the suite, the writeup does not compare against it or justify model complexity relative to a rule baseline."
+        },
+        "claim_discipline": {
+          "score": 2,
+          "evidence": "The claims are restrained and limited to the benchmark prediction procedure."
+        },
+        "reproducibility_trace_completeness": {
+          "score": 2,
+          "evidence": "Run manifest trace records the feature list, threshold, random seed, and train-validation counts alongside the submission artifacts."
+        }
+      },
+      "total_score": 10,
+      "overall_label": "strong_but_incomplete",
+      "primary_manual_findings": [
+        "Method description is strong.",
+        "Quantitative support is present.",
+        "Main remaining gap is missing comparison against simpler alternatives."
+      ],
+      "adjudication_note": "This is close to the benchmark's target standard for pilot baselines, but it still lacks narrative context against a simpler comparator."
+    },
+    {
+      "case_id": "pilot_event_rule_baseline_release_001",
+      "task_id": "synthetic_event_response_v0",
+      "track": "event_aware_time_series_reasoning",
+      "run_type": "baseline",
+      "agent_id": "event_rule_baseline",
+      "run_label": "release_pilot_event_001_seed_23",
+      "artifact_root": "runs/suites/pilot_baselines_v0/synthetic_event_response_v0/event_rule_baseline/release_pilot_event_001_seed_23",
+      "source_paths": {
+        "run_manifest": "runs/suites/pilot_baselines_v0/synthetic_event_response_v0/event_rule_baseline/release_pilot_event_001_seed_23/run_manifest.json",
+        "artifact_validation": "runs/suites/pilot_baselines_v0/synthetic_event_response_v0/event_rule_baseline/release_pilot_event_001_seed_23/artifact_validation.json",
+        "score": "runs/suites/pilot_baselines_v0/synthetic_event_response_v0/event_rule_baseline/release_pilot_event_001_seed_23/score.json",
+        "writeup": "runs/suites/pilot_baselines_v0/synthetic_event_response_v0/event_rule_baseline/release_pilot_event_001_seed_23/writeup.md",
+        "notebook": "runs/suites/pilot_baselines_v0/synthetic_event_response_v0/event_rule_baseline/release_pilot_event_001_seed_23/notebook.ipynb"
+      },
+      "review_metadata": {
+        "reviewer_count": 1,
+        "review_mode": "benchmark_author_seed_review",
+        "adjudication_status": "seed_single_reviewer"
+      },
+      "automated_findings_snapshot": {
+        "artifact_validation_ok": true,
+        "leakage_findings_count": 0,
+        "methodology_findings_count": 0
+      },
+      "benchmark_scores": {
+        "overall_score": 0.63139,
+        "balanced_accuracy": 0.63139,
+        "roc_auc": 0.67918,
+        "log_loss": 0.643398
+      },
+      "rubric_scores": {
+        "temporal_protocol_correctness": {
+          "score": 1,
+          "evidence": "The writeup says only label-free holdout features are used, but it does not explain the temporal split or how any calibration was derived."
+        },
+        "leakage_awareness_and_feature_hygiene": {
+          "score": 2,
+          "evidence": "The narrative directly excludes private labels, answer keys, next-day returns, and future events."
+        },
+        "quantitative_evidence_use": {
+          "score": 0,
+          "evidence": "Despite strong benchmark scores, the writeup gives no metric-based support for the rule composition."
+        },
+        "baseline_comparison_or_counterfactual_context": {
+          "score": 0,
+          "evidence": "No ablation, heuristic comparison, or simpler event rule is discussed."
+        },
+        "claim_discipline": {
+          "score": 2,
+          "evidence": "The narrative remains narrow and does not overstate the event rule's implications."
+        },
+        "reproducibility_trace_completeness": {
+          "score": 1,
+          "evidence": "The artifact set is complete, but the baseline writeup does not expose calibration details or a fuller trace narrative."
+        }
+      },
+      "total_score": 6,
+      "overall_label": "minimally_defensible",
+      "primary_manual_findings": [
+        "Strong predictive score is not accompanied by quantitative narrative support.",
+        "Temporal protocol description is brief.",
+        "No comparator or ablation context appears in the writeup."
+      ],
+      "adjudication_note": "This case demonstrates why raw benchmark performance alone should not determine methodological quality."
+    },
+    {
+      "case_id": "pilot_event_rule_env_agent_protocol_001",
+      "task_id": "synthetic_event_response_v0",
+      "track": "event_aware_time_series_reasoning",
+      "run_type": "agent",
+      "agent_id": "event_rule_env_agent",
+      "run_label": "release_protocol_agent_event_001_seed_23",
+      "artifact_root": "runs/suites/pilot_protocol_v0/synthetic_event_response_v0/event_rule_env_agent/release_protocol_agent_event_001_seed_23",
+      "source_paths": {
+        "run_manifest": "runs/suites/pilot_protocol_v0/synthetic_event_response_v0/event_rule_env_agent/release_protocol_agent_event_001_seed_23/run_manifest.json",
+        "artifact_validation": "runs/suites/pilot_protocol_v0/synthetic_event_response_v0/event_rule_env_agent/release_protocol_agent_event_001_seed_23/artifact_validation.json",
+        "score": "runs/suites/pilot_protocol_v0/synthetic_event_response_v0/event_rule_env_agent/release_protocol_agent_event_001_seed_23/score.json",
+        "writeup": "runs/suites/pilot_protocol_v0/synthetic_event_response_v0/event_rule_env_agent/release_protocol_agent_event_001_seed_23/writeup.md",
+        "notebook": "runs/suites/pilot_protocol_v0/synthetic_event_response_v0/event_rule_env_agent/release_protocol_agent_event_001_seed_23/notebook.ipynb"
+      },
+      "review_metadata": {
+        "reviewer_count": 1,
+        "review_mode": "benchmark_author_seed_review",
+        "adjudication_status": "seed_single_reviewer"
+      },
+      "automated_findings_snapshot": {
+        "artifact_validation_ok": true,
+        "leakage_findings_count": 0,
+        "methodology_findings_count": 0
+      },
+      "benchmark_scores": {
+        "overall_score": 0.63139,
+        "balanced_accuracy": 0.63139,
+        "roc_auc": 0.67918,
+        "log_loss": 0.643398
+      },
+      "rubric_scores": {
+        "temporal_protocol_correctness": {
+          "score": 1,
+          "evidence": "The agent-produced writeup mirrors the rule baseline and still does not explain the underlying temporal split beyond label-free feature use."
+        },
+        "leakage_awareness_and_feature_hygiene": {
+          "score": 2,
+          "evidence": "The writeup excludes private labels, answer keys, next-day returns, and future events."
+        },
+        "quantitative_evidence_use": {
+          "score": 0,
+          "evidence": "The narrative contains no metric-level evidence despite the high official score."
+        },
+        "baseline_comparison_or_counterfactual_context": {
+          "score": 0,
+          "evidence": "The agent output does not situate the rule against any competing event heuristic."
+        },
+        "claim_discipline": {
+          "score": 2,
+          "evidence": "The claims remain narrow and benchmark-scoped."
+        },
+        "reproducibility_trace_completeness": {
+          "score": 2,
+          "evidence": "Compared with the baseline package, the agent run includes command logs and explicit command provenance in the run manifest."
+        }
+      },
+      "total_score": 7,
+      "overall_label": "minimally_defensible",
+      "primary_manual_findings": [
+        "Agent trace provenance is stronger than the baseline trace.",
+        "Narrative quality is still thin.",
+        "No quantitative or comparative justification appears in the writeup."
+      ],
+      "adjudication_note": "This case is useful for separating artifact-trace quality from actual research narrative quality."
+    },
+    {
+      "case_id": "pilot_treasury_previous_day_baseline_release_001",
+      "task_id": "yield_direction_treasury10y_v0",
+      "track": "predictive_financial_ml",
+      "run_type": "baseline",
+      "agent_id": "previous_day_direction_baseline",
+      "run_label": "release_pilot_treasury_001_seed_29",
+      "artifact_root": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/previous_day_direction_baseline/release_pilot_treasury_001_seed_29",
+      "source_paths": {
+        "run_manifest": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/previous_day_direction_baseline/release_pilot_treasury_001_seed_29/run_manifest.json",
+        "artifact_validation": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/previous_day_direction_baseline/release_pilot_treasury_001_seed_29/artifact_validation.json",
+        "score": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/previous_day_direction_baseline/release_pilot_treasury_001_seed_29/score.json",
+        "writeup": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/previous_day_direction_baseline/release_pilot_treasury_001_seed_29/writeup.md",
+        "notebook": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/previous_day_direction_baseline/release_pilot_treasury_001_seed_29/notebook.ipynb"
+      },
+      "review_metadata": {
+        "reviewer_count": 1,
+        "review_mode": "benchmark_author_seed_review",
+        "adjudication_status": "seed_single_reviewer"
+      },
+      "automated_findings_snapshot": {
+        "artifact_validation_ok": true,
+        "leakage_findings_count": 0,
+        "methodology_findings_count": 0
+      },
+      "benchmark_scores": {
+        "overall_score": 0.493226,
+        "balanced_accuracy": 0.493226,
+        "roc_auc": 0.493226,
+        "log_loss": 0.696975
+      },
+      "rubric_scores": {
+        "temporal_protocol_correctness": {
+          "score": 2,
+          "evidence": "The writeup states that train-split probabilities are estimated on the chronological train split and the threshold is selected on public validation only."
+        },
+        "leakage_awareness_and_feature_hygiene": {
+          "score": 2,
+          "evidence": "The writeup directly rules out private labels, answer keys, and future yield changes."
+        },
+        "quantitative_evidence_use": {
+          "score": 2,
+          "evidence": "The threshold and public-validation balanced accuracy are reported and tied to the decision rule."
+        },
+        "baseline_comparison_or_counterfactual_context": {
+          "score": 0,
+          "evidence": "The writeup does not compare the previous-day heuristic to the logistic or tree baselines in the same suite."
+        },
+        "claim_discipline": {
+          "score": 2,
+          "evidence": "The narrative makes no deployment or economic-performance claims."
+        },
+        "reproducibility_trace_completeness": {
+          "score": 2,
+          "evidence": "The run manifest records selected threshold, training rows, validation rows, snapshot date, and source mode."
+        }
+      },
+      "total_score": 10,
+      "overall_label": "strong_but_incomplete",
+      "primary_manual_findings": [
+        "Methodological trace is strong.",
+        "Quantitative support is present.",
+        "Comparative context against richer baselines is still absent."
+      ],
+      "adjudication_note": "A good example of a simple yet well-documented baseline that still needs explicit comparative framing."
+    },
+    {
+      "case_id": "pilot_treasury_logistic_baseline_release_001",
+      "task_id": "yield_direction_treasury10y_v0",
+      "track": "predictive_financial_ml",
+      "run_type": "baseline",
+      "agent_id": "logistic_regression_baseline",
+      "run_label": "release_pilot_treasury_001_seed_29",
+      "artifact_root": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/logistic_regression_baseline/release_pilot_treasury_001_seed_29",
+      "source_paths": {
+        "run_manifest": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/logistic_regression_baseline/release_pilot_treasury_001_seed_29/run_manifest.json",
+        "artifact_validation": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/logistic_regression_baseline/release_pilot_treasury_001_seed_29/artifact_validation.json",
+        "score": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/logistic_regression_baseline/release_pilot_treasury_001_seed_29/score.json",
+        "writeup": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/logistic_regression_baseline/release_pilot_treasury_001_seed_29/writeup.md",
+        "notebook": "runs/suites/pilot_baselines_v0/yield_direction_treasury10y_v0/logistic_regression_baseline/release_pilot_treasury_001_seed_29/notebook.ipynb"
+      },
+      "review_metadata": {
+        "reviewer_count": 1,
+        "review_mode": "benchmark_author_seed_review",
+        "adjudication_status": "seed_single_reviewer"
+      },
+      "automated_findings_snapshot": {
+        "artifact_validation_ok": true,
+        "leakage_findings_count": 0,
+        "methodology_findings_count": 0
+      },
+      "benchmark_scores": {
+        "overall_score": 0.489822,
+        "balanced_accuracy": 0.489822,
+        "roc_auc": 0.486226,
+        "log_loss": 0.697355
+      },
+      "rubric_scores": {
+        "temporal_protocol_correctness": {
+          "score": 2,
+          "evidence": "The writeup clearly documents chronological training, train-fitted scaling, and threshold selection on public validation only."
+        },
+        "leakage_awareness_and_feature_hygiene": {
+          "score": 2,
+          "evidence": "Private labels, answer keys, and future yield changes are explicitly excluded."
+        },
+        "quantitative_evidence_use": {
+          "score": 2,
+          "evidence": "The writeup reports the selected threshold and public-validation balanced accuracy and connects them to the final model."
+        },
+        "baseline_comparison_or_counterfactual_context": {
+          "score": 0,
+          "evidence": "The narrative does not explain why this logistic model should be preferred over the suite's simpler previous-day rule or tree baselines."
+        },
+        "claim_discipline": {
+          "score": 2,
+          "evidence": "Claims remain tightly scoped to the benchmark prediction task."
+        },
+        "reproducibility_trace_completeness": {
+          "score": 2,
+          "evidence": "The trace includes the feature set, validation statistics, seed, observation window, snapshot date, and source mode."
+        }
+      },
+      "total_score": 10,
+      "overall_label": "strong_but_incomplete",
+      "primary_manual_findings": [
+        "Method trace is strong.",
+        "Quantitative narrative is adequate.",
+        "The missing piece is comparative justification, especially since holdout score is not stronger than the simpler rule baseline."
+      ],
+      "adjudication_note": "This is a good publication-facing baseline artifact except for the missing narrative comparison to simpler and more effective alternatives."
+    }
+  ]
+}

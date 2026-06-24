@@ -1,0 +1,21 @@
+\section{Qualitative Failure Examples}
+The manual audit illustrates why predictive scores and automatic artifact validators are insufficient for financial research-agent evaluation. The examples below are generated from the seed adjudicated audit subset and preserve task, run, and artifact references.
+
+\begin{description}[leftmargin=*]
+\item[pilot\_event\_rule\_baseline\_release\_001] \textbf{Task/system:} \texttt{synthetic\_event\_response\_v0} / \texttt{event\_rule\_baseline} (baseline, run label \texttt{release\_pilot\_event\_001\_seed\_23}). \textbf{Audit label:} \texttt{minimally\_defensible}, total score 6.
+\textbf{Low-scoring dimensions:} temporal\_protocol\_correctness, quantitative\_evidence\_use, baseline\_comparison\_or\_counterfactual\_context, reproducibility\_trace\_completeness. \textbf{Primary findings:} Strong predictive score is not accompanied by quantitative narrative support; Temporal protocol description is brief; No comparator or ablation context appears in the writeup. \textbf{Evidence:} No ablation, heuristic comparison, or simpler event rule is discussed.
+\textbf{Artifact reference:} \texttt{runs/suites/pilot\_baselines\_v0/synthetic\_event\_response\_v0/event\_rule\_baseline/release\_pilot\_event\_001\_seed\_23/writeup.md}.
+
+\item[pilot\_market\_momentum\_baseline\_release\_001] \textbf{Task/system:} \texttt{synthetic\_market\_direction\_v0} / \texttt{momentum\_baseline} (baseline, run label \texttt{release\_pilot\_market\_001\_seed\_11}). \textbf{Audit label:} \texttt{minimally\_defensible}, total score 6.
+\textbf{Low-scoring dimensions:} temporal\_protocol\_correctness, quantitative\_evidence\_use, baseline\_comparison\_or\_counterfactual\_context, reproducibility\_trace\_completeness. \textbf{Primary findings:} No quantitative support in the writeup; No baseline or counterfactual comparison; Temporal protocol rationale is thinner than the artifact package itself. \textbf{Evidence:} The submission does not compare the momentum rule to any simpler or more expressive alternative.
+\textbf{Artifact reference:} \texttt{runs/suites/pilot\_baselines\_v0/synthetic\_market\_direction\_v0/momentum\_baseline/release\_pilot\_market\_001\_seed\_11/writeup.md}.
+
+\item[pilot\_event\_rule\_env\_agent\_protocol\_001] \textbf{Task/system:} \texttt{synthetic\_event\_response\_v0} / \texttt{event\_rule\_env\_agent} (agent, run label \texttt{release\_protocol\_agent\_event\_001\_seed\_23}). \textbf{Audit label:} \texttt{minimally\_defensible}, total score 7.
+\textbf{Low-scoring dimensions:} temporal\_protocol\_correctness, quantitative\_evidence\_use, baseline\_comparison\_or\_counterfactual\_context. \textbf{Primary findings:} Agent trace provenance is stronger than the baseline trace; Narrative quality is still thin; No quantitative or comparative justification appears in the writeup. \textbf{Evidence:} The agent output does not situate the rule against any competing event heuristic.
+\textbf{Artifact reference:} \texttt{runs/suites/pilot\_protocol\_v0/synthetic\_event\_response\_v0/event\_rule\_env\_agent/release\_protocol\_agent\_event\_001\_seed\_23/writeup.md}.
+
+\item[pilot\_market\_logistic\_baseline\_release\_001] \textbf{Task/system:} \texttt{synthetic\_market\_direction\_v0} / \texttt{logistic\_regression\_baseline} (baseline, run label \texttt{release\_pilot\_market\_001\_seed\_11}). \textbf{Audit label:} \texttt{strong\_but\_incomplete}, total score 10.
+\textbf{Low-scoring dimensions:} baseline\_comparison\_or\_counterfactual\_context. \textbf{Primary findings:} Method description is strong; Quantitative support is present; Main remaining gap is missing comparison against simpler alternatives. \textbf{Evidence:} Even though a momentum baseline exists in the suite, the writeup does not compare against it or justify model complexity relative to a rule baseline.
+\textbf{Artifact reference:} \texttt{runs/suites/pilot\_baselines\_v0/synthetic\_market\_direction\_v0/logistic\_regression\_baseline/release\_pilot\_market\_001\_seed\_11/writeup.md}.
+
+\end{description}

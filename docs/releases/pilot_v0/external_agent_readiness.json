@@ -1,0 +1,59 @@
+{
+  "blocking_items": [
+    "Register and run at least one non-author external agent configuration through the pilot harness.",
+    "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset."
+  ],
+  "bundled_reference_agent_count": 7,
+  "bundled_reference_agent_ids": [
+    "event_rule_env_agent",
+    "market_research_sweep_env_agent",
+    "treasury_curve_10y3mo_research_sweep_env_agent",
+    "treasury_curve_research_sweep_env_agent",
+    "treasury_front_end_research_sweep_env_agent",
+    "treasury_research_sweep_env_agent",
+    "usd_research_sweep_env_agent"
+  ],
+  "claim_boundary": {
+    "allowed_current_claim": "The benchmark includes a command-based external-agent harness and bundled reference agents.",
+    "disallowed_current_claim": "Broad external-agent leaderboard or stronger external-agent evidence."
+  },
+  "completed_external_agent_configuration_count": 0,
+  "completed_external_agent_ids": [],
+  "covered_external_task_ids": [],
+  "expected_task_count": 8,
+  "expected_task_ids": [
+    "synthetic_market_direction_v0",
+    "synthetic_event_response_v0",
+    "yield_direction_treasury10y_v0",
+    "yield_curve_10y2y_steepening_v0",
+    "yield_curve_10y3mo_steepening_v0",
+    "front_end_spread_widening_v0",
+    "usd_broad_direction_v0",
+    "usd_afe_vs_eme_relative_direction_v0"
+  ],
+  "external_agent_configuration_count": 0,
+  "external_task_coverage_count": 0,
+  "minimum_completed_runs_per_task": 3,
+  "minimum_external_agent_configurations": 1,
+  "missing_external_task_ids": [
+    "front_end_spread_widening_v0",
+    "synthetic_event_response_v0",
+    "synthetic_market_direction_v0",
+    "usd_afe_vs_eme_relative_direction_v0",
+    "usd_broad_direction_v0",
+    "yield_curve_10y2y_steepening_v0",
+    "yield_curve_10y3mo_steepening_v0",
+    "yield_direction_treasury10y_v0"
+  ],
+  "next_actions": [
+    "Add an external_agent_configurations entry for a non-author agent.",
+    "Run the agent with the same command harness, repeated seeds, task specs, and hidden-label protections.",
+    "Regenerate reference results, readiness reports, and the manuscript checklist."
+  ],
+  "non_blocking_cautions": [
+    "Bundled reference agents are maintained by the benchmark authors and should not be framed as independent external systems."
+  ],
+  "ready_for_external_agent_claims": false,
+  "registry_id": "finds_agentbench_external_agents_pilot_v0",
+  "status": "not_ready_no_external_agents"
+}

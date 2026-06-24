@@ -6,7 +6,10 @@ from pathlib import Path
 from typing import Any
 
 from finds_agentbench.leakage import scan_submission_for_leakage
-from finds_agentbench.methodology import scan_submission_methodology
+from finds_agentbench.methodology import (
+    methodology_rules_for_task,
+    scan_submission_methodology,
+)
 
 
 @dataclass(frozen=True)
@@ -38,6 +41,20 @@ def csv_columns(path: Path) -> set[str]:
     with path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
         return set(reader.fieldnames or [])
+
+
+def forbidden_prediction_columns(task_spec: dict[str, Any]) -> set[str]:
+    leakage_checks = task_spec.get("leakage_checks", {})
+    target = task_spec.get("target", {})
+    forbidden = {
+        str(value).strip()
+        for value in leakage_checks.get("forbidden_columns", [])
+        if str(value).strip()
+    }
+    target_name = str(target.get("name", "")).strip()
+    if target_name:
+        forbidden.add(target_name)
+    return forbidden
 
 
 def execute_notebook(
@@ -140,6 +157,13 @@ def validate_submission_artifacts(
                 errors.append(
                     f"{predictions_relative} missing required columns: {missing_columns}"
                 )
+            forbidden_columns = sorted(
+                forbidden_prediction_columns(task_spec).intersection(available_columns)
+            )
+            if forbidden_columns:
+                errors.append(
+                    f"{predictions_relative} contains forbidden columns: {forbidden_columns}"
+                )
 
     writeup_spec = deliverables.get("writeup", {})
     writeup_relative = writeup_spec.get("path")
@@ -167,6 +191,7 @@ def validate_submission_artifacts(
     if scan_methodology:
         methodology_result = scan_submission_methodology(
             submission_path,
+            rules=methodology_rules_for_task(task_spec),
             fail_on_warnings=methodology_fail_on_warnings,
         )
         methodology_findings = [finding.as_dict() for finding in methodology_result.findings]

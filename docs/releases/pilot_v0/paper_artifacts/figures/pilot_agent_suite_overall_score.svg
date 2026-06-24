@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="358" viewBox="0 0 1040 358" role="img" aria-label="Pilot Agent Suite overall score chart">
+<rect width="100%" height="100%" fill="#ffffff" />
+<text x="310" y="30" font-size="22" font-family="Arial, Helvetica, sans-serif" fill="#111111">Pilot Agent Suite</text>
+<text x="310" y="50" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#555555">Overall score mean with sample-standard-deviation error bars</text>
+<line x1="310" y1="308" x2="1000" y2="308" stroke="#444444" stroke-width="1"/>
+<line x1="310.00" y1="308" x2="310.00" y2="314" stroke="#444444" stroke-width="1"/>
+<text x="310.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.0</text>
+<line x1="402.00" y1="308" x2="402.00" y2="314" stroke="#444444" stroke-width="1"/>
+<text x="402.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.1</text>
+<line x1="494.00" y1="308" x2="494.00" y2="314" stroke="#444444" stroke-width="1"/>
+<text x="494.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.2</text>
+<line x1="586.00" y1="308" x2="586.00" y2="314" stroke="#444444" stroke-width="1"/>
+<text x="586.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.3</text>
+<line x1="678.00" y1="308" x2="678.00" y2="314" stroke="#444444" stroke-width="1"/>
+<text x="678.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.4</text>
+<line x1="770.00" y1="308" x2="770.00" y2="314" stroke="#444444" stroke-width="1"/>
+<text x="770.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.5</text>
+<line x1="862.00" y1="308" x2="862.00" y2="314" stroke="#444444" stroke-width="1"/>
+<text x="862.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.6</text>
+<line x1="954.00" y1="308" x2="954.00" y2="314" stroke="#444444" stroke-width="1"/>
+<text x="954.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.7</text>
+<rect x="830" y="18" width="12" height="12" fill="#4f81bd" />
+<text x="848" y="28" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#333333">Baseline</text>
+<rect x="830" y="38" width="12" height="12" fill="#c0504d" />
+<text x="848" y="48" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#333333">Agent</text>
+<text x="298" y="91.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Front-End Spread | Front-End Sweep Env-Agent</text>
+<rect x="310" y="78.00" width="499.53" height="18" rx="2" fill="#c0504d" opacity="0.9" />
+<line x1="809.53" y1="87.00" x2="809.53" y2="87.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="809.53" y1="81.00" x2="809.53" y2="93.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="809.53" y1="81.00" x2="809.53" y2="93.00" stroke="#111111" stroke-width="1.5"/>
+<text x="817.53" y="91.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.543 ± 0.000</text>
+<text x="298" y="125.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Synthetic Event | Event Rule Env-Agent</text>
+<rect x="310" y="112.00" width="586.26" height="18" rx="2" fill="#c0504d" opacity="0.9" />
+<line x1="886.44" y1="121.00" x2="906.08" y2="121.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="886.44" y1="115.00" x2="886.44" y2="127.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="906.08" y1="115.00" x2="906.08" y2="127.00" stroke="#111111" stroke-width="1.5"/>
+<text x="904.26" y="125.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.637 ± 0.011</text>
+<text x="298" y="159.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Synthetic Market | Market Sweep Env-Agent</text>
+<rect x="310" y="146.00" width="470.49" height="18" rx="2" fill="#c0504d" opacity="0.9" />
+<line x1="761.79" y1="155.00" x2="799.19" y2="155.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="761.79" y1="149.00" x2="761.79" y2="161.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="799.19" y1="149.00" x2="799.19" y2="161.00" stroke="#111111" stroke-width="1.5"/>
+<text x="788.49" y="159.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.511 ± 0.020</text>
+<text x="298" y="193.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">USD AFE vs. EME | USD Sweep Env-Agent</text>
+<rect x="310" y="180.00" width="466.28" height="18" rx="2" fill="#c0504d" opacity="0.9" />
+<line x1="769.99" y1="189.00" x2="782.58" y2="189.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="769.99" y1="183.00" x2="769.99" y2="195.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="782.58" y1="183.00" x2="782.58" y2="195.00" stroke="#111111" stroke-width="1.5"/>
+<text x="784.28" y="193.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.507 ± 0.007</text>
+<text x="298" y="227.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">USD Broad | USD Sweep Env-Agent</text>
+<rect x="310" y="214.00" width="461.60" height="18" rx="2" fill="#c0504d" opacity="0.9" />
+<line x1="766.66" y1="223.00" x2="776.53" y2="223.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="766.66" y1="217.00" x2="766.66" y2="229.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="776.53" y1="217.00" x2="776.53" y2="229.00" stroke="#111111" stroke-width="1.5"/>
+<text x="779.60" y="227.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.502 ± 0.005</text>
+<text x="298" y="261.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y-2Y Curve | Treasury 10Y-2Y Sweep Env-Agent</text>
+<rect x="310" y="248.00" width="460.71" height="18" rx="2" fill="#c0504d" opacity="0.9" />
+<line x1="767.30" y1="257.00" x2="774.12" y2="257.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="767.30" y1="251.00" x2="767.30" y2="263.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="774.12" y1="251.00" x2="774.12" y2="263.00" stroke="#111111" stroke-width="1.5"/>
+<text x="778.71" y="261.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.501 ± 0.004</text>
+<text x="298" y="295.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | Treasury 10Y Sweep Env-Agent</text>
+<rect x="310" y="282.00" width="463.81" height="18" rx="2" fill="#c0504d" opacity="0.9" />
+<line x1="770.18" y1="291.00" x2="777.45" y2="291.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="770.18" y1="285.00" x2="770.18" y2="297.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="777.45" y1="285.00" x2="777.45" y2="297.00" stroke="#111111" stroke-width="1.5"/>
+<text x="781.81" y="295.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.504 ± 0.004</text>
+</svg>

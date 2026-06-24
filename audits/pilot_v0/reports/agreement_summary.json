@@ -1,0 +1,138 @@
+{
+  "eligible_reviewer_packet_count": 1,
+  "exploratory_eligible_reviewer_packet_count": 2,
+  "exploratory_pairwise_agreement": [
+    {
+      "cases_with_any_disagreement": 6,
+      "disagreement_case_ids": [
+        "pilot_event_rule_baseline_release_001",
+        "pilot_event_rule_env_agent_protocol_001",
+        "pilot_market_logistic_baseline_release_001",
+        "pilot_market_momentum_baseline_release_001",
+        "pilot_treasury_logistic_baseline_release_001",
+        "pilot_treasury_previous_day_baseline_release_001"
+      ],
+      "exact_total_score_match_rate": 0.166667,
+      "mean_abs_total_score_diff": 0.833333,
+      "overall_label_exact_agreement": 0.833333,
+      "overall_label_kappa": 0.714286,
+      "overlap_case_count": 6,
+      "packet_paths": [
+        "audits/pilot_v0/reviews/reviewer_1_seed.csv",
+        "audits/pilot_v0/reviews/reviewer_2_shadow_demo.csv"
+      ],
+      "per_dimension": [
+        {
+          "dimension_id": "temporal_protocol_correctness",
+          "exact_agreement_rate": 0.833333,
+          "quadratic_weighted_kappa": 0.666667
+        },
+        {
+          "dimension_id": "leakage_awareness_and_feature_hygiene",
+          "exact_agreement_rate": 1.0,
+          "quadratic_weighted_kappa": 1.0
+        },
+        {
+          "dimension_id": "quantitative_evidence_use",
+          "exact_agreement_rate": 0.666667,
+          "quadratic_weighted_kappa": 0.8
+        },
+        {
+          "dimension_id": "baseline_comparison_or_counterfactual_context",
+          "exact_agreement_rate": 0.666667,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "claim_discipline",
+          "exact_agreement_rate": 0.833333,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "reproducibility_trace_completeness",
+          "exact_agreement_rate": 0.833333,
+          "quadratic_weighted_kappa": 0.666667
+        }
+      ],
+      "reviewer_pair": [
+        "reviewer_1_seed",
+        "reviewer_2_shadow_demo"
+      ],
+      "status": "pairwise_agreement_available"
+    }
+  ],
+  "exploratory_status": "pairwise_agreement_available",
+  "official_status": "insufficient_independent_overlap",
+  "packet_inventory": [
+    {
+      "completed_case_count": 6,
+      "eligible_for_agreement": true,
+      "error_count": 0,
+      "errors": [],
+      "exploratory_eligible_for_agreement": true,
+      "filename": "reviewer_1_seed.csv",
+      "packet_status": "complete",
+      "path": "audits/pilot_v0/reviews/reviewer_1_seed.csv",
+      "review_sources": [
+        "seed_subset_projection"
+      ],
+      "review_statuses": [
+        "complete"
+      ],
+      "reviewer_ids": [
+        "reviewer_1_seed"
+      ],
+      "reviewer_roles": [
+        "benchmark_author_seed_reviewer"
+      ],
+      "row_count": 6
+    },
+    {
+      "completed_case_count": 0,
+      "eligible_for_agreement": false,
+      "error_count": 0,
+      "errors": [],
+      "exploratory_eligible_for_agreement": false,
+      "filename": "reviewer_2_blank_template.csv",
+      "packet_status": "template",
+      "path": "audits/pilot_v0/reviews/reviewer_2_blank_template.csv",
+      "review_sources": [
+        "blank_template"
+      ],
+      "review_statuses": [
+        "template"
+      ],
+      "reviewer_ids": [
+        "reviewer_2"
+      ],
+      "reviewer_roles": [
+        "independent_reviewer"
+      ],
+      "row_count": 6
+    },
+    {
+      "completed_case_count": 6,
+      "eligible_for_agreement": false,
+      "error_count": 0,
+      "errors": [],
+      "exploratory_eligible_for_agreement": true,
+      "filename": "reviewer_2_shadow_demo.csv",
+      "packet_status": "complete",
+      "path": "audits/pilot_v0/reviews/reviewer_2_shadow_demo.csv",
+      "review_sources": [
+        "synthetic_shadow_demo"
+      ],
+      "review_statuses": [
+        "demo_complete"
+      ],
+      "reviewer_ids": [
+        "reviewer_2_shadow_demo"
+      ],
+      "reviewer_roles": [
+        "synthetic_shadow_reviewer"
+      ],
+      "row_count": 6
+    }
+  ],
+  "pairwise_agreement": [],
+  "status": "insufficient_independent_overlap"
+}

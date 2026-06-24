@@ -1,5 +1,29 @@
 [
   {
+    "data_access": "download_script",
+    "license_status": "public_domain_citation_requested",
+    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+    "required_files": [
+      "notebook.ipynb",
+      "predictions.csv",
+      "writeup.md"
+    ],
+    "source_spec": "tasks/pilot/front_end_spread_widening_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "rates",
+      "treasury",
+      "front_end",
+      "classification",
+      "temporal_validation"
+    ],
+    "task_id": "front_end_spread_widening_v0",
+    "title": "U.S. 2Y Minus Fed Funds Next-Day Widening Under Point-in-Time H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
     "data_access": "bundled",
     "license_status": "usable",
     "primary_metric": "audit_correctness_score",
@@ -20,29 +44,6 @@
     "task_id": "leakage_audit_temporal_split_v0",
     "title": "Audit a Financial ML Notebook for Temporal Leakage",
     "track": "research_replication_and_audit",
-    "version": "0.1.0"
-  },
-  {
-    "data_access": "download_script",
-    "license_status": "pending_review",
-    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
-    "required_files": [
-      "notebook.ipynb",
-      "predictions.csv",
-      "writeup.md"
-    ],
-    "source_spec": "tasks/pilot/return_direction_etf_v0.yaml",
-    "split_method": "temporal",
-    "status": "draft",
-    "tags": [
-      "equities",
-      "etf",
-      "classification",
-      "temporal_validation"
-    ],
-    "task_id": "return_direction_etf_v0",
-    "title": "Daily ETF Return Direction Under Point-in-Time Features",
-    "track": "predictive_financial_ml",
     "version": "0.1.0"
   },
   {
@@ -88,6 +89,127 @@
     ],
     "task_id": "synthetic_market_direction_v0",
     "title": "Synthetic Market Next-Day Direction Prediction",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "license_status": "public_domain_citation_requested",
+    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+    "required_files": [
+      "notebook.ipynb",
+      "predictions.csv",
+      "writeup.md"
+    ],
+    "source_spec": "tasks/pilot/usd_afe_vs_eme_relative_direction_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "fx",
+      "macro_finance",
+      "dollar",
+      "relative_value",
+      "classification",
+      "temporal_validation"
+    ],
+    "task_id": "usd_afe_vs_eme_relative_direction_v0",
+    "title": "U.S. Dollar AFE vs EME Next-Day Relative Direction Under Point-in-Time H.10 and H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "license_status": "public_domain_citation_requested",
+    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+    "required_files": [
+      "notebook.ipynb",
+      "predictions.csv",
+      "writeup.md"
+    ],
+    "source_spec": "tasks/pilot/usd_broad_direction_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "fx",
+      "macro_finance",
+      "dollar",
+      "classification",
+      "temporal_validation"
+    ],
+    "task_id": "usd_broad_direction_v0",
+    "title": "Broad U.S. Dollar Index Next-Day Direction Under Point-in-Time H.10 and H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "license_status": "public_domain_citation_requested",
+    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+    "required_files": [
+      "notebook.ipynb",
+      "predictions.csv",
+      "writeup.md"
+    ],
+    "source_spec": "tasks/pilot/yield_curve_10y2y_steepening_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "rates",
+      "treasury",
+      "yield_curve",
+      "classification",
+      "temporal_validation"
+    ],
+    "task_id": "yield_curve_10y2y_steepening_v0",
+    "title": "U.S. 10Y-2Y Treasury Curve Next-Day Steepening Under Point-in-Time H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "license_status": "public_domain_citation_requested",
+    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+    "required_files": [
+      "notebook.ipynb",
+      "predictions.csv",
+      "writeup.md"
+    ],
+    "source_spec": "tasks/pilot/yield_curve_10y3mo_steepening_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "rates",
+      "treasury",
+      "yield_curve",
+      "classification",
+      "temporal_validation"
+    ],
+    "task_id": "yield_curve_10y3mo_steepening_v0",
+    "title": "U.S. 10Y-3M Treasury Curve Next-Day Steepening Under Point-in-Time H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "license_status": "public_domain_citation_requested",
+    "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+    "required_files": [
+      "notebook.ipynb",
+      "predictions.csv",
+      "writeup.md"
+    ],
+    "source_spec": "tasks/pilot/yield_direction_treasury10y_v0.yaml",
+    "split_method": "temporal",
+    "status": "draft",
+    "tags": [
+      "rates",
+      "treasury",
+      "macro_finance",
+      "classification",
+      "temporal_validation"
+    ],
+    "task_id": "yield_direction_treasury10y_v0",
+    "title": "U.S. 10-Year Treasury Yield Next-Day Direction Under Point-in-Time H.15 Features",
     "track": "predictive_financial_ml",
     "version": "0.1.0"
   }

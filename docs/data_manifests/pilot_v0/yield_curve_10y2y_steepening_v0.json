@@ -1,0 +1,90 @@
+{
+  "data_access": "download_script",
+  "generator_script": {
+    "exists": true,
+    "path": "scripts/download_yield_curve_10y2y_steepening_v0.py",
+    "sha256": "818ed38af7436a5e8473ff60e65614fc606c985d37115852e6b58a7169801571"
+  },
+  "license_status": "public_domain_citation_requested",
+  "public_data_present": true,
+  "public_file_count": 4,
+  "public_local_paths": [
+    {
+      "exists": true,
+      "file_count": 4,
+      "files": [
+        {
+          "path": "data/raw/yield_curve_10y2y_steepening_v0/metadata.json",
+          "sha256": "300b0c0a1d62a451de9675a364a82b57f5f26990e3862a60739b22f076788976",
+          "size_bytes": 1357
+        },
+        {
+          "path": "data/raw/yield_curve_10y2y_steepening_v0/private_holdout_features.csv",
+          "sha256": "d9cbe76b0abc71aefe8d878408a8e85a4d2eaea4c5f498b5af59078e545d8f4a",
+          "size_bytes": 275735
+        },
+        {
+          "path": "data/raw/yield_curve_10y2y_steepening_v0/sample_submission.csv",
+          "sha256": "80e5ffc853889f08b2d960c217073d843325d8244d7bc332c402250c9cfb255e",
+          "size_bytes": 40907
+        },
+        {
+          "path": "data/raw/yield_curve_10y2y_steepening_v0/train_public.csv",
+          "sha256": "3a0e3d3991d790c20f41f693c6bf7c87abdd5d2f9d1358280b75b0467e429c5b",
+          "size_bytes": 1332556
+        }
+      ],
+      "ignored_subdirectories": [
+        "data/raw/yield_curve_10y2y_steepening_v0/agent",
+        "data/raw/yield_curve_10y2y_steepening_v0/baseline",
+        "data/raw/yield_curve_10y2y_steepening_v0/pilot_agent_curve_001_seed_31",
+        "data/raw/yield_curve_10y2y_steepening_v0/pilot_agent_curve_002_seed_32",
+        "data/raw/yield_curve_10y2y_steepening_v0/pilot_agent_curve_003_seed_33",
+        "data/raw/yield_curve_10y2y_steepening_v0/pilot_curve_001_seed_31",
+        "data/raw/yield_curve_10y2y_steepening_v0/pilot_curve_002_seed_32",
+        "data/raw/yield_curve_10y2y_steepening_v0/pilot_curve_003_seed_33",
+        "data/raw/yield_curve_10y2y_steepening_v0/pilot_suite_curve_001_seed_115",
+        "data/raw/yield_curve_10y2y_steepening_v0/pilot_suite_curve_002_seed_116"
+      ],
+      "is_dir": true,
+      "path": "data/raw/yield_curve_10y2y_steepening_v0",
+      "total_size_bytes": 1650555
+    }
+  ],
+  "public_total_size_bytes": 1650555,
+  "source_spec": {
+    "path": "tasks/pilot/yield_curve_10y2y_steepening_v0.yaml",
+    "sha256": "13a7831ee05c198c626c1c9a5269d1f59e9b05406213e177d783c618001d5b57"
+  },
+  "sources": [
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS10 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS2 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS3MO from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS3MO&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DFF from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+    }
+  ],
+  "status": "draft",
+  "task_id": "yield_curve_10y2y_steepening_v0",
+  "title": "U.S. 10Y-2Y Treasury Curve Next-Day Steepening Under Point-in-Time H.15 Features",
+  "track": "predictive_financial_ml",
+  "version": "0.1.0"
+}

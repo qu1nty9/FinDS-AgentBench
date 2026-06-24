@@ -1,0 +1,106 @@
+{
+  "data_access": "download_script",
+  "generator_script": {
+    "exists": true,
+    "path": "scripts/download_usd_afe_vs_eme_relative_direction_v0.py",
+    "sha256": "448792530fb0649e4a27cb31b2ca50cfa8c17c15d5488ada6385f700a037c91a"
+  },
+  "license_status": "public_domain_citation_requested",
+  "public_data_present": true,
+  "public_file_count": 4,
+  "public_local_paths": [
+    {
+      "exists": true,
+      "file_count": 4,
+      "files": [
+        {
+          "path": "data/raw/usd_afe_vs_eme_relative_direction_v0/metadata.json",
+          "sha256": "ba819f77154835e8c933b31066619f97f45f45b27898dc0e025300a55c57b2f3",
+          "size_bytes": 1548
+        },
+        {
+          "path": "data/raw/usd_afe_vs_eme_relative_direction_v0/private_holdout_features.csv",
+          "sha256": "29647d1df85444f953e34d7487064b44ea51a1907e2452a1f06b601ae706e3b6",
+          "size_bytes": 328283
+        },
+        {
+          "path": "data/raw/usd_afe_vs_eme_relative_direction_v0/sample_submission.csv",
+          "sha256": "df2b25711e322e1f7f7eaa5db2984a4ff0e08fdcf8218b6defdcfb6a36b4b67f",
+          "size_bytes": 40989
+        },
+        {
+          "path": "data/raw/usd_afe_vs_eme_relative_direction_v0/train_public.csv",
+          "sha256": "52e7abc5e6be1a9450681a0b887129e110759020b1a09e66a36220a859a8605d",
+          "size_bytes": 1278635
+        }
+      ],
+      "ignored_subdirectories": [
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/agent",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/baseline",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_001_seed_141",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_001_seed_37",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_002_seed_142",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_002_seed_38",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_003_seed_39",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_suite_usd_relative_001_seed_121",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_suite_usd_relative_002_seed_122",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_usd_relative_001_seed_37",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_usd_relative_002_seed_38",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_usd_relative_003_seed_39",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/smoke_relative_001_seed_37",
+        "data/raw/usd_afe_vs_eme_relative_direction_v0/smoke_relative_agent_001_seed_37"
+      ],
+      "is_dir": true,
+      "path": "data/raw/usd_afe_vs_eme_relative_direction_v0",
+      "total_size_bytes": 1649455
+    }
+  ],
+  "public_total_size_bytes": 1649455,
+  "source_spec": {
+    "path": "tasks/pilot/usd_afe_vs_eme_relative_direction_v0.yaml",
+    "sha256": "2f71049a00cac862964d8bf559bdb228e5ac2ff55d310ae7525720d8e34bb2b9"
+  },
+  "sources": [
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DTWEXBGS from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXBGS&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DTWEXAFEGS from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXAFEGS&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DTWEXEMEGS from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXEMEGS&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS2 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS10 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DFF from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+    }
+  ],
+  "status": "draft",
+  "task_id": "usd_afe_vs_eme_relative_direction_v0",
+  "title": "U.S. Dollar AFE vs EME Next-Day Relative Direction Under Point-in-Time H.10 and H.15 Features",
+  "track": "predictive_financial_ml",
+  "version": "0.1.0"
+}

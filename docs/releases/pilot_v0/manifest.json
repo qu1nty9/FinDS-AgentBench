@@ -3,9 +3,127 @@
   "benchmark_version": "0.1.0",
   "cards_root": "docs/cards",
   "data_manifests_root": "docs/data_manifests/pilot_v0",
+  "external_agents": {
+    "blocking_items": [
+      "Register and run at least one non-author external agent configuration through the pilot harness.",
+      "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset."
+    ],
+    "bundled_reference_agent_count": 7,
+    "completed_external_agent_configuration_count": 0,
+    "expected_task_count": 8,
+    "external_agent_configuration_count": 0,
+    "external_task_coverage_count": 0,
+    "missing_external_task_ids": [
+      "front_end_spread_widening_v0",
+      "synthetic_event_response_v0",
+      "synthetic_market_direction_v0",
+      "usd_afe_vs_eme_relative_direction_v0",
+      "usd_broad_direction_v0",
+      "yield_curve_10y2y_steepening_v0",
+      "yield_curve_10y3mo_steepening_v0",
+      "yield_direction_treasury10y_v0"
+    ],
+    "protocol_markdown_path": "docs/releases/pilot_v0/external_agent_protocol.md",
+    "readiness_json_path": "docs/releases/pilot_v0/external_agent_readiness.json",
+    "readiness_markdown_path": "docs/releases/pilot_v0/external_agent_readiness.md",
+    "readiness_status": "not_ready_no_external_agents",
+    "ready_for_external_agent_claims": false,
+    "registry_path": "agents/external_agent_registry.yaml"
+  },
+  "manual_audit": {
+    "adjudication_entry_count": 6,
+    "adjudication_report_json_path": "audits/pilot_v0/reports/adjudication_queue.json",
+    "adjudication_report_markdown_path": "audits/pilot_v0/reports/adjudication_queue.md",
+    "agreement_report_json_path": "audits/pilot_v0/reports/agreement_summary.json",
+    "agreement_report_markdown_path": "audits/pilot_v0/reports/agreement_summary.md",
+    "agreement_status": "insufficient_independent_overlap",
+    "case_count": 6,
+    "dimension_count": 6,
+    "dimension_ids": [
+      "temporal_protocol_correctness",
+      "leakage_awareness_and_feature_hygiene",
+      "quantitative_evidence_use",
+      "baseline_comparison_or_counterfactual_context",
+      "claim_discipline",
+      "reproducibility_trace_completeness"
+    ],
+    "eligible_reviewer_packet_count": 1,
+    "exploratory_agreement_status": "pairwise_agreement_available",
+    "exploratory_eligible_reviewer_packet_count": 2,
+    "exploratory_pairwise_agreement_count": 1,
+    "independent_completed_reviewer_packet_count": 0,
+    "pairwise_agreement_count": 0,
+    "per_dimension_means": [
+      {
+        "case_count": 6,
+        "dimension_id": "temporal_protocol_correctness",
+        "mean_score": 1.5
+      },
+      {
+        "case_count": 6,
+        "dimension_id": "leakage_awareness_and_feature_hygiene",
+        "mean_score": 2.0
+      },
+      {
+        "case_count": 6,
+        "dimension_id": "quantitative_evidence_use",
+        "mean_score": 1.0
+      },
+      {
+        "case_count": 6,
+        "dimension_id": "baseline_comparison_or_counterfactual_context",
+        "mean_score": 0.0
+      },
+      {
+        "case_count": 6,
+        "dimension_id": "claim_discipline",
+        "mean_score": 2.0
+      },
+      {
+        "case_count": 6,
+        "dimension_id": "reproducibility_trace_completeness",
+        "mean_score": 1.667
+      }
+    ],
+    "readme_path": "audits/pilot_v0/README.md",
+    "ready_for_submission_claims": false,
+    "reviewed_task_count": 3,
+    "reviewer_1_seed_path": "audits/pilot_v0/reviews/reviewer_1_seed.csv",
+    "reviewer_2_shadow_path": "audits/pilot_v0/reviews/reviewer_2_shadow_demo.csv",
+    "reviewer_2_template_path": "audits/pilot_v0/reviews/reviewer_2_blank_template.csv",
+    "reviewer_readiness_blocking_items": [
+      "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
+      "Rebuild official agreement reporting after an independent completed packet is available."
+    ],
+    "reviewer_readiness_json_path": "audits/pilot_v0/reports/reviewer_readiness.json",
+    "reviewer_readiness_markdown_path": "audits/pilot_v0/reports/reviewer_readiness.md",
+    "reviewer_readiness_status": "not_ready_seed_only",
+    "reviews_readme_path": "audits/pilot_v0/reviews/README.md",
+    "rubric_path": "audits/pilot_v0/manual_audit_rubric.yaml",
+    "run_types": [
+      "agent",
+      "baseline"
+    ],
+    "scope_tracks": [
+      "predictive_financial_ml",
+      "event_aware_time_series_reasoning"
+    ],
+    "score_range": {
+      "max_total_score": 10,
+      "min_total_score": 6
+    },
+    "status": "seed_author_adjudication_only",
+    "subset_path": "audits/pilot_v0/adjudicated_subset.json",
+    "task_ids": [
+      "synthetic_event_response_v0",
+      "synthetic_market_direction_v0",
+      "yield_direction_treasury10y_v0"
+    ]
+  },
+  "paper_artifacts_path": "docs/releases/pilot_v0/paper_artifacts/README.md",
   "protocols": [
     {
-      "command": "PYTHONPATH=src python scripts/run_pilot_baseline_suite.py --repeat 3 --market-seed 11 --event-seed 23 --run-label-prefix pilot",
+      "command": "PYTHONPATH=src python scripts/run_pilot_baseline_suite.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-runs --run-label-prefix pilot",
       "protocol_id": "pilot_baseline_suite",
       "run_types": [
         "baseline"
@@ -14,11 +132,17 @@
       "status": "active",
       "task_ids": [
         "synthetic_market_direction_v0",
-        "synthetic_event_response_v0"
+        "synthetic_event_response_v0",
+        "yield_direction_treasury10y_v0",
+        "yield_curve_10y2y_steepening_v0",
+        "yield_curve_10y3mo_steepening_v0",
+        "front_end_spread_widening_v0",
+        "usd_broad_direction_v0",
+        "usd_afe_vs_eme_relative_direction_v0"
       ]
     },
     {
-      "command": "PYTHONPATH=src python scripts/run_pilot_agent_suite.py --repeat 3 --market-seed 11 --event-seed 23 --run-label-prefix pilot_agent",
+      "command": "PYTHONPATH=src python scripts/run_pilot_agent_suite.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-runs --run-label-prefix pilot_agent",
       "protocol_id": "pilot_agent_suite",
       "run_types": [
         "agent"
@@ -27,11 +151,17 @@
       "status": "active",
       "task_ids": [
         "synthetic_market_direction_v0",
-        "synthetic_event_response_v0"
+        "synthetic_event_response_v0",
+        "yield_direction_treasury10y_v0",
+        "yield_curve_10y2y_steepening_v0",
+        "yield_curve_10y3mo_steepening_v0",
+        "front_end_spread_widening_v0",
+        "usd_broad_direction_v0",
+        "usd_afe_vs_eme_relative_direction_v0"
       ]
     },
     {
-      "command": "PYTHONPATH=src python scripts/run_pilot_protocol.py --repeat 3 --market-seed 11 --event-seed 23 --run-label-prefix pilot_protocol",
+      "command": "PYTHONPATH=src python scripts/run_pilot_protocol.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-runs --run-label-prefix pilot_protocol",
       "protocol_id": "pilot_protocol",
       "run_types": [
         "baseline",
@@ -41,14 +171,65 @@
       "status": "active",
       "task_ids": [
         "synthetic_market_direction_v0",
-        "synthetic_event_response_v0"
+        "synthetic_event_response_v0",
+        "yield_direction_treasury10y_v0",
+        "yield_curve_10y2y_steepening_v0",
+        "yield_curve_10y3mo_steepening_v0",
+        "front_end_spread_widening_v0",
+        "usd_broad_direction_v0",
+        "usd_afe_vs_eme_relative_direction_v0"
       ]
     }
   ],
+  "reference_results_path": "docs/releases/pilot_v0/reference_results.md",
+  "release_build_command": "PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-outputs",
   "release_stage": "pilot",
-  "runnable_task_count": 3,
-  "task_count": 4,
+  "runnable_task_count": 9,
+  "statistical_artifacts_path": "docs/releases/pilot_v0/statistical_artifacts/README.md",
+  "task_count": 9,
   "tasks": [
+    {
+      "blocked_reason": null,
+      "data_access": "download_script",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/front_end_spread_widening_v0.json",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/download_front_end_spread_widening_v0.py --observation-start 2003-01-02 --observation-end 2026-01-02 --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/front_end_spread_widening_v0.yaml",
+        "PYTHONPATH=src python scripts/run_front_end_spread_widening_v0_previous_day_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_front_end_spread_widening_v0_logistic_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_front_end_spread_widening_v0_random_forest_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_front_end_spread_widening_v0_extra_trees_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_front_end_spread_widening_v0_agent_suite.py --agent-id treasury_front_end_research_sweep_env_agent --agent-version 0.2.0 --agent-command \".venv/bin/python agents/examples/research_sweep_env_agent.py\" --repeat 3 --seed 31 --snapshot-date 2026-06-21 --run-label-prefix pilot_front_end_agent"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/front_end_spread_widening_v0.md",
+      "license_status": "public_domain_citation_requested",
+      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "public_data_present": true,
+      "public_file_count": 4,
+      "public_total_size_bytes": 1785023,
+      "release_status": "runnable_public_pilot",
+      "required_files": [
+        "notebook.ipynb",
+        "predictions.csv",
+        "writeup.md"
+      ],
+      "runnable": true,
+      "source_spec": "tasks/pilot/front_end_spread_widening_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "rates",
+        "treasury",
+        "front_end",
+        "classification",
+        "temporal_validation"
+      ],
+      "task_card_path": "docs/cards/tasks/front_end_spread_widening_v0.md",
+      "task_id": "front_end_spread_widening_v0",
+      "title": "U.S. 2Y Minus Fed Funds Next-Day Widening Under Point-in-Time H.15 Features",
+      "track": "predictive_financial_ml",
+      "version": "0.1.0"
+    },
     {
       "blocked_reason": null,
       "data_access": "bundled",
@@ -87,48 +268,13 @@
       "version": "0.1.0"
     },
     {
-      "blocked_reason": "License-safe public data source is still pending review.",
-      "data_access": "download_script",
-      "data_manifest_path": "docs/data_manifests/pilot_v0/return_direction_etf_v0.json",
-      "default_commands": [
-        "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/return_direction_etf_v0.yaml"
-      ],
-      "evaluation_card_path": "docs/cards/evaluations/return_direction_etf_v0.md",
-      "license_status": "pending_review",
-      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
-      "public_data_present": false,
-      "public_file_count": 0,
-      "public_total_size_bytes": 0,
-      "release_status": "spec_only_pending_data_review",
-      "required_files": [
-        "notebook.ipynb",
-        "predictions.csv",
-        "writeup.md"
-      ],
-      "runnable": false,
-      "source_spec": "tasks/pilot/return_direction_etf_v0.yaml",
-      "split_method": "temporal",
-      "status": "draft",
-      "tags": [
-        "equities",
-        "etf",
-        "classification",
-        "temporal_validation"
-      ],
-      "task_card_path": "docs/cards/tasks/return_direction_etf_v0.md",
-      "task_id": "return_direction_etf_v0",
-      "title": "Daily ETF Return Direction Under Point-in-Time Features",
-      "track": "predictive_financial_ml",
-      "version": "0.1.0"
-    },
-    {
       "blocked_reason": null,
       "data_access": "synthetic_generator",
       "data_manifest_path": "docs/data_manifests/pilot_v0/synthetic_event_response_v0.json",
       "default_commands": [
         "PYTHONPATH=src python scripts/generate_synthetic_event_response_v0.py --seed 23",
         "PYTHONPATH=src python scripts/run_synthetic_event_response_rule_pipeline.py",
-        "PYTHONPATH=src python scripts/run_synthetic_event_response_agent_suite.py --agent-id event_rule_env_agent --agent-version 0.1.0 --agent-command \"python agents/examples/event_rule_env_agent.py\" --repeat 3 --seed 23 --run-label-prefix pilot_event_agent"
+        "PYTHONPATH=src python scripts/run_synthetic_event_response_agent_suite.py --agent-id event_rule_env_agent --agent-version 0.1.0 --agent-command \".venv/bin/python agents/examples/event_rule_env_agent.py\" --repeat 3 --seed 23 --run-label-prefix pilot_event_agent"
       ],
       "evaluation_card_path": "docs/cards/evaluations/synthetic_event_response_v0.md",
       "license_status": "usable",
@@ -166,7 +312,7 @@
         "PYTHONPATH=src python scripts/generate_synthetic_market_direction_v0.py --seed 11",
         "PYTHONPATH=src python scripts/run_synthetic_market_momentum_pipeline.py",
         "PYTHONPATH=src python scripts/run_synthetic_market_logistic_pipeline.py",
-        "PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py --agent-id momentum_env_agent --agent-version 0.1.0 --agent-command \"python agents/examples/momentum_env_agent.py\" --repeat 3 --seed 11 --run-label-prefix pilot_agent"
+        "PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py --agent-id market_research_sweep_env_agent --agent-version 0.2.0 --agent-command \".venv/bin/python agents/examples/research_sweep_env_agent.py\" --repeat 3 --seed 11 --run-label-prefix pilot_agent"
       ],
       "evaluation_card_path": "docs/cards/evaluations/synthetic_market_direction_v0.md",
       "license_status": "usable",
@@ -195,6 +341,217 @@
       "title": "Synthetic Market Next-Day Direction Prediction",
       "track": "predictive_financial_ml",
       "version": "0.1.0"
+    },
+    {
+      "blocked_reason": null,
+      "data_access": "download_script",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/usd_afe_vs_eme_relative_direction_v0.json",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/download_usd_afe_vs_eme_relative_direction_v0.py --observation-start 2006-01-03 --observation-end 2026-01-02 --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/usd_afe_vs_eme_relative_direction_v0.yaml",
+        "PYTHONPATH=src python scripts/run_usd_afe_vs_eme_relative_direction_v0_previous_day_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_usd_afe_vs_eme_relative_direction_v0_logistic_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_usd_afe_vs_eme_relative_direction_v0_random_forest_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_usd_afe_vs_eme_relative_direction_v0_extra_trees_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_usd_afe_vs_eme_relative_direction_v0_agent_suite.py --agent-id usd_relative_research_sweep_env_agent --agent-version 0.2.0 --agent-command \".venv/bin/python agents/examples/research_sweep_env_agent.py\" --repeat 3 --seed 37 --snapshot-date 2026-06-21 --run-label-prefix pilot_usd_relative_agent"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/usd_afe_vs_eme_relative_direction_v0.md",
+      "license_status": "public_domain_citation_requested",
+      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "public_data_present": true,
+      "public_file_count": 4,
+      "public_total_size_bytes": 1649455,
+      "release_status": "runnable_public_pilot",
+      "required_files": [
+        "notebook.ipynb",
+        "predictions.csv",
+        "writeup.md"
+      ],
+      "runnable": true,
+      "source_spec": "tasks/pilot/usd_afe_vs_eme_relative_direction_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "fx",
+        "macro_finance",
+        "dollar",
+        "relative_value",
+        "classification",
+        "temporal_validation"
+      ],
+      "task_card_path": "docs/cards/tasks/usd_afe_vs_eme_relative_direction_v0.md",
+      "task_id": "usd_afe_vs_eme_relative_direction_v0",
+      "title": "U.S. Dollar AFE vs EME Next-Day Relative Direction Under Point-in-Time H.10 and H.15 Features",
+      "track": "predictive_financial_ml",
+      "version": "0.1.0"
+    },
+    {
+      "blocked_reason": null,
+      "data_access": "download_script",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/usd_broad_direction_v0.json",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/download_usd_broad_direction_v0.py --observation-start 2006-01-03 --observation-end 2026-01-02 --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/usd_broad_direction_v0.yaml",
+        "PYTHONPATH=src python scripts/run_usd_broad_direction_v0_previous_day_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_usd_broad_direction_v0_logistic_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_usd_broad_direction_v0_random_forest_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_usd_broad_direction_v0_extra_trees_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_usd_broad_direction_v0_agent_suite.py --agent-id usd_research_sweep_env_agent --agent-version 0.2.0 --agent-command \".venv/bin/python agents/examples/research_sweep_env_agent.py\" --repeat 3 --seed 37 --snapshot-date 2026-06-21 --run-label-prefix pilot_usd_agent"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/usd_broad_direction_v0.md",
+      "license_status": "public_domain_citation_requested",
+      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "public_data_present": true,
+      "public_file_count": 4,
+      "public_total_size_bytes": 1428669,
+      "release_status": "runnable_public_pilot",
+      "required_files": [
+        "notebook.ipynb",
+        "predictions.csv",
+        "writeup.md"
+      ],
+      "runnable": true,
+      "source_spec": "tasks/pilot/usd_broad_direction_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "fx",
+        "macro_finance",
+        "dollar",
+        "classification",
+        "temporal_validation"
+      ],
+      "task_card_path": "docs/cards/tasks/usd_broad_direction_v0.md",
+      "task_id": "usd_broad_direction_v0",
+      "title": "Broad U.S. Dollar Index Next-Day Direction Under Point-in-Time H.10 and H.15 Features",
+      "track": "predictive_financial_ml",
+      "version": "0.1.0"
+    },
+    {
+      "blocked_reason": null,
+      "data_access": "download_script",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/yield_curve_10y2y_steepening_v0.json",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/download_yield_curve_10y2y_steepening_v0.py --observation-start 2003-01-02 --observation-end 2026-01-02 --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/yield_curve_10y2y_steepening_v0.yaml",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y2y_steepening_previous_day_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y2y_steepening_logistic_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y2y_steepening_random_forest_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y2y_steepening_extra_trees_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y2y_steepening_agent_suite.py --agent-id treasury_curve_research_sweep_env_agent --agent-version 0.2.0 --agent-command \".venv/bin/python agents/examples/research_sweep_env_agent.py\" --repeat 3 --seed 31 --snapshot-date 2026-06-21 --run-label-prefix pilot_curve_agent"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/yield_curve_10y2y_steepening_v0.md",
+      "license_status": "public_domain_citation_requested",
+      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "public_data_present": true,
+      "public_file_count": 4,
+      "public_total_size_bytes": 1650555,
+      "release_status": "runnable_public_pilot",
+      "required_files": [
+        "notebook.ipynb",
+        "predictions.csv",
+        "writeup.md"
+      ],
+      "runnable": true,
+      "source_spec": "tasks/pilot/yield_curve_10y2y_steepening_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "rates",
+        "treasury",
+        "yield_curve",
+        "classification",
+        "temporal_validation"
+      ],
+      "task_card_path": "docs/cards/tasks/yield_curve_10y2y_steepening_v0.md",
+      "task_id": "yield_curve_10y2y_steepening_v0",
+      "title": "U.S. 10Y-2Y Treasury Curve Next-Day Steepening Under Point-in-Time H.15 Features",
+      "track": "predictive_financial_ml",
+      "version": "0.1.0"
+    },
+    {
+      "blocked_reason": null,
+      "data_access": "download_script",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/yield_curve_10y3mo_steepening_v0.json",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/download_yield_curve_10y3mo_steepening_v0.py --observation-start 2003-01-02 --observation-end 2026-01-02 --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/yield_curve_10y3mo_steepening_v0.yaml",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y3mo_steepening_previous_day_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y3mo_steepening_logistic_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y3mo_steepening_random_forest_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y3mo_steepening_extra_trees_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_curve_10y3mo_steepening_agent_suite.py --agent-id treasury_curve_10y3mo_research_sweep_env_agent --agent-version 0.2.0 --agent-command \".venv/bin/python agents/examples/research_sweep_env_agent.py\" --repeat 3 --seed 33 --snapshot-date 2026-06-21 --run-label-prefix pilot_curve3mo_agent"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/yield_curve_10y3mo_steepening_v0.md",
+      "license_status": "public_domain_citation_requested",
+      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "public_data_present": false,
+      "public_file_count": 0,
+      "public_total_size_bytes": 0,
+      "release_status": "runnable_public_pilot",
+      "required_files": [
+        "notebook.ipynb",
+        "predictions.csv",
+        "writeup.md"
+      ],
+      "runnable": true,
+      "source_spec": "tasks/pilot/yield_curve_10y3mo_steepening_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "rates",
+        "treasury",
+        "yield_curve",
+        "classification",
+        "temporal_validation"
+      ],
+      "task_card_path": "docs/cards/tasks/yield_curve_10y3mo_steepening_v0.md",
+      "task_id": "yield_curve_10y3mo_steepening_v0",
+      "title": "U.S. 10Y-3M Treasury Curve Next-Day Steepening Under Point-in-Time H.15 Features",
+      "track": "predictive_financial_ml",
+      "version": "0.1.0"
+    },
+    {
+      "blocked_reason": null,
+      "data_access": "download_script",
+      "data_manifest_path": "docs/data_manifests/pilot_v0/yield_direction_treasury10y_v0.json",
+      "default_commands": [
+        "PYTHONPATH=src python scripts/download_yield_direction_treasury10y_v0.py --observation-start 2003-01-02 --observation-end 2026-01-02 --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/validate_task.py tasks/pilot/yield_direction_treasury10y_v0.yaml",
+        "PYTHONPATH=src python scripts/run_yield_direction_treasury10y_previous_day_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_direction_treasury10y_logistic_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_direction_treasury10y_random_forest_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_direction_treasury10y_extra_trees_pipeline.py --snapshot-date 2026-06-21",
+        "PYTHONPATH=src python scripts/run_yield_direction_treasury10y_agent_suite.py --agent-id treasury_research_sweep_env_agent --agent-version 0.2.0 --agent-command \".venv/bin/python agents/examples/research_sweep_env_agent.py\" --repeat 3 --seed 29 --snapshot-date 2026-06-21 --run-label-prefix pilot_treasury_agent"
+      ],
+      "evaluation_card_path": "docs/cards/evaluations/yield_direction_treasury10y_v0.md",
+      "license_status": "public_domain_citation_requested",
+      "primary_metric": "balanced_accuracy_on_private_temporal_holdout",
+      "public_data_present": true,
+      "public_file_count": 4,
+      "public_total_size_bytes": 1359466,
+      "release_status": "runnable_public_pilot",
+      "required_files": [
+        "notebook.ipynb",
+        "predictions.csv",
+        "writeup.md"
+      ],
+      "runnable": true,
+      "source_spec": "tasks/pilot/yield_direction_treasury10y_v0.yaml",
+      "split_method": "temporal",
+      "status": "draft",
+      "tags": [
+        "rates",
+        "treasury",
+        "macro_finance",
+        "classification",
+        "temporal_validation"
+      ],
+      "task_card_path": "docs/cards/tasks/yield_direction_treasury10y_v0.md",
+      "task_id": "yield_direction_treasury10y_v0",
+      "title": "U.S. 10-Year Treasury Yield Next-Day Direction Under Point-in-Time H.15 Features",
+      "track": "predictive_financial_ml",
+      "version": "0.1.0"
     }
   ],
   "tasks_root": "tasks/pilot",
@@ -207,10 +564,15 @@
       "track": "event_aware_time_series_reasoning"
     },
     {
-      "task_count": 2,
+      "task_count": 7,
       "task_ids": [
-        "return_direction_etf_v0",
-        "synthetic_market_direction_v0"
+        "front_end_spread_widening_v0",
+        "synthetic_market_direction_v0",
+        "usd_afe_vs_eme_relative_direction_v0",
+        "usd_broad_direction_v0",
+        "yield_curve_10y2y_steepening_v0",
+        "yield_curve_10y3mo_steepening_v0",
+        "yield_direction_treasury10y_v0"
       ],
       "track": "predictive_financial_ml"
     },

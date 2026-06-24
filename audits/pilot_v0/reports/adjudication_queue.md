@@ -1,0 +1,14 @@
+# Manual Audit Adjudication Queue
+
+- Queue status: `adjudication_queue_ready`
+- Disagreement entry count: `6`
+
+| Case ID | Reviewer Pair | Reviewer Roles | Differing Dimensions | Label Disagreement | Total Scores |
+| --- | --- | --- | --- | --- | --- |
+| pilot_event_rule_baseline_release_001 | reviewer_1_seed vs reviewer_2_shadow_demo | benchmark_author_seed_reviewer vs synthetic_shadow_reviewer | temporal_protocol_correctness | no | 6 vs 7 |
+| pilot_event_rule_env_agent_protocol_001 | reviewer_1_seed vs reviewer_2_shadow_demo | benchmark_author_seed_reviewer vs synthetic_shadow_reviewer | reproducibility_trace_completeness | no | 7 vs 6 |
+| pilot_market_logistic_baseline_release_001 | reviewer_1_seed vs reviewer_2_shadow_demo | benchmark_author_seed_reviewer vs synthetic_shadow_reviewer | baseline_comparison_or_counterfactual_context | yes | 10 vs 11 |
+| pilot_market_momentum_baseline_release_001 | reviewer_1_seed vs reviewer_2_shadow_demo | benchmark_author_seed_reviewer vs synthetic_shadow_reviewer | quantitative_evidence_use | no | 6 vs 7 |
+| pilot_treasury_logistic_baseline_release_001 | reviewer_1_seed vs reviewer_2_shadow_demo | benchmark_author_seed_reviewer vs synthetic_shadow_reviewer | quantitative_evidence_use, baseline_comparison_or_counterfactual_context | no | 10 vs 10 |
+| pilot_treasury_previous_day_baseline_release_001 | reviewer_1_seed vs reviewer_2_shadow_demo | benchmark_author_seed_reviewer vs synthetic_shadow_reviewer | claim_discipline | no | 10 vs 9 |
+

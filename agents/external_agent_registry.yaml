@@ -1,0 +1,94 @@
+schema_version: 1
+registry_id: finds_agentbench_external_agents_pilot_v0
+required_for_workshop_submission:
+  minimum_external_agent_configurations: 1
+  minimum_completed_runs_per_task: 3
+  expected_task_ids:
+    - synthetic_market_direction_v0
+    - synthetic_event_response_v0
+    - yield_direction_treasury10y_v0
+    - yield_curve_10y2y_steepening_v0
+    - yield_curve_10y3mo_steepening_v0
+    - front_end_spread_widening_v0
+    - usd_broad_direction_v0
+    - usd_afe_vs_eme_relative_direction_v0
+agent_configurations:
+  - agent_id: market_research_sweep_env_agent
+    version: 0.2.0
+    provenance: bundled_reference
+    maintainer_type: benchmark_authors
+    agent_type: environment_wrapped_baseline_selection
+    status: completed_reference
+    included_in_reference_results: true
+    stronger_external_evidence: false
+    task_ids:
+      - synthetic_market_direction_v0
+    command_family: scripts/run_synthetic_market_agent_suite.py
+  - agent_id: event_rule_env_agent
+    version: 0.1.0
+    provenance: bundled_reference
+    maintainer_type: benchmark_authors
+    agent_type: environment_wrapped_rule_agent
+    status: completed_reference
+    included_in_reference_results: true
+    stronger_external_evidence: false
+    task_ids:
+      - synthetic_event_response_v0
+    command_family: scripts/run_synthetic_event_response_agent_suite.py
+  - agent_id: treasury_research_sweep_env_agent
+    version: 0.2.0
+    provenance: bundled_reference
+    maintainer_type: benchmark_authors
+    agent_type: environment_wrapped_baseline_selection
+    status: completed_reference
+    included_in_reference_results: true
+    stronger_external_evidence: false
+    task_ids:
+      - yield_direction_treasury10y_v0
+    command_family: scripts/run_yield_direction_treasury10y_agent_suite.py
+  - agent_id: treasury_curve_research_sweep_env_agent
+    version: 0.2.0
+    provenance: bundled_reference
+    maintainer_type: benchmark_authors
+    agent_type: environment_wrapped_baseline_selection
+    status: completed_reference
+    included_in_reference_results: true
+    stronger_external_evidence: false
+    task_ids:
+      - yield_curve_10y2y_steepening_v0
+    command_family: scripts/run_yield_curve_10y2y_steepening_agent_suite.py
+  - agent_id: treasury_curve_10y3mo_research_sweep_env_agent
+    version: 0.2.0
+    provenance: bundled_reference
+    maintainer_type: benchmark_authors
+    agent_type: environment_wrapped_baseline_selection
+    status: completed_reference
+    included_in_reference_results: true
+    stronger_external_evidence: false
+    task_ids:
+      - yield_curve_10y3mo_steepening_v0
+    command_family: scripts/run_yield_curve_10y3mo_steepening_agent_suite.py
+  - agent_id: treasury_front_end_research_sweep_env_agent
+    version: 0.2.0
+    provenance: bundled_reference
+    maintainer_type: benchmark_authors
+    agent_type: environment_wrapped_baseline_selection
+    status: completed_reference
+    included_in_reference_results: true
+    stronger_external_evidence: false
+    task_ids:
+      - front_end_spread_widening_v0
+    command_family: scripts/run_front_end_spread_widening_v0_agent_suite.py
+  - agent_id: usd_research_sweep_env_agent
+    version: 0.2.0
+    provenance: bundled_reference
+    maintainer_type: benchmark_authors
+    agent_type: environment_wrapped_baseline_selection
+    status: completed_reference
+    included_in_reference_results: true
+    stronger_external_evidence: false
+    task_ids:
+      - usd_broad_direction_v0
+      - usd_afe_vs_eme_relative_direction_v0
+    command_family: scripts/run_usd_broad_direction_v0_agent_suite.py
+external_agent_configurations: []

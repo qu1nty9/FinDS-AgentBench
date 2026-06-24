@@ -1,5 +1,93 @@
 [
   {
+    "data_access": "download_script",
+    "generator_script": {
+      "exists": true,
+      "path": "scripts/download_front_end_spread_widening_v0.py",
+      "sha256": "65543034785dba26c4be14918adab96e31e365929e9a1ed38b27e870e1736922"
+    },
+    "license_status": "public_domain_citation_requested",
+    "public_data_present": true,
+    "public_file_count": 4,
+    "public_local_paths": [
+      {
+        "exists": true,
+        "file_count": 4,
+        "files": [
+          {
+            "path": "data/raw/front_end_spread_widening_v0/metadata.json",
+            "sha256": "a1ba18fd76f8fccf834e472f0b2752cad9ba3b7fd09e2b4cdb42983ec6875a59",
+            "size_bytes": 1387
+          },
+          {
+            "path": "data/raw/front_end_spread_widening_v0/private_holdout_features.csv",
+            "sha256": "b1b644cab2df41dd2ba0cc0c0aed8d368b4f122b66f7c474675ccc08824b80fd",
+            "size_bytes": 297161
+          },
+          {
+            "path": "data/raw/front_end_spread_widening_v0/sample_submission.csv",
+            "sha256": "dec963f45cc56daad13000f323de1cb237ff5041cc9f95a2be07a0d3f204b5db",
+            "size_bytes": 51874
+          },
+          {
+            "path": "data/raw/front_end_spread_widening_v0/train_public.csv",
+            "sha256": "a49e0523e4834129ca90f19afb597581ea7b5f2cf5f401fcba186849de106a77",
+            "size_bytes": 1434601
+          }
+        ],
+        "ignored_subdirectories": [
+          "data/raw/front_end_spread_widening_v0/agent",
+          "data/raw/front_end_spread_widening_v0/baseline",
+          "data/raw/front_end_spread_widening_v0/pilot_agent_front_end_001_seed_31",
+          "data/raw/front_end_spread_widening_v0/pilot_agent_front_end_002_seed_32",
+          "data/raw/front_end_spread_widening_v0/pilot_agent_front_end_003_seed_33",
+          "data/raw/front_end_spread_widening_v0/pilot_front_end_001_seed_31",
+          "data/raw/front_end_spread_widening_v0/pilot_front_end_002_seed_32",
+          "data/raw/front_end_spread_widening_v0/pilot_front_end_003_seed_33"
+        ],
+        "is_dir": true,
+        "path": "data/raw/front_end_spread_widening_v0",
+        "total_size_bytes": 1785023
+      }
+    ],
+    "public_total_size_bytes": 1785023,
+    "source_spec": {
+      "path": "tasks/pilot/front_end_spread_widening_v0.yaml",
+      "sha256": "204f5d4b9af5007f8f200d8e4b50dab1f5e74e1cd0b13bde3bd27bd43ff83735"
+    },
+    "sources": [
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS10 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS2 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS3MO from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS3MO&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DFF from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+      }
+    ],
+    "status": "draft",
+    "task_id": "front_end_spread_widening_v0",
+    "title": "U.S. 2Y Minus Fed Funds Next-Day Widening Under Point-in-Time H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
     "data_access": "bundled",
     "generator_script": {
       "exists": true,
@@ -51,46 +139,6 @@
     "version": "0.1.0"
   },
   {
-    "data_access": "download_script",
-    "generator_script": {
-      "exists": false,
-      "path": "scripts/download_return_direction_etf_v0.py",
-      "sha256": null
-    },
-    "license_status": "pending_review",
-    "public_data_present": false,
-    "public_file_count": 0,
-    "public_local_paths": [
-      {
-        "exists": false,
-        "file_count": 0,
-        "files": [],
-        "ignored_subdirectories": [],
-        "is_dir": false,
-        "path": "data/raw/return_direction_etf_v0",
-        "total_size_bytes": 0
-      }
-    ],
-    "public_total_size_bytes": 0,
-    "source_spec": {
-      "path": "tasks/pilot/return_direction_etf_v0.yaml",
-      "sha256": "d6f7d04ef42ed0c427c9f6fda52a74d645c8cd6065c7c38117d68c196f1d5614"
-    },
-    "sources": [
-      {
-        "access": "download_script",
-        "license": "pending_review",
-        "name": "Public ETF OHLCV source",
-        "url_or_reference": "TBD"
-      }
-    ],
-    "status": "draft",
-    "task_id": "return_direction_etf_v0",
-    "title": "Daily ETF Return Direction Under Point-in-Time Features",
-    "track": "predictive_financial_ml",
-    "version": "0.1.0"
-  },
-  {
     "data_access": "synthetic_generator",
     "generator_script": {
       "exists": true,
@@ -126,7 +174,16 @@
             "size_bytes": 1150891
           }
         ],
-        "ignored_subdirectories": [],
+        "ignored_subdirectories": [
+          "data/raw/synthetic_event_response_v0/agent",
+          "data/raw/synthetic_event_response_v0/baseline",
+          "data/raw/synthetic_event_response_v0/pilot_agent_event_001_seed_23",
+          "data/raw/synthetic_event_response_v0/pilot_agent_event_002_seed_24",
+          "data/raw/synthetic_event_response_v0/pilot_agent_event_003_seed_25",
+          "data/raw/synthetic_event_response_v0/pilot_event_001_seed_23",
+          "data/raw/synthetic_event_response_v0/pilot_event_002_seed_24",
+          "data/raw/synthetic_event_response_v0/pilot_event_003_seed_25"
+        ],
         "is_dir": true,
         "path": "data/raw/synthetic_event_response_v0",
         "total_size_bytes": 1383465
@@ -188,9 +245,17 @@
           }
         ],
         "ignored_subdirectories": [
+          "data/raw/synthetic_market_direction_v0/agent",
+          "data/raw/synthetic_market_direction_v0/baseline",
           "data/raw/synthetic_market_direction_v0/pilot_001_seed_11",
           "data/raw/synthetic_market_direction_v0/pilot_002_seed_12",
-          "data/raw/synthetic_market_direction_v0/pilot_003_seed_13"
+          "data/raw/synthetic_market_direction_v0/pilot_003_seed_13",
+          "data/raw/synthetic_market_direction_v0/pilot_agent_market_001_seed_11",
+          "data/raw/synthetic_market_direction_v0/pilot_agent_market_002_seed_12",
+          "data/raw/synthetic_market_direction_v0/pilot_agent_market_003_seed_13",
+          "data/raw/synthetic_market_direction_v0/pilot_market_001_seed_11",
+          "data/raw/synthetic_market_direction_v0/pilot_market_002_seed_12",
+          "data/raw/synthetic_market_direction_v0/pilot_market_003_seed_13"
         ],
         "is_dir": true,
         "path": "data/raw/synthetic_market_direction_v0",
@@ -213,6 +278,457 @@
     "status": "draft",
     "task_id": "synthetic_market_direction_v0",
     "title": "Synthetic Market Next-Day Direction Prediction",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "generator_script": {
+      "exists": true,
+      "path": "scripts/download_usd_afe_vs_eme_relative_direction_v0.py",
+      "sha256": "448792530fb0649e4a27cb31b2ca50cfa8c17c15d5488ada6385f700a037c91a"
+    },
+    "license_status": "public_domain_citation_requested",
+    "public_data_present": true,
+    "public_file_count": 4,
+    "public_local_paths": [
+      {
+        "exists": true,
+        "file_count": 4,
+        "files": [
+          {
+            "path": "data/raw/usd_afe_vs_eme_relative_direction_v0/metadata.json",
+            "sha256": "ba819f77154835e8c933b31066619f97f45f45b27898dc0e025300a55c57b2f3",
+            "size_bytes": 1548
+          },
+          {
+            "path": "data/raw/usd_afe_vs_eme_relative_direction_v0/private_holdout_features.csv",
+            "sha256": "29647d1df85444f953e34d7487064b44ea51a1907e2452a1f06b601ae706e3b6",
+            "size_bytes": 328283
+          },
+          {
+            "path": "data/raw/usd_afe_vs_eme_relative_direction_v0/sample_submission.csv",
+            "sha256": "df2b25711e322e1f7f7eaa5db2984a4ff0e08fdcf8218b6defdcfb6a36b4b67f",
+            "size_bytes": 40989
+          },
+          {
+            "path": "data/raw/usd_afe_vs_eme_relative_direction_v0/train_public.csv",
+            "sha256": "52e7abc5e6be1a9450681a0b887129e110759020b1a09e66a36220a859a8605d",
+            "size_bytes": 1278635
+          }
+        ],
+        "ignored_subdirectories": [
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/agent",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/baseline",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_001_seed_141",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_001_seed_37",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_002_seed_142",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_002_seed_38",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_agent_usd_relative_003_seed_39",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_suite_usd_relative_001_seed_121",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_suite_usd_relative_002_seed_122",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_usd_relative_001_seed_37",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_usd_relative_002_seed_38",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/pilot_usd_relative_003_seed_39",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/smoke_relative_001_seed_37",
+          "data/raw/usd_afe_vs_eme_relative_direction_v0/smoke_relative_agent_001_seed_37"
+        ],
+        "is_dir": true,
+        "path": "data/raw/usd_afe_vs_eme_relative_direction_v0",
+        "total_size_bytes": 1649455
+      }
+    ],
+    "public_total_size_bytes": 1649455,
+    "source_spec": {
+      "path": "tasks/pilot/usd_afe_vs_eme_relative_direction_v0.yaml",
+      "sha256": "2f71049a00cac862964d8bf559bdb228e5ac2ff55d310ae7525720d8e34bb2b9"
+    },
+    "sources": [
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DTWEXBGS from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXBGS&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DTWEXAFEGS from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXAFEGS&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DTWEXEMEGS from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXEMEGS&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS2 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS10 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DFF from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+      }
+    ],
+    "status": "draft",
+    "task_id": "usd_afe_vs_eme_relative_direction_v0",
+    "title": "U.S. Dollar AFE vs EME Next-Day Relative Direction Under Point-in-Time H.10 and H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "generator_script": {
+      "exists": true,
+      "path": "scripts/download_usd_broad_direction_v0.py",
+      "sha256": "c0b8e0cbe58f59df050cd56cc9e0bdc99a172602bea75eedf01f9359ec5fab83"
+    },
+    "license_status": "public_domain_citation_requested",
+    "public_data_present": true,
+    "public_file_count": 4,
+    "public_local_paths": [
+      {
+        "exists": true,
+        "file_count": 4,
+        "files": [
+          {
+            "path": "data/raw/usd_broad_direction_v0/metadata.json",
+            "sha256": "afaa0906148a87760c77d7950adb3b3c4db224efcfe4f8be65d67711f9a1cf6e",
+            "size_bytes": 1318
+          },
+          {
+            "path": "data/raw/usd_broad_direction_v0/private_holdout_features.csv",
+            "sha256": "b8f0a47081940adea06786bf8d8eda50153d36e6c677d62a44c5fe4e9f75aadd",
+            "size_bytes": 283031
+          },
+          {
+            "path": "data/raw/usd_broad_direction_v0/sample_submission.csv",
+            "sha256": "8afb3985c10df22e15376ba5081c5a37d3922877625513a47a5d62a8bf42bf71",
+            "size_bytes": 41030
+          },
+          {
+            "path": "data/raw/usd_broad_direction_v0/train_public.csv",
+            "sha256": "677851e27d5580324e27fba3ac19200693013475cc04026995319ce946d59252",
+            "size_bytes": 1103290
+          }
+        ],
+        "ignored_subdirectories": [
+          "data/raw/usd_broad_direction_v0/agent",
+          "data/raw/usd_broad_direction_v0/baseline",
+          "data/raw/usd_broad_direction_v0/pilot_agent_usd_001_seed_37",
+          "data/raw/usd_broad_direction_v0/pilot_agent_usd_002_seed_38",
+          "data/raw/usd_broad_direction_v0/pilot_agent_usd_003_seed_39",
+          "data/raw/usd_broad_direction_v0/pilot_usd_001_seed_37",
+          "data/raw/usd_broad_direction_v0/pilot_usd_002_seed_38",
+          "data/raw/usd_broad_direction_v0/pilot_usd_003_seed_39"
+        ],
+        "is_dir": true,
+        "path": "data/raw/usd_broad_direction_v0",
+        "total_size_bytes": 1428669
+      }
+    ],
+    "public_total_size_bytes": 1428669,
+    "source_spec": {
+      "path": "tasks/pilot/usd_broad_direction_v0.yaml",
+      "sha256": "80700e070d15081c715d162d968d11216e2afc6a65cbea0061100ee653e1441c"
+    },
+    "sources": [
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DTWEXBGS from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXBGS&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DTWEXAFEGS from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXAFEGS&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DTWEXEMEGS from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DTWEXEMEGS&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS2 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS10 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DFF from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+      }
+    ],
+    "status": "draft",
+    "task_id": "usd_broad_direction_v0",
+    "title": "Broad U.S. Dollar Index Next-Day Direction Under Point-in-Time H.10 and H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "generator_script": {
+      "exists": true,
+      "path": "scripts/download_yield_curve_10y2y_steepening_v0.py",
+      "sha256": "818ed38af7436a5e8473ff60e65614fc606c985d37115852e6b58a7169801571"
+    },
+    "license_status": "public_domain_citation_requested",
+    "public_data_present": true,
+    "public_file_count": 4,
+    "public_local_paths": [
+      {
+        "exists": true,
+        "file_count": 4,
+        "files": [
+          {
+            "path": "data/raw/yield_curve_10y2y_steepening_v0/metadata.json",
+            "sha256": "300b0c0a1d62a451de9675a364a82b57f5f26990e3862a60739b22f076788976",
+            "size_bytes": 1357
+          },
+          {
+            "path": "data/raw/yield_curve_10y2y_steepening_v0/private_holdout_features.csv",
+            "sha256": "d9cbe76b0abc71aefe8d878408a8e85a4d2eaea4c5f498b5af59078e545d8f4a",
+            "size_bytes": 275735
+          },
+          {
+            "path": "data/raw/yield_curve_10y2y_steepening_v0/sample_submission.csv",
+            "sha256": "80e5ffc853889f08b2d960c217073d843325d8244d7bc332c402250c9cfb255e",
+            "size_bytes": 40907
+          },
+          {
+            "path": "data/raw/yield_curve_10y2y_steepening_v0/train_public.csv",
+            "sha256": "3a0e3d3991d790c20f41f693c6bf7c87abdd5d2f9d1358280b75b0467e429c5b",
+            "size_bytes": 1332556
+          }
+        ],
+        "ignored_subdirectories": [
+          "data/raw/yield_curve_10y2y_steepening_v0/agent",
+          "data/raw/yield_curve_10y2y_steepening_v0/baseline",
+          "data/raw/yield_curve_10y2y_steepening_v0/pilot_agent_curve_001_seed_31",
+          "data/raw/yield_curve_10y2y_steepening_v0/pilot_agent_curve_002_seed_32",
+          "data/raw/yield_curve_10y2y_steepening_v0/pilot_agent_curve_003_seed_33",
+          "data/raw/yield_curve_10y2y_steepening_v0/pilot_curve_001_seed_31",
+          "data/raw/yield_curve_10y2y_steepening_v0/pilot_curve_002_seed_32",
+          "data/raw/yield_curve_10y2y_steepening_v0/pilot_curve_003_seed_33",
+          "data/raw/yield_curve_10y2y_steepening_v0/pilot_suite_curve_001_seed_115",
+          "data/raw/yield_curve_10y2y_steepening_v0/pilot_suite_curve_002_seed_116"
+        ],
+        "is_dir": true,
+        "path": "data/raw/yield_curve_10y2y_steepening_v0",
+        "total_size_bytes": 1650555
+      }
+    ],
+    "public_total_size_bytes": 1650555,
+    "source_spec": {
+      "path": "tasks/pilot/yield_curve_10y2y_steepening_v0.yaml",
+      "sha256": "13a7831ee05c198c626c1c9a5269d1f59e9b05406213e177d783c618001d5b57"
+    },
+    "sources": [
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS10 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS2 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS3MO from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS3MO&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DFF from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+      }
+    ],
+    "status": "draft",
+    "task_id": "yield_curve_10y2y_steepening_v0",
+    "title": "U.S. 10Y-2Y Treasury Curve Next-Day Steepening Under Point-in-Time H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "generator_script": {
+      "exists": true,
+      "path": "scripts/download_yield_curve_10y3mo_steepening_v0.py",
+      "sha256": "241b80a53a0afbdac496c446c12feff570c2fd31e2ccc9e2ede0965affacecd8"
+    },
+    "license_status": "public_domain_citation_requested",
+    "public_data_present": false,
+    "public_file_count": 0,
+    "public_local_paths": [
+      {
+        "exists": true,
+        "file_count": 0,
+        "files": [],
+        "ignored_subdirectories": [
+          "data/raw/yield_curve_10y3mo_steepening_v0/agent",
+          "data/raw/yield_curve_10y3mo_steepening_v0/baseline",
+          "data/raw/yield_curve_10y3mo_steepening_v0/pilot_agent_curve3mo_001_seed_33",
+          "data/raw/yield_curve_10y3mo_steepening_v0/pilot_agent_curve3mo_002_seed_34",
+          "data/raw/yield_curve_10y3mo_steepening_v0/pilot_agent_curve3mo_003_seed_35",
+          "data/raw/yield_curve_10y3mo_steepening_v0/pilot_curve3mo_001_seed_33",
+          "data/raw/yield_curve_10y3mo_steepening_v0/pilot_curve3mo_002_seed_34",
+          "data/raw/yield_curve_10y3mo_steepening_v0/pilot_curve3mo_003_seed_35"
+        ],
+        "is_dir": true,
+        "path": "data/raw/yield_curve_10y3mo_steepening_v0",
+        "total_size_bytes": 0
+      }
+    ],
+    "public_total_size_bytes": 0,
+    "source_spec": {
+      "path": "tasks/pilot/yield_curve_10y3mo_steepening_v0.yaml",
+      "sha256": "58ec86ead130d9384535df0ad1035698f873eefb153c3e4f7fea2df9d15a34e3"
+    },
+    "sources": [
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS10 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS2 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS3MO from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS3MO&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DFF from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+      }
+    ],
+    "status": "draft",
+    "task_id": "yield_curve_10y3mo_steepening_v0",
+    "title": "U.S. 10Y-3M Treasury Curve Next-Day Steepening Under Point-in-Time H.15 Features",
+    "track": "predictive_financial_ml",
+    "version": "0.1.0"
+  },
+  {
+    "data_access": "download_script",
+    "generator_script": {
+      "exists": true,
+      "path": "scripts/download_yield_direction_treasury10y_v0.py",
+      "sha256": "3d0974210129f2e280cb159ece1a1e57a9112a2508f68f5440f9a23f8327d2ec"
+    },
+    "license_status": "public_domain_citation_requested",
+    "public_data_present": true,
+    "public_file_count": 4,
+    "public_local_paths": [
+      {
+        "exists": true,
+        "file_count": 4,
+        "files": [
+          {
+            "path": "data/raw/yield_direction_treasury10y_v0/metadata.json",
+            "sha256": "d4961d396b6c954707d824feffec92e82e82e9c64a97a78d4295fb155428ce4a",
+            "size_bytes": 1201
+          },
+          {
+            "path": "data/raw/yield_direction_treasury10y_v0/private_holdout_features.csv",
+            "sha256": "e79831789912e210004a25462c642013bf6b9171b4b2d807b8166012a1a70d0b",
+            "size_bytes": 225505
+          },
+          {
+            "path": "data/raw/yield_direction_treasury10y_v0/sample_submission.csv",
+            "sha256": "f38975d22edc59b212a8fd29f2ff735dd6086a7216510ccc5cdf013fc7ca07ad",
+            "size_bytes": 32964
+          },
+          {
+            "path": "data/raw/yield_direction_treasury10y_v0/train_public.csv",
+            "sha256": "0b5d4c6a896105d244f94107d7717baea242501072139ac6ca01146436a7691d",
+            "size_bytes": 1099796
+          }
+        ],
+        "ignored_subdirectories": [
+          "data/raw/yield_direction_treasury10y_v0/agent",
+          "data/raw/yield_direction_treasury10y_v0/baseline",
+          "data/raw/yield_direction_treasury10y_v0/pilot_agent_treasury_001_seed_29",
+          "data/raw/yield_direction_treasury10y_v0/pilot_agent_treasury_002_seed_30",
+          "data/raw/yield_direction_treasury10y_v0/pilot_agent_treasury_003_seed_31",
+          "data/raw/yield_direction_treasury10y_v0/pilot_treasury_001_seed_29",
+          "data/raw/yield_direction_treasury10y_v0/pilot_treasury_002_seed_30",
+          "data/raw/yield_direction_treasury10y_v0/pilot_treasury_003_seed_31"
+        ],
+        "is_dir": true,
+        "path": "data/raw/yield_direction_treasury10y_v0",
+        "total_size_bytes": 1359466
+      }
+    ],
+    "public_total_size_bytes": 1359466,
+    "source_spec": {
+      "path": "tasks/pilot/yield_direction_treasury10y_v0.yaml",
+      "sha256": "371345b6f8ce874222db60209aca72b5d180bc65e1daaa193bf7f88347d4c419"
+    },
+    "sources": [
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS10 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS2 from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DGS3MO from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS3MO&vintage_date=2026-06-21"
+      },
+      {
+        "access": "download_script",
+        "license": "public_domain_citation_requested",
+        "name": "DFF from ALFRED vintage freeze",
+        "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+      }
+    ],
+    "status": "draft",
+    "task_id": "yield_direction_treasury10y_v0",
+    "title": "U.S. 10-Year Treasury Yield Next-Day Direction Under Point-in-Time H.15 Features",
     "track": "predictive_financial_ml",
     "version": "0.1.0"
   }

@@ -4,7 +4,11 @@ import nbformat
 
 from finds_agentbench.artifacts import validate_submission_artifacts
 from finds_agentbench.io import load_yaml
-from finds_agentbench.methodology import scan_submission_methodology
+from finds_agentbench.methodology import (
+    methodology_rules_for_task,
+    scan_submission_methodology,
+    task_specific_methodology_rules,
+)
 
 
 def write_notebook(path: Path, source: str) -> None:
@@ -133,3 +137,105 @@ def test_artifact_validation_can_fail_on_methodology_error(tmp_path: Path):
     assert not result.ok
     assert any("methodology_scan_failed" in error for error in result.errors)
     assert result.methodology_findings
+
+
+def test_task_specific_forbidden_column_feature_reference_error(tmp_path: Path):
+    task_spec = load_yaml("tasks/pilot/yield_direction_treasury10y_v0.yaml")
+    submission_dir = tmp_path / "submission"
+    submission_dir.mkdir()
+    (submission_dir / "model.py").write_text(
+        "feature_columns = ['dgs10_level', 'next_day_change_bp']\n"
+        "X = frame[feature_columns]\n",
+        encoding="utf-8",
+    )
+
+    result = scan_submission_methodology(
+        submission_dir,
+        rules=task_specific_methodology_rules(task_spec),
+    )
+
+    assert not result.ok
+    finding = next(
+        finding
+        for finding in result.findings
+        if finding.rule_id == "task_forbidden_feature_reference__next_day_change_bp"
+    )
+    assert finding.severity == "error"
+
+
+def test_short_horizon_future_join_heuristic_is_error(tmp_path: Path):
+    task_spec = load_yaml("tasks/pilot/front_end_spread_widening_v0.yaml")
+    submission_dir = tmp_path / "submission"
+    submission_dir.mkdir()
+    (submission_dir / "model.py").write_text(
+        "joined = features.merge(next_day_policy_frame, on='date', how='left')\n",
+        encoding="utf-8",
+    )
+
+    result = scan_submission_methodology(
+        submission_dir,
+        rules=methodology_rules_for_task(task_spec),
+    )
+
+    assert not result.ok
+    finding = next(
+        finding for finding in result.findings if finding.rule_id == "future_aligned_merge_join"
+    )
+    assert finding.severity == "error"
+
+
+def test_forward_merge_asof_is_error_for_short_horizon_task(tmp_path: Path):
+    task_spec = load_yaml("tasks/pilot/front_end_spread_widening_v0.yaml")
+    submission_dir = tmp_path / "submission"
+    submission_dir.mkdir()
+    write_notebook(
+        submission_dir / "notebook.ipynb",
+        "joined = pd.merge_asof(features, macro, on='date', direction='forward')",
+    )
+
+    result = scan_submission_methodology(
+        submission_dir,
+        rules=methodology_rules_for_task(task_spec),
+    )
+
+    assert not result.ok
+    finding = next(
+        finding for finding in result.findings if finding.rule_id == "forward_merge_asof_direction"
+    )
+    assert finding.severity == "error"
+
+
+def test_future_join_is_warning_for_longer_horizon_task(tmp_path: Path):
+    task_spec = {
+        "target": {
+            "name": "monthly_target",
+            "horizon": "1 month",
+            "definition": "Predict next-month direction.",
+        },
+        "information_set": {
+            "prediction_timestamp": "End of month t before t+1 monthly outcome is known.",
+        },
+        "splits": {
+            "embargo_or_gap": "One month",
+        },
+        "leakage_checks": {
+            "forbidden_columns": ["monthly_target"],
+        },
+    }
+    submission_dir = tmp_path / "submission"
+    submission_dir.mkdir()
+    (submission_dir / "model.py").write_text(
+        "joined = features.merge(lead_macro_frame, on='month_end', how='left')\n",
+        encoding="utf-8",
+    )
+
+    result = scan_submission_methodology(
+        submission_dir,
+        rules=methodology_rules_for_task(task_spec),
+    )
+
+    assert result.ok
+    finding = next(
+        finding for finding in result.findings if finding.rule_id == "future_aligned_merge_join"
+    )
+    assert finding.severity == "warning"

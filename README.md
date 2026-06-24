@@ -36,13 +36,58 @@ PYTHONPATH=src python scripts/build_data_manifests.py
 
 This builds `docs/data_manifests/pilot_v0/README.md`, per-task public-data manifests, and machine-readable checksum indexes.
 
-The canonical pilot release manifest can then be built with:
+A full pilot release snapshot can be rebuilt with one command:
+
+```bash
+PYTHONPATH=src python scripts/build_pilot_release.py \
+  --repeat 3 \
+  --market-seed 11 \
+  --event-seed 23 \
+  --treasury-seed 29 \
+  --curve-seed 31 \
+  --curve3mo-seed 33 \
+  --front-end-seed 31 \
+  --usd-seed 37 \
+  --treasury-snapshot-date 2026-06-21 \
+  --curve-snapshot-date 2026-06-21 \
+  --curve3mo-snapshot-date 2026-06-21 \
+  --front-end-snapshot-date 2026-06-21 \
+  --usd-snapshot-date 2026-06-21 \
+  --clean-existing-outputs
+```
+
+This runs the pilot baseline suite, pilot agent suite, combined pilot protocol, reference-results build, paper-artifact build, statistical-artifact build, and benchmark-manifest build under one reproducible release pipeline.
+
+The deterministic smoke check used in CI can also be run locally:
+
+```bash
+PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py \
+  --work-root tmp/pilot_release_repro_check \
+  --repeat 1 \
+  --treasury-snapshot-date 2026-06-21 \
+  --curve-snapshot-date 2026-06-21 \
+  --curve3mo-snapshot-date 2026-06-21 \
+  --front-end-snapshot-date 2026-06-21 \
+  --usd-snapshot-date 2026-06-21
+```
+
+This builds the pilot release twice on isolated roots and compares deterministic publication-facing outputs: suite summaries, reference results, paper artifacts, statistical artifacts, benchmark manifest, task cards, and public data manifests.
+
+If only the manifest/cards/data indexes need to be refreshed, the canonical pilot release manifest can be built with:
 
 ```bash
 PYTHONPATH=src python scripts/build_benchmark_manifest.py
 ```
 
 This writes `docs/releases/pilot_v0/manifest.json` and `docs/releases/pilot_v0/README.md`, linking task cards, data manifests, runnable status, and official pilot suite commands.
+
+The arXiv/workshop manuscript scaffold can be regenerated from the release artifacts with:
+
+```bash
+PYTHONPATH=src python scripts/build_pilot_manuscript.py
+```
+
+This writes `papers/workshop_pilot/main.tex`, manuscript metadata, and a submission-readiness checklist while inputting result tables directly from `docs/releases/pilot_v0/`.
 
 
 ## Core Evaluation Dimensions
@@ -156,6 +201,14 @@ PYTHONPATH=src python scripts/scan_submission_methodology.py path/to/submission_
 
 The methodology scanner now flags obvious temporal anti-patterns such as random splits, K-fold on temporal data, negative shifts like `shift(-1)`, centered rolling windows, backfilling, and feature construction that appears to reference target-like columns.
 
+Rebuild the methodology-calibration workflow over the current pilot corpus:
+
+```bash
+PYTHONPATH=src python scripts/build_methodology_calibration_workflow.py
+```
+
+This writes a machine-readable summary under `audits/methodology_calibration/reports/` and a manual review packet under `audits/methodology_calibration/reviews/calibration_review_packet.csv` so false positives and false negatives can be tracked explicitly.
+
 Create and validate a run manifest after scoring:
 
 ```bash
@@ -200,6 +253,10 @@ The logistic baseline fits preprocessing and the classifier on the chronological
 
 The first runnable event-aware slice is `synthetic_event_response_v0`, a synthetic event panel with event surprise, sentiment, importance, pre-event context, and a private temporal holdout.
 
+The pilot also now includes a second public-domain macro-rates slice, `yield_curve_10y2y_steepening_v0`, which predicts next-day steepening in the U.S. 10Y-2Y Treasury curve under the same point-in-time H.15 constraints used for the 10-year yield task.
+
+It also includes a second public-domain FX slice, `usd_afe_vs_eme_relative_direction_v0`, which predicts whether the advanced-foreign-economies dollar index outperforms the emerging-markets dollar index on the next business day under the same vintage-frozen H.10/H.15 constraints used for `usd_broad_direction_v0`.
+
 Run its rule baseline end to end:
 
 ```bash
@@ -241,7 +298,7 @@ PYTHONPATH=src python scripts/run_pilot_baseline_suite.py \
   --run-label-prefix pilot
 ```
 
-This currently runs the market momentum baseline, market logistic regression baseline, and event-response rule baseline under one report root: `runs/suites/pilot_baselines_v0`.
+This currently runs the synthetic baselines plus the Treasury 10Y, Treasury curve, USD broad, and USD AFE-versus-EME relative baseline families under one report root: `runs/suites/pilot_baselines_v0`.
 
 Run an external agent command through the synthetic-market harness:
 
@@ -259,15 +316,17 @@ Run repeated external-agent evaluation:
 
 ```bash
 PYTHONPATH=src python scripts/run_synthetic_market_agent_suite.py \
-  --agent-id momentum_env_agent \
-  --agent-version 0.1.0 \
-  --agent-command "python agents/examples/momentum_env_agent.py" \
+  --agent-id market_research_sweep_env_agent \
+  --agent-version 0.2.0 \
+  --agent-command "python agents/examples/research_sweep_env_agent.py" \
   --repeat 3 \
   --seed 11 \
   --run-label-prefix pilot_agent
 ```
 
 The agent suite defaults to `runs/suites/synthetic_market_direction_v0_agents`, giving agent experiments the same count/mean/std reporting protocol as baseline suites.
+
+`agents/examples/research_sweep_env_agent.py` is task-aware: it compares multiple public baselines on public validation for synthetic market, Treasury 10Y, Treasury curve, USD broad, and USD AFE-versus-EME relative tasks, then writes holdout predictions with the selected candidate.
 
 Run the cross-task pilot agent suite with the bundled example wrappers:
 
@@ -279,7 +338,7 @@ PYTHONPATH=src python scripts/run_pilot_agent_suite.py \
   --run-label-prefix pilot_agent
 ```
 
-This runs `agents/examples/momentum_env_agent.py` and `agents/examples/event_rule_env_agent.py` under one report root: `runs/suites/pilot_agents_v0`.
+This runs the task-aware `agents/examples/research_sweep_env_agent.py` for market, Treasury, curve, and USD tasks plus `agents/examples/event_rule_env_agent.py` for the event task under one report root: `runs/suites/pilot_agents_v0`.
 
 Run the combined pilot protocol across implemented baselines and example agents:
 
@@ -292,6 +351,31 @@ PYTHONPATH=src python scripts/run_pilot_protocol.py \
 ```
 
 This produces one shared publication-facing report root, `runs/suites/pilot_protocol_v0`, with both baseline and agent runs included in the same result and summary tables.
+
+Rebuild the full pilot release bundle in one shot:
+
+```bash
+PYTHONPATH=src python scripts/build_pilot_release.py \
+  --repeat 3 \
+  --market-seed 11 \
+  --event-seed 23 \
+  --treasury-seed 29 \
+  --curve-seed 31 \
+  --curve3mo-seed 33 \
+  --front-end-seed 31 \
+  --usd-seed 37 \
+  --treasury-snapshot-date 2026-06-21 \
+  --curve-snapshot-date 2026-06-21 \
+  --curve3mo-snapshot-date 2026-06-21 \
+  --front-end-snapshot-date 2026-06-21 \
+  --usd-snapshot-date 2026-06-21 \
+  --clean-existing-outputs
+```
+
+This writes the publication-facing suite reports under `reports/release_runs/`, then refreshes `docs/releases/pilot_v0/reference_results.{md,json}`, `docs/releases/pilot_v0/paper_artifacts/`, `docs/releases/pilot_v0/statistical_artifacts/`, and `docs/releases/pilot_v0/manifest.json`.
+
+GitHub Actions runs this release gate in `.github/workflows/ci.yml`, including a smoke job that rebuilds the pilot release twice and fails on deterministic artifact drift.
+When that smoke job fails, it uploads a compact forensics bundle with `summary.json`, `summary.md`, copied conflicting artifacts, and unified text diffs for direct diagnosis.
 
 ## Status
 

@@ -1,0 +1,88 @@
+{
+  "data_access": "download_script",
+  "generator_script": {
+    "exists": true,
+    "path": "scripts/download_yield_direction_treasury10y_v0.py",
+    "sha256": "3d0974210129f2e280cb159ece1a1e57a9112a2508f68f5440f9a23f8327d2ec"
+  },
+  "license_status": "public_domain_citation_requested",
+  "public_data_present": true,
+  "public_file_count": 4,
+  "public_local_paths": [
+    {
+      "exists": true,
+      "file_count": 4,
+      "files": [
+        {
+          "path": "data/raw/yield_direction_treasury10y_v0/metadata.json",
+          "sha256": "d4961d396b6c954707d824feffec92e82e82e9c64a97a78d4295fb155428ce4a",
+          "size_bytes": 1201
+        },
+        {
+          "path": "data/raw/yield_direction_treasury10y_v0/private_holdout_features.csv",
+          "sha256": "e79831789912e210004a25462c642013bf6b9171b4b2d807b8166012a1a70d0b",
+          "size_bytes": 225505
+        },
+        {
+          "path": "data/raw/yield_direction_treasury10y_v0/sample_submission.csv",
+          "sha256": "f38975d22edc59b212a8fd29f2ff735dd6086a7216510ccc5cdf013fc7ca07ad",
+          "size_bytes": 32964
+        },
+        {
+          "path": "data/raw/yield_direction_treasury10y_v0/train_public.csv",
+          "sha256": "0b5d4c6a896105d244f94107d7717baea242501072139ac6ca01146436a7691d",
+          "size_bytes": 1099796
+        }
+      ],
+      "ignored_subdirectories": [
+        "data/raw/yield_direction_treasury10y_v0/agent",
+        "data/raw/yield_direction_treasury10y_v0/baseline",
+        "data/raw/yield_direction_treasury10y_v0/pilot_agent_treasury_001_seed_29",
+        "data/raw/yield_direction_treasury10y_v0/pilot_agent_treasury_002_seed_30",
+        "data/raw/yield_direction_treasury10y_v0/pilot_agent_treasury_003_seed_31",
+        "data/raw/yield_direction_treasury10y_v0/pilot_treasury_001_seed_29",
+        "data/raw/yield_direction_treasury10y_v0/pilot_treasury_002_seed_30",
+        "data/raw/yield_direction_treasury10y_v0/pilot_treasury_003_seed_31"
+      ],
+      "is_dir": true,
+      "path": "data/raw/yield_direction_treasury10y_v0",
+      "total_size_bytes": 1359466
+    }
+  ],
+  "public_total_size_bytes": 1359466,
+  "source_spec": {
+    "path": "tasks/pilot/yield_direction_treasury10y_v0.yaml",
+    "sha256": "371345b6f8ce874222db60209aca72b5d180bc65e1daaa193bf7f88347d4c419"
+  },
+  "sources": [
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS10 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS2 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS3MO from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS3MO&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DFF from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+    }
+  ],
+  "status": "draft",
+  "task_id": "yield_direction_treasury10y_v0",
+  "title": "U.S. 10-Year Treasury Yield Next-Day Direction Under Point-in-Time H.15 Features",
+  "track": "predictive_financial_ml",
+  "version": "0.1.0"
+}

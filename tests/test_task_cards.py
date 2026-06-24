@@ -16,9 +16,14 @@ def test_build_task_cards_generates_cards_and_registry(tmp_path: Path):
     generated_task_ids = {path.stem for path in result.task_card_paths}
     expected_task_ids = {
         "leakage_audit_temporal_split_v0",
-        "return_direction_etf_v0",
         "synthetic_event_response_v0",
         "synthetic_market_direction_v0",
+        "front_end_spread_widening_v0",
+        "usd_afe_vs_eme_relative_direction_v0",
+        "usd_broad_direction_v0",
+        "yield_curve_10y2y_steepening_v0",
+        "yield_curve_10y3mo_steepening_v0",
+        "yield_direction_treasury10y_v0",
     }
 
     assert expected_task_ids.issubset(generated_task_ids)

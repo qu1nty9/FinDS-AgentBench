@@ -129,6 +129,25 @@ def load_result_rows(root: str | Path, *, strict: bool = False) -> list[dict[str
     return rows
 
 
+def load_result_rows_from_manifests(
+    manifest_paths: list[str | Path],
+    *,
+    strict: bool = False,
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for manifest_path in sorted(Path(path) for path in manifest_paths):
+        manifest = load_run_manifest(manifest_path)
+        validation = validate_run_manifest(manifest)
+        if strict and not validation.ok:
+            raise ValueError(f"Invalid run manifest {manifest_path}: {validation.errors}")
+        row = manifest_to_result_row(manifest, source_path=manifest_path)
+        row["manifest_valid"] = validation.ok
+        row["manifest_error_count"] = len(validation.errors)
+        row["manifest_warning_count"] = len(validation.warnings)
+        rows.append(row)
+    return rows
+
+
 def write_results_csv(rows: list[dict[str, Any]], output_path: str | Path) -> Path:
     path = Path(output_path)
     path.parent.mkdir(parents=True, exist_ok=True)

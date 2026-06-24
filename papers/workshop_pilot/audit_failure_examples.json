@@ -1,0 +1,96 @@
+{
+  "examples": [
+    {
+      "adjudication_note": "This case demonstrates why raw benchmark performance alone should not determine methodological quality.",
+      "agent_id": "event_rule_baseline",
+      "artifact_root": "runs/suites/pilot_baselines_v0/synthetic_event_response_v0/event_rule_baseline/release_pilot_event_001_seed_23",
+      "case_id": "pilot_event_rule_baseline_release_001",
+      "low_dimension_ids": [
+        "temporal_protocol_correctness",
+        "quantitative_evidence_use",
+        "baseline_comparison_or_counterfactual_context",
+        "reproducibility_trace_completeness"
+      ],
+      "overall_label": "minimally_defensible",
+      "primary_evidence": "No ablation, heuristic comparison, or simpler event rule is discussed.",
+      "primary_manual_findings": [
+        "Strong predictive score is not accompanied by quantitative narrative support.",
+        "Temporal protocol description is brief.",
+        "No comparator or ablation context appears in the writeup."
+      ],
+      "run_label": "release_pilot_event_001_seed_23",
+      "run_type": "baseline",
+      "task_id": "synthetic_event_response_v0",
+      "total_score": 6,
+      "writeup_path": "runs/suites/pilot_baselines_v0/synthetic_event_response_v0/event_rule_baseline/release_pilot_event_001_seed_23/writeup.md"
+    },
+    {
+      "adjudication_note": "Useful as a sanity-check baseline, but not yet strong enough as a paper-facing methodological narrative.",
+      "agent_id": "momentum_baseline",
+      "artifact_root": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/momentum_baseline/release_pilot_market_001_seed_11",
+      "case_id": "pilot_market_momentum_baseline_release_001",
+      "low_dimension_ids": [
+        "temporal_protocol_correctness",
+        "quantitative_evidence_use",
+        "baseline_comparison_or_counterfactual_context",
+        "reproducibility_trace_completeness"
+      ],
+      "overall_label": "minimally_defensible",
+      "primary_evidence": "The submission does not compare the momentum rule to any simpler or more expressive alternative.",
+      "primary_manual_findings": [
+        "No quantitative support in the writeup.",
+        "No baseline or counterfactual comparison.",
+        "Temporal protocol rationale is thinner than the artifact package itself."
+      ],
+      "run_label": "release_pilot_market_001_seed_11",
+      "run_type": "baseline",
+      "task_id": "synthetic_market_direction_v0",
+      "total_score": 6,
+      "writeup_path": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/momentum_baseline/release_pilot_market_001_seed_11/writeup.md"
+    },
+    {
+      "adjudication_note": "This case is useful for separating artifact-trace quality from actual research narrative quality.",
+      "agent_id": "event_rule_env_agent",
+      "artifact_root": "runs/suites/pilot_protocol_v0/synthetic_event_response_v0/event_rule_env_agent/release_protocol_agent_event_001_seed_23",
+      "case_id": "pilot_event_rule_env_agent_protocol_001",
+      "low_dimension_ids": [
+        "temporal_protocol_correctness",
+        "quantitative_evidence_use",
+        "baseline_comparison_or_counterfactual_context"
+      ],
+      "overall_label": "minimally_defensible",
+      "primary_evidence": "The agent output does not situate the rule against any competing event heuristic.",
+      "primary_manual_findings": [
+        "Agent trace provenance is stronger than the baseline trace.",
+        "Narrative quality is still thin.",
+        "No quantitative or comparative justification appears in the writeup."
+      ],
+      "run_label": "release_protocol_agent_event_001_seed_23",
+      "run_type": "agent",
+      "task_id": "synthetic_event_response_v0",
+      "total_score": 7,
+      "writeup_path": "runs/suites/pilot_protocol_v0/synthetic_event_response_v0/event_rule_env_agent/release_protocol_agent_event_001_seed_23/writeup.md"
+    },
+    {
+      "adjudication_note": "This is close to the benchmark's target standard for pilot baselines, but it still lacks narrative context against a simpler comparator.",
+      "agent_id": "logistic_regression_baseline",
+      "artifact_root": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/logistic_regression_baseline/release_pilot_market_001_seed_11",
+      "case_id": "pilot_market_logistic_baseline_release_001",
+      "low_dimension_ids": [
+        "baseline_comparison_or_counterfactual_context"
+      ],
+      "overall_label": "strong_but_incomplete",
+      "primary_evidence": "Even though a momentum baseline exists in the suite, the writeup does not compare against it or justify model complexity relative to a rule baseline.",
+      "primary_manual_findings": [
+        "Method description is strong.",
+        "Quantitative support is present.",
+        "Main remaining gap is missing comparison against simpler alternatives."
+      ],
+      "run_label": "release_pilot_market_001_seed_11",
+      "run_type": "baseline",
+      "task_id": "synthetic_market_direction_v0",
+      "total_score": 10,
+      "writeup_path": "runs/suites/pilot_baselines_v0/synthetic_market_direction_v0/logistic_regression_baseline/release_pilot_market_001_seed_11/writeup.md"
+    }
+  ]
+}

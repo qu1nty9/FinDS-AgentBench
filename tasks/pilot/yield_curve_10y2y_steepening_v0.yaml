@@ -1,0 +1,255 @@
+metadata:
+  task_id: yield_curve_10y2y_steepening_v0
+  title: U.S. 10Y-2Y Treasury Curve Next-Day Steepening Under Point-in-Time H.15 Features
+  track: predictive_financial_ml
+  version: "0.1.0"
+  status: draft
+  owner: FinDS-AgentBench contributors
+  created_at: "2026-06-22"
+  last_updated_at: "2026-06-22"
+  tags:
+    - rates
+    - treasury
+    - yield_curve
+    - classification
+    - temporal_validation
+
+research_prompt:
+  summary: Predict whether the U.S. 10Y-2Y Treasury curve will steepen on the next business day using only point-in-time H.15 information available by the prediction timestamp.
+  expected_research_question: Can an agent build a leakage-safe next-day Treasury curve steepening model that improves on simple chronological baselines on a private temporal holdout?
+  instructions: >
+    Build a model that predicts whether the 10Y-2Y Treasury slope rises on the
+    next business day. Use only information available by the end of day t from
+    the Federal Reserve H.15 release family, validate temporally, compare
+    against naive chronological baselines, and produce a notebook, predictions
+    file, and short writeup.
+  prohibited_shortcuts:
+    - Do not use next-day yields, next-day slopes, or next-day slope changes as features.
+    - Do not tune on the private temporal holdout.
+    - Do not use random train/test splits or full-sample preprocessing.
+
+data:
+  license_status: public_domain_citation_requested
+  access: download_script
+  local_paths:
+    - data/raw/yield_curve_10y2y_steepening_v0/
+  download_or_generation_script: scripts/download_yield_curve_10y2y_steepening_v0.py
+  sources:
+    - name: DGS10 from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+    - name: DGS2 from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+    - name: DGS3MO from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS3MO&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+    - name: DFF from ALFRED vintage freeze
+      url_or_reference: https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21
+      license: public_domain_citation_requested
+      access: download_script
+  data_dictionary:
+    - column: date
+      meaning: Observation date for the end-of-day prediction timestamp.
+      availability_lag: Known after the daily H.15 observation is published for day t.
+    - column: asset_id
+      meaning: Fixed benchmark asset identifier for the U.S. 10Y-2Y Treasury slope.
+      availability_lag: Static metadata.
+    - column: split
+      meaning: Chronological split assignment.
+      availability_lag: Static benchmark metadata.
+    - column: dgs10_level
+      meaning: 10-year Treasury constant-maturity yield in percent.
+      availability_lag: Known by prediction time on day t.
+    - column: dgs2_level
+      meaning: 2-year Treasury constant-maturity yield in percent.
+      availability_lag: Known by prediction time on day t.
+    - column: dgs3mo_level
+      meaning: 3-month Treasury constant-maturity yield in percent.
+      availability_lag: Known by prediction time on day t.
+    - column: dff_level
+      meaning: Effective federal funds rate in percent.
+      availability_lag: Known by prediction time on day t.
+    - column: curve_10y_2y
+      meaning: 10-year minus 2-year Treasury slope.
+      availability_lag: Computed from day t observations only.
+    - column: curve_10y_3mo
+      meaning: 10-year minus 3-month Treasury slope.
+      availability_lag: Computed from day t observations only.
+    - column: front_end_spread
+      meaning: 2-year Treasury minus effective fed funds rate.
+      availability_lag: Computed from day t observations only.
+    - column: curve_10y_2y_change_1d
+      meaning: One-day change in the 10Y-2Y slope in percentage points.
+      availability_lag: Computed from observations through day t only.
+    - column: curve_10y_2y_change_5d
+      meaning: Five-day change in the 10Y-2Y slope in percentage points.
+      availability_lag: Computed from observations through day t only.
+    - column: curve_10y_3mo_change_5d
+      meaning: Five-day change in the 10Y-3M slope in percentage points.
+      availability_lag: Computed from observations through day t only.
+    - column: dgs10_change_1d
+      meaning: One-day change in the 10-year yield in percentage points.
+      availability_lag: Computed from observations through day t only.
+    - column: dgs2_change_1d
+      meaning: One-day change in the 2-year yield in percentage points.
+      availability_lag: Computed from observations through day t only.
+    - column: front_end_spread_change_5d
+      meaning: Five-day change in the 2-year minus fed-funds spread in percentage points.
+      availability_lag: Computed from observations through day t only.
+    - column: curve_10y_2y_vol_5d
+      meaning: Rolling 5-day standard deviation of daily 10Y-2Y slope changes.
+      availability_lag: Computed from observations through day t only.
+    - column: curve_10y_2y_vol_20d
+      meaning: Rolling 20-day standard deviation of daily 10Y-2Y slope changes.
+      availability_lag: Computed from observations through day t only.
+    - column: curve_10y_2y_minus_20d_mean
+      meaning: Current 10Y-2Y slope minus its 20-day rolling mean.
+      availability_lag: Computed from observations through day t only.
+    - column: next_day_curve_change_bp
+      meaning: Next business-day change in the 10Y-2Y slope, in basis points.
+      availability_lag: Known only after day t+1 is observed; available in public train/validation labels and private answer key only.
+    - column: next_day_directional_return
+      meaning: Decimal-scaled directional gain used for aggregate strategy metrics, equal to next_day_curve_change_bp / 10000.
+      availability_lag: Known only after day t+1 is observed; available in public train/validation labels and private answer key only.
+
+information_set:
+  prediction_timestamp: After day t H.15 observations are available, before the next business-day 10Y-2Y slope change is known.
+  allowed_information:
+    - H.15 series observations through day t only.
+    - Lagged and rolling features computed from observations through day t only.
+    - Public benchmark metadata and split definitions.
+  forbidden_information:
+    - Day t+1 or later Treasury yields or slopes.
+    - Any feature derived from next_day_curve_steepening, next_day_curve_change_bp, or next_day_directional_return.
+    - Private temporal holdout labels.
+  availability_calendar:
+    - item: Day t H.15 Treasury and fed funds observations
+      known_at: After the day t release is published.
+      usable_for_prediction_at: Prediction for the next business day.
+    - item: Day t+1 10Y-2Y slope
+      known_at: After the next business-day release is published.
+      usable_for_prediction_at: Not usable for the day t to t+1 prediction.
+  timestamp_alignment_rules:
+    - All rolling features must use observations through day t only.
+    - Target is sign((DGS10[t+1] - DGS2[t+1]) - (DGS10[t] - DGS2[t])) measured in next observed business-day basis points.
+
+target:
+  name: next_day_curve_steepening
+  definition: Binary label equal to 1 when the 10Y-2Y Treasury slope increases on the next business day.
+  horizon: "1 business day"
+  label_construction: Compute 100 * ((DGS10[t+1] - DGS2[t+1]) - (DGS10[t] - DGS2[t])) in basis points and map positive values to class 1.
+  positive_class: positive next-day 10Y-2Y slope change
+  ranking_group: null
+
+splits:
+  split_method: temporal
+  train:
+    start: "2003-01-31"
+    end: "2018-12-31"
+  public_validation:
+    start: "2019-01-02"
+    end: "2021-12-31"
+  private_temporal_holdout:
+    start: "2022-01-03"
+    end: "2025-12-31"
+  stress_tests:
+    - name: hiking_cycle_2022_2023
+      start: "2022-03-01"
+      end: "2023-11-30"
+  embargo_or_gap: One business-day target horizon between feature cutoff and label realization.
+
+deliverables:
+  required_files:
+    - notebook.ipynb
+    - predictions.csv
+    - writeup.md
+  notebook:
+    path: notebook.ipynb
+    must_execute_cleanly: true
+  predictions:
+    path: predictions.csv
+    required_columns:
+      - row_id
+      - prediction
+      - probability
+  writeup:
+    path: writeup.md
+    max_words: 1200
+  logs:
+    retain_agent_trace: true
+
+evaluation:
+  primary_metric: balanced_accuracy_on_private_temporal_holdout
+  secondary_metrics:
+    - roc_auc
+    - log_loss
+    - execution_success
+    - leakage_safety
+    - validation_correctness
+    - reproducibility
+  financial_metrics:
+    - long_flat_mean_change_bp
+    - turnover
+    - max_drawdown
+  validity_gates:
+    - artifact_executable
+    - prediction_format_valid
+    - temporal_holdout_respected
+    - no_forbidden_features
+    - validation_protocol_valid
+    - reproducible_rerun
+  aggregation: report_vector_scores
+  minimum_success_conditions:
+    - Notebook executes cleanly.
+    - Prediction file covers every private holdout row.
+    - No future H.15 observations are used.
+
+leakage_checks:
+  forbidden_columns:
+    - next_day_curve_steepening
+    - next_day_curve_change_bp
+    - next_day_directional_return
+    - curve_10y_2y_t_plus_1
+    - future_curve
+  temporal_alignment_checks:
+    - All lagged and rolling features exclude day t+1 or later observations.
+    - Train, validation, and holdout rows are ordered chronologically.
+  validation_protocol_checks:
+    - Random train/test split is not allowed.
+    - Hyperparameter tuning must use train/public validation only.
+  known_leakage_traps:
+    - Using unshifted rolling windows that include the target slope change.
+    - Standardizing features on the full dataset before chronological splitting.
+    - Joining later macro annotations or FOMC outcomes directly onto prediction rows.
+
+reproducibility:
+  environment: pyproject.toml
+  random_seed_policy: Fixed seeds required for all stochastic models.
+  rerun_command: python scripts/download_yield_curve_10y2y_steepening_v0.py --observation-start 2003-01-02 --observation-end 2026-01-02 --snapshot-date 2026-06-21
+  expected_runtime_limit: "10 minutes"
+  compute_limits:
+    cpu: "local_cpu"
+    memory: "4GB"
+
+audit:
+  artifact_retention:
+    - final notebook
+    - predictions
+    - writeup
+    - execution log
+  trace_requirements:
+    - Store all commands and code execution errors.
+    - Store final selected features and validation protocol.
+  human_review_rubric:
+    - Does the writeup compare against a chronological sign or logistic baseline?
+    - Does the writeup avoid causal claims that exceed the benchmark evidence?
+    - Does the notebook enforce point-in-time feature alignment?
+  failure_taxonomy_refs:
+    - temporal_leakage
+    - invalid_validation
+    - weak_macro_financial_reasoning
+    - unsupported_narrative

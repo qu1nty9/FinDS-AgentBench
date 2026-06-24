@@ -34,7 +34,16 @@
           "size_bytes": 1150891
         }
       ],
-      "ignored_subdirectories": [],
+      "ignored_subdirectories": [
+        "data/raw/synthetic_event_response_v0/agent",
+        "data/raw/synthetic_event_response_v0/baseline",
+        "data/raw/synthetic_event_response_v0/pilot_agent_event_001_seed_23",
+        "data/raw/synthetic_event_response_v0/pilot_agent_event_002_seed_24",
+        "data/raw/synthetic_event_response_v0/pilot_agent_event_003_seed_25",
+        "data/raw/synthetic_event_response_v0/pilot_event_001_seed_23",
+        "data/raw/synthetic_event_response_v0/pilot_event_002_seed_24",
+        "data/raw/synthetic_event_response_v0/pilot_event_003_seed_25"
+      ],
       "is_dir": true,
       "path": "data/raw/synthetic_event_response_v0",
       "total_size_bytes": 1383465

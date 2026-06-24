@@ -1,0 +1,125 @@
+rubric_id: pilot_v0_writeup_methodology_seed_rubric
+version: 0.1.0
+status: seed_authored
+created_on: 2026-06-22
+purpose: >
+  Score submission quality beyond predictive metrics by auditing temporal protocol
+  explanations, leakage awareness, evidence use, narrative discipline, and
+  reproducibility traces on a small pilot subset.
+task_scope:
+  include_tracks:
+    - predictive_financial_ml
+    - event_aware_time_series_reasoning
+  exclude_task_ids:
+    - leakage_audit_temporal_split_v0
+  required_submission_files:
+    - notebook.ipynb
+    - predictions.csv
+    - writeup.md
+scoring:
+  score_levels:
+    0: missing_or_incorrect
+    1: partial
+    2: strong
+  total_score_range:
+    min: 0
+    max: 12
+  interpretation_bands:
+    - label: critically_weak
+      min_total_score: 0
+      max_total_score: 4
+    - label: minimally_defensible
+      min_total_score: 5
+      max_total_score: 7
+    - label: strong_but_incomplete
+      min_total_score: 8
+      max_total_score: 10
+    - label: near_camera_ready
+      min_total_score: 11
+      max_total_score: 12
+dimensions:
+  - dimension_id: temporal_protocol_correctness
+    name: Temporal Protocol Correctness
+    question: Does the submission explain and appear to respect chronological training, validation, and holdout boundaries?
+    evidence_sources:
+      - writeup.md
+      - run_manifest.json
+      - notebook.ipynb
+    anchors:
+      0: Random splits, future access, or no credible temporal protocol evidence.
+      1: Mentions point-in-time or chronological handling, but calibration or split discipline is underspecified.
+      2: Explicitly documents chronological train-validation-holdout logic and uses no future information.
+  - dimension_id: leakage_awareness_and_feature_hygiene
+    name: Leakage Awareness And Feature Hygiene
+    question: Does the submission explicitly guard against target leakage, answer-key access, and forbidden future-derived features?
+    evidence_sources:
+      - writeup.md
+      - artifact_validation.json
+      - notebook.ipynb
+    anchors:
+      0: Leakage controls are absent, contradicted, or obviously unsafe.
+      1: Leakage is mentioned in generic terms without linking it to concrete feature or data restrictions.
+      2: The submission names concrete forbidden information classes and stays consistent with the task policy.
+  - dimension_id: quantitative_evidence_use
+    name: Quantitative Evidence Use
+    question: Does the writeup support its claims with task-relevant metrics, calibration choices, or validation evidence?
+    evidence_sources:
+      - writeup.md
+      - score.json
+      - run_manifest.json
+    anchors:
+      0: No meaningful quantitative support appears in the narrative.
+      1: Some metrics appear, but they are incomplete, weakly contextualized, or detached from model choices.
+      2: Metrics, thresholding, or validation evidence are clearly tied to methodological decisions.
+  - dimension_id: baseline_comparison_or_counterfactual_context
+    name: Baseline Comparison Or Counterfactual Context
+    question: Does the submission compare itself to simpler alternatives, prior baselines, or counterfactual checks?
+    evidence_sources:
+      - writeup.md
+      - score.json
+    anchors:
+      0: No comparison or counterfactual context is provided.
+      1: An implicit comparison exists, but it is incomplete or not quantified.
+      2: The writeup clearly situates the method against a simpler baseline, alternative model, or ablation.
+  - dimension_id: claim_discipline
+    name: Claim Discipline
+    question: Are claims narrow, defensible, and proportional to the available evidence?
+    evidence_sources:
+      - writeup.md
+      - score.json
+    anchors:
+      0: Claims overreach, imply deployability, or ignore obvious limitations.
+      1: Claims are mostly cautious but contain minor overstatement or imprecision.
+      2: Claims stay tightly scoped to the benchmark setup and avoid unsupported generalization.
+  - dimension_id: reproducibility_trace_completeness
+    name: Reproducibility Trace Completeness
+    question: Does the artifact set expose enough trace material to reconstruct how outputs were produced?
+    evidence_sources:
+      - run_manifest.json
+      - artifact_validation.json
+      - notebook.ipynb
+      - writeup.md
+    anchors:
+      0: Core trace artifacts are missing or inconsistent.
+      1: Core files exist, but provenance, commands, or parameterization are incomplete.
+      2: The package contains a clear executable trace with commands, parameters, and validation output.
+decision_rules:
+  - Automatic artifact validation is necessary but not sufficient; a case may pass scanners and still score poorly on writeup quality.
+  - Any non-empty leakage or methodology errors should force a manual note even if the overall score remains high.
+  - Missing comparison context is treated as a real research-quality gap, not a cosmetic issue.
+  - High predictive scores never compensate for weak temporal or leakage reasoning.
+adjudication_protocol:
+  current_status: seed_author_adjudication_only
+  current_limitations:
+    - The current subset was coded by a single benchmark author to pressure-test the rubric and data structure.
+    - No inter-rater agreement claim should be made from this seed subset.
+  target_protocol:
+    independent_reviewers: 2
+    adjudicator: 1
+    disagreement_trigger: Any dimension-score disagreement or any mismatch in overall label.
+    output_requirements:
+      - per-dimension score
+      - per-dimension evidence note
+      - overall label
+      - primary_manual_findings
+      - adjudication_note

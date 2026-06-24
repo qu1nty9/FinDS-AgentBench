@@ -32,6 +32,12 @@ The first implemented vertical slices are:
 - `leakage_audit_temporal_split_v0`: a synthetic audit task with controlled future-feature leakage, random temporal split misuse, and full-dataset preprocessing leakage.
 - `synthetic_market_direction_v0`: a synthetic predictive task with public train/validation labels and private temporal holdout labels.
 - `synthetic_event_response_v0`: a synthetic event-aware temporal reasoning task with event features, public train/validation labels, and private temporal holdout labels.
+- `yield_direction_treasury10y_v0`: a real-data predictive rates task built from public-domain H.15/FRED series with public train/validation labels and a private temporal holdout.
+- `yield_curve_10y2y_steepening_v0`: a real-data predictive curve task built from the same public-domain H.15/FRED series, relabeled for next-day 10Y-2Y steepening on a private temporal holdout.
+- `yield_curve_10y3mo_steepening_v0`: a real-data predictive curve task built from the same public-domain H.15/FRED series, relabeled for next-day 10Y-3M steepening on a private temporal holdout.
+- `front_end_spread_widening_v0`: a real-data predictive rates task built from the same public-domain H.15/FRED surface, relabeled for next-day 2Y-minus-fed-funds spread widening on a private temporal holdout.
+- `usd_broad_direction_v0`: a real-data predictive FX task built from public-domain H.10/H.15 series with public train/validation labels and a private temporal holdout.
+- `usd_afe_vs_eme_relative_direction_v0`: a real-data predictive FX relative-value task built from the same public-domain H.10/H.15 surface, relabeled for next-day AFE-versus-EME outperformance on a private temporal holdout.
 
 ## Stage 2 Scope
 

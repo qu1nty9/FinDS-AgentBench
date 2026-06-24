@@ -143,6 +143,147 @@ DEFAULT_METHODOLOGY_RULES = (
     ),
 )
 
+SHORT_HORIZON_HINTS = (
+    "1 business day",
+    "one business day",
+    "next business day",
+    "1 day",
+    "one day",
+    "next day",
+    "1 period",
+    "one period",
+    "next period",
+)
+
+HIGH_RISK_FORBIDDEN_COLUMN_HINTS = (
+    "answer_key",
+    "future",
+    "holdout",
+    "label",
+    "next_day",
+    "private",
+    "t_plus_1",
+    "target",
+)
+
+
+def slugify_rule_fragment(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
+
+
+def task_horizon_context(task_spec: dict[str, Any]) -> str:
+    target = task_spec.get("target", {})
+    information_set = task_spec.get("information_set", {})
+    splits = task_spec.get("splits", {})
+    parts = (
+        str(target.get("horizon", "")).strip(),
+        str(target.get("definition", "")).strip(),
+        str(target.get("label_construction", "")).strip(),
+        str(information_set.get("prediction_timestamp", "")).strip(),
+        str(splits.get("embargo_or_gap", "")).strip(),
+    )
+    return " ".join(part for part in parts if part).lower()
+
+
+def task_has_short_horizon(task_spec: dict[str, Any]) -> bool:
+    context = task_horizon_context(task_spec)
+    return any(hint in context for hint in SHORT_HORIZON_HINTS)
+
+
+def severity_for_forbidden_column(column: str) -> str:
+    normalized = column.lower()
+    if any(hint in normalized for hint in HIGH_RISK_FORBIDDEN_COLUMN_HINTS):
+        return "error"
+    return "warning"
+
+
+def task_specific_methodology_rules(task_spec: dict[str, Any]) -> tuple[MethodologyRule, ...]:
+    leakage_checks = task_spec.get("leakage_checks", {})
+    target = task_spec.get("target", {})
+    short_horizon = task_has_short_horizon(task_spec)
+
+    candidate_columns: list[str] = []
+    for value in leakage_checks.get("forbidden_columns", []):
+        if isinstance(value, str) and value.strip():
+            candidate_columns.append(value.strip())
+    target_name = target.get("name")
+    if isinstance(target_name, str) and target_name.strip():
+        candidate_columns.append(target_name.strip())
+
+    unique_columns: list[str] = []
+    seen: set[str] = set()
+    for column in candidate_columns:
+        normalized = column.lower()
+        if normalized in seen:
+            continue
+        seen.add(normalized)
+        unique_columns.append(column)
+
+    rules: list[MethodologyRule] = []
+    for column in unique_columns:
+        escaped = re.escape(column)
+        rule_suffix = slugify_rule_fragment(column)
+        severity = severity_for_forbidden_column(column)
+        rules.append(
+            MethodologyRule(
+                rule_id=f"task_forbidden_feature_reference__{rule_suffix}",
+                severity=severity,
+                terms_any=(),
+                patterns_any=(
+                    rf"\b(feature|features|feature_columns|predictors|inputs|x)\w*\b[^\n]*\b{escaped}\b",
+                    rf"\[\[[^\n]*\b{escaped}\b[^\n]*\]\]",
+                    rf"\b(merge|join)\([^)]*\b{escaped}\b",
+                ),
+                suffixes=(".py", ".ipynb", ".sh"),
+                message=(
+                    f"Task-forbidden column `{column}` appears in feature selection, dataframe "
+                    "slicing, or merge logic and should be audited for label leakage."
+                ),
+            )
+        )
+
+    future_join_severity = "error" if short_horizon else "warning"
+    future_join_label = "short-horizon" if short_horizon else "temporally aligned"
+    rules.extend(
+        [
+            MethodologyRule(
+                rule_id="future_aligned_merge_join",
+                severity=future_join_severity,
+                terms_any=(),
+                patterns_any=(
+                    r"\b(merge|join|merge_asof)\([^)]*\b("
+                    r"next_day\w*|next_business_day\w*|t_plus_1\w*|"
+                    r"future_[A-Za-z0-9_]*|[A-Za-z0-9_]*_future|"
+                    r"lead_[A-Za-z0-9_]*|[A-Za-z0-9_]*_lead|tomorrow\w*"
+                    r")\b",
+                ),
+                suffixes=(".py", ".ipynb", ".sh"),
+                message=(
+                    f"Merge/join logic appears to reference future-aligned data for a {future_join_label} "
+                    "task and should be audited for timestamp leakage."
+                ),
+            ),
+            MethodologyRule(
+                rule_id="forward_merge_asof_direction",
+                severity=future_join_severity,
+                terms_any=(),
+                patterns_any=(
+                    r"\bmerge_asof\([^)]*direction\s*=\s*[\"']forward[\"']",
+                ),
+                suffixes=(".py", ".ipynb", ".sh"),
+                message=(
+                    f"`merge_asof(..., direction=\"forward\")` can pull future rows into a {future_join_label} "
+                    "prediction context and should be justified explicitly."
+                ),
+            ),
+        ]
+    )
+    return tuple(rules)
+
+
+def methodology_rules_for_task(task_spec: dict[str, Any]) -> tuple[MethodologyRule, ...]:
+    return DEFAULT_METHODOLOGY_RULES + task_specific_methodology_rules(task_spec)
+
 
 def rule_matches_line(rule: MethodologyRule, path: Path, line: str) -> str | None:
     if rule.suffixes is not None and path.suffix not in rule.suffixes:

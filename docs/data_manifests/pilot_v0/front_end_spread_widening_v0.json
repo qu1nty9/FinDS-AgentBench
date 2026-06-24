@@ -1,0 +1,88 @@
+{
+  "data_access": "download_script",
+  "generator_script": {
+    "exists": true,
+    "path": "scripts/download_front_end_spread_widening_v0.py",
+    "sha256": "65543034785dba26c4be14918adab96e31e365929e9a1ed38b27e870e1736922"
+  },
+  "license_status": "public_domain_citation_requested",
+  "public_data_present": true,
+  "public_file_count": 4,
+  "public_local_paths": [
+    {
+      "exists": true,
+      "file_count": 4,
+      "files": [
+        {
+          "path": "data/raw/front_end_spread_widening_v0/metadata.json",
+          "sha256": "a1ba18fd76f8fccf834e472f0b2752cad9ba3b7fd09e2b4cdb42983ec6875a59",
+          "size_bytes": 1387
+        },
+        {
+          "path": "data/raw/front_end_spread_widening_v0/private_holdout_features.csv",
+          "sha256": "b1b644cab2df41dd2ba0cc0c0aed8d368b4f122b66f7c474675ccc08824b80fd",
+          "size_bytes": 297161
+        },
+        {
+          "path": "data/raw/front_end_spread_widening_v0/sample_submission.csv",
+          "sha256": "dec963f45cc56daad13000f323de1cb237ff5041cc9f95a2be07a0d3f204b5db",
+          "size_bytes": 51874
+        },
+        {
+          "path": "data/raw/front_end_spread_widening_v0/train_public.csv",
+          "sha256": "a49e0523e4834129ca90f19afb597581ea7b5f2cf5f401fcba186849de106a77",
+          "size_bytes": 1434601
+        }
+      ],
+      "ignored_subdirectories": [
+        "data/raw/front_end_spread_widening_v0/agent",
+        "data/raw/front_end_spread_widening_v0/baseline",
+        "data/raw/front_end_spread_widening_v0/pilot_agent_front_end_001_seed_31",
+        "data/raw/front_end_spread_widening_v0/pilot_agent_front_end_002_seed_32",
+        "data/raw/front_end_spread_widening_v0/pilot_agent_front_end_003_seed_33",
+        "data/raw/front_end_spread_widening_v0/pilot_front_end_001_seed_31",
+        "data/raw/front_end_spread_widening_v0/pilot_front_end_002_seed_32",
+        "data/raw/front_end_spread_widening_v0/pilot_front_end_003_seed_33"
+      ],
+      "is_dir": true,
+      "path": "data/raw/front_end_spread_widening_v0",
+      "total_size_bytes": 1785023
+    }
+  ],
+  "public_total_size_bytes": 1785023,
+  "source_spec": {
+    "path": "tasks/pilot/front_end_spread_widening_v0.yaml",
+    "sha256": "204f5d4b9af5007f8f200d8e4b50dab1f5e74e1cd0b13bde3bd27bd43ff83735"
+  },
+  "sources": [
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS10 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS10&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS2 from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS2&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DGS3MO from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DGS3MO&vintage_date=2026-06-21"
+    },
+    {
+      "access": "download_script",
+      "license": "public_domain_citation_requested",
+      "name": "DFF from ALFRED vintage freeze",
+      "url_or_reference": "https://alfred.stlouisfed.org/graph/alfredgraph.csv?id=DFF&vintage_date=2026-06-21"
+    }
+  ],
+  "status": "draft",
+  "task_id": "front_end_spread_widening_v0",
+  "title": "U.S. 2Y Minus Fed Funds Next-Day Widening Under Point-in-Time H.15 Features",
+  "track": "predictive_financial_ml",
+  "version": "0.1.0"
+}
