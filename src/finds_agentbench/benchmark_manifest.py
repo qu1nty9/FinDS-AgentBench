@@ -19,6 +19,18 @@ MANUAL_AUDIT_RUBRIC_PATH = "audits/pilot_v0/manual_audit_rubric.yaml"
 MANUAL_AUDIT_SUBSET_PATH = "audits/pilot_v0/adjudicated_subset.json"
 MANUAL_AUDIT_README_PATH = "audits/pilot_v0/README.md"
 EXTERNAL_AGENT_REGISTRY_PATH = "agents/external_agent_registry.yaml"
+PILOT_RELEASE_DOCS_ROOT = "docs/releases/pilot_v0"
+EXTERNAL_AGENT_PROTOCOL_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_protocol.md"
+EXTERNAL_AGENT_READINESS_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_readiness.json"
+EXTERNAL_AGENT_READINESS_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_readiness.md"
+EXTERNAL_AGENT_REGISTRATION_VALIDATION_JSON_PATH = (
+    f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_registration_validation.json"
+)
+EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH = (
+    f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_registration_validation.md"
+)
+SUBMISSION_READINESS_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_readiness.json"
+SUBMISSION_READINESS_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_readiness.md"
 
 TASK_RELEASE_METADATA: dict[str, dict[str, Any]] = {
     "leakage_audit_temporal_split_v0": {
@@ -488,21 +500,17 @@ def build_benchmark_manifest(
         "benchmark_version": BENCHMARK_VERSION,
         "release_stage": RELEASE_STAGE,
         "release_build_command": PILOT_RELEASE_BUILD_COMMAND,
-        "reference_results_path": "docs/releases/pilot_v0/reference_results.md",
-        "paper_artifacts_path": "docs/releases/pilot_v0/paper_artifacts/README.md",
-        "statistical_artifacts_path": "docs/releases/pilot_v0/statistical_artifacts/README.md",
+        "reference_results_path": f"{PILOT_RELEASE_DOCS_ROOT}/reference_results.md",
+        "paper_artifacts_path": f"{PILOT_RELEASE_DOCS_ROOT}/paper_artifacts/README.md",
+        "statistical_artifacts_path": f"{PILOT_RELEASE_DOCS_ROOT}/statistical_artifacts/README.md",
         "external_agents": {
             "registry_path": EXTERNAL_AGENT_REGISTRY_PATH,
-            "protocol_markdown_path": str(external_agent_artifacts["protocol_markdown_path"]),
+            "protocol_markdown_path": EXTERNAL_AGENT_PROTOCOL_MARKDOWN_PATH,
             "handoff_markdown_path": str(external_agent_artifacts["handoff_markdown_path"]),
-            "readiness_json_path": str(external_agent_artifacts["readiness_json_path"]),
-            "readiness_markdown_path": str(external_agent_artifacts["readiness_markdown_path"]),
-            "registration_validation_json_path": str(
-                external_agent_artifacts["registration_validation_json_path"]
-            ),
-            "registration_validation_markdown_path": str(
-                external_agent_artifacts["registration_validation_markdown_path"]
-            ),
+            "readiness_json_path": EXTERNAL_AGENT_READINESS_JSON_PATH,
+            "readiness_markdown_path": EXTERNAL_AGENT_READINESS_MARKDOWN_PATH,
+            "registration_validation_json_path": EXTERNAL_AGENT_REGISTRATION_VALIDATION_JSON_PATH,
+            "registration_validation_markdown_path": EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH,
             "registration_validation_status": external_agent_artifacts["registration_validation"][
                 "status"
             ],
@@ -606,8 +614,8 @@ def build_benchmark_manifest(
         output_markdown_path=output_path / "submission_readiness.md",
     )
     manifest["submission_readiness"] = {
-        "json_path": str(submission_readiness_artifacts["json_path"]),
-        "markdown_path": str(submission_readiness_artifacts["markdown_path"]),
+        "json_path": SUBMISSION_READINESS_JSON_PATH,
+        "markdown_path": SUBMISSION_READINESS_MARKDOWN_PATH,
         "status": submission_readiness_artifacts["report"]["status"],
         "ready_for_workshop_submission": submission_readiness_artifacts["report"][
             "ready_for_workshop_submission"

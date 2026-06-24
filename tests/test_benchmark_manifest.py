@@ -42,12 +42,12 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert manifest["external_agents"]["registry_path"] == "agents/external_agent_registry.yaml"
     assert (
         manifest["external_agents"]["protocol_markdown_path"]
-        == str(output_root / "external_agent_protocol.md")
+        == "docs/releases/pilot_v0/external_agent_protocol.md"
     )
     assert manifest["external_agents"]["handoff_markdown_path"] == "agents/external_agent_handoff.md"
     assert (
         manifest["external_agents"]["readiness_markdown_path"]
-        == str(output_root / "external_agent_readiness.md")
+        == "docs/releases/pilot_v0/external_agent_readiness.md"
     )
     assert (
         manifest["external_agents"]["registration_validation_markdown_path"]
@@ -69,11 +69,11 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     )
     assert (
         manifest["submission_readiness"]["markdown_path"]
-        == str(output_root / "submission_readiness.md")
+        == "docs/releases/pilot_v0/submission_readiness.md"
     )
     assert (
         manifest["submission_readiness"]["json_path"]
-        == str(output_root / "submission_readiness.json")
+        == "docs/releases/pilot_v0/submission_readiness.json"
     )
     assert manifest["submission_readiness"]["status"] == "not_ready_for_workshop_submission"
     assert manifest["submission_readiness"]["ready_for_workshop_submission"] is False
