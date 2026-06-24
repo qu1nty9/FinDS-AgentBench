@@ -400,12 +400,17 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Rubric", manual_audit["rubric_path"]],
                     ["Seed Subset", manual_audit["subset_path"]],
                     ["Reviews Workflow", manual_audit["reviews_readme_path"]],
+                    ["Independent Reviewer Handoff", manual_audit["independent_reviewer_handoff_path"]],
                     ["Seed Reviewer Packet", manual_audit["reviewer_1_seed_path"]],
                     ["Blank Reviewer Template", manual_audit["reviewer_2_template_path"]],
                     ["Shadow Demo Reviewer Packet", manual_audit["reviewer_2_shadow_path"]],
                     ["Agreement Report", manual_audit["agreement_report_markdown_path"]],
                     ["Adjudication Queue", manual_audit["adjudication_report_markdown_path"]],
                     ["Reviewer Readiness", manual_audit["reviewer_readiness_markdown_path"]],
+                    [
+                        "Independent Packet Validation",
+                        manual_audit["independent_reviewer_packet_validation_markdown_path"],
+                    ],
                 ],
             ).strip(),
             "",
@@ -514,6 +519,9 @@ def build_benchmark_manifest(
             "subset_path": MANUAL_AUDIT_SUBSET_PATH,
             "readme_path": MANUAL_AUDIT_README_PATH,
             "reviews_readme_path": str(manual_audit_workflow["reviews_readme_path"]),
+            "independent_reviewer_handoff_path": str(
+                manual_audit_workflow["independent_reviewer_handoff_path"]
+            ),
             "reviewer_1_seed_path": str(manual_audit_workflow["reviewer_1_seed_path"]),
             "reviewer_2_template_path": str(manual_audit_workflow["reviewer_2_template_path"]),
             "reviewer_2_shadow_path": str(manual_audit_workflow["reviewer_2_shadow_path"]),
@@ -526,6 +534,12 @@ def build_benchmark_manifest(
             ),
             "reviewer_readiness_markdown_path": str(
                 manual_audit_workflow["reviewer_readiness_markdown_path"]
+            ),
+            "independent_reviewer_packet_validation_json_path": str(
+                manual_audit_workflow["independent_reviewer_packet_validation_json_path"]
+            ),
+            "independent_reviewer_packet_validation_markdown_path": str(
+                manual_audit_workflow["independent_reviewer_packet_validation_markdown_path"]
             ),
             "reviewer_readiness_status": manual_audit_workflow["reviewer_readiness"]["status"],
             "ready_for_submission_claims": manual_audit_workflow["reviewer_readiness"][

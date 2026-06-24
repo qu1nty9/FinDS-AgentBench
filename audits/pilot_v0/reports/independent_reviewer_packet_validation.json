@@ -1,0 +1,34 @@
+{
+  "case_count": 6,
+  "completed_case_count": 0,
+  "error_count": 4,
+  "errors": [
+    "review_source is not acceptable for independent review: blank_template",
+    "review_status must be complete for every row: pilot_market_momentum_baseline_release_001, pilot_market_logistic_baseline_release_001, pilot_event_rule_baseline_release_001, pilot_event_rule_env_agent_protocol_001, pilot_treasury_previous_day_baseline_release_001, pilot_treasury_logistic_baseline_release_001",
+    "all rubric scores, evidence notes, and overall_label must be complete for every row: pilot_market_momentum_baseline_release_001, pilot_market_logistic_baseline_release_001, pilot_event_rule_baseline_release_001, pilot_event_rule_env_agent_protocol_001, pilot_treasury_previous_day_baseline_release_001, pilot_treasury_logistic_baseline_release_001",
+    "primary_manual_findings must be non-empty for: pilot_market_momentum_baseline_release_001, pilot_market_logistic_baseline_release_001, pilot_event_rule_baseline_release_001, pilot_event_rule_env_agent_protocol_001, pilot_treasury_previous_day_baseline_release_001, pilot_treasury_logistic_baseline_release_001"
+  ],
+  "extra_case_ids": [],
+  "missing_case_ids": [],
+  "next_actions": [
+    "Fix validation errors in the reviewer packet.",
+    "Re-run scripts/validate_manual_audit_review_packet.py.",
+    "Rebuild manual-audit workflow artifacts once validation passes."
+  ],
+  "packet_path": "audits/pilot_v0/reviews/reviewer_2_blank_template.csv",
+  "ready_for_independent_agreement": false,
+  "review_sources": [
+    "blank_template"
+  ],
+  "review_statuses": [
+    "template"
+  ],
+  "reviewer_ids": [
+    "reviewer_2"
+  ],
+  "reviewer_roles": [
+    "independent_reviewer"
+  ],
+  "row_count": 6,
+  "status": "invalid_or_incomplete"
+}

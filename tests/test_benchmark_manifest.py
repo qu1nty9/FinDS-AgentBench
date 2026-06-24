@@ -83,6 +83,14 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert manifest["manual_audit"]["subset_path"] == "audits/pilot_v0/adjudicated_subset.json"
     assert manifest["manual_audit"]["readme_path"] == "audits/pilot_v0/README.md"
     assert manifest["manual_audit"]["reviews_readme_path"] == "audits/pilot_v0/reviews/README.md"
+    assert (
+        manifest["manual_audit"]["independent_reviewer_handoff_path"]
+        == "audits/pilot_v0/reviews/independent_reviewer_handoff.md"
+    )
+    assert (
+        manifest["manual_audit"]["independent_reviewer_packet_validation_markdown_path"]
+        == "audits/pilot_v0/reports/independent_reviewer_packet_validation.md"
+    )
     assert manifest["manual_audit"]["reviewer_1_seed_path"] == "audits/pilot_v0/reviews/reviewer_1_seed.csv"
     assert (
         manifest["manual_audit"]["reviewer_2_template_path"]
@@ -193,6 +201,8 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert "audits/pilot_v0/manual_audit_rubric.yaml" in readme
     assert "audits/pilot_v0/adjudicated_subset.json" in readme
     assert "audits/pilot_v0/reviews/README.md" in readme
+    assert "audits/pilot_v0/reviews/independent_reviewer_handoff.md" in readme
+    assert "audits/pilot_v0/reports/independent_reviewer_packet_validation.md" in readme
     assert "audits/pilot_v0/reviews/reviewer_1_seed.csv" in readme
     assert "audits/pilot_v0/reviews/reviewer_2_blank_template.csv" in readme
     assert "audits/pilot_v0/reviews/reviewer_2_shadow_demo.csv" in readme

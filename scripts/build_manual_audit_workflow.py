@@ -28,6 +28,7 @@ def main() -> int:
         reports_dir=args.reports_dir,
     )
     print(f"reviews_readme: {result['reviews_readme_path']}")
+    print(f"independent_reviewer_handoff: {result['independent_reviewer_handoff_path']}")
     print(f"reviewer_1_seed: {result['reviewer_1_seed_path']}")
     print(f"reviewer_2_template: {result['reviewer_2_template_path']}")
     print(f"reviewer_2_shadow: {result['reviewer_2_shadow_path']}")
@@ -37,9 +38,21 @@ def main() -> int:
     print(f"adjudication_markdown: {result['adjudication_markdown_path']}")
     print(f"reviewer_readiness_json: {result['reviewer_readiness_json_path']}")
     print(f"reviewer_readiness_markdown: {result['reviewer_readiness_markdown_path']}")
+    print(
+        "independent_reviewer_packet_validation_json: "
+        f"{result['independent_reviewer_packet_validation_json_path']}"
+    )
+    print(
+        "independent_reviewer_packet_validation_markdown: "
+        f"{result['independent_reviewer_packet_validation_markdown_path']}"
+    )
     print(f"official_agreement_status: {result['agreement_summary']['status']}")
     print(f"exploratory_agreement_status: {result['agreement_summary']['exploratory_status']}")
     print(f"reviewer_readiness_status: {result['reviewer_readiness']['status']}")
+    print(
+        "independent_reviewer_packet_validation_status: "
+        f"{result['independent_reviewer_packet_validation']['status']}"
+    )
     return 0
 
 

@@ -1,11 +1,14 @@
 import json
 
 from finds_agentbench.manual_audit import (
+    build_independent_reviewer_packet_validation_report,
     build_manual_audit_workflow_artifacts,
     compute_pairwise_review_packet_agreement,
     load_review_packet_csv,
     load_manual_audit_bundle,
     summarize_review_packet,
+    write_independent_reviewer_packet_validation_artifacts,
+    write_review_packet_csv,
 )
 
 
@@ -37,6 +40,7 @@ def test_build_manual_audit_workflow_artifacts_writes_seed_template_and_report(t
         reviews_dir=tmp_path / "reviews",
         reports_dir=tmp_path / "reports",
         reviews_readme_path=tmp_path / "reviews" / "README.md",
+        independent_reviewer_handoff_path=tmp_path / "reviews" / "independent_reviewer_handoff.md",
         reviewer_1_seed_path=tmp_path / "reviews" / "reviewer_1_seed.csv",
         reviewer_2_template_path=tmp_path / "reviews" / "reviewer_2_blank_template.csv",
         reviewer_2_shadow_path=tmp_path / "reviews" / "reviewer_2_shadow_demo.csv",
@@ -49,6 +53,7 @@ def test_build_manual_audit_workflow_artifacts_writes_seed_template_and_report(t
     )
 
     assert result["reviews_readme_path"].exists()
+    assert result["independent_reviewer_handoff_path"].exists()
     assert result["reviewer_1_seed_path"].exists()
     assert result["reviewer_2_template_path"].exists()
     assert result["reviewer_2_shadow_path"].exists()
@@ -58,6 +63,8 @@ def test_build_manual_audit_workflow_artifacts_writes_seed_template_and_report(t
     assert result["adjudication_markdown_path"].exists()
     assert result["reviewer_readiness_json_path"].exists()
     assert result["reviewer_readiness_markdown_path"].exists()
+    assert result["independent_reviewer_packet_validation_json_path"].exists()
+    assert result["independent_reviewer_packet_validation_markdown_path"].exists()
 
     summary = json.loads(result["agreement_json_path"].read_text(encoding="utf-8"))
     assert summary["status"] == "insufficient_independent_overlap"
@@ -78,8 +85,15 @@ def test_build_manual_audit_workflow_artifacts_writes_seed_template_and_report(t
     assert readiness["required_independent_completed_reviewers"] == 1
     assert readiness["official_agreement_status"] == "insufficient_independent_overlap"
     assert any("independent reviewer packet" in item for item in readiness["blocking_items"])
+    assert (
+        result["independent_reviewer_packet_validation"]["status"]
+        == "invalid_or_incomplete"
+    )
     assert "reviewer_2_shadow_demo.csv" in readiness_markdown
     assert "must not be cited as official inter-rater agreement" in readiness_markdown
+    handoff = result["independent_reviewer_handoff_path"].read_text(encoding="utf-8")
+    assert "validate_manual_audit_review_packet.py" in handoff
+    assert "ready_for_independent_agreement" in handoff
 
 
 def test_build_manual_audit_workflow_artifacts_honors_custom_roots(tmp_path):
@@ -90,6 +104,10 @@ def test_build_manual_audit_workflow_artifacts_honors_custom_roots(tmp_path):
     )
 
     assert result["reviews_readme_path"] == tmp_path / "custom_reviews" / "README.md"
+    assert (
+        result["independent_reviewer_handoff_path"]
+        == tmp_path / "custom_reviews" / "independent_reviewer_handoff.md"
+    )
     assert result["reviewer_1_seed_path"] == tmp_path / "custom_reviews" / "reviewer_1_seed.csv"
     assert (
         result["reviewer_2_template_path"]
@@ -97,6 +115,10 @@ def test_build_manual_audit_workflow_artifacts_honors_custom_roots(tmp_path):
     )
     assert result["agreement_json_path"] == tmp_path / "custom_reports" / "agreement_summary.json"
     assert result["adjudication_json_path"] == tmp_path / "custom_reports" / "adjudication_queue.json"
+    assert (
+        result["independent_reviewer_packet_validation_json_path"]
+        == tmp_path / "custom_reports" / "independent_reviewer_packet_validation.json"
+    )
     assert (
         result["reviewer_readiness_markdown_path"]
         == tmp_path / "custom_reports" / "reviewer_readiness.md"
@@ -144,3 +166,63 @@ def test_compute_pairwise_review_packet_agreement_is_perfect_for_identical_packe
     assert agreement["mean_abs_total_score_diff"] == 0.0
     assert agreement["cases_with_any_disagreement"] == 0
     assert all(item["exact_agreement_rate"] == 1.0 for item in agreement["per_dimension"])
+
+
+def test_independent_reviewer_packet_validator_rejects_blank_template(tmp_path):
+    bundle = load_manual_audit_bundle()
+    result = build_manual_audit_workflow_artifacts(
+        bundle=bundle,
+        reviews_dir=tmp_path / "reviews",
+        reports_dir=tmp_path / "reports",
+    )
+
+    report = build_independent_reviewer_packet_validation_report(
+        packet_path=result["reviewer_2_template_path"],
+        bundle=bundle,
+    )
+
+    assert report["ready_for_independent_agreement"] is False
+    assert report["status"] == "invalid_or_incomplete"
+    assert any("review_source is not acceptable" in error for error in report["errors"])
+    assert any("review_status must be complete" in error for error in report["errors"])
+
+
+def test_independent_reviewer_packet_validator_accepts_completed_packet(tmp_path):
+    bundle = load_manual_audit_bundle()
+    result = build_manual_audit_workflow_artifacts(
+        bundle=bundle,
+        reviews_dir=tmp_path / "reviews",
+        reports_dir=tmp_path / "reports",
+    )
+    rows = load_review_packet_csv(result["reviewer_1_seed_path"])
+    completed_rows = [
+        {
+            **row,
+            "reviewer_id": "reviewer_2_completed",
+            "reviewer_role": "independent_reviewer",
+            "review_status": "complete",
+            "review_source": "independent_manual_review",
+        }
+        for row in rows
+    ]
+    packet_path = tmp_path / "reviews" / "reviewer_2_completed.csv"
+    write_review_packet_csv(completed_rows, bundle.rubric, packet_path)
+
+    report = build_independent_reviewer_packet_validation_report(
+        packet_path=packet_path,
+        bundle=bundle,
+    )
+    outputs = write_independent_reviewer_packet_validation_artifacts(
+        report=report,
+        output_json_path=tmp_path / "reports" / "independent_validation.json",
+        output_markdown_path=tmp_path / "reports" / "independent_validation.md",
+    )
+
+    assert report["ready_for_independent_agreement"] is True
+    assert report["status"] == "ready_for_independent_agreement"
+    assert report["error_count"] == 0
+    assert report["completed_case_count"] == bundle.summary["case_count"]
+    assert outputs["json_path"].exists()
+    assert "Ready for independent agreement" in outputs["markdown_path"].read_text(
+        encoding="utf-8"
+    )

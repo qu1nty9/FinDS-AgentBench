@@ -179,7 +179,9 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert "Required Before Submission" in checklist
     assert "Generated qualitative failure examples" in checklist
     assert "Reviewer-readiness report" in checklist
+    assert "Independent-reviewer handoff and packet validator" in checklist
     assert "Complete at least one independent reviewer packet" in checklist
+    assert "Validate the completed second-reviewer packet" in checklist
     assert "External-agent protocol and readiness report" in checklist
     assert "External-Agent Gate Blockers" in checklist
     assert "Submission readiness status" in checklist

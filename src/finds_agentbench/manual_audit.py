@@ -15,6 +15,9 @@ DEFAULT_MANUAL_AUDIT_SUBSET_PATH = Path("audits/pilot_v0/adjudicated_subset.json
 DEFAULT_MANUAL_AUDIT_REVIEWS_DIR = Path("audits/pilot_v0/reviews")
 DEFAULT_MANUAL_AUDIT_REPORTS_DIR = Path("audits/pilot_v0/reports")
 DEFAULT_MANUAL_AUDIT_REVIEWS_README_PATH = DEFAULT_MANUAL_AUDIT_REVIEWS_DIR / "README.md"
+DEFAULT_MANUAL_AUDIT_INDEPENDENT_REVIEWER_HANDOFF_PATH = (
+    DEFAULT_MANUAL_AUDIT_REVIEWS_DIR / "independent_reviewer_handoff.md"
+)
 DEFAULT_MANUAL_AUDIT_REVIEWER_1_SEED_PATH = DEFAULT_MANUAL_AUDIT_REVIEWS_DIR / "reviewer_1_seed.csv"
 DEFAULT_MANUAL_AUDIT_REVIEWER_2_TEMPLATE_PATH = (
     DEFAULT_MANUAL_AUDIT_REVIEWS_DIR / "reviewer_2_blank_template.csv"
@@ -39,6 +42,12 @@ DEFAULT_MANUAL_AUDIT_REVIEWER_READINESS_JSON_PATH = (
 )
 DEFAULT_MANUAL_AUDIT_REVIEWER_READINESS_MARKDOWN_PATH = (
     DEFAULT_MANUAL_AUDIT_REPORTS_DIR / "reviewer_readiness.md"
+)
+DEFAULT_INDEPENDENT_REVIEWER_PACKET_VALIDATION_JSON_PATH = (
+    DEFAULT_MANUAL_AUDIT_REPORTS_DIR / "independent_reviewer_packet_validation.json"
+)
+DEFAULT_INDEPENDENT_REVIEWER_PACKET_VALIDATION_MARKDOWN_PATH = (
+    DEFAULT_MANUAL_AUDIT_REPORTS_DIR / "independent_reviewer_packet_validation.md"
 )
 
 
@@ -482,7 +491,7 @@ def write_review_packet_csv(rows: list[dict[str, str]], rubric: dict[str, Any], 
     path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = review_packet_fieldnames(rubric)
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         for row in rows:
             writer.writerow({field: row.get(field, "") for field in fieldnames})
@@ -627,6 +636,184 @@ def summarize_review_packet(path: str | Path, rows: list[dict[str, str]], rubric
         "errors": errors,
         "rows": rows,
     }
+
+
+def build_independent_reviewer_packet_validation_report(
+    *,
+    packet_path: str | Path,
+    bundle: ManualAuditBundle | None = None,
+    rubric_path: str | Path = DEFAULT_MANUAL_AUDIT_RUBRIC_PATH,
+    subset_path: str | Path = DEFAULT_MANUAL_AUDIT_SUBSET_PATH,
+    workspace_root: str | Path = ".",
+) -> dict[str, Any]:
+    audit_bundle = bundle or load_manual_audit_bundle(
+        rubric_path=rubric_path,
+        subset_path=subset_path,
+        workspace_root=workspace_root,
+    )
+    packet = summarize_review_packet(
+        packet_path,
+        load_review_packet_csv(packet_path),
+        audit_bundle.rubric,
+    )
+    errors = list(packet["errors"])
+    rows = packet["rows"]
+    expected_case_ids = sorted(str(case["case_id"]) for case in audit_bundle.subset["cases"])
+    observed_case_ids = sorted(str(row.get("case_id", "")).strip() for row in rows)
+    missing_case_ids = sorted(set(expected_case_ids) - set(observed_case_ids))
+    extra_case_ids = sorted(set(observed_case_ids) - set(expected_case_ids))
+    if missing_case_ids:
+        errors.append("missing expected audit cases: " + ", ".join(missing_case_ids))
+    if extra_case_ids:
+        errors.append("unexpected audit cases: " + ", ".join(extra_case_ids))
+
+    if packet["reviewer_roles"] != ["independent_reviewer"]:
+        errors.append(
+            "reviewer_role must be exactly independent_reviewer for a submission-strength second packet"
+        )
+    reviewer_ids = packet["reviewer_ids"]
+    if reviewer_ids in (["reviewer_1_seed"], ["reviewer_2_shadow_demo"]):
+        errors.append("reviewer_id must not identify the seed or synthetic shadow reviewer")
+
+    disallowed_sources = {"blank_template", "seed_subset_projection", "synthetic_shadow_demo"}
+    observed_sources = set(packet["review_sources"])
+    if not observed_sources:
+        errors.append("review_source must identify the independent review provenance")
+    disallowed_observed_sources = sorted(disallowed_sources & observed_sources)
+    if disallowed_observed_sources:
+        errors.append(
+            "review_source is not acceptable for independent review: "
+            + ", ".join(disallowed_observed_sources)
+        )
+
+    completed_status_rows = [
+        str(row.get("case_id", "")).strip()
+        for row in rows
+        if str(row.get("review_status", "")).strip() != "complete"
+    ]
+    if completed_status_rows:
+        errors.append(
+            "review_status must be complete for every row: " + ", ".join(completed_status_rows)
+        )
+
+    incomplete_rubric_rows = [
+        str(row.get("case_id", "")).strip()
+        for row in rows
+        if not is_complete_review_row(row, audit_bundle.rubric)
+    ]
+    if incomplete_rubric_rows:
+        errors.append(
+            "all rubric scores, evidence notes, and overall_label must be complete for every row: "
+            + ", ".join(incomplete_rubric_rows)
+        )
+
+    label_mismatch_rows: list[str] = []
+    missing_findings_rows: list[str] = []
+    for row in rows:
+        case_id = str(row.get("case_id", "")).strip()
+        if not is_complete_review_row(row, audit_bundle.rubric):
+            if not str(row.get("primary_manual_findings", "")).strip():
+                missing_findings_rows.append(case_id)
+            continue
+        total_score = review_packet_total_score(row, audit_bundle.rubric)
+        expected_label = overall_label_for_total_score(audit_bundle.rubric, total_score)
+        if str(row.get("overall_label", "")).strip() != expected_label:
+            label_mismatch_rows.append(case_id)
+        if not str(row.get("primary_manual_findings", "")).strip():
+            missing_findings_rows.append(case_id)
+    if label_mismatch_rows:
+        errors.append(
+            "overall_label must match total_score interpretation band for: "
+            + ", ".join(label_mismatch_rows)
+        )
+    if missing_findings_rows:
+        errors.append(
+            "primary_manual_findings must be non-empty for: " + ", ".join(missing_findings_rows)
+        )
+
+    ready = not errors and packet["completed_case_count"] == audit_bundle.summary["case_count"]
+    return {
+        "packet_path": str(packet_path),
+        "status": "ready_for_independent_agreement" if ready else "invalid_or_incomplete",
+        "ready_for_independent_agreement": ready,
+        "case_count": audit_bundle.summary["case_count"],
+        "row_count": packet["row_count"],
+        "completed_case_count": packet["completed_case_count"],
+        "reviewer_ids": packet["reviewer_ids"],
+        "reviewer_roles": packet["reviewer_roles"],
+        "review_statuses": packet["review_statuses"],
+        "review_sources": packet["review_sources"],
+        "missing_case_ids": missing_case_ids,
+        "extra_case_ids": extra_case_ids,
+        "error_count": len(errors),
+        "errors": errors,
+        "next_actions": [
+            "Fix validation errors in the reviewer packet.",
+            "Re-run scripts/validate_manual_audit_review_packet.py.",
+            "Rebuild manual-audit workflow artifacts once validation passes.",
+        ]
+        if errors
+        else [
+            "Rebuild manual-audit workflow artifacts.",
+            "Inspect official pairwise agreement and adjudication queue.",
+        ],
+    }
+
+
+def render_independent_reviewer_packet_validation_markdown(report: dict[str, Any]) -> str:
+    lines = [
+        "# Independent Reviewer Packet Validation",
+        "",
+        "Validation report for a submission-strength manual-audit second-reviewer packet.",
+        "",
+        "## Status",
+        "",
+        render_markdown_table(
+            ["Field", "Value"],
+            [
+                ["Status", f"`{report['status']}`"],
+                [
+                    "Ready for independent agreement",
+                    "yes" if report["ready_for_independent_agreement"] else "no",
+                ],
+                ["Completed cases", f"{report['completed_case_count']} / {report['case_count']}"],
+                ["Rows", report["row_count"]],
+                ["Reviewer IDs", ", ".join(report["reviewer_ids"]) or "n/a"],
+                ["Reviewer Roles", ", ".join(report["reviewer_roles"]) or "n/a"],
+                ["Review Sources", ", ".join(report["review_sources"]) or "n/a"],
+                ["Errors", report["error_count"]],
+            ],
+        ),
+        "",
+        "## Errors",
+        "",
+    ]
+    if report["errors"]:
+        lines.extend(f"- {item}" for item in report["errors"])
+    else:
+        lines.append("- None.")
+    lines.extend(["", "## Next Actions", ""])
+    lines.extend(f"- {item}" for item in report["next_actions"])
+    return "\n".join(lines) + "\n"
+
+
+def write_independent_reviewer_packet_validation_artifacts(
+    *,
+    report: dict[str, Any],
+    output_json_path: str | Path = DEFAULT_INDEPENDENT_REVIEWER_PACKET_VALIDATION_JSON_PATH,
+    output_markdown_path: str | Path = DEFAULT_INDEPENDENT_REVIEWER_PACKET_VALIDATION_MARKDOWN_PATH,
+) -> dict[str, Path]:
+    json_path = Path(output_json_path)
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    markdown_path = Path(output_markdown_path)
+    markdown_path.parent.mkdir(parents=True, exist_ok=True)
+    markdown_path.write_text(
+        render_independent_reviewer_packet_validation_markdown(report),
+        encoding="utf-8",
+    )
+    return {"json_path": json_path, "markdown_path": markdown_path}
 
 
 def load_review_packets(reviews_dir: str | Path, rubric: dict[str, Any]) -> list[dict[str, Any]]:
@@ -906,13 +1093,15 @@ def render_reviews_readme(bundle: ManualAuditBundle) -> str:
             "- `reviewer_1_seed.csv`: projection of the current seed adjudicated subset into one-row-per-case reviewer format.",
             "- `reviewer_2_blank_template.csv`: blank packet for an independent second reviewer.",
             "- `reviewer_2_shadow_demo.csv`: synthetic dry-run second reviewer packet for exercising agreement and adjudication code paths. This file is not eligible for official benchmark agreement claims.",
+            "- `independent_reviewer_handoff.md`: reviewer-facing instructions and validation protocol.",
             "",
             "## Workflow",
             "",
             "1. Copy `reviewer_2_blank_template.csv` to a reviewer-specific filename.",
-            "2. Fill one row per case, including all rubric scores, evidence snippets, and the overall label.",
-            "3. Rebuild the audit workflow artifacts to refresh the agreement and adjudication reports.",
-            "4. Once two complete official reviewer packets exist, adjudicate disagreements into the canonical subset.",
+            "2. Fill one row per case, including all rubric scores, evidence snippets, primary findings, and the overall label.",
+            "3. Validate the completed packet with `scripts/validate_manual_audit_review_packet.py`.",
+            "4. Rebuild the audit workflow artifacts to refresh the agreement and adjudication reports.",
+            "5. Once two complete official reviewer packets exist, adjudicate disagreements into the canonical subset.",
             "",
             "The shadow demo packet exists only to prove the pipeline works end to end before a real second reviewer is available.",
             "",
@@ -924,6 +1113,59 @@ def render_reviews_readme(bundle: ManualAuditBundle) -> str:
             "",
         ]
     ) + "\n"
+
+
+def render_independent_reviewer_handoff(bundle: ManualAuditBundle) -> str:
+    dimension_rows = [
+        [
+            dimension["dimension_id"],
+            dimension["question"],
+            "; ".join(str(source) for source in dimension.get("evidence_sources", [])),
+        ]
+        for dimension in bundle.rubric["dimensions"]
+    ]
+    return "\n".join(
+        [
+            "# Independent Reviewer Handoff",
+            "",
+            "Use this packet to collect a submission-strength second manual-audit review.",
+            "",
+            "## Required Inputs",
+            "",
+            "- Start from `audits/pilot_v0/reviews/reviewer_2_blank_template.csv`.",
+            "- Copy it to a reviewer-specific filename such as `reviewer_2_completed.csv`.",
+            "- Keep exactly one reviewer ID across the file.",
+            "- Set `reviewer_role` to `independent_reviewer` for every row.",
+            "- Set `review_status` to `complete` for every row only after all scores and notes are filled.",
+            "- Replace `review_source=blank_template` with a provenance value such as `independent_manual_review`.",
+            "",
+            "## Required Fields Per Case",
+            "",
+            "- Every rubric dimension must have a score in `{0, 1, 2}` and a non-empty evidence note.",
+            "- `total_score` must equal the sum of the six dimension scores.",
+            "- `overall_label` must match the rubric interpretation band for `total_score`.",
+            "- `primary_manual_findings` must be non-empty.",
+            "- `general_notes` is optional, but recommended for disagreements or uncertainty.",
+            "",
+            "## Validation",
+            "",
+            "Run the validator before asking the benchmark owner to rebuild agreement artifacts:",
+            "",
+            "```bash",
+            "PYTHONPATH=src python scripts/validate_manual_audit_review_packet.py --packet audits/pilot_v0/reviews/reviewer_2_completed.csv",
+            "```",
+            "",
+            "The packet is eligible for official agreement only when the validator reports `ready_for_independent_agreement`.",
+            "",
+            "## Rubric Dimensions",
+            "",
+            render_markdown_table(["Dimension", "Question", "Evidence Sources"], dimension_rows),
+            "",
+            "## Claim Boundary",
+            "",
+            "This handoff is for a real independent reviewer. `reviewer_2_shadow_demo.csv` is synthetic dry-run evidence and must not be cited as independent inter-rater agreement.",
+        ]
+    )
 
 
 def render_manual_audit_agreement_markdown(
@@ -1333,6 +1575,7 @@ def build_manual_audit_workflow_artifacts(
     reviews_dir: str | Path = DEFAULT_MANUAL_AUDIT_REVIEWS_DIR,
     reports_dir: str | Path = DEFAULT_MANUAL_AUDIT_REPORTS_DIR,
     reviews_readme_path: str | Path | None = None,
+    independent_reviewer_handoff_path: str | Path | None = None,
     reviewer_1_seed_path: str | Path | None = None,
     reviewer_2_template_path: str | Path | None = None,
     reviewer_2_shadow_path: str | Path | None = None,
@@ -1342,6 +1585,8 @@ def build_manual_audit_workflow_artifacts(
     adjudication_markdown_path: str | Path | None = None,
     reviewer_readiness_json_path: str | Path | None = None,
     reviewer_readiness_markdown_path: str | Path | None = None,
+    independent_reviewer_packet_validation_json_path: str | Path | None = None,
+    independent_reviewer_packet_validation_markdown_path: str | Path | None = None,
 ) -> dict[str, Any]:
     audit_bundle = bundle or load_manual_audit_bundle(
         rubric_path=rubric_path,
@@ -1360,6 +1605,16 @@ def build_manual_audit_workflow_artifacts(
     )
     reviews_readme.parent.mkdir(parents=True, exist_ok=True)
     reviews_readme.write_text(render_reviews_readme(audit_bundle), encoding="utf-8")
+    independent_reviewer_handoff = (
+        Path(independent_reviewer_handoff_path)
+        if independent_reviewer_handoff_path is not None
+        else reviews_root / "independent_reviewer_handoff.md"
+    )
+    independent_reviewer_handoff.parent.mkdir(parents=True, exist_ok=True)
+    independent_reviewer_handoff.write_text(
+        render_independent_reviewer_handoff(audit_bundle) + "\n",
+        encoding="utf-8",
+    )
     reviewer_1_seed_output = (
         Path(reviewer_1_seed_path)
         if reviewer_1_seed_path is not None
@@ -1490,8 +1745,34 @@ def build_manual_audit_workflow_artifacts(
         encoding="utf-8",
     )
 
+    validation_target = (
+        Path(reviewer_readiness["independent_completed_reviewer_packet_paths"][0])
+        if reviewer_readiness["independent_completed_reviewer_packet_paths"]
+        else reviewer_2_template_csv
+    )
+    independent_packet_validation = build_independent_reviewer_packet_validation_report(
+        packet_path=validation_target,
+        bundle=audit_bundle,
+    )
+    validation_json = (
+        Path(independent_reviewer_packet_validation_json_path)
+        if independent_reviewer_packet_validation_json_path is not None
+        else reports_root / "independent_reviewer_packet_validation.json"
+    )
+    validation_markdown = (
+        Path(independent_reviewer_packet_validation_markdown_path)
+        if independent_reviewer_packet_validation_markdown_path is not None
+        else reports_root / "independent_reviewer_packet_validation.md"
+    )
+    validation_outputs = write_independent_reviewer_packet_validation_artifacts(
+        report=independent_packet_validation,
+        output_json_path=validation_json,
+        output_markdown_path=validation_markdown,
+    )
+
     return {
         "reviews_readme_path": reviews_readme,
+        "independent_reviewer_handoff_path": independent_reviewer_handoff,
         "reviewer_1_seed_path": reviewer_1_seed_csv,
         "reviewer_2_template_path": reviewer_2_template_csv,
         "reviewer_2_shadow_path": reviewer_2_shadow_csv,
@@ -1504,6 +1785,9 @@ def build_manual_audit_workflow_artifacts(
         "reviewer_readiness_json_path": readiness_json,
         "reviewer_readiness_markdown_path": readiness_markdown,
         "reviewer_readiness": reviewer_readiness,
+        "independent_reviewer_packet_validation_json_path": validation_outputs["json_path"],
+        "independent_reviewer_packet_validation_markdown_path": validation_outputs["markdown_path"],
+        "independent_reviewer_packet_validation": independent_packet_validation,
     }
 
 
