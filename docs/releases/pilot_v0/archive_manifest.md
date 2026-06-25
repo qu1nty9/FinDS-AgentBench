@@ -12,9 +12,10 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | Archive Status | `candidate_unfrozen` |
 | Expected Tag | `v0.1.0-pilot` |
 | Archive Path | `dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz` |
-| Archive SHA256 | `d8fdef8fbf6a0c74b0a2684957b7d12eae5786f99c5c3876f51d5e9a2e4090d9` |
-| File Count | 287 |
-| Total Uncompressed Size | 2315857 bytes |
+| Archive SHA256 | `284381e400e3f207b23588a426f4b9b9ce5a0af96917803c8b1ec5cd2607c18e` |
+| Verification Command | `PYTHONPATH=src python scripts/verify_release_archive.py` |
+| File Count | 288 |
+| Total Uncompressed Size | 2324131 bytes |
 
 ## Submission Readiness
 
@@ -28,7 +29,7 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 
 | Path | Size Bytes | SHA256 |
 | --- | ---: | --- |
-| `README.md` | 16472 | `f6b1d0d157b900ee14b3e3fa52c312e15ba9172e6d225ce7582b0c42cdb0c34d` |
+| `README.md` | 16610 | `cfa12254e182dd8f925dab4e0c75670217bb699818d2b0aed3da21a62fca1510` |
 | `agents/README.md` | 3228 | `443e0303aa2ee5bdc49cbdfd0a8f89c699950a8761d3cd5e3f1760c0eed2c4c0` |
 | `agents/examples/event_rule_env_agent.py` | 668 | `2e74c166c91ce8a6a54945e8f3cf09bfb802cf1d6dd04c6d3ebcc6fad73195d6` |
 | `agents/examples/momentum_env_agent.py` | 662 | `2b488a203fc571ecbb86104628d8364a2e5d272faecdc4715e755c82aa26f4b4` |
@@ -270,6 +271,7 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `scripts/validate_run_manifest.py` | 616 | `ad0863925109e61004167218ed1540a43bb23f37c2be9e3483a1512f95126ec6` |
 | `scripts/validate_submission_artifacts.py` | 1773 | `829e157f7c92fbc13cbe828ae8360c7082ecad698d838168a2f17582ef733ebc` |
 | `scripts/validate_task.py` | 1002 | `cde3665bbaf4dff12b708720241aa85eaa1717a548c71c3d9a11ab5367262fe0` |
+| `scripts/verify_release_archive.py` | 1547 | `3012249baf508a86ea07b45f8988887ddcc5191d5a8d4f91cecd60c0a7648c69` |
 | `src/finds_agentbench/__init__.py` | 58 | `281be6d5e3e75614117ad95181d800ec5a5719381f92be0db585444768bf5e90` |
 | `src/finds_agentbench/agent_runner.py` | 3027 | `4755cf8e2d2f4d7957585aa3dd909f9fde99ffbc45d00ec902f49108449ff49a` |
 | `src/finds_agentbench/artifacts.py` | 8071 | `c02e216d66b9db49a7799197d1a17e944cdf0e9560ee2ec910403399db0194fb` |
@@ -290,7 +292,7 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `src/finds_agentbench/pipelines.py` | 273833 | `f53ad58158979718ffc56dfbaea6767d41fbe9f2c7ac2c9621febd1cfe953bda` |
 | `src/finds_agentbench/reference_results.py` | 12624 | `91ee3dc182b9e7b13384911c9d7b99a3e3ff5735e4af3adba6b26d7b9b888ce8` |
 | `src/finds_agentbench/related_work.py` | 19633 | `5162ebd599e421e5ef9bad6baacaa6788d680b9c05939c65b2934cba96954b2f` |
-| `src/finds_agentbench/release_archive.py` | 12201 | `d5e2337143144a6c0b9c36d1314916fa987753b0f6424b4234fc87fc8eca60df` |
+| `src/finds_agentbench/release_archive.py` | 18790 | `78f64fa6af5c8806c5ee236efb9f9ed6d221a864684afb495415b46445f0f0ff` |
 | `src/finds_agentbench/release_reproducibility.py` | 15734 | `b80557034d7c4d51f72385f38417df3e96994aa63d0f2b9595187deabe2b8975` |
 | `src/finds_agentbench/reports.py` | 9496 | `8868d056c890630d6ef39623232fc9ac1cd884cf4b0c9919dbba00267988535a` |
 | `src/finds_agentbench/research_agent.py` | 29875 | `bffae1f574cf0ab2445985db15a9953d68528a87c38ca128bd75cbb616a1eaed` |

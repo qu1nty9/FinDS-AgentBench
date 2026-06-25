@@ -1,8 +1,8 @@
 {
   "archive_mtime_policy": "tar and gzip mtimes are normalized to 0",
   "archive_path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
-  "archive_sha256": "d8fdef8fbf6a0c74b0a2684957b7d12eae5786f99c5c3876f51d5e9a2e4090d9",
-  "archive_size_bytes": 271518,
+  "archive_sha256": "284381e400e3f207b23588a426f4b9b9ce5a0af96917803c8b1ec5cd2607c18e",
+  "archive_size_bytes": 273075,
   "archive_status": "candidate_unfrozen",
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
@@ -11,12 +11,12 @@
     "docs/releases/pilot_v0/archive_manifest.md"
   ],
   "expected_tag": "v0.1.0-pilot",
-  "file_count": 287,
+  "file_count": 288,
   "files": [
     {
       "path": "README.md",
-      "sha256": "f6b1d0d157b900ee14b3e3fa52c312e15ba9172e6d225ce7582b0c42cdb0c34d",
-      "size_bytes": 16472
+      "sha256": "cfa12254e182dd8f925dab4e0c75670217bb699818d2b0aed3da21a62fca1510",
+      "size_bytes": 16610
     },
     {
       "path": "agents/README.md",
@@ -1224,6 +1224,11 @@
       "size_bytes": 1002
     },
     {
+      "path": "scripts/verify_release_archive.py",
+      "sha256": "3012249baf508a86ea07b45f8988887ddcc5191d5a8d4f91cecd60c0a7648c69",
+      "size_bytes": 1547
+    },
+    {
       "path": "src/finds_agentbench/__init__.py",
       "sha256": "281be6d5e3e75614117ad95181d800ec5a5719381f92be0db585444768bf5e90",
       "size_bytes": 58
@@ -1325,8 +1330,8 @@
     },
     {
       "path": "src/finds_agentbench/release_archive.py",
-      "sha256": "d5e2337143144a6c0b9c36d1314916fa987753b0f6424b4234fc87fc8eca60df",
-      "size_bytes": 12201
+      "sha256": "78f64fa6af5c8806c5ee236efb9f9ed6d221a864684afb495415b46445f0f0ff",
+      "size_bytes": 18790
     },
     {
       "path": "src/finds_agentbench/release_reproducibility.py",
@@ -1470,5 +1475,6 @@
     "ready_for_workshop_submission": false,
     "status": "not_ready_for_workshop_submission"
   },
-  "total_uncompressed_size_bytes": 2315857
+  "total_uncompressed_size_bytes": 2324131,
+  "verification_command": "PYTHONPATH=src python scripts/verify_release_archive.py"
 }

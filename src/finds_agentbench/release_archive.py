@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import gzip
+import hashlib
 import json
 import stat
 import tarfile
@@ -16,6 +17,9 @@ DEFAULT_SUBMISSION_READINESS_PATH = Path("docs/releases/pilot_v0/submission_read
 DEFAULT_RELEASE_ARCHIVE_OUTPUT_DIR = Path("dist/release_archives")
 DEFAULT_RELEASE_ARCHIVE_MANIFEST_JSON_PATH = Path("docs/releases/pilot_v0/archive_manifest.json")
 DEFAULT_RELEASE_ARCHIVE_MANIFEST_MARKDOWN_PATH = Path("docs/releases/pilot_v0/archive_manifest.md")
+DEFAULT_RELEASE_ARCHIVE_VERIFICATION_COMMAND = (
+    "PYTHONPATH=src python scripts/verify_release_archive.py"
+)
 DEFAULT_RELEASE_ARCHIVE_INCLUDE_PATHS = (
     Path("README.md"),
     Path("pyproject.toml"),
@@ -52,6 +56,12 @@ class ReleaseArchiveBuildResult:
     manifest_json_path: Path
     manifest_markdown_path: Path
     manifest: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class ReleaseArchiveVerificationResult:
+    status: str
+    report: dict[str, Any]
 
 
 def load_json(path: str | Path) -> dict[str, Any]:
@@ -202,6 +212,7 @@ def build_release_archive_manifest(
         "archive_sha256": file_sha256(archive_path),
         "archive_size_bytes": archive_path.stat().st_size,
         "archive_mtime_policy": "tar and gzip mtimes are normalized to 0",
+        "verification_command": DEFAULT_RELEASE_ARCHIVE_VERIFICATION_COMMAND,
         "file_count": len(file_entries),
         "total_uncompressed_size_bytes": sum(entry["size_bytes"] for entry in file_entries),
         "include_paths": [Path(path).as_posix() for path in include_paths],
@@ -232,6 +243,7 @@ def render_release_archive_manifest_markdown(manifest: dict[str, Any]) -> str:
         f"| Expected Tag | `{manifest['expected_tag']}` |",
         f"| Archive Path | `{manifest['archive_path']}` |",
         f"| Archive SHA256 | `{manifest['archive_sha256']}` |",
+        f"| Verification Command | `{manifest['verification_command']}` |",
         f"| File Count | {manifest['file_count']} |",
         f"| Total Uncompressed Size | {manifest['total_uncompressed_size_bytes']} bytes |",
         "",
@@ -254,6 +266,154 @@ def render_release_archive_manifest_markdown(manifest: dict[str, Any]) -> str:
         for entry in manifest["files"]
     )
     return "\n".join(lines) + "\n"
+
+
+def bytes_sha256(payload: bytes) -> str:
+    return hashlib.sha256(payload).hexdigest()
+
+
+def read_archive_member_sha256(
+    archive: tarfile.TarFile,
+    member: tarfile.TarInfo,
+) -> str:
+    handle = archive.extractfile(member)
+    if handle is None:
+        return ""
+    with handle:
+        return bytes_sha256(handle.read())
+
+
+def verify_release_archive_manifest(
+    *,
+    archive_manifest: dict[str, Any],
+    workspace_root: str | Path = ".",
+) -> ReleaseArchiveVerificationResult:
+    root = Path(workspace_root)
+    archive_path = root / archive_manifest["archive_path"]
+    expected_prefix = archive_path.name.removesuffix(".tar.gz")
+    expected_files = {
+        str(entry["path"]): entry
+        for entry in archive_manifest.get("files", [])
+        if isinstance(entry, dict) and str(entry.get("path", "")).strip()
+    }
+    errors: list[str] = []
+
+    if not archive_path.exists():
+        errors.append(f"archive_path does not exist: {archive_manifest['archive_path']}")
+        return ReleaseArchiveVerificationResult(
+            status="failed",
+            report={
+                "status": "failed",
+                "archive_path": archive_manifest["archive_path"],
+                "error_count": len(errors),
+                "errors": errors,
+            },
+        )
+
+    observed_archive_sha256 = file_sha256(archive_path)
+    archive_sha256_match = observed_archive_sha256 == archive_manifest.get("archive_sha256")
+    if not archive_sha256_match:
+        errors.append(
+            "archive_sha256 mismatch: "
+            f"expected {archive_manifest.get('archive_sha256')}, got {observed_archive_sha256}"
+        )
+
+    archive_member_order_ok = False
+    member_names: list[str] = []
+    try:
+        with tarfile.open(archive_path, mode="r:gz") as archive:
+            members = [member for member in archive.getmembers() if member.isfile()]
+            member_names = [member.name for member in members]
+            sorted_member_names = sorted(member_names)
+            archive_member_order_ok = member_names == sorted_member_names
+            if not archive_member_order_ok:
+                errors.append("archive members are not sorted lexicographically")
+
+            expected_member_names = {
+                f"{expected_prefix}/{path}"
+                for path in expected_files
+            }
+            observed_member_names = set(member_names)
+            missing_members = sorted(expected_member_names - observed_member_names)
+            extra_members = sorted(observed_member_names - expected_member_names)
+            if missing_members:
+                errors.append("archive missing members: " + ", ".join(missing_members))
+            if extra_members:
+                errors.append("archive has extra members: " + ", ".join(extra_members))
+
+            metadata_errors: list[str] = []
+            content_mismatches: list[str] = []
+            for member in members:
+                if not member.name.startswith(f"{expected_prefix}/"):
+                    metadata_errors.append(f"{member.name}: unexpected archive prefix")
+                    continue
+                relative_path = member.name[len(expected_prefix) + 1 :]
+                expected_entry = expected_files.get(relative_path)
+                if expected_entry is None:
+                    continue
+                if member.mode not in {0o644, 0o755}:
+                    metadata_errors.append(f"{member.name}: mode must be 0644 or 0755")
+                if member.mtime != 0:
+                    metadata_errors.append(f"{member.name}: mtime must be 0")
+                if member.uid != 0 or member.gid != 0 or member.uname or member.gname:
+                    metadata_errors.append(f"{member.name}: owner metadata must be normalized")
+                if member.size != int(expected_entry.get("size_bytes", -1)):
+                    metadata_errors.append(
+                        f"{member.name}: size mismatch "
+                        f"({member.size} != {expected_entry.get('size_bytes')})"
+                    )
+                observed_sha256 = read_archive_member_sha256(archive, member)
+                if observed_sha256 != expected_entry.get("sha256"):
+                    content_mismatches.append(
+                        f"{relative_path}: expected {expected_entry.get('sha256')}, got {observed_sha256}"
+                    )
+
+            if metadata_errors:
+                errors.extend(metadata_errors)
+            if content_mismatches:
+                errors.extend(content_mismatches)
+    except tarfile.TarError as exc:
+        errors.append(f"archive is not a readable tar.gz file: {exc}")
+
+    file_count_match = len(expected_files) == archive_manifest.get("file_count")
+    if not file_count_match:
+        errors.append(
+            "manifest file_count mismatch: "
+            f"expected {archive_manifest.get('file_count')}, indexed {len(expected_files)}"
+        )
+
+    status = "verified" if not errors else "failed"
+    return ReleaseArchiveVerificationResult(
+        status=status,
+        report={
+            "status": status,
+            "archive_path": archive_manifest["archive_path"],
+            "archive_sha256_match": archive_sha256_match,
+            "observed_archive_sha256": observed_archive_sha256,
+            "expected_archive_sha256": archive_manifest.get("archive_sha256"),
+            "archive_member_order_ok": archive_member_order_ok,
+            "archive_prefix": expected_prefix,
+            "expected_file_count": archive_manifest.get("file_count"),
+            "manifest_file_entry_count": len(expected_files),
+            "archive_file_count": len(member_names),
+            "file_count_match": file_count_match,
+            "error_count": len(errors),
+            "errors": errors,
+        },
+    )
+
+
+def verify_release_archive(
+    *,
+    workspace_root: str | Path = ".",
+    archive_manifest_path: str | Path = DEFAULT_RELEASE_ARCHIVE_MANIFEST_JSON_PATH,
+) -> ReleaseArchiveVerificationResult:
+    root = Path(workspace_root)
+    archive_manifest = load_json(root / archive_manifest_path)
+    return verify_release_archive_manifest(
+        archive_manifest=archive_manifest,
+        workspace_root=root,
+    )
 
 
 def build_release_archive(

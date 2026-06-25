@@ -4,7 +4,12 @@ import json
 import tarfile
 from pathlib import Path
 
-from finds_agentbench.release_archive import build_release_archive, collect_release_archive_files
+from finds_agentbench.release_archive import (
+    build_release_archive,
+    collect_release_archive_files,
+    verify_release_archive,
+    verify_release_archive_manifest,
+)
 
 
 def write_release_archive_fixture(root: Path) -> None:
@@ -65,6 +70,32 @@ def test_build_release_archive_is_deterministic_and_excludes_archive_manifest(tm
         names = archive.getnames()
         assert names == sorted(names)
         assert archive.getmember("finds_agentbench_pilot_v0-0.1.0-pilot/README.md").mtime == 0
+
+
+def test_verify_release_archive_accepts_generated_archive_and_rejects_tampering(tmp_path: Path):
+    write_release_archive_fixture(tmp_path)
+    include_paths = ["README.md", "pyproject.toml", "src", "docs/releases/pilot_v0"]
+    result = build_release_archive(workspace_root=tmp_path, include_paths=include_paths)
+
+    verification = verify_release_archive(workspace_root=tmp_path)
+
+    assert verification.status == "verified"
+    assert verification.report["archive_sha256_match"] is True
+    assert verification.report["archive_member_order_ok"] is True
+    assert verification.report["error_count"] == 0
+
+    tampered_manifest = {
+        **result.manifest,
+        "archive_sha256": "0" * 64,
+    }
+    tampered_verification = verify_release_archive_manifest(
+        archive_manifest=tampered_manifest,
+        workspace_root=tmp_path,
+    )
+
+    assert tampered_verification.status == "failed"
+    assert tampered_verification.report["archive_sha256_match"] is False
+    assert any("archive_sha256 mismatch" in error for error in tampered_verification.report["errors"])
 
 
 def test_collect_release_archive_files_rejects_missing_include_path(tmp_path: Path):

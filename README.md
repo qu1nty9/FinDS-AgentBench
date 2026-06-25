@@ -81,6 +81,12 @@ PYTHONPATH=src python scripts/build_release_archive.py
 
 This writes a generated archive under `dist/release_archives/` and records the archive checksum and per-file SHA256 manifest in `docs/releases/pilot_v0/archive_manifest.json` and `docs/releases/pilot_v0/archive_manifest.md`. The archive remains marked as a candidate until the independent-review, external-agent, and final tag gates pass.
 
+Verify the archive against its checksum manifest before sharing it:
+
+```bash
+PYTHONPATH=src python scripts/verify_release_archive.py
+```
+
 If only the manifest/cards/data indexes need to be refreshed, the canonical pilot release manifest can be built with:
 
 ```bash
