@@ -408,13 +408,11 @@ def render_main_tex(
             (
                 "Table~\\ref{tab:pilot-agent-vs-best-baseline-score-overall-score} summarizes the "
                 "paired overall-score comparison between each agent and the best completed-run baseline "
-                "for the same task. Table~\\ref{tab:pilot-uncertainty-score-overall-score} reports "
-                "overall-score repeated-run uncertainty for all task-system cells."
+                "for the same task. Appendix Table~\\ref{tab:pilot-uncertainty-score-overall-score} "
+                "reports overall-score repeated-run uncertainty for all task-system cells."
             ),
             "",
             f"\\input{{{agent_vs_baseline_table_path}}}",
-            "",
-            f"\\input{{{summary_uncertainty_table_path}}}",
             "",
             "\\section{Manual Audit and Validity Checks}",
             (
@@ -461,6 +459,9 @@ def render_main_tex(
             ),
             "",
             "\\appendix",
+            "\\section{Full Repeated-Run Uncertainty Table}",
+            f"\\input{{{summary_uncertainty_table_path}}}",
+            "",
             "\\section{Full Pilot Protocol Reference Table}",
             f"\\input{{{protocol_table_path}}}",
             "",
@@ -554,6 +555,7 @@ def render_submission_checklist(summary: dict[str, Any]) -> str:
             "- Generated qualitative failure examples with exact task/run/artifact references.",
             "- Audited related-work matrix with corrected venue-neighbor citations and positioning notes.",
             "- Static manuscript formatting checker covering inputs, citations, labels, table structure, and PDF-risk warnings.",
+            "- Manuscript table-layout mitigations for related-work, result, uncertainty, and protocol tables.",
             "",
             "## Required Before Submission",
             "",

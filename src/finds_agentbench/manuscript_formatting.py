@@ -148,18 +148,22 @@ def count_tabular_columns(spec: str) -> int:
 def analyze_tables(
     tex_contents: dict[Path, str],
     *,
+    input_placements: dict[Path, str] | None = None,
     workspace_root: str | Path = ".",
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     root = Path(workspace_root)
+    placements = input_placements or {}
     tables: list[dict[str, Any]] = []
     errors: list[dict[str, Any]] = []
     warnings: list[dict[str, Any]] = []
     for path, text in tex_contents.items():
         relative_path = workspace_relative(path, workspace_root=root)
+        placement = placements.get(path.resolve(), "main")
         for index, match in enumerate(TABLE_PATTERN.finditer(text), start=1):
             block = match.group(0)
             label_match = LABEL_PATTERN.search(block)
             caption_present = "\\caption{" in block
+            width_mitigation = "resizebox" if "\\resizebox" in block else None
             tabular_specs = TABULAR_PATTERN.findall(block)
             column_counts = [count_tabular_columns(spec) for spec in tabular_specs]
             row_lines = [line for line in block.splitlines() if " & " in line]
@@ -173,6 +177,8 @@ def analyze_tables(
                 "max_column_count": max(column_counts, default=0),
                 "row_count": len(row_lines),
                 "max_row_length": max_row_length,
+                "placement": placement,
+                "width_mitigation": width_mitigation,
             }
             tables.append(table)
             if not label_match:
@@ -191,7 +197,7 @@ def analyze_tables(
                         "table_index": index,
                     }
                 )
-            if table["max_column_count"] >= 7 or max_row_length >= 320:
+            if (table["max_column_count"] >= 7 or max_row_length >= 320) and not width_mitigation:
                 warnings.append(
                     {
                         "kind": "wide_table_candidate",
@@ -201,7 +207,7 @@ def analyze_tables(
                         "max_row_length": max_row_length,
                     }
                 )
-            if table["row_count"] >= 30:
+            if table["row_count"] >= 30 and placement != "appendix":
                 warnings.append(
                     {
                         "kind": "long_table_candidate",
@@ -219,6 +225,20 @@ def collect_unresolved_citations(tex_contents: dict[Path, str], bib_keys: set[st
         for payload in CITE_PATTERN.findall(text):
             cite_keys.update(extract_comma_keys(payload))
     return sorted(key for key in cite_keys if key not in bib_keys)
+
+
+def collect_input_placements(main_tex_path: str | Path) -> dict[Path, str]:
+    main_path = Path(main_tex_path)
+    if not main_path.exists():
+        return {}
+    text = main_path.read_text(encoding="utf-8")
+    appendix_index = text.find("\\appendix")
+    placements = {main_path.resolve(): "main"}
+    for match in INPUT_PATTERN.finditer(text):
+        input_path = resolve_latex_path(match.group(1), source_path=main_path)
+        placement = "appendix" if appendix_index != -1 and match.start() > appendix_index else "main"
+        placements[input_path.resolve()] = placement
+    return placements
 
 
 def collect_label_findings(tex_contents: dict[Path, str]) -> dict[str, Any]:
@@ -273,11 +293,16 @@ def build_manuscript_formatting_report(
 ) -> dict[str, Any]:
     root = Path(workspace_root)
     tex_files, tex_errors, tex_contents = collect_tex_files(main_tex_path, workspace_root=root)
+    input_placements = collect_input_placements(main_tex_path)
     bibliographies, bibliography_errors, bib_keys = collect_bibliographies(
         tex_contents,
         workspace_root=root,
     )
-    tables, table_errors, table_warnings = analyze_tables(tex_contents, workspace_root=root)
+    tables, table_errors, table_warnings = analyze_tables(
+        tex_contents,
+        input_placements=input_placements,
+        workspace_root=root,
+    )
     unresolved_citations = collect_unresolved_citations(tex_contents, bib_keys)
     label_findings = collect_label_findings(tex_contents)
     environment_findings = collect_environment_findings(tex_contents)
@@ -345,6 +370,11 @@ def build_manuscript_formatting_report(
         ),
         "bib_entry_count": len(bib_keys),
         "table_count": len(tables),
+        "mitigated_table_count": sum(
+            1
+            for table in tables
+            if table.get("placement") == "appendix" or table.get("width_mitigation")
+        ),
         "tables": tables,
         "label_count": label_findings["label_count"],
         "reference_count": label_findings["reference_count"],
@@ -396,6 +426,7 @@ def render_manuscript_formatting_markdown(report: dict[str, Any]) -> str:
         f"| Citations | {report['citation_count']} |",
         f"| Bib entries | {report['bib_entry_count']} |",
         f"| Tables | {report['table_count']} |",
+        f"| Tables with placement/width mitigation | {report['mitigated_table_count']} |",
         f"| Hard errors | {report['hard_error_count']} |",
         f"| Warnings | {report['warning_count']} |",
         "",
@@ -414,8 +445,8 @@ def render_manuscript_formatting_markdown(report: dict[str, Any]) -> str:
     lines.extend(["", "## Table Inventory", ""])
     lines.extend(
         [
-            "| Path | Label | Columns | Rows | Max Row Length |",
-            "| --- | --- | ---: | ---: | ---: |",
+            "| Path | Label | Columns | Rows | Max Row Length | Placement | Width Mitigation |",
+            "| --- | --- | ---: | ---: | ---: | --- | --- |",
         ]
     )
     for table in report["tables"]:
@@ -426,7 +457,9 @@ def render_manuscript_formatting_markdown(report: dict[str, Any]) -> str:
                     f"`{table['label'] or ''}`",
                     str(table["max_column_count"]),
                     str(table["row_count"]),
-                    f"{table['max_row_length']} |",
+                    str(table["max_row_length"]),
+                    table["placement"],
+                    f"{table['width_mitigation'] or ''} |",
                 ]
             )
         )

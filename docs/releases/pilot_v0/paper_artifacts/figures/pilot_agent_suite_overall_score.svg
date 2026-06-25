@@ -1,24 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="358" viewBox="0 0 1040 358" role="img" aria-label="Pilot Agent Suite overall score chart">
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="392" viewBox="0 0 1040 392" role="img" aria-label="Pilot Agent Suite overall score chart">
 <rect width="100%" height="100%" fill="#ffffff" />
 <text x="310" y="30" font-size="22" font-family="Arial, Helvetica, sans-serif" fill="#111111">Pilot Agent Suite</text>
 <text x="310" y="50" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#555555">Overall score mean with sample-standard-deviation error bars</text>
-<line x1="310" y1="308" x2="1000" y2="308" stroke="#444444" stroke-width="1"/>
-<line x1="310.00" y1="308" x2="310.00" y2="314" stroke="#444444" stroke-width="1"/>
-<text x="310.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.0</text>
-<line x1="402.00" y1="308" x2="402.00" y2="314" stroke="#444444" stroke-width="1"/>
-<text x="402.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.1</text>
-<line x1="494.00" y1="308" x2="494.00" y2="314" stroke="#444444" stroke-width="1"/>
-<text x="494.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.2</text>
-<line x1="586.00" y1="308" x2="586.00" y2="314" stroke="#444444" stroke-width="1"/>
-<text x="586.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.3</text>
-<line x1="678.00" y1="308" x2="678.00" y2="314" stroke="#444444" stroke-width="1"/>
-<text x="678.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.4</text>
-<line x1="770.00" y1="308" x2="770.00" y2="314" stroke="#444444" stroke-width="1"/>
-<text x="770.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.5</text>
-<line x1="862.00" y1="308" x2="862.00" y2="314" stroke="#444444" stroke-width="1"/>
-<text x="862.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.6</text>
-<line x1="954.00" y1="308" x2="954.00" y2="314" stroke="#444444" stroke-width="1"/>
-<text x="954.00" y="330" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.7</text>
+<line x1="310" y1="342" x2="1000" y2="342" stroke="#444444" stroke-width="1"/>
+<line x1="310.00" y1="342" x2="310.00" y2="348" stroke="#444444" stroke-width="1"/>
+<text x="310.00" y="364" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.0</text>
+<line x1="402.00" y1="342" x2="402.00" y2="348" stroke="#444444" stroke-width="1"/>
+<text x="402.00" y="364" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.1</text>
+<line x1="494.00" y1="342" x2="494.00" y2="348" stroke="#444444" stroke-width="1"/>
+<text x="494.00" y="364" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.2</text>
+<line x1="586.00" y1="342" x2="586.00" y2="348" stroke="#444444" stroke-width="1"/>
+<text x="586.00" y="364" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.3</text>
+<line x1="678.00" y1="342" x2="678.00" y2="348" stroke="#444444" stroke-width="1"/>
+<text x="678.00" y="364" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.4</text>
+<line x1="770.00" y1="342" x2="770.00" y2="348" stroke="#444444" stroke-width="1"/>
+<text x="770.00" y="364" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.5</text>
+<line x1="862.00" y1="342" x2="862.00" y2="348" stroke="#444444" stroke-width="1"/>
+<text x="862.00" y="364" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.6</text>
+<line x1="954.00" y1="342" x2="954.00" y2="348" stroke="#444444" stroke-width="1"/>
+<text x="954.00" y="364" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.7</text>
 <rect x="830" y="18" width="12" height="12" fill="#4f81bd" />
 <text x="848" y="28" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#333333">Baseline</text>
 <rect x="830" y="38" width="12" height="12" fill="#c0504d" />
@@ -59,10 +59,16 @@
 <line x1="767.30" y1="251.00" x2="767.30" y2="263.00" stroke="#111111" stroke-width="1.5"/>
 <line x1="774.12" y1="251.00" x2="774.12" y2="263.00" stroke="#111111" stroke-width="1.5"/>
 <text x="778.71" y="261.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.501 ± 0.004</text>
-<text x="298" y="295.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | Treasury 10Y Sweep Env-Agent</text>
-<rect x="310" y="282.00" width="463.81" height="18" rx="2" fill="#c0504d" opacity="0.9" />
-<line x1="770.18" y1="291.00" x2="777.45" y2="291.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="770.18" y1="285.00" x2="770.18" y2="297.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="777.45" y1="285.00" x2="777.45" y2="297.00" stroke="#111111" stroke-width="1.5"/>
-<text x="781.81" y="295.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.504 ± 0.004</text>
+<text x="298" y="295.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y-3M Curve | Treasury 10Y-3M Sweep Env-Agent</text>
+<rect x="310" y="282.00" width="475.87" height="18" rx="2" fill="#c0504d" opacity="0.9" />
+<line x1="785.87" y1="291.00" x2="785.87" y2="291.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="785.87" y1="285.00" x2="785.87" y2="297.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="785.87" y1="285.00" x2="785.87" y2="297.00" stroke="#111111" stroke-width="1.5"/>
+<text x="793.87" y="295.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.517 ± 0.000</text>
+<text x="298" y="329.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | Treasury 10Y Sweep Env-Agent</text>
+<rect x="310" y="316.00" width="463.81" height="18" rx="2" fill="#c0504d" opacity="0.9" />
+<line x1="770.18" y1="325.00" x2="777.45" y2="325.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="770.18" y1="319.00" x2="770.18" y2="331.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="777.45" y1="319.00" x2="777.45" y2="331.00" stroke="#111111" stroke-width="1.5"/>
+<text x="781.81" y="329.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.504 ± 0.004</text>
 </svg>

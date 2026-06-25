@@ -41,11 +41,9 @@ The combined pilot protocol evaluates 27 baseline task-system cells and 8 agent 
 \input{../../docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.tex}
 
 \section{Results}
-Table~\ref{tab:pilot-agent-vs-best-baseline-score-overall-score} summarizes the paired overall-score comparison between each agent and the best completed-run baseline for the same task. Table~\ref{tab:pilot-uncertainty-score-overall-score} reports overall-score repeated-run uncertainty for all task-system cells.
+Table~\ref{tab:pilot-agent-vs-best-baseline-score-overall-score} summarizes the paired overall-score comparison between each agent and the best completed-run baseline for the same task. Appendix Table~\ref{tab:pilot-uncertainty-score-overall-score} reports overall-score repeated-run uncertainty for all task-system cells.
 
 \input{../../docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex}
-
-\input{../../docs/releases/pilot_v0/statistical_artifacts/tables/summary_uncertainty_overall_score.tex}
 
 \section{Manual Audit and Validity Checks}
 The pilot manual-audit bundle currently includes 6 cases across 3 reviewed tasks. Its official status is \texttt{seed\_author\_adjudication\_only}; independent-overlap agreement status is \texttt{insufficient\_independent\_overlap}, with exploratory status \texttt{pairwise\_agreement\_available}. The reviewer-readiness gate is \texttt{not\_ready\_seed\_only} with 0 completed independent reviewer packets. This makes the current audit layer suitable as a seed adjudication workflow, while a submission-ready paper should add an independent second-reviewer packet.
@@ -71,6 +69,9 @@ PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3 --market-seed 11
 FinDS-AgentBench frames financial data-science agent evaluation as a joint test of predictive performance, temporal validity, leakage resistance, reproducibility, and claim discipline. The pilot release provides the first reproducible scaffold for this evaluation and establishes the artifacts needed for an arXiv/workshop submission.
 
 \appendix
+\section{Full Repeated-Run Uncertainty Table}
+\input{../../docs/releases/pilot_v0/statistical_artifacts/tables/summary_uncertainty_overall_score.tex}
+
 \section{Full Pilot Protocol Reference Table}
 \input{../../docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex}
 

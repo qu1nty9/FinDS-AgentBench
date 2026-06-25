@@ -8,26 +8,26 @@ Temporal-reasoning benchmarks such as ~\cite{temporalbench2026} motivate time-aw
 \begin{table}[t]
 \centering
 \small
-\begin{tabular}{llll}
+\begin{tabular}{lll}
 \toprule
-Work & Focus & Overlap & FinDS-AgentBench gap \\
+Work & Neighbor Area & FinDS-AgentBench distinction \\
 \midrule
-AgentBench~\cite{agentbench2023} & Interactive LLM-agent evaluation across multiple environments. & Frames LLMs as agents acting over multi-turn environments. & Not specialized for financial ML research artifacts, point-in-time data, leakage checks, or writeup validity. \\
-SWE-bench~\cite{swebench2023} & Repository-level issue resolution from real GitHub issues and pull requests. & Execution-based, artifact-producing agent evaluation. & Software engineering rather than financial data-science research with temporal holdouts and financial validity gates. \\
-DS-1000~\cite{ds10002022} & Data-science code generation with reliable functional tests. & Data analysis and modeling tasks with executable evaluation. & Short code-generation tasks rather than full financial research workflows with notebooks, writeups, and temporal validity checks. \\
-InfiAgent-DABench~\cite{infiagentdabench2024} & Agentic data-analysis tasks over CSV datasets and execution environments. & End-to-end data analysis agents with executable code and structured evaluation. & General data analysis rather than finance-specific temporal information sets, private holdouts, leakage gates, and research writeup audit. \\
-MLAgentBench~\cite{mlagentbench2023} & Language agents conducting ML experimentation tasks. & Long-horizon ML experimentation with file editing and code execution. & Not domain-specific to financial ML, point-in-time data availability, backtest realism, or claim audit. \\
-MLE-bench~\cite{mlebench2024} & Kaggle-style ML engineering competitions for agents. & Agentic ML engineering, leaderboard-style scoring, and contamination analysis. & Broad ML engineering rather than finance-specific temporal information sets, leakage-safe research notebooks, and validity-gated writeups. \\
-ScienceAgentBench~\cite{scienceagentbench2024} & Scientific workflow tasks extracted from peer-reviewed publications. & Research-style agent evaluation with code execution and expert validation. & Not specialized for market data, point-in-time financial constraints, financial metrics, or investment-style claim discipline. \\
-MLR-Bench~\cite{mlrbench2025} & Open-ended ML research tasks with proposal, experimentation, and paper-writing stages. & Evaluates research automation and paper-style outputs. & Not focused on finance-specific leakage, temporal validation, private holdouts, or financial model-risk framing. \\
-FinanceBench~\cite{financebench2023} & Open-book financial QA over company documents. & Finance-domain LLM evaluation with evidence requirements. & QA rather than executable financial ML research with notebooks, temporal holdouts, and private scoring. \\
-FinBen~\cite{finben2024} & Broad financial LLM benchmark across language, QA, forecasting, risk, and decision tasks. & Finance-specific LLM evaluation across heterogeneous task types. & Broad LLM capability suite rather than validity-gated end-to-end financial ML research artifacts. \\
-Profit Mirage / FinLake-Bench~\cite{profitmirage2025} & Information leakage in LLM-based financial agents and leakage-robust evaluation. & Closest finance-agent neighbor for leakage-aware evaluation. & Focuses on leakage and trading-agent generalization; FinDS-AgentBench broadens to reproducible ML research artifacts, task/evaluation cards, writeup audit, and multi-track validity scoring. \\
-TemporalBench~\cite{temporalbench2026} & Contextual and event-informed time-series reasoning across multiple domains. & Temporal reasoning and event-conditioned prediction. & Multi-domain time-series reasoning rather than financial ML research artifacts with point-in-time market data, leakage scanning, and narrative audit. \\
-FinToolBench~\cite{fintoolbench2026} & Financial tool-learning agents over executable financial tools. & Auditable financial agent execution and finance-specific tool use. & Tool invocation rather than leakage-safe financial ML research notebooks and validity-gated result claims. \\
-FinMCP-Bench~\cite{finmcpbench2026} & Financial tool invocation through model context protocol servers. & Financial agent execution with real and synthetic tool-use queries. & MCP/tool-use benchmark rather than end-to-end financial ML research with temporal holdouts and artifact audit. \\
-WorkstreamBench~\cite{workstreambench2026} & End-to-end financial spreadsheet construction and review. & Finance workflow artifacts and multidimensional professional-quality evaluation. & Spreadsheet modeling rather than financial ML research with temporal prediction tasks, private holdouts, and leakage/reproducibility gates. \\
-BlueFin~\cite{bluefin2026} & Financial spreadsheet synthesis, manipulation, and comprehension tasks. & Finance-domain agent artifacts with granular rubric-based evaluation. & Spreadsheet workbook workflows rather than executable financial ML research notebooks, temporal prediction tasks, and leakage-safe private scoring. \\
+AgentBench~\cite{agentbench2023} & General agent benchmark & Broad agent tasks; no financial ML protocol or point-in-time validity gates. \\
+SWE-bench~\cite{swebench2023} & Software-engineering agent benchmark & Software repair rather than financial research notebooks and temporal holdouts. \\
+DS-1000~\cite{ds10002022} & Data-science agent benchmark & Code-generation tasks rather than full financial ML research artifacts. \\
+InfiAgent-DABench~\cite{infiagentdabench2024} & Data-science agent benchmark & General data analysis without finance-specific leakage and holdout discipline. \\
+MLAgentBench~\cite{mlagentbench2023} & ML agent benchmark & ML experimentation without finance-specific data calendars or claim audit. \\
+MLE-bench~\cite{mlebench2024} & ML agent benchmark & Kaggle-style ML engineering rather than financial temporal information discipline. \\
+ScienceAgentBench~\cite{scienceagentbench2024} & General agent benchmark & Scientific workflows without market data, finance metrics, or investment-claim audit. \\
+MLR-Bench~\cite{mlrbench2025} & ML agent benchmark & Open-ended ML research without finance leakage, private holdouts, or model-risk framing. \\
+FinanceBench~\cite{financebench2023} & Finance-domain agent/LLM benchmark & Financial QA rather than executable financial ML research artifacts. \\
+FinBen~\cite{finben2024} & Finance-domain agent/LLM benchmark & Broad financial LLM skills rather than validity-gated research workflows. \\
+Profit Mirage / FinLake-Bench~\cite{profitmirage2025} & Finance-domain agent/LLM benchmark & Leakage-aware financial agents, but not reproducible research notebooks and audit cards. \\
+TemporalBench~\cite{temporalbench2026} & Temporal reasoning benchmark & Time-series reasoning without financial ML artifacts and private temporal scoring. \\
+FinToolBench~\cite{fintoolbench2026} & Finance-domain agent/LLM benchmark & Tool invocation rather than leakage-safe financial ML notebooks. \\
+FinMCP-Bench~\cite{finmcpbench2026} & Finance-domain agent/LLM benchmark & MCP tool use rather than end-to-end financial ML research workflows. \\
+WorkstreamBench~\cite{workstreambench2026} & Finance-domain agent/LLM benchmark & Spreadsheet workflows rather than temporal prediction and leakage-safe scoring. \\
+BlueFin~\cite{bluefin2026} & Finance-domain agent/LLM benchmark & Spreadsheet tasks rather than executable financial ML notebooks and holdouts. \\
 \bottomrule
 \end{tabular}
 \caption{Related benchmark positioning. FinDS-AgentBench targets the missing intersection of end-to-end financial ML research artifacts, temporal information discipline, leakage resistance, reproducibility, and writeup validity.}

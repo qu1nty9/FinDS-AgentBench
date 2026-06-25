@@ -1,6 +1,7 @@
 \begin{table}[t]
 \centering
 \small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lllcccc}
 \toprule
 Task & Agent & Type & $n$ & Overall & Balanced Acc. & ROC AUC \\
@@ -11,9 +12,11 @@ Synthetic Market & Market Sweep Env-Agent & Agent & 3 & 0.511 \pm 0.020 & 0.511 
 USD AFE vs. EME & USD Sweep Env-Agent & Agent & 3 & 0.507 \pm 0.007 & 0.507 \pm 0.007 & 0.517 \pm 0.011 \\
 USD Broad & USD Sweep Env-Agent & Agent & 3 & 0.502 \pm 0.005 & 0.502 \pm 0.005 & 0.497 \pm 0.015 \\
 Treasury 10Y-2Y Curve & Treasury 10Y-2Y Sweep Env-Agent & Agent & 3 & 0.501 \pm 0.004 & 0.501 \pm 0.004 & 0.522 \pm 0.000 \\
+Treasury 10Y-3M Curve & Treasury 10Y-3M Sweep Env-Agent & Agent & 3 & 0.517 \pm 0.000 & 0.517 \pm 0.000 & 0.526 \pm 0.000 \\
 Treasury 10Y Direction & Treasury 10Y Sweep Env-Agent & Agent & 3 & 0.504 \pm 0.004 & 0.504 \pm 0.004 & 0.527 \pm 0.000 \\
 \bottomrule
 \end{tabular}
+}
 \caption{Pilot Agent Suite repeated-run summary. Means and sample standard deviations are computed over the configured seeds.}
 \label{tab:pilot-agent-suite}
 \end{table}

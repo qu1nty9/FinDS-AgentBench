@@ -420,17 +420,16 @@ def render_related_work_tex(entries: list[RelatedWorkEntry] | None = None) -> st
             "\\begin{table}[t]",
             "\\centering",
             "\\small",
-            "\\begin{tabular}{llll}",
+            "\\begin{tabular}{lll}",
             "\\toprule",
-            "Work & Focus & Overlap & FinDS-AgentBench gap \\\\",
+            "Work & Neighbor Area & FinDS-AgentBench distinction \\\\",
             "\\midrule",
             *[
                 " & ".join(
                     [
                         f"{latex_escape(entry.short_name)}~\\cite{{{entry.key}}}",
-                        latex_escape(entry.primary_focus),
-                        latex_escape(entry.relevant_overlap),
-                        latex_escape(entry.gap_for_finds),
+                        latex_escape(related_work_area(entry)),
+                        latex_escape(compact_gap_for_table(entry)),
                     ]
                 )
                 + " \\\\"
@@ -448,6 +447,42 @@ def render_related_work_tex(entries: list[RelatedWorkEntry] | None = None) -> st
 
 def citation_group(keys: list[str]) -> str:
     return "~\\cite{" + ",".join(keys) + "}"
+
+
+def related_work_area(entry: RelatedWorkEntry) -> str:
+    if "finance" in entry.category or "financial" in entry.category:
+        return "Finance-domain agent/LLM benchmark"
+    if "machine_learning" in entry.category:
+        return "ML agent benchmark"
+    if "data" in entry.category:
+        return "Data-science agent benchmark"
+    if "temporal" in entry.category:
+        return "Temporal reasoning benchmark"
+    if "software" in entry.category:
+        return "Software-engineering agent benchmark"
+    return "General agent benchmark"
+
+
+def compact_gap_for_table(entry: RelatedWorkEntry) -> str:
+    table_gaps = {
+        "agentbench2023": "Broad agent tasks; no financial ML protocol or point-in-time validity gates.",
+        "swebench2023": "Software repair rather than financial research notebooks and temporal holdouts.",
+        "ds10002022": "Code-generation tasks rather than full financial ML research artifacts.",
+        "infiagentdabench2024": "General data analysis without finance-specific leakage and holdout discipline.",
+        "mlagentbench2023": "ML experimentation without finance-specific data calendars or claim audit.",
+        "mlebench2024": "Kaggle-style ML engineering rather than financial temporal information discipline.",
+        "scienceagentbench2024": "Scientific workflows without market data, finance metrics, or investment-claim audit.",
+        "mlrbench2025": "Open-ended ML research without finance leakage, private holdouts, or model-risk framing.",
+        "financebench2023": "Financial QA rather than executable financial ML research artifacts.",
+        "finben2024": "Broad financial LLM skills rather than validity-gated research workflows.",
+        "profitmirage2025": "Leakage-aware financial agents, but not reproducible research notebooks and audit cards.",
+        "temporalbench2026": "Time-series reasoning without financial ML artifacts and private temporal scoring.",
+        "fintoolbench2026": "Tool invocation rather than leakage-safe financial ML notebooks.",
+        "finmcpbench2026": "MCP tool use rather than end-to-end financial ML research workflows.",
+        "workstreambench2026": "Spreadsheet workflows rather than temporal prediction and leakage-safe scoring.",
+        "bluefin2026": "Spreadsheet tasks rather than executable financial ML notebooks and holdouts.",
+    }
+    return table_gaps.get(entry.key, entry.gap_for_finds)
 
 
 def render_bibtex(entries: list[RelatedWorkEntry] | None = None) -> str:

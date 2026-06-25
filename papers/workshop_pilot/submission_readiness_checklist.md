@@ -18,6 +18,7 @@ This checklist tracks work that should be complete before treating the workshop 
 - Generated qualitative failure examples with exact task/run/artifact references.
 - Audited related-work matrix with corrected venue-neighbor citations and positioning notes.
 - Static manuscript formatting checker covering inputs, citations, labels, table structure, and PDF-risk warnings.
+- Manuscript table-layout mitigations for related-work, result, uncertainty, and protocol tables.
 
 ## Required Before Submission
 

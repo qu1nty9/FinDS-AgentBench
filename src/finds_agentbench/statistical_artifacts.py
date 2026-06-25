@@ -449,9 +449,9 @@ def render_agent_vs_best_baseline_latex_table(
         "\\begin{table}[t]",
         "\\centering",
         "\\small",
-        "\\begin{tabular}{lllrrrrr}",
+        "\\begin{tabular}{lllrrr}",
         "\\toprule",
-        "Task & Agent & Best Baseline & $n$ & Agent & Baseline & $\\Delta$ & $p_{sign}$ \\\\",
+        "Task & Agent vs. Baseline & $n$ & Agent & Baseline & $\\Delta$ ($p_{sign}$) \\\\",
         "\\midrule",
     ]
     for row in selected_rows:
@@ -460,13 +460,18 @@ def render_agent_vs_best_baseline_latex_table(
             " & ".join(
                 [
                     latex_escape(pretty_task_label(str(row["task_id"]))),
-                    latex_escape(pretty_agent_label(str(row["agent_id"]))),
-                    latex_escape(pretty_agent_label(str(row["best_baseline_agent_id"]))),
+                    (
+                        latex_escape(pretty_agent_label(str(row["agent_id"])))
+                        + " / "
+                        + latex_escape(pretty_agent_label(str(row["best_baseline_agent_id"])))
+                    ),
                     str(row["paired_count"]),
                     format_latex_float(row["agent_mean"]),
                     format_latex_float(row["best_baseline_mean"]),
-                    format_latex_float(row["mean_difference"]),
-                    format_latex_float(p_value) if p_value is not None else "",
+                    (
+                        f"{format_latex_float(row['mean_difference'])}"
+                        f" ({format_latex_float(p_value) if p_value is not None else '--'})"
+                    ),
                 ]
             )
             + " \\\\"

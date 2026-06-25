@@ -1,24 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="902" viewBox="0 0 1040 902" role="img" aria-label="Pilot Baseline Suite overall score chart">
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="1038" viewBox="0 0 1040 1038" role="img" aria-label="Pilot Baseline Suite overall score chart">
 <rect width="100%" height="100%" fill="#ffffff" />
 <text x="310" y="30" font-size="22" font-family="Arial, Helvetica, sans-serif" fill="#111111">Pilot Baseline Suite</text>
 <text x="310" y="50" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#555555">Overall score mean with sample-standard-deviation error bars</text>
-<line x1="310" y1="852" x2="1000" y2="852" stroke="#444444" stroke-width="1"/>
-<line x1="310.00" y1="852" x2="310.00" y2="858" stroke="#444444" stroke-width="1"/>
-<text x="310.00" y="874" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.0</text>
-<line x1="402.00" y1="852" x2="402.00" y2="858" stroke="#444444" stroke-width="1"/>
-<text x="402.00" y="874" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.1</text>
-<line x1="494.00" y1="852" x2="494.00" y2="858" stroke="#444444" stroke-width="1"/>
-<text x="494.00" y="874" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.2</text>
-<line x1="586.00" y1="852" x2="586.00" y2="858" stroke="#444444" stroke-width="1"/>
-<text x="586.00" y="874" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.3</text>
-<line x1="678.00" y1="852" x2="678.00" y2="858" stroke="#444444" stroke-width="1"/>
-<text x="678.00" y="874" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.4</text>
-<line x1="770.00" y1="852" x2="770.00" y2="858" stroke="#444444" stroke-width="1"/>
-<text x="770.00" y="874" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.5</text>
-<line x1="862.00" y1="852" x2="862.00" y2="858" stroke="#444444" stroke-width="1"/>
-<text x="862.00" y="874" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.6</text>
-<line x1="954.00" y1="852" x2="954.00" y2="858" stroke="#444444" stroke-width="1"/>
-<text x="954.00" y="874" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.7</text>
+<line x1="310" y1="988" x2="1000" y2="988" stroke="#444444" stroke-width="1"/>
+<line x1="310.00" y1="988" x2="310.00" y2="994" stroke="#444444" stroke-width="1"/>
+<text x="310.00" y="1010" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.0</text>
+<line x1="402.00" y1="988" x2="402.00" y2="994" stroke="#444444" stroke-width="1"/>
+<text x="402.00" y="1010" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.1</text>
+<line x1="494.00" y1="988" x2="494.00" y2="994" stroke="#444444" stroke-width="1"/>
+<text x="494.00" y="1010" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.2</text>
+<line x1="586.00" y1="988" x2="586.00" y2="994" stroke="#444444" stroke-width="1"/>
+<text x="586.00" y="1010" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.3</text>
+<line x1="678.00" y1="988" x2="678.00" y2="994" stroke="#444444" stroke-width="1"/>
+<text x="678.00" y="1010" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.4</text>
+<line x1="770.00" y1="988" x2="770.00" y2="994" stroke="#444444" stroke-width="1"/>
+<text x="770.00" y="1010" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.5</text>
+<line x1="862.00" y1="988" x2="862.00" y2="994" stroke="#444444" stroke-width="1"/>
+<text x="862.00" y="1010" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.6</text>
+<line x1="954.00" y1="988" x2="954.00" y2="994" stroke="#444444" stroke-width="1"/>
+<text x="954.00" y="1010" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#555555">0.7</text>
 <rect x="830" y="18" width="12" height="12" fill="#4f81bd" />
 <text x="848" y="28" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#333333">Baseline</text>
 <rect x="830" y="38" width="12" height="12" fill="#c0504d" />
@@ -137,28 +137,52 @@
 <line x1="764.56" y1="693.00" x2="764.56" y2="705.00" stroke="#111111" stroke-width="1.5"/>
 <line x1="771.01" y1="693.00" x2="771.01" y2="705.00" stroke="#111111" stroke-width="1.5"/>
 <text x="775.78" y="703.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.498 ± 0.004</text>
-<text x="298" y="737.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | Extra Trees</text>
-<rect x="310" y="724.00" width="465.86" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
-<line x1="768.72" y1="733.00" x2="783.00" y2="733.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="768.72" y1="727.00" x2="768.72" y2="739.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="783.00" y1="727.00" x2="783.00" y2="739.00" stroke="#111111" stroke-width="1.5"/>
-<text x="783.86" y="737.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.506 ± 0.008</text>
-<text x="298" y="771.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | LogReg</text>
-<rect x="310" y="758.00" width="448.00" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
-<line x1="758.00" y1="767.00" x2="758.00" y2="767.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="758.00" y1="761.00" x2="758.00" y2="773.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="758.00" y1="761.00" x2="758.00" y2="773.00" stroke="#111111" stroke-width="1.5"/>
-<text x="766.00" y="771.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.487 ± 0.000</text>
-<text x="298" y="805.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | Prev-Day</text>
-<rect x="310" y="792.00" width="454.24" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
-<line x1="764.24" y1="801.00" x2="764.24" y2="801.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="764.24" y1="795.00" x2="764.24" y2="807.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="764.24" y1="795.00" x2="764.24" y2="807.00" stroke="#111111" stroke-width="1.5"/>
-<text x="772.24" y="805.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.494 ± 0.000</text>
-<text x="298" y="839.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | Rand. Forest</text>
-<rect x="310" y="826.00" width="463.07" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
-<line x1="765.18" y1="835.00" x2="780.97" y2="835.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="765.18" y1="829.00" x2="765.18" y2="841.00" stroke="#111111" stroke-width="1.5"/>
-<line x1="780.97" y1="829.00" x2="780.97" y2="841.00" stroke="#111111" stroke-width="1.5"/>
-<text x="781.07" y="839.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.503 ± 0.009</text>
+<text x="298" y="737.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y-3M Curve | Extra Trees</text>
+<rect x="310" y="724.00" width="490.71" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
+<line x1="790.37" y1="733.00" x2="811.05" y2="733.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="790.37" y1="727.00" x2="790.37" y2="739.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="811.05" y1="727.00" x2="811.05" y2="739.00" stroke="#111111" stroke-width="1.5"/>
+<text x="808.71" y="737.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.533 ± 0.011</text>
+<text x="298" y="771.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y-3M Curve | LogReg</text>
+<rect x="310" y="758.00" width="475.87" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
+<line x1="785.87" y1="767.00" x2="785.87" y2="767.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="785.87" y1="761.00" x2="785.87" y2="773.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="785.87" y1="761.00" x2="785.87" y2="773.00" stroke="#111111" stroke-width="1.5"/>
+<text x="793.87" y="771.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.517 ± 0.000</text>
+<text x="298" y="805.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y-3M Curve | Prev-Day</text>
+<rect x="310" y="792.00" width="460.00" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
+<line x1="770.00" y1="801.00" x2="770.00" y2="801.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="770.00" y1="795.00" x2="770.00" y2="807.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="770.00" y1="795.00" x2="770.00" y2="807.00" stroke="#111111" stroke-width="1.5"/>
+<text x="778.00" y="805.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.500 ± 0.000</text>
+<text x="298" y="839.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y-3M Curve | Rand. Forest</text>
+<rect x="310" y="826.00" width="489.56" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
+<line x1="792.31" y1="835.00" x2="806.80" y2="835.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="792.31" y1="829.00" x2="792.31" y2="841.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="806.80" y1="829.00" x2="806.80" y2="841.00" stroke="#111111" stroke-width="1.5"/>
+<text x="807.56" y="839.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.532 ± 0.008</text>
+<text x="298" y="873.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | Extra Trees</text>
+<rect x="310" y="860.00" width="465.86" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
+<line x1="768.72" y1="869.00" x2="783.00" y2="869.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="768.72" y1="863.00" x2="768.72" y2="875.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="783.00" y1="863.00" x2="783.00" y2="875.00" stroke="#111111" stroke-width="1.5"/>
+<text x="783.86" y="873.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.506 ± 0.008</text>
+<text x="298" y="907.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | LogReg</text>
+<rect x="310" y="894.00" width="448.00" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
+<line x1="758.00" y1="903.00" x2="758.00" y2="903.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="758.00" y1="897.00" x2="758.00" y2="909.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="758.00" y1="897.00" x2="758.00" y2="909.00" stroke="#111111" stroke-width="1.5"/>
+<text x="766.00" y="907.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.487 ± 0.000</text>
+<text x="298" y="941.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | Prev-Day</text>
+<rect x="310" y="928.00" width="454.24" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
+<line x1="764.24" y1="937.00" x2="764.24" y2="937.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="764.24" y1="931.00" x2="764.24" y2="943.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="764.24" y1="931.00" x2="764.24" y2="943.00" stroke="#111111" stroke-width="1.5"/>
+<text x="772.24" y="941.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.494 ± 0.000</text>
+<text x="298" y="975.00" text-anchor="end" font-size="12" font-family="Arial, Helvetica, sans-serif" fill="#222222">Treasury 10Y Direction | Rand. Forest</text>
+<rect x="310" y="962.00" width="463.07" height="18" rx="2" fill="#4f81bd" opacity="0.9" />
+<line x1="765.18" y1="971.00" x2="780.97" y2="971.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="765.18" y1="965.00" x2="765.18" y2="977.00" stroke="#111111" stroke-width="1.5"/>
+<line x1="780.97" y1="965.00" x2="780.97" y2="977.00" stroke="#111111" stroke-width="1.5"/>
+<text x="781.07" y="975.00" font-size="11" font-family="Arial, Helvetica, sans-serif" fill="#333333">0.503 ± 0.009</text>
 </svg>

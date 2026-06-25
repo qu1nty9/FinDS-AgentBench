@@ -99,6 +99,7 @@ def render_section_latex_table(section: dict[str, Any]) -> str:
         "\\begin{table}[t]",
         "\\centering",
         "\\small",
+        "\\resizebox{\\textwidth}{!}{%",
         "\\begin{tabular}{lllcccc}",
         "\\toprule",
         "Task & Agent & Type & $n$ & Overall & Balanced Acc. & ROC AUC \\\\",
@@ -126,6 +127,7 @@ def render_section_latex_table(section: dict[str, Any]) -> str:
         [
             "\\bottomrule",
             "\\end{tabular}",
+            "}",
             f"\\caption{{{latex_escape(caption)}}}",
             f"\\label{{{label}}}",
             "\\end{table}",

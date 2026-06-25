@@ -1,8 +1,8 @@
 {
   "archive_mtime_policy": "tar and gzip mtimes are normalized to 0",
   "archive_path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
-  "archive_sha256": "31b24365321f1cc2f5b60241e3e0ceeb38c9ace690b7b528180ce62b4cd5af19",
-  "archive_size_bytes": 280580,
+  "archive_sha256": "8cee4a3391c1360094d4b6f143c7564ebdcd00ddd022f634e62cf4e334d65eaa",
+  "archive_size_bytes": 282062,
   "archive_status": "candidate_unfrozen",
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
@@ -615,33 +615,33 @@
     },
     {
       "path": "docs/releases/pilot_v0/paper_artifacts/figures/pilot_agent_suite_overall_score.svg",
-      "sha256": "9adf7337992a63c56faeecf102f84494618850ff0054ae097a2795307c6409b0",
-      "size_bytes": 7211
+      "sha256": "93565d25792af062ec6c783694861dc9f334b601dfe50600c22f81011f07b078",
+      "size_bytes": 7880
     },
     {
       "path": "docs/releases/pilot_v0/paper_artifacts/figures/pilot_baseline_suite_overall_score.svg",
-      "sha256": "794d876e87f8e7aa32a1190e36b7933a5158a586a8bf73c06a291afd83dabbfd",
-      "size_bytes": 17399
+      "sha256": "7da8330c5517845172ccdb95fabe8655d837da1cc38b4b663050da2fd0c62c43",
+      "size_bytes": 19998
     },
     {
       "path": "docs/releases/pilot_v0/paper_artifacts/figures/pilot_protocol_overall_score.svg",
-      "sha256": "0848838077df44b077f0735e371f333a439ec25752f832f3a6d63aae43b10962",
-      "size_bytes": 22054
+      "sha256": "a94bcc5d2920cf713458d2e8cf3bff93e91b08628bebc9ef10e07fc5ba409f50",
+      "size_bytes": 25357
     },
     {
       "path": "docs/releases/pilot_v0/paper_artifacts/tables/pilot_agent_suite.tex",
-      "sha256": "19ce1c168cde4bf3c6d98ad90eb10f8bdd2daf124509e1d464b054716c51bfcf",
-      "size_bytes": 1127
+      "sha256": "8697cb8ec0b83282eaa7e84b3f02a483c8c154157da585560c7d58ac98d61146",
+      "size_bytes": 1282
     },
     {
       "path": "docs/releases/pilot_v0/paper_artifacts/tables/pilot_baseline_suite.tex",
-      "sha256": "8f36496f4b40347ad4870a7922ae58289f1670a6940a91ab98d2e966ad7bedb7",
-      "size_bytes": 2680
+      "sha256": "6509d6f0406c74293c9f844cbc7c37c94587950d3057791f836e9d77002cd1c5",
+      "size_bytes": 3135
     },
     {
       "path": "docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex",
-      "sha256": "3ef3a9cef3600a0cf4337aa1f7ab2beb34d8aee955a99e86625d22db9b49985d",
-      "size_bytes": 3466
+      "sha256": "53d874704e4e93af10d82798203eb0079a30a51d86ffa441fc6848433c564042",
+      "size_bytes": 4046
     },
     {
       "path": "docs/releases/pilot_v0/reference_results.json",
@@ -700,8 +700,8 @@
     },
     {
       "path": "docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex",
-      "sha256": "9a97f0735ea03ac68c1a18223aa2078f2a5253b38a284b2133ef2b353610d5f8",
-      "size_bytes": 1211
+      "sha256": "9b70124fc5e2df28d7ae892c9c4410e045da45ab1a8d418c9346016e331425c2",
+      "size_bytes": 1210
     },
     {
       "path": "docs/releases/pilot_v0/statistical_artifacts/tables/summary_uncertainty_overall_score.tex",
@@ -1300,8 +1300,8 @@
     },
     {
       "path": "src/finds_agentbench/manuscript_formatting.py",
-      "sha256": "7d5d071f4159536934f9e6b50b3ef5fe8050a663c888a0ace011289273eda264",
-      "size_bytes": 19759
+      "sha256": "2380f1c3aaccfa410c7f65df955222f6bc1ea5866c7d74db51876aaa4cafa287",
+      "size_bytes": 21287
     },
     {
       "path": "src/finds_agentbench/methodology.py",
@@ -1315,13 +1315,13 @@
     },
     {
       "path": "src/finds_agentbench/paper_artifacts.py",
-      "sha256": "d5a10c1e3fdda21424e3164406385e4f68dad9d72781ccbea5e82a0c76b7bfca",
-      "size_bytes": 11359
+      "sha256": "2bc0c74856b5d827a5711460308904bb53bea419c2e1dcad0407d3afa7c687ad",
+      "size_bytes": 11417
     },
     {
       "path": "src/finds_agentbench/pilot_manuscript.py",
-      "sha256": "264369c9b2acd6ce95fd58579aac2efe289cf3ab4f738ba782cf693b44540e4d",
-      "size_bytes": 35725
+      "sha256": "235684840fc0323276f48d25a086d1fc2518fbfa62e479a52e5fbe3863391d3f",
+      "size_bytes": 35909
     },
     {
       "path": "src/finds_agentbench/pilot_release.py",
@@ -1340,8 +1340,8 @@
     },
     {
       "path": "src/finds_agentbench/related_work.py",
-      "sha256": "0039e511d3437746ef84c230e52a22e2a05957d338e68040d56c7777e83d1086",
-      "size_bytes": 23257
+      "sha256": "a94e83b2f4d6defebda69df11354511dcdf52016247cf165146bad10ca99a39f",
+      "size_bytes": 25632
     },
     {
       "path": "src/finds_agentbench/release_archive.py",
@@ -1375,8 +1375,8 @@
     },
     {
       "path": "src/finds_agentbench/statistical_artifacts.py",
-      "sha256": "21bc6eb3506f6248254a3b235d37070ac33eb256807b9bedd61237ca68c1cb42",
-      "size_bytes": 27120
+      "sha256": "6ea55f8c075209f07606fe128bc2cc339de1d7455c08370a4528c72cfa5c3c0f",
+      "size_bytes": 27266
     },
     {
       "path": "src/finds_agentbench/submission_readiness.py",
@@ -1490,6 +1490,6 @@
     "ready_for_workshop_submission": false,
     "status": "not_ready_for_workshop_submission"
   },
-  "total_uncompressed_size_bytes": 2357599,
+  "total_uncompressed_size_bytes": 2369650,
   "verification_command": "PYTHONPATH=src python scripts/verify_release_archive.py"
 }

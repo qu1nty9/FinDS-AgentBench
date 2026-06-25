@@ -134,3 +134,4 @@ Acceptance criteria:
 - Added an independent participant brief that defines required reviewer, external-agent, domain-reader, and reproducibility-reader roles before stronger publication claims.
 - Audited the related-work matrix against arXiv records, corrected the financial spreadsheet neighbor citation to WorkstreamBench, added BlueFin and InfiAgent-DABench, and tightened venue-positioning claims.
 - Added a static manuscript formatting checker that validates LaTeX inputs, citations, references, labels, table structure, and PDF-risk warnings before final TeX compilation.
+- Reduced manuscript formatting warnings by compacting the related-work table, compacting the agent-vs-baseline table, moving the full uncertainty table to the appendix, and marking the full protocol table with an explicit width mitigation.

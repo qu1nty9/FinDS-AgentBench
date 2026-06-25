@@ -113,3 +113,71 @@ def test_manuscript_formatting_report_rejects_missing_inputs_and_citations(tmp_p
     assert "unresolved_citation" in hard_error_kinds
     assert result.json_path.exists()
     assert result.markdown_path.exists()
+
+
+def test_manuscript_formatting_report_treats_appendix_and_resizebox_as_mitigations(
+    tmp_path: Path,
+):
+    paper_root = tmp_path / "papers" / "workshop_pilot"
+    main_tex = paper_root / "main.tex"
+    wide_tex = paper_root / "wide_table.tex"
+    appendix_tex = paper_root / "appendix_table.tex"
+    write_text(
+        main_tex,
+        "\n".join(
+            [
+                "\\documentclass{article}",
+                "\\usepackage{graphicx}",
+                "\\begin{document}",
+                "\\input{wide_table.tex}",
+                "\\appendix",
+                "\\input{appendix_table.tex}",
+                "\\end{document}",
+                "",
+            ]
+        ),
+    )
+    write_text(
+        wide_tex,
+        "\n".join(
+            [
+                "\\begin{table}[t]",
+                "\\centering",
+                "\\resizebox{\\textwidth}{!}{%",
+                "\\begin{tabular}{llllllll}",
+                "A & B & C & D & E & F & G & H \\\\",
+                "\\end{tabular}",
+                "}",
+                "\\caption{Wide table.}",
+                "\\label{tab:wide}",
+                "\\end{table}",
+                "",
+            ]
+        ),
+    )
+    appendix_rows = ["A & B \\\\" for _ in range(35)]
+    write_text(
+        appendix_tex,
+        "\n".join(
+            [
+                "\\begin{table}[t]",
+                "\\centering",
+                "\\begin{tabular}{ll}",
+                *appendix_rows,
+                "\\end{tabular}",
+                "\\caption{Appendix table.}",
+                "\\label{tab:appendix}",
+                "\\end{table}",
+                "",
+            ]
+        ),
+    )
+
+    report = build_manuscript_formatting_report(main_tex_path=main_tex, workspace_root=tmp_path)
+
+    warning_kinds = {entry["kind"] for entry in report["warnings"]}
+    assert "wide_table_candidate" not in warning_kinds
+    assert "long_table_candidate" not in warning_kinds
+    assert report["mitigated_table_count"] == 2
+    assert any(table["placement"] == "appendix" for table in report["tables"])
+    assert any(table["width_mitigation"] == "resizebox" for table in report["tables"])

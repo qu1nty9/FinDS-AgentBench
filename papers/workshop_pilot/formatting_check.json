@@ -52,10 +52,9 @@
     "path": null
   },
   "main_tex_path": "papers/workshop_pilot/main.tex",
+  "mitigated_table_count": 2,
   "next_actions": [
     "Run a real LaTeX engine and inspect the generated PDF before final submission.",
-    "Inspect wide-table candidates in the compiled PDF and resize or split if needed.",
-    "Inspect long appendix tables and move them to appendix or supplementary material if needed.",
     "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
   ],
   "pdf_compile_status": "not_run_no_latex_engine",
@@ -68,22 +67,26 @@
     {
       "caption_present": true,
       "label": "tab:related-work-positioning",
-      "max_column_count": 4,
-      "max_row_length": 394,
+      "max_column_count": 3,
+      "max_row_length": 184,
       "path": "papers/workshop_pilot/related_work.tex",
+      "placement": "main",
       "row_count": 17,
       "table_index": 1,
-      "tabular_count": 1
+      "tabular_count": 1,
+      "width_mitigation": null
     },
     {
       "caption_present": true,
       "label": "tab:pilot-agent-vs-best-baseline-score-overall-score",
-      "max_column_count": 8,
+      "max_column_count": 6,
       "max_row_length": 109,
       "path": "docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex",
+      "placement": "main",
       "row_count": 9,
       "table_index": 1,
-      "tabular_count": 1
+      "tabular_count": 1,
+      "width_mitigation": null
     },
     {
       "caption_present": true,
@@ -91,9 +94,11 @@
       "max_column_count": 6,
       "max_row_length": 95,
       "path": "docs/releases/pilot_v0/statistical_artifacts/tables/summary_uncertainty_overall_score.tex",
+      "placement": "appendix",
       "row_count": 36,
       "table_index": 1,
-      "tabular_count": 1
+      "tabular_count": 1,
+      "width_mitigation": null
     },
     {
       "caption_present": true,
@@ -101,18 +106,20 @@
       "max_column_count": 7,
       "max_row_length": 124,
       "path": "docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex",
-      "row_count": 31,
+      "placement": "appendix",
+      "row_count": 36,
       "table_index": 1,
-      "tabular_count": 1
+      "tabular_count": 1,
+      "width_mitigation": "resizebox"
     }
   ],
   "tex_file_count": 7,
   "tex_files": [
     {
       "input_count": 0,
-      "line_count": 42,
+      "line_count": 49,
       "path": "docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex",
-      "size_bytes": 3466
+      "size_bytes": 4046
     },
     {
       "input_count": 0,
@@ -124,7 +131,7 @@
       "input_count": 0,
       "line_count": 20,
       "path": "docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex",
-      "size_bytes": 1211
+      "size_bytes": 1210
     },
     {
       "input_count": 0,
@@ -140,52 +147,19 @@
     },
     {
       "input_count": 6,
-      "line_count": 80,
+      "line_count": 81,
       "path": "papers/workshop_pilot/main.tex",
-      "size_bytes": 6759
+      "size_bytes": 6814
     },
     {
       "input_count": 0,
       "line_count": 35,
       "path": "papers/workshop_pilot/related_work.tex",
-      "size_bytes": 7148
+      "size_bytes": 4667
     }
   ],
-  "warning_count": 6,
+  "warning_count": 1,
   "warnings": [
-    {
-      "kind": "wide_table_candidate",
-      "label": "tab:related-work-positioning",
-      "max_column_count": 4,
-      "max_row_length": 394,
-      "path": "papers/workshop_pilot/related_work.tex"
-    },
-    {
-      "kind": "wide_table_candidate",
-      "label": "tab:pilot-agent-vs-best-baseline-score-overall-score",
-      "max_column_count": 8,
-      "max_row_length": 109,
-      "path": "docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex"
-    },
-    {
-      "kind": "long_table_candidate",
-      "label": "tab:pilot-uncertainty-score-overall-score",
-      "path": "docs/releases/pilot_v0/statistical_artifacts/tables/summary_uncertainty_overall_score.tex",
-      "row_count": 36
-    },
-    {
-      "kind": "wide_table_candidate",
-      "label": "tab:pilot-protocol",
-      "max_column_count": 7,
-      "max_row_length": 124,
-      "path": "docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex"
-    },
-    {
-      "kind": "long_table_candidate",
-      "label": "tab:pilot-protocol",
-      "path": "docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex",
-      "row_count": 31
-    },
     {
       "kind": "latex_engine_unavailable",
       "message": "Install latexmk, tectonic, pdflatex, xelatex, or lualatex before PDF compilation."
