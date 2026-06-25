@@ -1,8 +1,8 @@
 {
   "archive_mtime_policy": "tar and gzip mtimes are normalized to 0",
   "archive_path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
-  "archive_sha256": "8e9e84685bc0d8cb75348f4bd04af63b5e56f29f94ca15bd83a8214cd13d79bd",
-  "archive_size_bytes": 274975,
+  "archive_sha256": "958d8bf676b885098f8300dcd6aea5083c8c07ed2cf68bf61bae654fb4c93b67",
+  "archive_size_bytes": 275908,
   "archive_status": "candidate_unfrozen",
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
@@ -1310,8 +1310,8 @@
     },
     {
       "path": "src/finds_agentbench/pilot_manuscript.py",
-      "sha256": "e766808567270b3162b18b9ce5694ffedb058c6c7a41e0d46f51bcf1443a1b6f",
-      "size_bytes": 34393
+      "sha256": "18414dae04b7f251d6af0cde9cb91f6572129f581b9177be2df49895b684e71f",
+      "size_bytes": 34354
     },
     {
       "path": "src/finds_agentbench/pilot_release.py",
@@ -1330,8 +1330,8 @@
     },
     {
       "path": "src/finds_agentbench/related_work.py",
-      "sha256": "5162ebd599e421e5ef9bad6baacaa6788d680b9c05939c65b2934cba96954b2f",
-      "size_bytes": 19633
+      "sha256": "0039e511d3437746ef84c230e52a22e2a05957d338e68040d56c7777e83d1086",
+      "size_bytes": 23257
     },
     {
       "path": "src/finds_agentbench/release_archive.py",
@@ -1480,6 +1480,6 @@
     "ready_for_workshop_submission": false,
     "status": "not_ready_for_workshop_submission"
   },
-  "total_uncompressed_size_bytes": 2330856,
+  "total_uncompressed_size_bytes": 2334441,
   "verification_command": "PYTHONPATH=src python scripts/verify_release_archive.py"
 }

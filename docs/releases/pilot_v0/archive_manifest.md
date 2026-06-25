@@ -12,10 +12,10 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | Archive Status | `candidate_unfrozen` |
 | Expected Tag | `v0.1.0-pilot` |
 | Archive Path | `dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz` |
-| Archive SHA256 | `8e9e84685bc0d8cb75348f4bd04af63b5e56f29f94ca15bd83a8214cd13d79bd` |
+| Archive SHA256 | `958d8bf676b885098f8300dcd6aea5083c8c07ed2cf68bf61bae654fb4c93b67` |
 | Verification Command | `PYTHONPATH=src python scripts/verify_release_archive.py` |
 | File Count | 289 |
-| Total Uncompressed Size | 2330856 bytes |
+| Total Uncompressed Size | 2334441 bytes |
 
 ## Submission Readiness
 
@@ -288,11 +288,11 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `src/finds_agentbench/methodology.py` | 11942 | `ade6672d442914e4b10f133c263dd7fe015877787927318590f36913dc60280a` |
 | `src/finds_agentbench/methodology_calibration.py` | 34092 | `5a9471f4f80334aafb4ececcfb1649af329c54baa0321eabbf989a91d9d9c411` |
 | `src/finds_agentbench/paper_artifacts.py` | 11359 | `d5a10c1e3fdda21424e3164406385e4f68dad9d72781ccbea5e82a0c76b7bfca` |
-| `src/finds_agentbench/pilot_manuscript.py` | 34393 | `e766808567270b3162b18b9ce5694ffedb058c6c7a41e0d46f51bcf1443a1b6f` |
+| `src/finds_agentbench/pilot_manuscript.py` | 34354 | `18414dae04b7f251d6af0cde9cb91f6572129f581b9177be2df49895b684e71f` |
 | `src/finds_agentbench/pilot_release.py` | 26730 | `d52af5f25445e8e5e5af4e25c1c12e9a98e51103e47368eeb803539d947d833c` |
 | `src/finds_agentbench/pipelines.py` | 273833 | `f53ad58158979718ffc56dfbaea6767d41fbe9f2c7ac2c9621febd1cfe953bda` |
 | `src/finds_agentbench/reference_results.py` | 12624 | `91ee3dc182b9e7b13384911c9d7b99a3e3ff5735e4af3adba6b26d7b9b888ce8` |
-| `src/finds_agentbench/related_work.py` | 19633 | `5162ebd599e421e5ef9bad6baacaa6788d680b9c05939c65b2934cba96954b2f` |
+| `src/finds_agentbench/related_work.py` | 23257 | `0039e511d3437746ef84c230e52a22e2a05957d338e68040d56c7777e83d1086` |
 | `src/finds_agentbench/release_archive.py` | 18790 | `78f64fa6af5c8806c5ee236efb9f9ed6d221a864684afb495415b46445f0f0ff` |
 | `src/finds_agentbench/release_reproducibility.py` | 15734 | `b80557034d7c4d51f72385f38417df3e96994aa63d0f2b9595187deabe2b8975` |
 | `src/finds_agentbench/reports.py` | 9496 | `8868d056c890630d6ef39623232fc9ac1cd884cf4b0c9919dbba00267988535a` |

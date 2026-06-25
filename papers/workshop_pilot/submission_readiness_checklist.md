@@ -16,6 +16,7 @@ This checklist tracks work that should be complete before treating the workshop 
 - External-agent handoff, registration template, and registry-evidence validator.
 - Unified submission-readiness gate for the workshop manuscript.
 - Generated qualitative failure examples with exact task/run/artifact references.
+- Audited related-work matrix with corrected venue-neighbor citations and positioning notes.
 
 ## Required Before Submission
 
@@ -23,7 +24,6 @@ This checklist tracks work that should be complete before treating the workshop 
 - Validate the completed second-reviewer packet before using it for agreement claims.
 - Add at least one stronger external agent beyond environment-wrapped baseline selection.
 - Validate external-agent registry evidence before using it for external-agent claims.
-- Audit the generated related-work citations, add any venue-specific neighboring benchmarks, and tighten the positioning narrative.
 - Expand qualitative examples after independent second-reviewer adjudication.
 - Freeze a release tag and archive the release artifact bundle.
 - Compile the final LaTeX and inspect table width, appendix length, and venue formatting.

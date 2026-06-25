@@ -20,6 +20,9 @@ class RelatedWorkEntry:
     bibtex: str
 
 
+RELATED_WORK_AUDIT_DATE = "2026-06-25"
+
+
 RELATED_WORK_ENTRIES = [
     RelatedWorkEntry(
         key="agentbench2023",
@@ -70,6 +73,26 @@ RELATED_WORK_ENTRIES = [
   author={Lai, Yuhang and Li, Chengxi and Wang, Yiming and Zhang, Tianyi and Zhong, Ruiqi and others},
   journal={arXiv preprint arXiv:2211.11501},
   year={2022}
+}""",
+    ),
+    RelatedWorkEntry(
+        key="infiagentdabench2024",
+        title="InfiAgent-DABench: Evaluating Agents on Data Analysis Tasks",
+        short_name="InfiAgent-DABench",
+        year=2024,
+        category="data_analysis_agent_benchmark",
+        primary_focus="Agentic data-analysis tasks over CSV datasets and execution environments.",
+        relevant_overlap="End-to-end data analysis agents with executable code and structured evaluation.",
+        gap_for_finds=(
+            "General data analysis rather than finance-specific temporal information sets, "
+            "private holdouts, leakage gates, and research writeup audit."
+        ),
+        url="https://arxiv.org/abs/2401.05507",
+        bibtex="""@article{infiagentdabench2024,
+  title={InfiAgent-DABench: Evaluating Agents on Data Analysis Tasks},
+  author={Hu, Xueyu and Zhao, Ziyu and Wei, Shuang and Chai, Ziwei and Ma, Qianli and others},
+  journal={arXiv preprint arXiv:2401.05507},
+  year={2024}
 }""",
     ),
     RelatedWorkEntry(
@@ -243,19 +266,39 @@ RELATED_WORK_ENTRIES = [
 }""",
     ),
     RelatedWorkEntry(
-        key="mbabench2026",
-        title="MBABench: Evaluating LLM Agents on End-to-End Spreadsheet Tasks in Finance",
-        short_name="MBABench",
+        key="workstreambench2026",
+        title="WorkstreamBench: Evaluating LLM Agents on End-to-End Spreadsheet Tasks in Finance",
+        short_name="WorkstreamBench",
         year=2026,
         category="financial_spreadsheet_agent_benchmark",
         primary_focus="End-to-end financial spreadsheet construction and review.",
         relevant_overlap="Finance workflow artifacts and multidimensional professional-quality evaluation.",
         gap_for_finds="Spreadsheet modeling rather than financial ML research with temporal prediction tasks, private holdouts, and leakage/reproducibility gates.",
         url="https://arxiv.org/abs/2605.22664",
-        bibtex="""@article{mbabench2026,
-  title={MBABench: Evaluating LLM Agents on End-to-End Spreadsheet Tasks in Finance},
+        bibtex="""@article{workstreambench2026,
+  title={WorkstreamBench: Evaluating LLM Agents on End-to-End Spreadsheet Tasks in Finance},
   author={Yen, Thomson and Poeltl, Julian and Gear, Harshith Srinivas and Meng, Yilin and Fan, Joshua and others},
   journal={arXiv preprint arXiv:2605.22664},
+  year={2026}
+}""",
+    ),
+    RelatedWorkEntry(
+        key="bluefin2026",
+        title="BlueFin: Benchmarking LLM Agents on Financial Spreadsheets",
+        short_name="BlueFin",
+        year=2026,
+        category="financial_spreadsheet_agent_benchmark",
+        primary_focus="Financial spreadsheet synthesis, manipulation, and comprehension tasks.",
+        relevant_overlap="Finance-domain agent artifacts with granular rubric-based evaluation.",
+        gap_for_finds=(
+            "Spreadsheet workbook workflows rather than executable financial ML research notebooks, "
+            "temporal prediction tasks, and leakage-safe private scoring."
+        ),
+        url="https://arxiv.org/abs/2605.30907",
+        bibtex="""@article{bluefin2026,
+  title={BlueFin: Benchmarking LLM Agents on Financial Spreadsheets},
+  author={Kundurthy, Srivatsa and Na, Clara and Moraine, Colton and Mohta, Anoushka and Winter, Case and others},
+  journal={arXiv preprint arXiv:2605.30907},
   year={2026}
 }""",
     ),
@@ -288,9 +331,21 @@ def render_related_work_markdown(entries: list[RelatedWorkEntry] | None = None) 
     lines.extend(
         [
             "",
+            "## Citation Audit Notes",
+            "",
+            f"- Last audited against arXiv records: {RELATED_WORK_AUDIT_DATE}.",
+            "- arXiv:2605.22664 is tracked as WorkstreamBench, not MBABench.",
+            "- BlueFin is included as a finance-spreadsheet neighbor distinct from end-to-end financial ML research.",
+            "",
             "## Working Novelty Claim",
             "",
             "FinDS-AgentBench is a benchmark for end-to-end financial ML research agents, combining point-in-time data calendars, temporal validation, leakage checks, executable notebooks, financial decision metrics, reproducibility gates, writeup audit, and agent trace analysis.",
+            "",
+            "## Venue Positioning",
+            "",
+            "- For an arXiv/workshop pilot, the strongest claim is a compact, reproducible stress test showing that plausible financial ML notebooks fail under temporal, leakage, reproducibility, and claim-discipline checks.",
+            "- For a benchmark/dataset venue, the required advance is a larger frozen task suite with hidden temporal holdouts, external-agent evidence, public/private scoring, and independently reviewed audit rubrics.",
+            "- For a journal extension, the required advance is methodological analysis of repeated-run variance, intervention effects, validity dimensions, and financial model-risk implications.",
             "",
         ]
     )
@@ -312,9 +367,11 @@ def render_related_work_tex(entries: list[RelatedWorkEntry] | None = None) -> st
         "profitmirage2025",
         "fintoolbench2026",
         "finmcpbench2026",
-        "mbabench2026",
+        "workstreambench2026",
+        "bluefin2026",
     ]
-    temporal_keys = ["ds10002022", "temporalbench2026", "swebench2023"]
+    data_analysis_keys = ["ds10002022", "infiagentdabench2024"]
+    temporal_keys = ["temporalbench2026"]
     general_agent_paragraph = (
         "FinDS-AgentBench sits at the intersection of agent benchmarks, machine-learning "
         "experimentation benchmarks, finance-domain LLM evaluation, and leakage-aware temporal "
@@ -334,15 +391,22 @@ def render_related_work_tex(entries: list[RelatedWorkEntry] | None = None) -> st
         + citation_group(finance_keys)
         + " cover financial QA, broad financial LLM capabilities, leakage in financial agents, "
         "tool use, and spreadsheet workflows. These are adjacent but do not provide an end-to-end "
-        "financial ML research benchmark with task cards, private temporal labels, repeated-run "
-        "uncertainty, reproducibility gates, and narrative-discipline scoring."
+        "financial ML research benchmark with point-in-time task cards, private temporal labels, "
+        "repeated-run uncertainty, reproducibility gates, and narrative-discipline scoring."
+    )
+    data_analysis_paragraph = (
+        "Data-science and data-analysis benchmarks such as "
+        + citation_group(data_analysis_keys)
+        + " motivate reliable code execution and analysis-task evaluation. FinDS-AgentBench extends "
+        "that execution focus to financial research protocols where model validation, data timestamp "
+        "availability, and claims about economic usefulness must be evaluated jointly."
     )
     temporal_paragraph = (
-        "Data-science and temporal-reasoning benchmarks such as "
+        "Temporal-reasoning benchmarks such as "
         + citation_group(temporal_keys)
-        + " motivate reliable code execution and time-aware evaluation. FinDS-AgentBench narrows "
-        "that lens to finance, where temporal information availability and leakage-safe validation "
-        "are central rather than incidental constraints."
+        + " motivate time-aware evaluation. FinDS-AgentBench narrows that lens to finance, where "
+        "point-in-time information availability and leakage-safe validation are central rather than "
+        "incidental constraints."
     )
     return "\n".join(
         [
@@ -350,6 +414,7 @@ def render_related_work_tex(entries: list[RelatedWorkEntry] | None = None) -> st
             general_agent_paragraph,
             ml_agent_paragraph,
             finance_paragraph,
+            data_analysis_paragraph,
             temporal_paragraph,
             "",
             "\\begin{table}[t]",
