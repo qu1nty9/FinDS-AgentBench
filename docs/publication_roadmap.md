@@ -129,3 +129,4 @@ Acceptance criteria:
 - Closed the methodology-calibration submission-readiness gate; remaining workshop blockers are independent manual-audit review, external-agent evidence, and final release tag/archive.
 - Added deterministic release-archive tooling with archive-level and file-level SHA256 manifests; final archive/tag readiness still waits on the independent-review and external-agent gates.
 - Added independent reviewer packet intake manifests and a submission evidence ledger that separates currently supported claims from blocked publication claims.
+- Added an external-agent intake manifest with checksums for registration, handoff, harness commands, and claim boundaries before non-author agent evidence is available.

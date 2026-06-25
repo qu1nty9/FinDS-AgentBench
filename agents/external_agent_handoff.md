@@ -11,6 +11,7 @@ Use this protocol to register and run a non-author external agent for FinDS-Agen
 ## Registration
 
 - Start from `agents/external_agent_registration_template.yaml`.
+- Verify the intake files against `docs/releases/pilot_v0/external_agent_intake_manifest.md` before running the agent.
 - Add the completed entry under `external_agent_configurations` in `agents/external_agent_registry.yaml`.
 - Set `maintainer_type: external` and `provenance: external_submission`.
 - Record `completed_runs_per_task` and every `run_manifest_path` after the harness finishes.

@@ -62,23 +62,37 @@ def test_build_external_agent_readiness_artifacts_marks_default_registry_not_rea
         registration_validation_json_path=tmp_path / "external_agent_registration_validation.json",
         registration_validation_markdown_path=tmp_path
         / "external_agent_registration_validation.md",
+        intake_manifest_json_path=tmp_path / "external_agent_intake_manifest.json",
+        intake_manifest_markdown_path=tmp_path / "external_agent_intake_manifest.md",
     )
 
     readiness = json.loads(result["readiness_json_path"].read_text(encoding="utf-8"))
     validation = json.loads(result["registration_validation_json_path"].read_text(encoding="utf-8"))
+    intake_manifest = json.loads(result["intake_manifest_json_path"].read_text(encoding="utf-8"))
     markdown = result["readiness_markdown_path"].read_text(encoding="utf-8")
     protocol = result["protocol_markdown_path"].read_text(encoding="utf-8")
     handoff = result["handoff_markdown_path"].read_text(encoding="utf-8")
     validation_markdown = result["registration_validation_markdown_path"].read_text(
         encoding="utf-8"
     )
+    intake_markdown = result["intake_manifest_markdown_path"].read_text(encoding="utf-8")
 
     assert result["protocol_markdown_path"].exists()
     assert result["handoff_markdown_path"].exists()
+    assert result["intake_manifest_json_path"].exists()
+    assert result["intake_manifest_markdown_path"].exists()
     assert result["readiness_json_path"].exists()
     assert result["readiness_markdown_path"].exists()
     assert result["registration_validation_json_path"].exists()
     assert result["registration_validation_markdown_path"].exists()
+    assert intake_manifest["status"] == "ready_for_external_agent_intake"
+    assert intake_manifest["ready_for_external_agent_distribution"] is True
+    assert intake_manifest["expected_task_count"] == 8
+    assert len(intake_manifest["harness_command_files"]) >= 7
+    assert any(
+        item["path"].endswith("external_agent_registration_template.yaml")
+        for item in intake_manifest["external_agent_facing_files"]
+    )
     assert readiness["status"] == "not_ready_no_external_agents"
     assert readiness["ready_for_external_agent_claims"] is False
     assert validation["status"] == "no_external_agent_registered"
@@ -88,8 +102,11 @@ def test_build_external_agent_readiness_artifacts_marks_default_registry_not_rea
     assert any("non-author external agent" in item for item in readiness["blocking_items"])
     assert "not_ready_no_external_agents" in markdown
     assert "FINDS_SUBMISSION_DIR" in protocol
+    assert "external_agent_intake_manifest.md" in handoff
     assert "validate_external_agent_registry.py" in handoff
     assert "No external_agent_configurations" in validation_markdown
+    assert "Checksum manifest" in intake_markdown
+    assert "Bundled Reference Configurations" in intake_markdown
 
 
 def test_external_agent_readiness_accepts_completed_external_configuration(tmp_path: Path):
@@ -207,6 +224,8 @@ def test_external_agent_registration_validation_rejects_mismatched_run_manifest(
         readiness_markdown_path=tmp_path / "external_agent_readiness.md",
         registration_validation_json_path=tmp_path / "registration_validation.json",
         registration_validation_markdown_path=tmp_path / "registration_validation.md",
+        intake_manifest_json_path=tmp_path / "external_agent_intake_manifest.json",
+        intake_manifest_markdown_path=tmp_path / "external_agent_intake_manifest.md",
         workspace_root=tmp_path,
     )
 
@@ -222,4 +241,5 @@ def test_external_agent_registration_validation_rejects_mismatched_run_manifest(
     assert any("agent.agent_id" in item for item in validation["blocking_items"])
     assert readiness["status"] == "not_ready_invalid_external_agent_evidence"
     assert readiness["ready_for_external_agent_claims"] is False
+    assert result["intake_manifest"]["status"] == "ready_for_external_agent_intake"
     assert "Evidence errors" in validation_markdown

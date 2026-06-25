@@ -55,6 +55,7 @@ def base_manifest() -> dict:
             "blocking_items": ["Register external agent."],
             "registry_path": "agents/external_agent_registry.yaml",
             "handoff_markdown_path": "agents/external_agent_handoff.md",
+            "intake_manifest_markdown_path": "docs/releases/pilot_v0/external_agent_intake_manifest.md",
             "protocol_markdown_path": "docs/releases/pilot_v0/external_agent_protocol.md",
             "readiness_markdown_path": "docs/releases/pilot_v0/external_agent_readiness.md",
             "registration_validation_markdown_path": "docs/releases/pilot_v0/external_agent_registration_validation.md",

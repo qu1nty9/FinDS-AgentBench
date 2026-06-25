@@ -184,6 +184,10 @@
           "role": "external_agent_handoff"
         },
         {
+          "path": "docs/releases/pilot_v0/external_agent_intake_manifest.md",
+          "role": "external_agent_intake_manifest"
+        },
+        {
           "path": "docs/releases/pilot_v0/external_agent_protocol.md",
           "role": "external_agent_protocol"
         },

@@ -29,6 +29,12 @@ EXTERNAL_AGENT_REGISTRATION_VALIDATION_JSON_PATH = (
 EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH = (
     f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_registration_validation.md"
 )
+EXTERNAL_AGENT_INTAKE_MANIFEST_JSON_PATH = (
+    f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_intake_manifest.json"
+)
+EXTERNAL_AGENT_INTAKE_MANIFEST_MARKDOWN_PATH = (
+    f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_intake_manifest.md"
+)
 SUBMISSION_READINESS_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_readiness.json"
 SUBMISSION_READINESS_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_readiness.md"
 SUBMISSION_EVIDENCE_LEDGER_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/submission_evidence_ledger.json"
@@ -320,6 +326,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Reviewer Readiness", manual_audit["reviewer_readiness_markdown_path"]],
                     ["External Agent Protocol", external_agents["protocol_markdown_path"]],
                     ["External Agent Readiness", external_agents["readiness_markdown_path"]],
+                    ["External Agent Intake Manifest", external_agents["intake_manifest_markdown_path"]],
                     ["Submission Readiness", submission_readiness["markdown_path"]],
                     ["Submission Evidence Ledger", submission_readiness["evidence_ledger_markdown_path"]],
                 ],
@@ -399,6 +406,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Registry", external_agents["registry_path"]],
                     ["Protocol", external_agents["protocol_markdown_path"]],
                     ["External Agent Handoff", external_agents["handoff_markdown_path"]],
+                    ["Intake Manifest", external_agents["intake_manifest_markdown_path"]],
                     ["Readiness Report", external_agents["readiness_markdown_path"]],
                     [
                         "Registration Validation",
@@ -485,6 +493,10 @@ def build_benchmark_manifest(
         protocol_markdown_path=output_path / "external_agent_protocol.md",
         readiness_json_path=output_path / "external_agent_readiness.json",
         readiness_markdown_path=output_path / "external_agent_readiness.md",
+        registration_validation_json_path=output_path / "external_agent_registration_validation.json",
+        registration_validation_markdown_path=output_path / "external_agent_registration_validation.md",
+        intake_manifest_json_path=output_path / "external_agent_intake_manifest.json",
+        intake_manifest_markdown_path=output_path / "external_agent_intake_manifest.md",
     )
     registry_entries = json.loads(cards_result.registry_json_path.read_text(encoding="utf-8"))
     data_entries = {
@@ -524,6 +536,9 @@ def build_benchmark_manifest(
             "registry_path": EXTERNAL_AGENT_REGISTRY_PATH,
             "protocol_markdown_path": EXTERNAL_AGENT_PROTOCOL_MARKDOWN_PATH,
             "handoff_markdown_path": str(external_agent_artifacts["handoff_markdown_path"]),
+            "intake_manifest_json_path": EXTERNAL_AGENT_INTAKE_MANIFEST_JSON_PATH,
+            "intake_manifest_markdown_path": EXTERNAL_AGENT_INTAKE_MANIFEST_MARKDOWN_PATH,
+            "intake_manifest_status": external_agent_artifacts["intake_manifest"]["status"],
             "readiness_json_path": EXTERNAL_AGENT_READINESS_JSON_PATH,
             "readiness_markdown_path": EXTERNAL_AGENT_READINESS_MARKDOWN_PATH,
             "registration_validation_json_path": EXTERNAL_AGENT_REGISTRATION_VALIDATION_JSON_PATH,

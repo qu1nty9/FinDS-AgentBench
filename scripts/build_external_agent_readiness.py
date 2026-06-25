@@ -46,6 +46,16 @@ def main() -> int:
         type=Path,
         default=Path("docs/releases/pilot_v0/external_agent_registration_validation.md"),
     )
+    parser.add_argument(
+        "--intake-manifest-json",
+        type=Path,
+        default=Path("docs/releases/pilot_v0/external_agent_intake_manifest.json"),
+    )
+    parser.add_argument(
+        "--intake-manifest-markdown",
+        type=Path,
+        default=Path("docs/releases/pilot_v0/external_agent_intake_manifest.md"),
+    )
     args = parser.parse_args()
 
     result = build_external_agent_readiness_artifacts(
@@ -56,15 +66,20 @@ def main() -> int:
         readiness_markdown_path=args.readiness_markdown,
         registration_validation_json_path=args.registration_validation_json,
         registration_validation_markdown_path=args.registration_validation_markdown,
+        intake_manifest_json_path=args.intake_manifest_json,
+        intake_manifest_markdown_path=args.intake_manifest_markdown,
     )
 
     print(f"registry: {result['registry_path']}")
     print(f"protocol_markdown: {result['protocol_markdown_path']}")
     print(f"handoff_markdown: {result['handoff_markdown_path']}")
+    print(f"intake_manifest_json: {result['intake_manifest_json_path']}")
+    print(f"intake_manifest_markdown: {result['intake_manifest_markdown_path']}")
     print(f"readiness_json: {result['readiness_json_path']}")
     print(f"readiness_markdown: {result['readiness_markdown_path']}")
     print(f"registration_validation_json: {result['registration_validation_json_path']}")
     print(f"registration_validation_markdown: {result['registration_validation_markdown_path']}")
+    print(f"external_agent_intake_manifest_status: {result['intake_manifest']['status']}")
     print(f"external_agent_readiness_status: {result['readiness']['status']}")
     print(f"external_agent_registration_validation_status: {result['registration_validation']['status']}")
     return 0

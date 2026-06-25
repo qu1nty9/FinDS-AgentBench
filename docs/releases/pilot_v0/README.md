@@ -23,6 +23,7 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | Reviewer Readiness | audits/pilot_v0/reports/reviewer_readiness.md |
 | External Agent Protocol | docs/releases/pilot_v0/external_agent_protocol.md |
 | External Agent Readiness | docs/releases/pilot_v0/external_agent_readiness.md |
+| External Agent Intake Manifest | docs/releases/pilot_v0/external_agent_intake_manifest.md |
 | Submission Readiness | docs/releases/pilot_v0/submission_readiness.md |
 | Submission Evidence Ledger | docs/releases/pilot_v0/submission_evidence_ledger.md |
 
@@ -80,6 +81,7 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | Registry | agents/external_agent_registry.yaml |
 | Protocol | docs/releases/pilot_v0/external_agent_protocol.md |
 | External Agent Handoff | agents/external_agent_handoff.md |
+| Intake Manifest | docs/releases/pilot_v0/external_agent_intake_manifest.md |
 | Readiness Report | docs/releases/pilot_v0/external_agent_readiness.md |
 | Registration Validation | docs/releases/pilot_v0/external_agent_registration_validation.md |
 

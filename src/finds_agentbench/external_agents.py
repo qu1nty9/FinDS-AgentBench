@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 
 from finds_agentbench.io import load_yaml
-from finds_agentbench.runs import load_run_manifest, validate_run_manifest
+from finds_agentbench.runs import file_sha256, load_run_manifest, validate_run_manifest
 
 
 DEFAULT_EXTERNAL_AGENT_REGISTRY_PATH = Path("agents/external_agent_registry.yaml")
@@ -24,6 +24,12 @@ DEFAULT_EXTERNAL_AGENT_REGISTRATION_VALIDATION_JSON_PATH = Path(
 )
 DEFAULT_EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH = Path(
     "docs/releases/pilot_v0/external_agent_registration_validation.md"
+)
+DEFAULT_EXTERNAL_AGENT_INTAKE_MANIFEST_JSON_PATH = Path(
+    "docs/releases/pilot_v0/external_agent_intake_manifest.json"
+)
+DEFAULT_EXTERNAL_AGENT_INTAKE_MANIFEST_MARKDOWN_PATH = Path(
+    "docs/releases/pilot_v0/external_agent_intake_manifest.md"
 )
 
 REQUIRED_AGENT_ENV_VARS = [
@@ -268,6 +274,36 @@ def unique_preserving_order(items: list[str]) -> list[str]:
         seen.add(item)
         output.append(item)
     return output
+
+
+def path_for_manifest(path: str | Path, *, workspace_root: str | Path = ".") -> str:
+    raw_path = Path(path)
+    workspace = Path(workspace_root).resolve()
+    resolved_path = raw_path.resolve()
+    try:
+        return resolved_path.relative_to(workspace).as_posix()
+    except ValueError:
+        return raw_path.as_posix()
+
+
+def external_agent_file_entry(
+    *,
+    role: str,
+    path: str | Path,
+    manifest_path: str | Path | None = None,
+    workspace_root: str | Path = ".",
+) -> dict[str, Any]:
+    file_path = Path(path)
+    return {
+        "role": role,
+        "path": (
+            Path(manifest_path).as_posix()
+            if manifest_path is not None
+            else path_for_manifest(file_path, workspace_root=workspace_root)
+        ),
+        "size_bytes": file_path.stat().st_size,
+        "sha256": file_sha256(file_path),
+    }
 
 
 def apply_registration_validation_to_readiness(
@@ -665,6 +701,241 @@ def render_external_agent_registration_validation_markdown(report: dict[str, Any
     return "\n".join(lines) + "\n"
 
 
+def build_external_agent_intake_manifest(
+    *,
+    registry: dict[str, Any],
+    readiness: dict[str, Any],
+    registry_path: str | Path,
+    protocol_markdown_path: str | Path,
+    handoff_markdown_path: str | Path,
+    readiness_markdown_path: str | Path,
+    registration_validation_markdown_path: str | Path,
+    workspace_root: str | Path = ".",
+) -> dict[str, Any]:
+    bundled_configs = [
+        config
+        for config in registry_agent_configurations(registry)
+        if str(config.get("provenance", "")) == "bundled_reference"
+    ]
+    command_family_paths = unique_preserving_order(
+        [str(config.get("command_family", "")) for config in bundled_configs if config.get("command_family")]
+    )
+    harness_files = [
+        external_agent_file_entry(
+            role="harness_command_family",
+            path=command_family,
+            workspace_root=workspace_root,
+        )
+        for command_family in command_family_paths
+        if Path(command_family).exists()
+    ]
+    intake_files = [
+        external_agent_file_entry(
+            role="external_agent_protocol",
+            path=protocol_markdown_path,
+            manifest_path=DEFAULT_EXTERNAL_AGENT_PROTOCOL_MARKDOWN_PATH,
+            workspace_root=workspace_root,
+        ),
+        external_agent_file_entry(
+            role="external_agent_handoff",
+            path=handoff_markdown_path,
+            workspace_root=workspace_root,
+        ),
+        external_agent_file_entry(
+            role="external_agent_registry",
+            path=registry_path,
+            workspace_root=workspace_root,
+        ),
+        external_agent_file_entry(
+            role="external_agent_registration_template",
+            path=EXTERNAL_AGENT_TEMPLATE_PATH,
+            workspace_root=workspace_root,
+        ),
+        external_agent_file_entry(
+            role="external_agent_readiness_report",
+            path=readiness_markdown_path,
+            manifest_path=DEFAULT_EXTERNAL_AGENT_READINESS_MARKDOWN_PATH,
+            workspace_root=workspace_root,
+        ),
+        external_agent_file_entry(
+            role="external_agent_registration_validation",
+            path=registration_validation_markdown_path,
+            manifest_path=DEFAULT_EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH,
+            workspace_root=workspace_root,
+        ),
+    ]
+    complete_intake = (
+        bool(readiness["expected_task_ids"])
+        and len(harness_files) == len(command_family_paths)
+        and all(entry["size_bytes"] > 0 for entry in intake_files)
+    )
+    return {
+        "status": "ready_for_external_agent_intake" if complete_intake else "invalid_external_agent_intake",
+        "ready_for_external_agent_distribution": complete_intake,
+        "claim_boundary": {
+            "allowed_current_claim": (
+                "A frozen external-agent intake packet and validation protocol are available."
+            ),
+            "disallowed_current_claim": (
+                "Completed non-author external-agent evidence or stronger external-agent benchmark claims."
+            ),
+        },
+        "registry_id": registry["registry_id"],
+        "expected_task_ids": readiness["expected_task_ids"],
+        "expected_task_count": readiness["expected_task_count"],
+        "minimum_external_agent_configurations": readiness["minimum_external_agent_configurations"],
+        "minimum_completed_runs_per_task": readiness["minimum_completed_runs_per_task"],
+        "required_environment_variables": REQUIRED_AGENT_ENV_VARS,
+        "required_submission_artifacts": REQUIRED_AGENT_ARTIFACTS,
+        "external_agent_facing_files": intake_files,
+        "harness_command_files": harness_files,
+        "bundled_reference_configurations": [
+            {
+                "agent_id": str(config["agent_id"]),
+                "version": str(config["version"]),
+                "agent_type": str(config["agent_type"]),
+                "command_family": str(config["command_family"]),
+                "task_ids": [str(task_id) for task_id in config["task_ids"]],
+                "reason_not_external_evidence": (
+                    "Bundled reference agents are maintained by benchmark authors."
+                ),
+            }
+            for config in bundled_configs
+        ],
+        "completion_requirements": [
+            "Copy agents/external_agent_registration_template.yaml into an external_agent_configurations entry.",
+            "Set maintainer_type=external and provenance=external_submission for the non-author configuration.",
+            "Run the agent through the registered command family for the required repeated runs per task.",
+            "Record completed_runs_per_task and every run_manifest_path after the harness finishes.",
+            "Rebuild reference results and readiness artifacts before making external-agent claims.",
+            "Validate with scripts/validate_external_agent_registry.py before submission claims.",
+        ],
+        "validation_command": "PYTHONPATH=src python scripts/validate_external_agent_registry.py",
+    }
+
+
+def render_external_agent_intake_manifest_markdown(manifest: dict[str, Any]) -> str:
+    file_rows = [
+        [entry["role"], f"`{entry['path']}`", entry["size_bytes"], f"`{entry['sha256']}`"]
+        for entry in manifest["external_agent_facing_files"]
+    ]
+    harness_rows = [
+        [entry["path"], entry["size_bytes"], f"`{entry['sha256']}`"]
+        for entry in manifest["harness_command_files"]
+    ]
+    bundled_rows = [
+        [
+            config["agent_id"],
+            config["command_family"],
+            ", ".join(config["task_ids"]),
+            config["reason_not_external_evidence"],
+        ]
+        for config in manifest["bundled_reference_configurations"]
+    ]
+    lines = [
+        "# External Agent Intake Manifest",
+        "",
+        "Checksum manifest for the external-agent intake packet and harness entry points.",
+        "",
+        "## Status",
+        "",
+        render_markdown_table(
+            ["Field", "Value"],
+            [
+                ["Status", f"`{manifest['status']}`"],
+                [
+                    "Ready for external-agent distribution",
+                    "yes" if manifest["ready_for_external_agent_distribution"] else "no",
+                ],
+                ["Expected task coverage", manifest["expected_task_count"]],
+                [
+                    "Minimum completed runs per task",
+                    manifest["minimum_completed_runs_per_task"],
+                ],
+            ],
+        ),
+        "",
+        "## Claim Boundary",
+        "",
+        f"- Allowed current claim: {manifest['claim_boundary']['allowed_current_claim']}",
+        f"- Disallowed current claim: {manifest['claim_boundary']['disallowed_current_claim']}",
+        "",
+        "## External-Agent-Facing Files",
+        "",
+        render_markdown_table(["Role", "Path", "Size Bytes", "SHA256"], file_rows),
+        "",
+        "## Harness Command Files",
+        "",
+        render_markdown_table(["Path", "Size Bytes", "SHA256"], harness_rows),
+        "",
+        "## Expected Task Coverage",
+        "",
+    ]
+    lines.extend(f"- `{task_id}`" for task_id in manifest["expected_task_ids"])
+    lines.extend(
+        [
+            "",
+            "## Required Environment Variables",
+            "",
+        ]
+    )
+    lines.extend(f"- `{name}`" for name in manifest["required_environment_variables"])
+    lines.extend(
+        [
+            "",
+            "## Required Submission Artifacts",
+            "",
+        ]
+    )
+    lines.extend(f"- `{name}`" for name in manifest["required_submission_artifacts"])
+    lines.extend(
+        [
+            "",
+            "## Bundled Reference Configurations",
+            "",
+            render_markdown_table(
+                ["Agent", "Command Family", "Tasks", "Reason Not External Evidence"],
+                bundled_rows,
+            ),
+            "",
+            "## Completion Requirements",
+            "",
+        ]
+    )
+    lines.extend(f"- {item}" for item in manifest["completion_requirements"])
+    lines.extend(
+        [
+            "",
+            "## Validation Command",
+            "",
+            "```bash",
+            manifest["validation_command"],
+            "```",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def write_external_agent_intake_manifest_artifacts(
+    *,
+    manifest: dict[str, Any],
+    output_json_path: str | Path = DEFAULT_EXTERNAL_AGENT_INTAKE_MANIFEST_JSON_PATH,
+    output_markdown_path: str | Path = DEFAULT_EXTERNAL_AGENT_INTAKE_MANIFEST_MARKDOWN_PATH,
+) -> dict[str, Path]:
+    json_path = Path(output_json_path)
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    markdown_path = Path(output_markdown_path)
+    markdown_path.parent.mkdir(parents=True, exist_ok=True)
+    markdown_path.write_text(
+        render_external_agent_intake_manifest_markdown(manifest) + "\n",
+        encoding="utf-8",
+    )
+    return {"json_path": json_path, "markdown_path": markdown_path}
+
+
 def render_external_agent_handoff_markdown(
     registry: dict[str, Any],
     readiness: dict[str, Any],
@@ -690,6 +961,7 @@ def render_external_agent_handoff_markdown(
             "## Registration",
             "",
             "- Start from `agents/external_agent_registration_template.yaml`.",
+            "- Verify the intake files against `docs/releases/pilot_v0/external_agent_intake_manifest.md` before running the agent.",
             "- Add the completed entry under `external_agent_configurations` in `agents/external_agent_registry.yaml`.",
             "- Set `maintainer_type: external` and `provenance: external_submission`.",
             "- Record `completed_runs_per_task` and every `run_manifest_path` after the harness finishes.",
@@ -783,6 +1055,8 @@ def build_external_agent_readiness_artifacts(
     registration_validation_markdown_path: str | Path = (
         DEFAULT_EXTERNAL_AGENT_REGISTRATION_VALIDATION_MARKDOWN_PATH
     ),
+    intake_manifest_json_path: str | Path = DEFAULT_EXTERNAL_AGENT_INTAKE_MANIFEST_JSON_PATH,
+    intake_manifest_markdown_path: str | Path = DEFAULT_EXTERNAL_AGENT_INTAKE_MANIFEST_MARKDOWN_PATH,
     workspace_root: str | Path = ".",
 ) -> dict[str, Any]:
     registry = load_external_agent_registry(registry_path)
@@ -835,10 +1109,29 @@ def build_external_agent_readiness_artifacts(
         encoding="utf-8",
     )
 
+    intake_manifest = build_external_agent_intake_manifest(
+        registry=registry,
+        readiness=readiness,
+        registry_path=registry_path,
+        protocol_markdown_path=protocol_path,
+        handoff_markdown_path=handoff_path,
+        readiness_markdown_path=readiness_markdown,
+        registration_validation_markdown_path=registration_validation_markdown,
+        workspace_root=workspace_root,
+    )
+    intake_manifest_outputs = write_external_agent_intake_manifest_artifacts(
+        manifest=intake_manifest,
+        output_json_path=intake_manifest_json_path,
+        output_markdown_path=intake_manifest_markdown_path,
+    )
+
     return {
         "registry_path": Path(registry_path),
         "protocol_markdown_path": protocol_path,
         "handoff_markdown_path": handoff_path,
+        "intake_manifest_json_path": intake_manifest_outputs["json_path"],
+        "intake_manifest_markdown_path": intake_manifest_outputs["markdown_path"],
+        "intake_manifest": intake_manifest,
         "readiness_json_path": readiness_json,
         "readiness_markdown_path": readiness_markdown,
         "registration_validation_json_path": registration_validation_json,

@@ -320,6 +320,7 @@ def evidence_artifacts_for_gate(gate_id: str, manifest: dict[str, Any]) -> list[
         "external_agent_evidence": [
             artifact_entry("external_agent_registry", external_agents.get("registry_path", "")),
             artifact_entry("external_agent_handoff", external_agents.get("handoff_markdown_path", "")),
+            artifact_entry("external_agent_intake_manifest", external_agents.get("intake_manifest_markdown_path", "")),
             artifact_entry("external_agent_protocol", external_agents.get("protocol_markdown_path", "")),
             artifact_entry("external_agent_readiness", external_agents.get("readiness_markdown_path", "")),
             artifact_entry(

@@ -1,0 +1,203 @@
+{
+  "bundled_reference_configurations": [
+    {
+      "agent_id": "market_research_sweep_env_agent",
+      "agent_type": "environment_wrapped_baseline_selection",
+      "command_family": "scripts/run_synthetic_market_agent_suite.py",
+      "reason_not_external_evidence": "Bundled reference agents are maintained by benchmark authors.",
+      "task_ids": [
+        "synthetic_market_direction_v0"
+      ],
+      "version": "0.2.0"
+    },
+    {
+      "agent_id": "event_rule_env_agent",
+      "agent_type": "environment_wrapped_rule_agent",
+      "command_family": "scripts/run_synthetic_event_response_agent_suite.py",
+      "reason_not_external_evidence": "Bundled reference agents are maintained by benchmark authors.",
+      "task_ids": [
+        "synthetic_event_response_v0"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "agent_id": "treasury_research_sweep_env_agent",
+      "agent_type": "environment_wrapped_baseline_selection",
+      "command_family": "scripts/run_yield_direction_treasury10y_agent_suite.py",
+      "reason_not_external_evidence": "Bundled reference agents are maintained by benchmark authors.",
+      "task_ids": [
+        "yield_direction_treasury10y_v0"
+      ],
+      "version": "0.2.0"
+    },
+    {
+      "agent_id": "treasury_curve_research_sweep_env_agent",
+      "agent_type": "environment_wrapped_baseline_selection",
+      "command_family": "scripts/run_yield_curve_10y2y_steepening_agent_suite.py",
+      "reason_not_external_evidence": "Bundled reference agents are maintained by benchmark authors.",
+      "task_ids": [
+        "yield_curve_10y2y_steepening_v0"
+      ],
+      "version": "0.2.0"
+    },
+    {
+      "agent_id": "treasury_curve_10y3mo_research_sweep_env_agent",
+      "agent_type": "environment_wrapped_baseline_selection",
+      "command_family": "scripts/run_yield_curve_10y3mo_steepening_agent_suite.py",
+      "reason_not_external_evidence": "Bundled reference agents are maintained by benchmark authors.",
+      "task_ids": [
+        "yield_curve_10y3mo_steepening_v0"
+      ],
+      "version": "0.2.0"
+    },
+    {
+      "agent_id": "treasury_front_end_research_sweep_env_agent",
+      "agent_type": "environment_wrapped_baseline_selection",
+      "command_family": "scripts/run_front_end_spread_widening_v0_agent_suite.py",
+      "reason_not_external_evidence": "Bundled reference agents are maintained by benchmark authors.",
+      "task_ids": [
+        "front_end_spread_widening_v0"
+      ],
+      "version": "0.2.0"
+    },
+    {
+      "agent_id": "usd_research_sweep_env_agent",
+      "agent_type": "environment_wrapped_baseline_selection",
+      "command_family": "scripts/run_usd_broad_direction_v0_agent_suite.py",
+      "reason_not_external_evidence": "Bundled reference agents are maintained by benchmark authors.",
+      "task_ids": [
+        "usd_broad_direction_v0",
+        "usd_afe_vs_eme_relative_direction_v0"
+      ],
+      "version": "0.2.0"
+    }
+  ],
+  "claim_boundary": {
+    "allowed_current_claim": "A frozen external-agent intake packet and validation protocol are available.",
+    "disallowed_current_claim": "Completed non-author external-agent evidence or stronger external-agent benchmark claims."
+  },
+  "completion_requirements": [
+    "Copy agents/external_agent_registration_template.yaml into an external_agent_configurations entry.",
+    "Set maintainer_type=external and provenance=external_submission for the non-author configuration.",
+    "Run the agent through the registered command family for the required repeated runs per task.",
+    "Record completed_runs_per_task and every run_manifest_path after the harness finishes.",
+    "Rebuild reference results and readiness artifacts before making external-agent claims.",
+    "Validate with scripts/validate_external_agent_registry.py before submission claims."
+  ],
+  "expected_task_count": 8,
+  "expected_task_ids": [
+    "synthetic_market_direction_v0",
+    "synthetic_event_response_v0",
+    "yield_direction_treasury10y_v0",
+    "yield_curve_10y2y_steepening_v0",
+    "yield_curve_10y3mo_steepening_v0",
+    "front_end_spread_widening_v0",
+    "usd_broad_direction_v0",
+    "usd_afe_vs_eme_relative_direction_v0"
+  ],
+  "external_agent_facing_files": [
+    {
+      "path": "docs/releases/pilot_v0/external_agent_protocol.md",
+      "role": "external_agent_protocol",
+      "sha256": "6552a6d995d557e90a2f950dfd5dafbf16247137fbc39e3d39106e6e296ef53a",
+      "size_bytes": 2037
+    },
+    {
+      "path": "agents/external_agent_handoff.md",
+      "role": "external_agent_handoff",
+      "sha256": "0ecb38dbf783335d9280dd091edb05909d6aa0336663e2f708235c39a11cc086",
+      "size_bytes": 2488
+    },
+    {
+      "path": "agents/external_agent_registry.yaml",
+      "role": "external_agent_registry",
+      "sha256": "393ce033894220b1e75796cb98e5804d7a4aaffa287de0f43add380ba4e0d4d1",
+      "size_bytes": 3606
+    },
+    {
+      "path": "agents/external_agent_registration_template.yaml",
+      "role": "external_agent_registration_template",
+      "sha256": "fd4e29ce474525968cb0790e1a4f28705d3f3e5579fbd7105ed650cb865d53d3",
+      "size_bytes": 920
+    },
+    {
+      "path": "docs/releases/pilot_v0/external_agent_readiness.md",
+      "role": "external_agent_readiness_report",
+      "sha256": "f023225f3c55da31b0c0b9f9bab7a5072ec833424ea430f095508c9116254dcd",
+      "size_bytes": 1812
+    },
+    {
+      "path": "docs/releases/pilot_v0/external_agent_registration_validation.md",
+      "role": "external_agent_registration_validation",
+      "sha256": "5e68b3344a61162b1f1e707e4ac182fcb4b4c0e15ac5977d58c6ada7228a898d",
+      "size_bytes": 1589
+    }
+  ],
+  "harness_command_files": [
+    {
+      "path": "scripts/run_synthetic_market_agent_suite.py",
+      "role": "harness_command_family",
+      "sha256": "1c1a3802e79585e2581c00828470b432fa1f788d180e871f7a093fba9214defd",
+      "size_bytes": 3819
+    },
+    {
+      "path": "scripts/run_synthetic_event_response_agent_suite.py",
+      "role": "harness_command_family",
+      "sha256": "b4d09d72a316adb742b36e8201197af006be8ec6d56241c5199c8e5e4f3ee5b7",
+      "size_bytes": 3825
+    },
+    {
+      "path": "scripts/run_yield_direction_treasury10y_agent_suite.py",
+      "role": "harness_command_family",
+      "sha256": "6a5457daf0a460d331f606d3511a563145c343de203ec53f1b821960eb070ac9",
+      "size_bytes": 4145
+    },
+    {
+      "path": "scripts/run_yield_curve_10y2y_steepening_agent_suite.py",
+      "role": "harness_command_family",
+      "sha256": "8902648601c272124d5e88acd7e3743aff7db74ca2abac5935f955e1ab92fd64",
+      "size_bytes": 4163
+    },
+    {
+      "path": "scripts/run_yield_curve_10y3mo_steepening_agent_suite.py",
+      "role": "harness_command_family",
+      "sha256": "a4f6106bf49cedf83248397928153822768ab96fdcaf57ade4efd03f1edfcb80",
+      "size_bytes": 4183
+    },
+    {
+      "path": "scripts/run_front_end_spread_widening_v0_agent_suite.py",
+      "role": "harness_command_family",
+      "sha256": "3bf5be260f98edfbeef362af2bc8c6a7e6e1906ac75392b502b5a8f994e1bf21",
+      "size_bytes": 4151
+    },
+    {
+      "path": "scripts/run_usd_broad_direction_v0_agent_suite.py",
+      "role": "harness_command_family",
+      "sha256": "3343bbc0c95a16bfb5bf196abab2c5f6728c0b3cd33cda903c28807827a3efec",
+      "size_bytes": 4106
+    }
+  ],
+  "minimum_completed_runs_per_task": 3,
+  "minimum_external_agent_configurations": 1,
+  "ready_for_external_agent_distribution": true,
+  "registry_id": "finds_agentbench_external_agents_pilot_v0",
+  "required_environment_variables": [
+    "FINDS_TASK_ID",
+    "FINDS_RUN_SEED",
+    "FINDS_TASK_SPEC_PATH",
+    "FINDS_PUBLIC_DATA_DIR",
+    "FINDS_TRAIN_PUBLIC_PATH",
+    "FINDS_HOLDOUT_FEATURES_PATH",
+    "FINDS_PRIVATE_HOLDOUT_FEATURES_PATH",
+    "FINDS_SAMPLE_SUBMISSION_PATH",
+    "FINDS_METADATA_PATH",
+    "FINDS_SUBMISSION_DIR"
+  ],
+  "required_submission_artifacts": [
+    "notebook.ipynb",
+    "predictions.csv",
+    "writeup.md"
+  ],
+  "status": "ready_for_external_agent_intake",
+  "validation_command": "PYTHONPATH=src python scripts/validate_external_agent_registry.py"
+}

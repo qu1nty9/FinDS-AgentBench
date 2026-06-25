@@ -14,6 +14,9 @@
     "external_agent_configuration_count": 0,
     "external_task_coverage_count": 0,
     "handoff_markdown_path": "agents/external_agent_handoff.md",
+    "intake_manifest_json_path": "docs/releases/pilot_v0/external_agent_intake_manifest.json",
+    "intake_manifest_markdown_path": "docs/releases/pilot_v0/external_agent_intake_manifest.md",
+    "intake_manifest_status": "ready_for_external_agent_intake",
     "missing_external_task_ids": [
       "front_end_spread_widening_v0",
       "synthetic_event_response_v0",

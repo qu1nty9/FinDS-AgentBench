@@ -58,6 +58,14 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     )
     assert manifest["external_agents"]["handoff_markdown_path"] == "agents/external_agent_handoff.md"
     assert (
+        manifest["external_agents"]["intake_manifest_markdown_path"]
+        == "docs/releases/pilot_v0/external_agent_intake_manifest.md"
+    )
+    assert (
+        manifest["external_agents"]["intake_manifest_status"]
+        == "ready_for_external_agent_intake"
+    )
+    assert (
         manifest["external_agents"]["readiness_markdown_path"]
         == "docs/releases/pilot_v0/external_agent_readiness.md"
     )
@@ -229,6 +237,8 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert "statistical_artifacts/README.md" in readme
     assert "External Agent Protocol" in readme
     assert "External Agent Handoff" in readme
+    assert "External Agent Intake Manifest" in readme
+    assert "docs/releases/pilot_v0/external_agent_intake_manifest.md" in readme
     assert "External Agent Readiness" in readme
     assert "Registration Validation" in readme
     assert "Submission Readiness" in readme

@@ -34,7 +34,7 @@ Machine-readable claim boundary and evidence index for the workshop submission g
 | pilot_release_scope | yes | `ready` | `claim_allowed` | 6 | 3 |
 | statistical_artifacts | yes | `ready` | `claim_allowed` | 4 | 1 |
 | manual_audit_independent_review | no | `not_ready_seed_only` | `claim_blocked` | 10 | 2 |
-| external_agent_evidence | no | `not_ready_no_external_agents` | `claim_blocked` | 5 | 2 |
+| external_agent_evidence | no | `not_ready_no_external_agents` | `claim_blocked` | 6 | 2 |
 | methodology_calibration_review | yes | `ready` | `claim_allowed` | 4 | 1 |
 | release_tag_and_archive | no | `not_ready_unfrozen` | `claim_blocked` | 3 | 2 |
 
@@ -100,6 +100,7 @@ Machine-readable claim boundary and evidence index for the workshop submission g
 - Evidence artifacts:
   - `agents/external_agent_registry.yaml` (external_agent_registry)
   - `agents/external_agent_handoff.md` (external_agent_handoff)
+  - `docs/releases/pilot_v0/external_agent_intake_manifest.md` (external_agent_intake_manifest)
   - `docs/releases/pilot_v0/external_agent_protocol.md` (external_agent_protocol)
   - `docs/releases/pilot_v0/external_agent_readiness.md` (external_agent_readiness)
   - `docs/releases/pilot_v0/external_agent_registration_validation.md` (external_agent_registration_validation)
