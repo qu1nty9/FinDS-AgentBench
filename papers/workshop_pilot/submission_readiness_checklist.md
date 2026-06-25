@@ -17,6 +17,7 @@ This checklist tracks work that should be complete before treating the workshop 
 - Unified submission-readiness gate for the workshop manuscript.
 - Generated qualitative failure examples with exact task/run/artifact references.
 - Audited related-work matrix with corrected venue-neighbor citations and positioning notes.
+- Static manuscript formatting checker covering inputs, citations, labels, table structure, and PDF-risk warnings.
 
 ## Required Before Submission
 
@@ -26,7 +27,7 @@ This checklist tracks work that should be complete before treating the workshop 
 - Validate external-agent registry evidence before using it for external-agent claims.
 - Expand qualitative examples after independent second-reviewer adjudication.
 - Freeze a release tag and archive the release artifact bundle.
-- Compile the final LaTeX and inspect table width, appendix length, and venue formatting.
+- Install/run a LaTeX engine, compile the final PDF, and inspect table width, appendix length, and venue formatting.
 
 ## Current Risk Flags
 

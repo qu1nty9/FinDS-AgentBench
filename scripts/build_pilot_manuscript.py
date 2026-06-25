@@ -66,6 +66,8 @@ def main() -> int:
     print(f"audit_failure_examples_tex: {result.audit_failure_examples_tex_path}")
     print(f"audit_failure_examples_markdown: {result.audit_failure_examples_markdown_path}")
     print(f"audit_failure_examples_json: {result.audit_failure_examples_json_path}")
+    print(f"formatting_check_json: {result.formatting_check_json_path}")
+    print(f"formatting_check_markdown: {result.formatting_check_markdown_path}")
     print(f"readme: {result.readme_path}")
     print(f"checklist: {result.checklist_path}")
     print(f"metadata: {result.metadata_path}")

@@ -127,9 +127,40 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     summary_table_path = tmp_path / "release" / "stats" / "tables" / "summary.tex"
     comparison_table_path = tmp_path / "release" / "stats" / "tables" / "comparison.tex"
     protocol_table_path = tmp_path / "release" / "paper" / "pilot_protocol.tex"
-    for path in (methods_path, summary_table_path, comparison_table_path, protocol_table_path):
+    methods_path.parent.mkdir(parents=True, exist_ok=True)
+    methods_path.write_text("\\paragraph{Statistical reporting.} Demo.\n", encoding="utf-8")
+    for path, label in (
+        (
+            summary_table_path,
+            "tab:pilot-uncertainty-score-overall-score",
+        ),
+        (
+            comparison_table_path,
+            "tab:pilot-agent-vs-best-baseline-score-overall-score",
+        ),
+        (protocol_table_path, "tab:pilot-protocol"),
+    ):
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text("% input\n", encoding="utf-8")
+        path.write_text(
+            "\n".join(
+                [
+                    "\\begin{table}[t]",
+                    "\\centering",
+                    "\\begin{tabular}{lc}",
+                    "\\toprule",
+                    "Item & Value \\\\",
+                    "\\midrule",
+                    "Demo & 1 \\\\",
+                    "\\bottomrule",
+                    "\\end{tabular}",
+                    "\\caption{Demo table.}",
+                    f"\\label{{{label}}}",
+                    "\\end{table}",
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
     write_json(manifest_path, manifest)
     write_json(reference_path, reference_results)
     write_json(manual_audit_subset_path, manual_audit_subset)
@@ -152,6 +183,7 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     checklist = result.checklist_path.read_text(encoding="utf-8")
     audit_examples_tex = result.audit_failure_examples_tex_path.read_text(encoding="utf-8")
     audit_examples_markdown = result.audit_failure_examples_markdown_path.read_text(encoding="utf-8")
+    formatting_check = json.loads(result.formatting_check_json_path.read_text(encoding="utf-8"))
     metadata = json.loads(result.metadata_path.read_text(encoding="utf-8"))
 
     assert "\\title{FinDS-AgentBench" in main_tex
@@ -172,8 +204,13 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert result.audit_failure_examples_tex_path.exists()
     assert result.audit_failure_examples_markdown_path.exists()
     assert result.audit_failure_examples_json_path.exists()
+    assert result.formatting_check_json_path.exists()
+    assert result.formatting_check_markdown_path.exists()
     assert "Related Work" in result.related_work_tex_path.read_text(encoding="utf-8")
     assert "@article{mlebench2024" in result.references_bib_path.read_text(encoding="utf-8")
+    assert formatting_check["ready_for_static_formatting_claims"] is True
+    assert formatting_check["hard_error_count"] == 0
+    assert "formatting_check.md" in readme
     assert "Qualitative Failure Examples" in audit_examples_tex
     assert "case_a" in audit_examples_markdown
     assert "Required Before Submission" in checklist
@@ -184,6 +221,7 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert "Validate the completed second-reviewer packet" in checklist
     assert "External-agent protocol and readiness report" in checklist
     assert "External-agent handoff, registration template, and registry-evidence validator" in checklist
+    assert "Static manuscript formatting checker" in checklist
     assert "External-Agent Gate Blockers" in checklist
     assert "Submission readiness status" in checklist
     assert "Register and run at least one non-author external agent" in checklist

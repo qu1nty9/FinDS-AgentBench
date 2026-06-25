@@ -12,10 +12,10 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | Archive Status | `candidate_unfrozen` |
 | Expected Tag | `v0.1.0-pilot` |
 | Archive Path | `dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz` |
-| Archive SHA256 | `958d8bf676b885098f8300dcd6aea5083c8c07ed2cf68bf61bae654fb4c93b67` |
+| Archive SHA256 | `31b24365321f1cc2f5b60241e3e0ceeb38c9ace690b7b528180ce62b4cd5af19` |
 | Verification Command | `PYTHONPATH=src python scripts/verify_release_archive.py` |
-| File Count | 289 |
-| Total Uncompressed Size | 2334441 bytes |
+| File Count | 291 |
+| Total Uncompressed Size | 2357599 bytes |
 
 ## Submission Readiness
 
@@ -29,7 +29,7 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 
 | Path | Size Bytes | SHA256 |
 | --- | ---: | --- |
-| `README.md` | 16610 | `cfa12254e182dd8f925dab4e0c75670217bb699818d2b0aed3da21a62fca1510` |
+| `README.md` | 16777 | `ce343ce47f899bb7badc848e4d321a0952093ecf59db848a25f80f1f009f819d` |
 | `agents/README.md` | 3228 | `443e0303aa2ee5bdc49cbdfd0a8f89c699950a8761d3cd5e3f1760c0eed2c4c0` |
 | `agents/examples/event_rule_env_agent.py` | 668 | `2e74c166c91ce8a6a54945e8f3cf09bfb802cf1d6dd04c6d3ebcc6fad73195d6` |
 | `agents/examples/momentum_env_agent.py` | 662 | `2b488a203fc571ecbb86104628d8364a2e5d272faecdc4715e755c82aa26f4b4` |
@@ -182,7 +182,7 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `scripts/build_external_agent_readiness.py` | 3439 | `d33136a3ab8c84ba3ca6202fe9f3d6771574d00c93077ea17841bcf10d9460a3` |
 | `scripts/build_manual_audit_workflow.py` | 2694 | `b9865e98c9b196720e1241cf019badf17e846f1bd6df30cd9aa3896bee90dd14` |
 | `scripts/build_methodology_calibration_workflow.py` | 2557 | `3ec4c91d0e9da4e5a02c3121f6e6f1eb5596b0ff66a33ad2909cbb767aed9314` |
-| `scripts/build_pilot_manuscript.py` | 2899 | `455da0399b6737476415cde916eab1ee0127068cc23d2cbd9c125f539339ad0a` |
+| `scripts/build_pilot_manuscript.py` | 3053 | `d30b11e97d6e593e0b55d5e531087e6b49f9f0028b409606e2002a8998c3eead` |
 | `scripts/build_pilot_paper_artifacts.py` | 946 | `89a15e408b7e797f79a77c927c4424905ab15b444c96ac12ecd16cb09ecc683d` |
 | `scripts/build_pilot_reference_results.py` | 2309 | `9f9b2d3db5c138b1e47ac7005a92c6908df75d7dd7242e6afa48653aee3e7159` |
 | `scripts/build_pilot_release.py` | 14809 | `763e0f71eadc4e8717e184bb7f736cc4eed461fec00b2d78c8e5a394622239df` |
@@ -192,6 +192,7 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `scripts/build_run_report.py` | 2178 | `6d210223d6d1792bb331f03c983b2b80475c81c0f3623e3b4b94d2c3ddc851d2` |
 | `scripts/build_submission_readiness.py` | 2541 | `14ea635f9b828695fffaf58386be283433cc9e18603224d9bfdd89cf3daacaa5` |
 | `scripts/build_task_cards.py` | 1025 | `e5468169af3450bf1780bf461bb3f68e59fb7925b242dca1e5209b6f0dfc95f7` |
+| `scripts/check_pilot_manuscript_formatting.py` | 1707 | `7b6d91bdd6b4f14da5ceffaae53936d17ec15dccfc810f0a3c4b5d8401002030` |
 | `scripts/check_pilot_release_reproducibility.py` | 4082 | `2f61abc4866cc71a3f2a168abcbd2fac9fdcf03c99fdafd1bfbdfde7c0c2629f` |
 | `scripts/create_run_manifest.py` | 1851 | `fb27affb882858114ae00eeed3885b5c7291d8c32df1815385ad3c966599f5e2` |
 | `scripts/download_front_end_spread_widening_v0.py` | 1815 | `65543034785dba26c4be14918adab96e31e365929e9a1ed38b27e870e1736922` |
@@ -285,10 +286,11 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `src/finds_agentbench/io.py` | 683 | `934ae5e625c83ac994bdad1067c1154755ea9f3e6bc3c82e9953a2e2f24edac4` |
 | `src/finds_agentbench/leakage.py` | 3952 | `07dd0ea04f7725ec94d0b9776577655e7c172ecf1fb4a8dac39dab1be6be775e` |
 | `src/finds_agentbench/manual_audit.py` | 84233 | `3dc3f603497593cff8e8af8154d35b3ede64be1d7f714262d936f5fd14faf1bf` |
+| `src/finds_agentbench/manuscript_formatting.py` | 19759 | `7d5d071f4159536934f9e6b50b3ef5fe8050a663c888a0ace011289273eda264` |
 | `src/finds_agentbench/methodology.py` | 11942 | `ade6672d442914e4b10f133c263dd7fe015877787927318590f36913dc60280a` |
 | `src/finds_agentbench/methodology_calibration.py` | 34092 | `5a9471f4f80334aafb4ececcfb1649af329c54baa0321eabbf989a91d9d9c411` |
 | `src/finds_agentbench/paper_artifacts.py` | 11359 | `d5a10c1e3fdda21424e3164406385e4f68dad9d72781ccbea5e82a0c76b7bfca` |
-| `src/finds_agentbench/pilot_manuscript.py` | 34354 | `18414dae04b7f251d6af0cde9cb91f6572129f581b9177be2df49895b684e71f` |
+| `src/finds_agentbench/pilot_manuscript.py` | 35725 | `264369c9b2acd6ce95fd58579aac2efe289cf3ab4f738ba782cf693b44540e4d` |
 | `src/finds_agentbench/pilot_release.py` | 26730 | `d52af5f25445e8e5e5af4e25c1c12e9a98e51103e47368eeb803539d947d833c` |
 | `src/finds_agentbench/pipelines.py` | 273833 | `f53ad58158979718ffc56dfbaea6767d41fbe9f2c7ac2c9621febd1cfe953bda` |
 | `src/finds_agentbench/reference_results.py` | 12624 | `91ee3dc182b9e7b13384911c9d7b99a3e3ff5735e4af3adba6b26d7b9b888ce8` |

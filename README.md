@@ -103,6 +103,12 @@ PYTHONPATH=src python scripts/build_pilot_manuscript.py
 
 This writes `papers/workshop_pilot/main.tex`, manuscript metadata, and a submission-readiness checklist while inputting result tables directly from `docs/releases/pilot_v0/`.
 
+Check static LaTeX readiness, citation/label consistency, and PDF-risk warnings with:
+
+```bash
+PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py
+```
+
 
 ## Core Evaluation Dimensions
 

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from finds_agentbench.manuscript_formatting import write_manuscript_formatting_artifacts
 from finds_agentbench.paper_artifacts import latex_escape
 from finds_agentbench.related_work import render_bibtex, render_related_work_tex
 
@@ -41,6 +42,8 @@ class PilotManuscriptBuildResult:
     audit_failure_examples_tex_path: Path
     audit_failure_examples_markdown_path: Path
     audit_failure_examples_json_path: Path
+    formatting_check_json_path: Path
+    formatting_check_markdown_path: Path
     readme_path: Path
     checklist_path: Path
     metadata_path: Path
@@ -470,7 +473,7 @@ def render_main_tex(
     )
 
 
-def render_readme(summary: dict[str, Any]) -> str:
+def render_readme(summary: dict[str, Any], *, formatting_report: dict[str, Any]) -> str:
     return "\n".join(
         [
             "# Workshop Pilot Manuscript",
@@ -487,6 +490,8 @@ def render_readme(summary: dict[str, Any]) -> str:
             "| `audit_failure_examples.tex` | Generated qualitative examples from the seed manual-audit subset. |",
             "| `audit_failure_examples.md` | Markdown copy of the generated qualitative examples. |",
             "| `audit_failure_examples.json` | Machine-readable selected qualitative examples. |",
+            "| `formatting_check.md` | Static LaTeX readiness and PDF-risk report. |",
+            "| `formatting_check.json` | Machine-readable static formatting report. |",
             "| `submission_readiness_checklist.md` | Remaining work before a credible arXiv/workshop submission. |",
             "| `metadata.json` | Machine-readable manuscript summary derived from release artifacts. |",
             "",
@@ -504,6 +509,7 @@ def render_readme(summary: dict[str, Any]) -> str:
             f"| Reviewer Readiness | {summary['reviewer_readiness_status']} |",
             f"| External Agent Readiness | {summary['external_agent_readiness_status']} |",
             f"| Submission Readiness | {summary['submission_readiness_status']} |",
+            f"| Formatting Check | {formatting_report['status']} |",
             "",
             "## Build",
             "",
@@ -511,6 +517,12 @@ def render_readme(summary: dict[str, Any]) -> str:
             "",
             "```bash",
             "PYTHONPATH=src python scripts/build_pilot_manuscript.py",
+            "```",
+            "",
+            "Check static LaTeX readiness and PDF-risk warnings:",
+            "",
+            "```bash",
+            "PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py",
             "```",
             "",
             "The generated `main.tex` inputs LaTeX tables from `docs/releases/pilot_v0/` rather than copying them, so table updates remain traceable to the release pipeline.",
@@ -541,6 +553,7 @@ def render_submission_checklist(summary: dict[str, Any]) -> str:
             "- Unified submission-readiness gate for the workshop manuscript.",
             "- Generated qualitative failure examples with exact task/run/artifact references.",
             "- Audited related-work matrix with corrected venue-neighbor citations and positioning notes.",
+            "- Static manuscript formatting checker covering inputs, citations, labels, table structure, and PDF-risk warnings.",
             "",
             "## Required Before Submission",
             "",
@@ -550,7 +563,7 @@ def render_submission_checklist(summary: dict[str, Any]) -> str:
             "- Validate external-agent registry evidence before using it for external-agent claims.",
             "- Expand qualitative examples after independent second-reviewer adjudication.",
             "- Freeze a release tag and archive the release artifact bundle.",
-            "- Compile the final LaTeX and inspect table width, appendix length, and venue formatting.",
+            "- Install/run a LaTeX engine, compile the final PDF, and inspect table width, appendix length, and venue formatting.",
             "",
             "## Current Risk Flags",
             "",
@@ -634,6 +647,8 @@ def build_pilot_manuscript(
     audit_failure_examples_tex_path = output_root / "audit_failure_examples.tex"
     audit_failure_examples_markdown_path = output_root / "audit_failure_examples.md"
     audit_failure_examples_json_path = output_root / "audit_failure_examples.json"
+    formatting_check_json_path = output_root / "formatting_check.json"
+    formatting_check_markdown_path = output_root / "formatting_check.md"
     readme_path = output_root / "README.md"
     checklist_path = output_root / "submission_readiness_checklist.md"
     metadata_path = output_root / "metadata.json"
@@ -678,7 +693,12 @@ def build_pilot_manuscript(
         ),
         encoding="utf-8",
     )
-    readme_path.write_text(render_readme(summary), encoding="utf-8")
+    formatting_result = write_manuscript_formatting_artifacts(
+        main_tex_path=main_tex_path,
+        output_json_path=formatting_check_json_path,
+        output_markdown_path=formatting_check_markdown_path,
+    )
+    readme_path.write_text(render_readme(summary, formatting_report=formatting_result.report), encoding="utf-8")
     checklist_path.write_text(render_submission_checklist(summary), encoding="utf-8")
     metadata_path.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
@@ -690,6 +710,8 @@ def build_pilot_manuscript(
         audit_failure_examples_tex_path=audit_failure_examples_tex_path,
         audit_failure_examples_markdown_path=audit_failure_examples_markdown_path,
         audit_failure_examples_json_path=audit_failure_examples_json_path,
+        formatting_check_json_path=formatting_check_json_path,
+        formatting_check_markdown_path=formatting_check_markdown_path,
         readme_path=readme_path,
         checklist_path=checklist_path,
         metadata_path=metadata_path,

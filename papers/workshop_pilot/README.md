@@ -12,6 +12,8 @@ Generated manuscript scaffold for the FinDS-AgentBench arXiv/workshop pilot pape
 | `audit_failure_examples.tex` | Generated qualitative examples from the seed manual-audit subset. |
 | `audit_failure_examples.md` | Markdown copy of the generated qualitative examples. |
 | `audit_failure_examples.json` | Machine-readable selected qualitative examples. |
+| `formatting_check.md` | Static LaTeX readiness and PDF-risk report. |
+| `formatting_check.json` | Machine-readable static formatting report. |
 | `submission_readiness_checklist.md` | Remaining work before a credible arXiv/workshop submission. |
 | `metadata.json` | Machine-readable manuscript summary derived from release artifacts. |
 
@@ -29,6 +31,7 @@ Generated manuscript scaffold for the FinDS-AgentBench arXiv/workshop pilot pape
 | Reviewer Readiness | not_ready_seed_only |
 | External Agent Readiness | not_ready_no_external_agents |
 | Submission Readiness | not_ready_for_workshop_submission |
+| Formatting Check | static_checks_passed_pdf_compile_pending |
 
 ## Build
 
@@ -36,6 +39,12 @@ The manuscript is generated from release artifacts:
 
 ```bash
 PYTHONPATH=src python scripts/build_pilot_manuscript.py
+```
+
+Check static LaTeX readiness and PDF-risk warnings:
+
+```bash
+PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py
 ```
 
 The generated `main.tex` inputs LaTeX tables from `docs/releases/pilot_v0/` rather than copying them, so table updates remain traceable to the release pipeline.
