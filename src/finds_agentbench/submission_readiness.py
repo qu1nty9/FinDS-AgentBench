@@ -300,6 +300,13 @@ def evidence_artifacts_for_gate(gate_id: str, manifest: dict[str, Any]) -> list[
             ),
         ],
         "manual_audit_independent_review": [
+            artifact_entry(
+                "independent_participant_brief",
+                manifest.get(
+                    "independent_participant_brief_path",
+                    "docs/releases/pilot_v0/independent_participant_brief.md",
+                ),
+            ),
             artifact_entry("manual_audit_readme", manual_audit.get("readme_path", "audits/pilot_v0/README.md")),
             artifact_entry("rubric", manual_audit.get("rubric_path", "audits/pilot_v0/manual_audit_rubric.yaml")),
             artifact_entry("seed_subset", manual_audit.get("subset_path", "audits/pilot_v0/adjudicated_subset.json")),
@@ -318,6 +325,13 @@ def evidence_artifacts_for_gate(gate_id: str, manifest: dict[str, Any]) -> list[
             ),
         ],
         "external_agent_evidence": [
+            artifact_entry(
+                "independent_participant_brief",
+                manifest.get(
+                    "independent_participant_brief_path",
+                    "docs/releases/pilot_v0/independent_participant_brief.md",
+                ),
+            ),
             artifact_entry("external_agent_registry", external_agents.get("registry_path", "")),
             artifact_entry("external_agent_handoff", external_agents.get("handoff_markdown_path", "")),
             artifact_entry("external_agent_intake_manifest", external_agents.get("intake_manifest_markdown_path", "")),

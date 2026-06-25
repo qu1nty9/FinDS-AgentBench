@@ -1,8 +1,8 @@
 {
   "archive_mtime_policy": "tar and gzip mtimes are normalized to 0",
   "archive_path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
-  "archive_sha256": "284381e400e3f207b23588a426f4b9b9ce5a0af96917803c8b1ec5cd2607c18e",
-  "archive_size_bytes": 273075,
+  "archive_sha256": "8e9e84685bc0d8cb75348f4bd04af63b5e56f29f94ca15bd83a8214cd13d79bd",
+  "archive_size_bytes": 274975,
   "archive_status": "candidate_unfrozen",
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
@@ -11,7 +11,7 @@
     "docs/releases/pilot_v0/archive_manifest.md"
   ],
   "expected_tag": "v0.1.0-pilot",
-  "file_count": 288,
+  "file_count": 289,
   "files": [
     {
       "path": "README.md",
@@ -560,8 +560,8 @@
     },
     {
       "path": "docs/releases/pilot_v0/README.md",
-      "sha256": "d8dc57cb71344cd29a0c47b4b5feefba3ab026a51e771b5f4df074edf2c1f16c",
-      "size_bytes": 9976
+      "sha256": "c50a1c2bbe844a3d124c3a4f8a52fbb441742a9d65612df79417f8a2b7ac0aa2",
+      "size_bytes": 10045
     },
     {
       "path": "docs/releases/pilot_v0/external_agent_intake_manifest.json",
@@ -599,9 +599,14 @@
       "size_bytes": 1589
     },
     {
+      "path": "docs/releases/pilot_v0/independent_participant_brief.md",
+      "sha256": "d166dfd24688a18e836274b7a93f511c89e65dd92dcfa408aabe1f236c944022",
+      "size_bytes": 5136
+    },
+    {
       "path": "docs/releases/pilot_v0/manifest.json",
-      "sha256": "eed86fde333becbc199572959714bdfde7f985ceb8bdc0c09bc202ff0e4fa585",
-      "size_bytes": 31443
+      "sha256": "7caca03f5295a38b614acc231b57c3773881729fcb47c75695368d6f443ec20a",
+      "size_bytes": 31542
     },
     {
       "path": "docs/releases/pilot_v0/paper_artifacts/README.md",
@@ -705,13 +710,13 @@
     },
     {
       "path": "docs/releases/pilot_v0/submission_evidence_ledger.json",
-      "sha256": "49732a8ee88dd8b6363d7cb5829a77d7d5939f9759ab5ec1c51303dbec1967d4",
-      "size_bytes": 10910
+      "sha256": "919611f762a92d1e4ac094891f9552c262df799028c743bf208abfae42de6350",
+      "size_bytes": 11206
     },
     {
       "path": "docs/releases/pilot_v0/submission_evidence_ledger.md",
-      "sha256": "9cc48f6db6e15a11116266b3b159c338612c6aea2d64ef9929554f22b6d1dc2e",
-      "size_bytes": 7295
+      "sha256": "a6a8079061fd77dd6c842f52186824391d7a74926ecdbb631e8c559d257350da",
+      "size_bytes": 7483
     },
     {
       "path": "docs/releases/pilot_v0/submission_readiness.json",
@@ -1250,8 +1255,8 @@
     },
     {
       "path": "src/finds_agentbench/benchmark_manifest.py",
-      "sha256": "e3158f47168a7e0535354db153669e36efd814491677946ba56ec249fa161923",
-      "size_bytes": 39049
+      "sha256": "ad9ceb17369a56fd79f1a2ff8eebee66b118a410fb4744cf62a1e07dc7ac8c8c",
+      "size_bytes": 39321
     },
     {
       "path": "src/finds_agentbench/curve_10y3mo.py",
@@ -1305,8 +1310,8 @@
     },
     {
       "path": "src/finds_agentbench/pilot_manuscript.py",
-      "sha256": "6979b4936717296a547bea1e08e328a06c216269defb62c6eed0c4f57c089fcc",
-      "size_bytes": 34284
+      "sha256": "e766808567270b3162b18b9ce5694ffedb058c6c7a41e0d46f51bcf1443a1b6f",
+      "size_bytes": 34393
     },
     {
       "path": "src/finds_agentbench/pilot_release.py",
@@ -1365,8 +1370,8 @@
     },
     {
       "path": "src/finds_agentbench/submission_readiness.py",
-      "sha256": "4e58493c3ff153c86ffc8b564fd94956573d2d6828188cb1a71cbfd4969c244a",
-      "size_bytes": 26867
+      "sha256": "ad43498fe78c9a85cf189dfdb8f6362a955b94027427b42252478268fd83ab37",
+      "size_bytes": 27423
     },
     {
       "path": "src/finds_agentbench/synthetic.py",
@@ -1475,6 +1480,6 @@
     "ready_for_workshop_submission": false,
     "status": "not_ready_for_workshop_submission"
   },
-  "total_uncompressed_size_bytes": 2324131,
+  "total_uncompressed_size_bytes": 2330856,
   "verification_command": "PYTHONPATH=src python scripts/verify_release_archive.py"
 }

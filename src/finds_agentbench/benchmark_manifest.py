@@ -20,6 +20,7 @@ MANUAL_AUDIT_SUBSET_PATH = "audits/pilot_v0/adjudicated_subset.json"
 MANUAL_AUDIT_README_PATH = "audits/pilot_v0/README.md"
 EXTERNAL_AGENT_REGISTRY_PATH = "agents/external_agent_registry.yaml"
 PILOT_RELEASE_DOCS_ROOT = "docs/releases/pilot_v0"
+INDEPENDENT_PARTICIPANT_BRIEF_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/independent_participant_brief.md"
 EXTERNAL_AGENT_PROTOCOL_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_protocol.md"
 EXTERNAL_AGENT_READINESS_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_readiness.json"
 EXTERNAL_AGENT_READINESS_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/external_agent_readiness.md"
@@ -320,6 +321,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Paper Artifacts", "paper_artifacts/README.md"],
                     ["Statistical Artifacts", "statistical_artifacts/README.md"],
                     ["Release Archive Manifest", "archive_manifest.md"],
+                    ["Independent Participant Brief", "independent_participant_brief.md"],
                     ["Manual Audit", manual_audit["readme_path"]],
                     ["Agreement Report", manual_audit["agreement_report_markdown_path"]],
                     ["Adjudication Queue", manual_audit["adjudication_report_markdown_path"]],
@@ -529,6 +531,7 @@ def build_benchmark_manifest(
         "reference_results_path": f"{PILOT_RELEASE_DOCS_ROOT}/reference_results.md",
         "paper_artifacts_path": f"{PILOT_RELEASE_DOCS_ROOT}/paper_artifacts/README.md",
         "statistical_artifacts_path": f"{PILOT_RELEASE_DOCS_ROOT}/statistical_artifacts/README.md",
+        "independent_participant_brief_path": INDEPENDENT_PARTICIPANT_BRIEF_PATH,
         "release_archive_path": RELEASE_ARCHIVE_PATH,
         "release_archive_manifest_json_path": RELEASE_ARCHIVE_MANIFEST_JSON_PATH,
         "release_archive_manifest_markdown_path": RELEASE_ARCHIVE_MANIFEST_MARKDOWN_PATH,

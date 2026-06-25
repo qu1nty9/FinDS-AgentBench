@@ -535,6 +535,7 @@ def render_submission_checklist(summary: dict[str, Any]) -> str:
             "- Seed manual-audit rubric and adjudication workflow.",
             "- Reviewer-readiness report that separates seed-only audit status from submission-strength agreement claims.",
             "- Independent-reviewer handoff and packet validator for second-reviewer audit collection.",
+            "- Independent participant brief covering reviewer, external-agent, and optional reader roles.",
             "- External-agent protocol and readiness report that separate bundled reference agents from independent external-agent evidence.",
             "- External-agent handoff, registration template, and registry-evidence validator.",
             "- Unified submission-readiness gate for the workshop manuscript.",

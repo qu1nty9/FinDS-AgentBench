@@ -37,6 +37,7 @@
     "registration_validation_status": "no_external_agent_registered",
     "registry_path": "agents/external_agent_registry.yaml"
   },
+  "independent_participant_brief_path": "docs/releases/pilot_v0/independent_participant_brief.md",
   "manual_audit": {
     "adjudication_entry_count": 6,
     "adjudication_report_json_path": "audits/pilot_v0/reports/adjudication_queue.json",

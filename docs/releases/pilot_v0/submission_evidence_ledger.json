@@ -112,6 +112,10 @@
       },
       "evidence_artifacts": [
         {
+          "path": "docs/releases/pilot_v0/independent_participant_brief.md",
+          "role": "independent_participant_brief"
+        },
+        {
           "path": "audits/pilot_v0/README.md",
           "role": "manual_audit_readme"
         },
@@ -175,6 +179,10 @@
         "external_task_coverage_count": 0
       },
       "evidence_artifacts": [
+        {
+          "path": "docs/releases/pilot_v0/independent_participant_brief.md",
+          "role": "independent_participant_brief"
+        },
         {
           "path": "agents/external_agent_registry.yaml",
           "role": "external_agent_registry"

@@ -116,8 +116,8 @@ Acceptance criteria:
 
 ## Immediate Next Steps
 
-1. Fill an independent second-reviewer packet from `audits/pilot_v0/reviews/reviewer_2_blank_template.csv`, rebuild the agreement report, and adjudicate disagreements back into the canonical subset.
-2. Add at least one stronger external agent beyond environment-wrapped baseline logic.
+1. Recruit one independent manual-audit reviewer using `docs/releases/pilot_v0/independent_participant_brief.md`, fill an independent second-reviewer packet from `audits/pilot_v0/reviews/reviewer_2_blank_template.csv`, rebuild the agreement report, and adjudicate disagreements back into the canonical subset.
+2. Recruit one non-author external-agent participant using `docs/releases/pilot_v0/independent_participant_brief.md` and add at least one stronger external agent beyond environment-wrapped baseline logic.
 3. Audit the generated related-work citations, add any venue-specific neighboring benchmarks, and tighten the positioning narrative.
 4. Expand qualitative examples after independent second-reviewer adjudication.
 5. Freeze a stage-ready benchmark snapshot only after the stronger agent, independent second review packet, and release-readiness gates are in place.
@@ -131,3 +131,4 @@ Acceptance criteria:
 - Added independent reviewer packet intake manifests and a submission evidence ledger that separates currently supported claims from blocked publication claims.
 - Added an external-agent intake manifest with checksums for registration, handoff, harness commands, and claim boundaries before non-author agent evidence is available.
 - Added release-archive verification that checks archive SHA256, file inventory, per-file content hashes, and normalized tar metadata against the manifest.
+- Added an independent participant brief that defines required reviewer, external-agent, domain-reader, and reproducibility-reader roles before stronger publication claims.

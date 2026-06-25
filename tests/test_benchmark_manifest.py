@@ -40,6 +40,10 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
         == "docs/releases/pilot_v0/statistical_artifacts/README.md"
     )
     assert (
+        manifest["independent_participant_brief_path"]
+        == "docs/releases/pilot_v0/independent_participant_brief.md"
+    )
+    assert (
         manifest["release_archive_path"]
         == "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz"
     )
@@ -235,6 +239,8 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert "reference_results.md" in readme
     assert "paper_artifacts/README.md" in readme
     assert "statistical_artifacts/README.md" in readme
+    assert "Independent Participant Brief" in readme
+    assert "independent_participant_brief.md" in readme
     assert "External Agent Protocol" in readme
     assert "External Agent Handoff" in readme
     assert "External Agent Intake Manifest" in readme

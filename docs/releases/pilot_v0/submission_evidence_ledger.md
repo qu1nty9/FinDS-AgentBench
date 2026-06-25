@@ -33,8 +33,8 @@ Machine-readable claim boundary and evidence index for the workshop submission g
 | --- | --- | --- | --- | --- | --- |
 | pilot_release_scope | yes | `ready` | `claim_allowed` | 6 | 3 |
 | statistical_artifacts | yes | `ready` | `claim_allowed` | 4 | 1 |
-| manual_audit_independent_review | no | `not_ready_seed_only` | `claim_blocked` | 10 | 2 |
-| external_agent_evidence | no | `not_ready_no_external_agents` | `claim_blocked` | 6 | 2 |
+| manual_audit_independent_review | no | `not_ready_seed_only` | `claim_blocked` | 11 | 2 |
+| external_agent_evidence | no | `not_ready_no_external_agents` | `claim_blocked` | 7 | 2 |
 | methodology_calibration_review | yes | `ready` | `claim_allowed` | 4 | 1 |
 | release_tag_and_archive | no | `not_ready_unfrozen` | `claim_blocked` | 3 | 2 |
 
@@ -76,6 +76,7 @@ Machine-readable claim boundary and evidence index for the workshop submission g
   - Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.
   - Rebuild official agreement reporting after an independent completed packet is available.
 - Evidence artifacts:
+  - `docs/releases/pilot_v0/independent_participant_brief.md` (independent_participant_brief)
   - `audits/pilot_v0/README.md` (manual_audit_readme)
   - `audits/pilot_v0/manual_audit_rubric.yaml` (rubric)
   - `audits/pilot_v0/adjudicated_subset.json` (seed_subset)
@@ -98,6 +99,7 @@ Machine-readable claim boundary and evidence index for the workshop submission g
   - Register and run at least one non-author external agent configuration through the pilot harness.
   - Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.
 - Evidence artifacts:
+  - `docs/releases/pilot_v0/independent_participant_brief.md` (independent_participant_brief)
   - `agents/external_agent_registry.yaml` (external_agent_registry)
   - `agents/external_agent_handoff.md` (external_agent_handoff)
   - `docs/releases/pilot_v0/external_agent_intake_manifest.md` (external_agent_intake_manifest)

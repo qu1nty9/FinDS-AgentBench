@@ -28,6 +28,7 @@ def base_manifest() -> dict:
         "task_count": 9,
         "runnable_task_count": 9,
         "statistical_artifacts_path": "docs/releases/pilot_v0/statistical_artifacts/README.md",
+        "independent_participant_brief_path": "docs/releases/pilot_v0/independent_participant_brief.md",
         "manual_audit": {
             "ready_for_submission_claims": False,
             "reviewer_readiness_status": "not_ready_seed_only",
@@ -148,6 +149,12 @@ def test_submission_evidence_ledger_records_claim_boundaries():
     manual_paths = {entry["path"] for entry in manual_gate["evidence_artifacts"]}
     assert manual_gate["claim_status"] == "claim_blocked"
     assert "audits/pilot_v0/reviews/independent_reviewer_packet_manifest.md" in manual_paths
+    assert "docs/releases/pilot_v0/independent_participant_brief.md" in manual_paths
+    external_gate = next(
+        gate for gate in ledger["gates"] if gate["gate_id"] == "external_agent_evidence"
+    )
+    external_paths = {entry["path"] for entry in external_gate["evidence_artifacts"]}
+    assert "docs/releases/pilot_v0/independent_participant_brief.md" in external_paths
     assert any("build_manual_audit_workflow.py" in command for command in manual_gate["verification_commands"])
     assert "# Submission Evidence Ledger" in markdown
     assert "## Disallowed Current Claims" in markdown
