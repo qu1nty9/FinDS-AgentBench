@@ -18,6 +18,7 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | Statistical Artifacts | statistical_artifacts/README.md |
 | Release Archive Manifest | archive_manifest.md |
 | Publication Gate Manifest | publication_gate_manifest.md |
+| Workshop Submission Package | ../../../papers/workshop_pilot/submission_package_manifest.md |
 | Independent Participant Brief | independent_participant_brief.md |
 | Manual Audit | audits/pilot_v0/README.md |
 | Agreement Report | audits/pilot_v0/reports/agreement_summary.md |

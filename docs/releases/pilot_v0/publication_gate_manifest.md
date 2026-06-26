@@ -11,8 +11,8 @@ Machine-readable gate map for the FinDS-AgentBench pilot submission package.
 | Release Stage | pilot |
 | Status | `blocked_on_submission_evidence_and_pdf_compile` |
 | Ready for Final Submission Package | no |
-| Automated Gates | 6 |
-| CI-Enforced Automated Gates | 6 |
+| Automated Gates | 7 |
+| CI-Enforced Automated Gates | 7 |
 | Evidence Gates | 7 |
 | Blocking Evidence Gates | 4 |
 | Blocking Items | 7 |
@@ -25,6 +25,7 @@ Machine-readable gate map for the FinDS-AgentBench pilot submission package.
 | release_gate_regression_suite | release-gate-tests | yes | yes |
 | manuscript_static_formatting | release-gate-tests | yes | yes |
 | publication_gate_manifest_staleness | release-gate-tests | yes | yes |
+| submission_package_manifest_staleness | release-gate-tests | yes | yes |
 | release_archive_build_and_verify | release-gate-tests | yes | yes |
 | pilot_release_reproducibility_smoke | pilot-release-repro-smoke | yes | yes |
 
@@ -67,7 +68,7 @@ python -m ruff check .
 - Status: `defined_in_ci`
 
 ```bash
-PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_publication_gate.py -q
+PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_submission_package.py tests/test_publication_gate.py -q
 ```
 
 ### manuscript_static_formatting
@@ -86,6 +87,15 @@ PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py
 
 ```bash
 PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check
+```
+
+### submission_package_manifest_staleness
+
+- CI job: `release-gate-tests`
+- Status: `defined_in_ci`
+
+```bash
+PYTHONPATH=src python scripts/build_submission_package_manifest.py --check
 ```
 
 ### release_archive_build_and_verify

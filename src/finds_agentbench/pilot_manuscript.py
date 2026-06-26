@@ -494,6 +494,11 @@ def render_readme(summary: dict[str, Any], *, formatting_report: dict[str, Any])
             "| `formatting_check.md` | Static LaTeX readiness and PDF-risk report. |",
             "| `formatting_check.json` | Machine-readable static formatting report. |",
             "| `submission_readiness_checklist.md` | Remaining work before a credible arXiv/workshop submission. |",
+            (
+                "| `submission_package_manifest.md` | Submission-level wrapper over manuscript files, "
+                "release artifacts, claim boundaries, and archive checksums. |"
+            ),
+            "| `submission_package_manifest.json` | Machine-readable submission package manifest. |",
             "| `metadata.json` | Machine-readable manuscript summary derived from release artifacts. |",
             "",
             "## Snapshot",
@@ -526,6 +531,12 @@ def render_readme(summary: dict[str, Any], *, formatting_report: dict[str, Any])
             "PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py",
             "```",
             "",
+            "Build the submission package manifest:",
+            "",
+            "```bash",
+            "PYTHONPATH=src python scripts/build_submission_package_manifest.py",
+            "```",
+            "",
             "The generated `main.tex` inputs LaTeX tables from `docs/releases/pilot_v0/` rather than copying them, so table updates remain traceable to the release pipeline.",
             "",
         ]
@@ -556,6 +567,8 @@ def render_submission_checklist(summary: dict[str, Any]) -> str:
             "- Audited related-work matrix with corrected venue-neighbor citations and positioning notes.",
             "- Static manuscript formatting checker covering inputs, citations, labels, table structure, and PDF-risk warnings.",
             "- Manuscript table-layout mitigations for related-work, result, uncertainty, and protocol tables.",
+            "- Publication-gate manifest connecting CI checks, archive verification, manuscript formatting, and external evidence blockers.",
+            "- Workshop submission-package manifest inventorying manuscript files, release artifacts, claim boundaries, archive checksums, and remaining blockers.",
             "",
             "## Required Before Submission",
             "",

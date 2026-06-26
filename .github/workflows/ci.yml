@@ -45,6 +45,7 @@ jobs:
             tests/test_release_reproducibility.py \
             tests/test_submission_readiness.py \
             tests/test_manuscript_formatting.py \
+            tests/test_submission_package.py \
             tests/test_publication_gate.py \
             -q
 
@@ -53,6 +54,9 @@ jobs:
 
       - name: Check publication gate manifest
         run: PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check
+
+      - name: Check submission package manifest
+        run: PYTHONPATH=src python scripts/build_submission_package_manifest.py --check
 
       - name: Build release archive smoke artifact
         run: |

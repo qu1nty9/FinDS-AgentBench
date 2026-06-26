@@ -211,6 +211,8 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert formatting_check["ready_for_static_formatting_claims"] is True
     assert formatting_check["hard_error_count"] == 0
     assert "formatting_check.md" in readme
+    assert "submission_package_manifest.md" in readme
+    assert "scripts/build_submission_package_manifest.py" in readme
     assert "Qualitative Failure Examples" in audit_examples_tex
     assert "case_a" in audit_examples_markdown
     assert "Required Before Submission" in checklist
@@ -222,6 +224,8 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert "External-agent protocol and readiness report" in checklist
     assert "External-agent handoff, registration template, and registry-evidence validator" in checklist
     assert "Static manuscript formatting checker" in checklist
+    assert "Publication-gate manifest" in checklist
+    assert "Workshop submission-package manifest" in checklist
     assert "External-Agent Gate Blockers" in checklist
     assert "Submission readiness status" in checklist
     assert "Register and run at least one non-author external agent" in checklist

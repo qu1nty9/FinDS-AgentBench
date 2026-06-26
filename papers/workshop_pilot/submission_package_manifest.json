@@ -1,0 +1,840 @@
+{
+  "allowed_current_claims": [
+    "The pilot release is within the planned 8-12 runnable-task workshop scope.",
+    "Pilot uncertainty and paired-comparison statistical artifacts are generated.",
+    "Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.",
+    "External-agent registration, handoff, and readiness gates are available.",
+    "Methodology-calibration findings have a completed author review packet.",
+    "A deterministic candidate archive and archive manifest can be built before final tagging."
+  ],
+  "archive_sha256": "c55fbd7327e7b1698785e204e1cd64418cbb792ea771b51c5a6ab4b98a1a95f2",
+  "archive_status": "candidate_unfrozen",
+  "artifact_count": 67,
+  "artifacts": [
+    {
+      "exists": true,
+      "group": "manuscript",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "papers/workshop_pilot/main.tex",
+      "required_for_workshop_submission": true,
+      "role": "main_tex",
+      "sha256": "3789e6e37d74f2e4333a3ad7dfd18dfe2a13d5c5dc6146c94d5e9fcc8f1969ee",
+      "size_bytes": 6814
+    },
+    {
+      "exists": true,
+      "group": "manuscript",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "papers/workshop_pilot/related_work.tex",
+      "required_for_workshop_submission": true,
+      "role": "related_work_tex",
+      "sha256": "08f52dd67a107749576600afaf5e7d17bce1e148751632b9f6cb813ae4259ad0",
+      "size_bytes": 4667
+    },
+    {
+      "exists": true,
+      "group": "manuscript",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "papers/workshop_pilot/references.bib",
+      "required_for_workshop_submission": true,
+      "role": "references_bib",
+      "sha256": "ef78dcc1cf7a42b59bca57dd146aa147ebf389ef4a58e302f57f7b46b6ee2b50",
+      "size_bytes": 4418
+    },
+    {
+      "exists": true,
+      "group": "manuscript",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "papers/workshop_pilot/metadata.json",
+      "required_for_workshop_submission": true,
+      "role": "metadata",
+      "sha256": "f51d3f23ff089f5157ce045e8d46e7f9c482e038de2bf63b705f9c57ef8005d0",
+      "size_bytes": 2452
+    },
+    {
+      "exists": true,
+      "group": "manuscript",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "papers/workshop_pilot/audit_failure_examples.tex",
+      "required_for_workshop_submission": true,
+      "role": "audit_failure_examples_tex",
+      "sha256": "b1eec79d965f59b9eb7aa936acacb5fa92b8b483cc6dea12664df0de6e7f646f",
+      "size_bytes": 4053
+    },
+    {
+      "exists": true,
+      "group": "manuscript",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "papers/workshop_pilot/audit_failure_examples.md",
+      "required_for_workshop_submission": true,
+      "role": "audit_failure_examples_md",
+      "sha256": "315e19d3f1e9edd490af0c2967b135b8a91e104e9e0227b4839955f431c6853c",
+      "size_bytes": 3378
+    },
+    {
+      "exists": true,
+      "group": "manuscript",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "papers/workshop_pilot/formatting_check.json",
+      "required_for_workshop_submission": true,
+      "role": "formatting_check_json",
+      "sha256": "af805775a3563a0c8c469bf192fb7b11a08f231f6acebafd9db22bb21a530e74",
+      "size_bytes": 4422
+    },
+    {
+      "exists": true,
+      "group": "manuscript",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "papers/workshop_pilot/formatting_check.md",
+      "required_for_workshop_submission": true,
+      "role": "formatting_check_md",
+      "sha256": "3c807ef55be448d97ac539b41be7034b3333b50cc6efb1fccf7c90c5f623ef8e",
+      "size_bytes": 1672
+    },
+    {
+      "exists": true,
+      "group": "manuscript",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "papers/workshop_pilot/submission_readiness_checklist.md",
+      "required_for_workshop_submission": true,
+      "role": "submission_readiness_checklist",
+      "sha256": "61bed6f79346d112a23380e50ee2fcc3040d4af597f98acb40d3056504d96df2",
+      "size_bytes": 3417
+    },
+    {
+      "exists": false,
+      "group": "manuscript",
+      "kind": "missing",
+      "materialization": "workspace_path",
+      "note": "Required only for the final venue upload, not for source-only review.",
+      "path": "papers/workshop_pilot/main.pdf",
+      "required_for_workshop_submission": true,
+      "role": "compiled_pdf",
+      "sha256": null,
+      "size_bytes": null
+    },
+    {
+      "exists": true,
+      "group": "paper_inputs",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/reference_results.md",
+      "required_for_workshop_submission": true,
+      "role": "reference_results",
+      "sha256": "fb0b65f76d9b361c3f7cc993df75ef14e17a139aad9742e11cf50b2ed1006d9d",
+      "size_bytes": 13123
+    },
+    {
+      "exists": true,
+      "group": "paper_inputs",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/paper_artifacts/README.md",
+      "required_for_workshop_submission": true,
+      "role": "paper_artifacts_index",
+      "sha256": "a6fbd930530651a15f35f8655614b6ab68b93e52ca2247addc128cccaa298f21",
+      "size_bytes": 550
+    },
+    {
+      "exists": true,
+      "group": "paper_inputs",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/statistical_artifacts/README.md",
+      "required_for_workshop_submission": true,
+      "role": "statistical_artifacts_index",
+      "sha256": "b34ebaac3848cb76592c3bccca69350e62d2805d693f21ec2ba8cd0ea6ef9670",
+      "size_bytes": 2241
+    },
+    {
+      "exists": true,
+      "group": "paper_inputs",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex",
+      "required_for_workshop_submission": true,
+      "role": "agent_vs_baseline_table",
+      "sha256": "9b70124fc5e2df28d7ae892c9c4410e045da45ab1a8d418c9346016e331425c2",
+      "size_bytes": 1210
+    },
+    {
+      "exists": true,
+      "group": "paper_inputs",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/statistical_artifacts/tables/summary_uncertainty_overall_score.tex",
+      "required_for_workshop_submission": true,
+      "role": "uncertainty_table",
+      "sha256": "7ba894464398f1282bfe6737cf50576efd7e4df24dbe88540cc2a8b92d7c8072",
+      "size_bytes": 2995
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/manifest.json",
+      "required_for_workshop_submission": true,
+      "role": "release_manifest",
+      "sha256": "be33cc7f2569a80cdec6943a0c6c1b7a11e52ea679c1538fe5f5467f6cf1bf70",
+      "size_bytes": 31944
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/README.md",
+      "required_for_workshop_submission": true,
+      "role": "release_readme",
+      "sha256": "a31f42f39e049821d2e9af4ff8ea460b88afa248466d1f19b7c3d85da3dd4669",
+      "size_bytes": 10202
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/archive_manifest.json",
+      "required_for_workshop_submission": true,
+      "role": "archive_manifest_json",
+      "sha256": "bbe5a2ef3d2b5f08060cc2c4008074a88c2d712063cad393909666b7a97d3f46",
+      "size_bytes": 58119
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/archive_manifest.md",
+      "required_for_workshop_submission": true,
+      "role": "archive_manifest_md",
+      "sha256": "6519ae94e41604cd81f815bfe2779c9074dddb7de56f522d063c31632865b914",
+      "size_bytes": 40783
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/publication_gate_manifest.json",
+      "required_for_workshop_submission": true,
+      "role": "publication_gate_json",
+      "sha256": "365797a513ee7298675394b4b9d8de2fa48f2e6dcd46abb2441bb60cb76ab38a",
+      "size_bytes": 11175
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/publication_gate_manifest.md",
+      "required_for_workshop_submission": true,
+      "role": "publication_gate_md",
+      "sha256": "687e72a656282a70024a13da8e504f69519612ee3c27c32eda8c3eda56be2e38",
+      "size_bytes": 4996
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/submission_readiness.json",
+      "required_for_workshop_submission": true,
+      "role": "submission_readiness_json",
+      "sha256": "751c4b89e77da75dd6c42a244ea80b12fca96cf9a0a3050bf397df21fbedd872",
+      "size_bytes": 3358
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/submission_readiness.md",
+      "required_for_workshop_submission": true,
+      "role": "submission_readiness_md",
+      "sha256": "32b0f85cb505e33810a2e969e053f6a782874a67733a49353f4c7f168d901874",
+      "size_bytes": 1705
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/submission_evidence_ledger.json",
+      "required_for_workshop_submission": true,
+      "role": "evidence_ledger_json",
+      "sha256": "919611f762a92d1e4ac094891f9552c262df799028c743bf208abfae42de6350",
+      "size_bytes": 11206
+    },
+    {
+      "exists": true,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/submission_evidence_ledger.md",
+      "required_for_workshop_submission": true,
+      "role": "evidence_ledger_md",
+      "sha256": "a6a8079061fd77dd6c842f52186824391d7a74926ecdbb631e8c559d257350da",
+      "size_bytes": 7483
+    },
+    {
+      "exists": true,
+      "group": "ci",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": ".github/workflows/ci.yml",
+      "required_for_workshop_submission": true,
+      "role": "github_actions_workflow",
+      "sha256": "35f717478770496b88996e664a9e107237de781b136d8e527a76958c584b9a3b",
+      "size_bytes": 3856
+    },
+    {
+      "exists": true,
+      "group": "package_control",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "scripts/build_submission_package_manifest.py",
+      "required_for_workshop_submission": true,
+      "role": "submission_package_script",
+      "sha256": "1cb2dfedf6d4ac0c531e7fa3bfd49de96985e44757ff793499e6393cc32a2065",
+      "size_bytes": 3346
+    },
+    {
+      "exists": true,
+      "group": "package_control",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "src/finds_agentbench/submission_package.py",
+      "required_for_workshop_submission": true,
+      "role": "submission_package_module",
+      "sha256": "9a9be0f7a73cc5af65eed7cb0fb73b22d3c48037806f5681be3fbaf563071a7d",
+      "size_bytes": 23109
+    },
+    {
+      "exists": true,
+      "group": "package_control",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "scripts/build_publication_gate_manifest.py",
+      "required_for_workshop_submission": true,
+      "role": "publication_gate_script",
+      "sha256": "f76f0076a6cdf4127cf5ef47d68f160187aa70ba8128f92ff6baebb31e7c202c",
+      "size_bytes": 2599
+    },
+    {
+      "exists": true,
+      "group": "package_control",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "src/finds_agentbench/publication_gate.py",
+      "required_for_workshop_submission": true,
+      "role": "publication_gate_module",
+      "sha256": "2ee5a0bfbd1e1d0cfd5abd52481b462b243542f6a5d409fe5ebdd70368f7dd25",
+      "size_bytes": 18522
+    },
+    {
+      "exists": null,
+      "group": "release_candidate",
+      "kind": "file",
+      "materialization": "declared_by_archive_manifest",
+      "note": "Archive file metadata is declared by docs/releases/pilot_v0/archive_manifest.json.",
+      "path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
+      "required_for_workshop_submission": true,
+      "role": "release_archive",
+      "sha256": "c55fbd7327e7b1698785e204e1cd64418cbb792ea771b51c5a6ab4b98a1a95f2",
+      "size_bytes": 294075
+    },
+    {
+      "exists": null,
+      "group": "submission_package",
+      "kind": "file",
+      "materialization": "generated_by_this_command",
+      "path": "papers/workshop_pilot/submission_package_manifest.json",
+      "required_for_workshop_submission": true,
+      "role": "submission_package_json",
+      "sha256": null,
+      "size_bytes": null
+    },
+    {
+      "exists": null,
+      "group": "submission_package",
+      "kind": "file",
+      "materialization": "generated_by_this_command",
+      "path": "papers/workshop_pilot/submission_package_manifest.md",
+      "required_for_workshop_submission": true,
+      "role": "submission_package_markdown",
+      "sha256": null,
+      "size_bytes": null
+    },
+    {
+      "exists": true,
+      "group": "evidence:pilot_release_scope",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/manifest.json",
+      "required_for_workshop_submission": false,
+      "role": "release_manifest",
+      "sha256": "be33cc7f2569a80cdec6943a0c6c1b7a11e52ea679c1538fe5f5467f6cf1bf70",
+      "size_bytes": 31944
+    },
+    {
+      "exists": true,
+      "group": "evidence:pilot_release_scope",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/README.md",
+      "required_for_workshop_submission": false,
+      "role": "release_readme",
+      "sha256": "a31f42f39e049821d2e9af4ff8ea460b88afa248466d1f19b7c3d85da3dd4669",
+      "size_bytes": 10202
+    },
+    {
+      "exists": true,
+      "group": "evidence:pilot_release_scope",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/cards/task_registry.json",
+      "required_for_workshop_submission": false,
+      "role": "task_registry_json",
+      "sha256": "be4efe670c74d4f44f7a6db3474677b1d24c91623e61fd499eb4ee5e9bf47694",
+      "size_bytes": 6432
+    },
+    {
+      "exists": true,
+      "group": "evidence:pilot_release_scope",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/cards/task_registry.csv",
+      "required_for_workshop_submission": false,
+      "role": "task_registry_csv",
+      "sha256": "008b0881b5f2eaefdcac9a6ff44c35264c1ab0c26b3104eca203c216b0c82d53",
+      "size_bytes": 3679
+    },
+    {
+      "exists": true,
+      "group": "evidence:pilot_release_scope",
+      "kind": "directory",
+      "materialization": "workspace_path",
+      "path": "docs/cards",
+      "required_for_workshop_submission": false,
+      "role": "task_cards_index",
+      "sha256": null,
+      "size_bytes": null
+    },
+    {
+      "exists": true,
+      "group": "evidence:pilot_release_scope",
+      "kind": "directory",
+      "materialization": "workspace_path",
+      "path": "docs/data_manifests/pilot_v0",
+      "required_for_workshop_submission": false,
+      "role": "data_manifests_index",
+      "sha256": null,
+      "size_bytes": null
+    },
+    {
+      "exists": true,
+      "group": "evidence:statistical_artifacts",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/statistical_artifacts/README.md",
+      "required_for_workshop_submission": false,
+      "role": "statistical_artifacts_index",
+      "sha256": "b34ebaac3848cb76592c3bccca69350e62d2805d693f21ec2ba8cd0ea6ef9670",
+      "size_bytes": 2241
+    },
+    {
+      "exists": true,
+      "group": "evidence:statistical_artifacts",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/statistical_artifacts/summary_uncertainty.md",
+      "required_for_workshop_submission": false,
+      "role": "summary_uncertainty",
+      "sha256": "174da70c3ffe66844a66e0ca4d4ad824c6db3801e6026f5a18a8f60fbd588ac5",
+      "size_bytes": 18174
+    },
+    {
+      "exists": true,
+      "group": "evidence:statistical_artifacts",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/statistical_artifacts/agent_vs_best_baseline.md",
+      "required_for_workshop_submission": false,
+      "role": "agent_vs_best_baseline",
+      "sha256": "89d6099f053010320354b199a6c08b3acaa6da83037a7814c733a3af01a411cc",
+      "size_bytes": 6069
+    },
+    {
+      "exists": true,
+      "group": "evidence:statistical_artifacts",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.md",
+      "required_for_workshop_submission": false,
+      "role": "statistical_methods",
+      "sha256": "d12f707496773f4990bbacc79c30c3e95bc6841aec7d04ff1503f3ee1703b8f2",
+      "size_bytes": 1191
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/independent_participant_brief.md",
+      "required_for_workshop_submission": true,
+      "role": "independent_participant_brief",
+      "sha256": "d166dfd24688a18e836274b7a93f511c89e65dd92dcfa408aabe1f236c944022",
+      "size_bytes": 5136
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/README.md",
+      "required_for_workshop_submission": true,
+      "role": "manual_audit_readme",
+      "sha256": "c7101d3cbb1db09123749962c1d3a32d673b8bde9b8a76c3405c709e12d72b6d",
+      "size_bytes": 2067
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/manual_audit_rubric.yaml",
+      "required_for_workshop_submission": true,
+      "role": "rubric",
+      "sha256": "34f29a90f2a396448682e647bd79bd2b8c0bd956f6ef87ee585924f2084d5bbe",
+      "size_bytes": 5608
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/adjudicated_subset.json",
+      "required_for_workshop_submission": true,
+      "role": "seed_subset",
+      "sha256": "e7826edefa2bcd89d49c23049e42e17ecd37126a2cfb2b38d92729b75e925d67",
+      "size_bytes": 21591
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/reviews/README.md",
+      "required_for_workshop_submission": true,
+      "role": "reviews_workflow",
+      "sha256": "a71009823aad755f4207d2a869462ceeb516f863c06727b1b2f3db2beda0f915",
+      "size_bytes": 1755
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/reports/reviewer_readiness.md",
+      "required_for_workshop_submission": true,
+      "role": "reviewer_readiness",
+      "sha256": "b60710c8ce74cad9c514ce218d738edadc11805494d2914200065cf8ebb9df30",
+      "size_bytes": 1627
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/reports/agreement_summary.md",
+      "required_for_workshop_submission": true,
+      "role": "agreement_report",
+      "sha256": "c1b740101feb12500ad51cc5353faf08c8c3ad186989b2ac2815ee905793ccc1",
+      "size_bytes": 1878
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/reports/adjudication_queue.md",
+      "required_for_workshop_submission": true,
+      "role": "adjudication_queue",
+      "sha256": "e9a19ad0aa975ddc51ba5965a9d30dffdd232db9ed742eaf820d87b486743f09",
+      "size_bytes": 1501
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/reviews/independent_reviewer_handoff.md",
+      "required_for_workshop_submission": true,
+      "role": "independent_handoff",
+      "sha256": "c676a1a4a8f8683d6adbf84b4a76e3e66682abada753f309a780c7beddb00c85",
+      "size_bytes": 2830
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/reviews/independent_reviewer_packet_manifest.md",
+      "required_for_workshop_submission": true,
+      "role": "independent_packet_manifest",
+      "sha256": "3c48ef90788b7ef68274f8427f64401903841c0d905553bae13b2034350e1eb0",
+      "size_bytes": 4069
+    },
+    {
+      "exists": true,
+      "group": "evidence:manual_audit_independent_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/pilot_v0/reports/independent_reviewer_packet_validation.md",
+      "required_for_workshop_submission": true,
+      "role": "independent_packet_validation",
+      "sha256": "2e96de908fa9da251df7a3c032d21a7d8032dc64bda0e0b9dce0c66ec2c5cd23",
+      "size_bytes": 1656
+    },
+    {
+      "exists": true,
+      "group": "evidence:external_agent_evidence",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/independent_participant_brief.md",
+      "required_for_workshop_submission": true,
+      "role": "independent_participant_brief",
+      "sha256": "d166dfd24688a18e836274b7a93f511c89e65dd92dcfa408aabe1f236c944022",
+      "size_bytes": 5136
+    },
+    {
+      "exists": true,
+      "group": "evidence:external_agent_evidence",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "agents/external_agent_registry.yaml",
+      "required_for_workshop_submission": true,
+      "role": "external_agent_registry",
+      "sha256": "393ce033894220b1e75796cb98e5804d7a4aaffa287de0f43add380ba4e0d4d1",
+      "size_bytes": 3606
+    },
+    {
+      "exists": true,
+      "group": "evidence:external_agent_evidence",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "agents/external_agent_handoff.md",
+      "required_for_workshop_submission": true,
+      "role": "external_agent_handoff",
+      "sha256": "0ecb38dbf783335d9280dd091edb05909d6aa0336663e2f708235c39a11cc086",
+      "size_bytes": 2488
+    },
+    {
+      "exists": true,
+      "group": "evidence:external_agent_evidence",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/external_agent_intake_manifest.md",
+      "required_for_workshop_submission": true,
+      "role": "external_agent_intake_manifest",
+      "sha256": "68b3e1ae4c319645471448eae50d07f1c70073e343e42cded2ef813d849d8f51",
+      "size_bytes": 5521
+    },
+    {
+      "exists": true,
+      "group": "evidence:external_agent_evidence",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/external_agent_protocol.md",
+      "required_for_workshop_submission": true,
+      "role": "external_agent_protocol",
+      "sha256": "6552a6d995d557e90a2f950dfd5dafbf16247137fbc39e3d39106e6e296ef53a",
+      "size_bytes": 2037
+    },
+    {
+      "exists": true,
+      "group": "evidence:external_agent_evidence",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/external_agent_readiness.md",
+      "required_for_workshop_submission": true,
+      "role": "external_agent_readiness",
+      "sha256": "f023225f3c55da31b0c0b9f9bab7a5072ec833424ea430f095508c9116254dcd",
+      "size_bytes": 1812
+    },
+    {
+      "exists": true,
+      "group": "evidence:external_agent_evidence",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/external_agent_registration_validation.md",
+      "required_for_workshop_submission": true,
+      "role": "external_agent_registration_validation",
+      "sha256": "5e68b3344a61162b1f1e707e4ac182fcb4b4c0e15ac5977d58c6ada7228a898d",
+      "size_bytes": 1589
+    },
+    {
+      "exists": true,
+      "group": "evidence:methodology_calibration_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/methodology_calibration/README.md",
+      "required_for_workshop_submission": false,
+      "role": "methodology_calibration_readme",
+      "sha256": "c98354953138bf90c7407b24e156e5da69a9060c0b187ba9adf6dd796bb7dc64",
+      "size_bytes": 2156
+    },
+    {
+      "exists": true,
+      "group": "evidence:methodology_calibration_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/methodology_calibration/corpus.yaml",
+      "required_for_workshop_submission": false,
+      "role": "methodology_calibration_corpus",
+      "sha256": "ca6b973ce2b01cdfc7e16d7838a9ece01a67de3d92ecd5d76b77634c27fd0349",
+      "size_bytes": 1617
+    },
+    {
+      "exists": true,
+      "group": "evidence:methodology_calibration_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/methodology_calibration/reports/summary.json",
+      "required_for_workshop_submission": false,
+      "role": "methodology_calibration_summary",
+      "sha256": "d217ce9eddfd5205eff79d69990bd7d5df06f91c0532f4c0bfeb0478d1d1766c",
+      "size_bytes": 120862
+    },
+    {
+      "exists": true,
+      "group": "evidence:methodology_calibration_review",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "audits/methodology_calibration/reviews/calibration_review_packet.csv",
+      "required_for_workshop_submission": false,
+      "role": "methodology_calibration_review_packet",
+      "sha256": "8a0609fcbd04c0cf1067a0e0be0b1d03ea1e79237c98b55d6018c773aef563d9",
+      "size_bytes": 21678
+    },
+    {
+      "exists": true,
+      "group": "evidence:release_tag_and_archive",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/archive_manifest.json",
+      "required_for_workshop_submission": true,
+      "role": "release_archive_manifest_json",
+      "sha256": "bbe5a2ef3d2b5f08060cc2c4008074a88c2d712063cad393909666b7a97d3f46",
+      "size_bytes": 58119
+    },
+    {
+      "exists": true,
+      "group": "evidence:release_tag_and_archive",
+      "kind": "file",
+      "materialization": "workspace_path",
+      "path": "docs/releases/pilot_v0/archive_manifest.md",
+      "required_for_workshop_submission": true,
+      "role": "release_archive_manifest_markdown",
+      "sha256": "6519ae94e41604cd81f815bfe2779c9074dddb7de56f522d063c31632865b914",
+      "size_bytes": 40783
+    }
+  ],
+  "benchmark_id": "finds_agentbench_pilot_v0",
+  "benchmark_version": "0.1.0",
+  "blocking_items": [
+    "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
+    "Rebuild official agreement reporting after an independent completed packet is available.",
+    "Register and run at least one non-author external agent configuration through the pilot harness.",
+    "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
+    "Create a release tag and archive the release artifact bundle after the remaining gates pass.",
+    "Run a real LaTeX engine and inspect the generated PDF before final submission.",
+    "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
+  ],
+  "disallowed_current_claims": [
+    "Independent manual-audit agreement or submission-strength second-reviewer evidence.",
+    "Independent external-agent performance evidence.",
+    "A frozen tagged release archive exists."
+  ],
+  "formatting_status": "static_checks_passed_pdf_compile_pending",
+  "missing_required_artifact_count": 1,
+  "missing_required_artifacts": [
+    {
+      "group": "manuscript",
+      "path": "papers/workshop_pilot/main.pdf",
+      "role": "compiled_pdf"
+    }
+  ],
+  "pre_submission_verification_commands": [
+    "python -m ruff check .",
+    "PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_submission_package.py tests/test_publication_gate.py -q",
+    "PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py",
+    "PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check",
+    "PYTHONPATH=src python scripts/build_submission_package_manifest.py --check",
+    "PYTHONPATH=src python scripts/build_release_archive.py --output-dir tmp/ci_release_archives --manifest-json tmp/ci_release_archive_manifest.json --manifest-markdown tmp/ci_release_archive_manifest.md && PYTHONPATH=src python scripts/verify_release_archive.py --archive-manifest tmp/ci_release_archive_manifest.json",
+    "PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py --work-root tmp/pilot_release_repro_check --repeat 1 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21"
+  ],
+  "publication_gate_status": "blocked_on_submission_evidence_and_pdf_compile",
+  "ready_for_workshop_submission_package": false,
+  "release_stage": "pilot",
+  "schema_version": 1,
+  "source_artifacts": {
+    "archive_manifest": "docs/releases/pilot_v0/archive_manifest.json",
+    "evidence_ledger": "docs/releases/pilot_v0/submission_evidence_ledger.json",
+    "formatting_check": "papers/workshop_pilot/formatting_check.json",
+    "publication_gate": "docs/releases/pilot_v0/publication_gate_manifest.json",
+    "release_manifest": "docs/releases/pilot_v0/manifest.json",
+    "submission_readiness": "docs/releases/pilot_v0/submission_readiness.json"
+  },
+  "stage_targets": [
+    {
+      "required_before_submission": [
+        "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
+        "Rebuild official agreement reporting after an independent completed packet is available.",
+        "Register and run at least one non-author external agent configuration through the pilot harness.",
+        "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
+        "Create a release tag and archive the release artifact bundle after the remaining gates pass.",
+        "Run a real LaTeX engine and inspect the generated PDF before final submission.",
+        "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
+      ],
+      "scope": "Pilot manuscript plus deterministic public benchmark release candidate.",
+      "status": "not_ready_blocked_by_current_gates",
+      "target_id": "arxiv_workshop"
+    },
+    {
+      "required_before_submission": [
+        "Expand from pilot scale to a larger audited task suite.",
+        "Add hidden or private temporal holdout governance.",
+        "Collect independent external-agent results across representative agent families.",
+        "Add broader reproducibility evidence from non-author machines."
+      ],
+      "scope": "Dataset/benchmark paper with public harness, stronger agent coverage, and governance.",
+      "status": "not_ready_requires_scale_and_external_validation",
+      "target_id": "top_benchmark_dataset_venue"
+    },
+    {
+      "required_before_submission": [
+        "Run larger repeated-run experiments across agents, tasks, seeds, and regimes.",
+        "Study leakage, validation, reproducibility, and decision-quality failure modes jointly.",
+        "Add model-risk and governance analysis beyond pilot benchmark reporting.",
+        "Complete independent review and external reproducibility evidence."
+      ],
+      "scope": "Methodological extension focused on reliability and model-risk implications.",
+      "status": "not_ready_requires_longitudinal_reliability_study",
+      "target_id": "journal_extension"
+    }
+  ],
+  "status": "candidate_blocked_on_missing_artifacts_and_evidence",
+  "submission_readiness_status": "not_ready_for_workshop_submission"
+}

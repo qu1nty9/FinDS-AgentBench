@@ -136,3 +136,4 @@ Acceptance criteria:
 - Added a static manuscript formatting checker that validates LaTeX inputs, citations, references, labels, table structure, and PDF-risk warnings before final TeX compilation.
 - Reduced manuscript formatting warnings by compacting the related-work table, compacting the agent-vs-baseline table, moving the full uncertainty table to the appendix, and marking the full protocol table with an explicit width mitigation.
 - Added a publication-gate manifest that maps CI-backed checks, release-archive verification, manuscript formatting, and remaining external-evidence blockers into one release-facing status artifact.
+- Added a workshop submission-package manifest that inventories manuscript files, release artifacts, claim boundaries, archive checksums, target-specific readiness, and missing final artifacts.

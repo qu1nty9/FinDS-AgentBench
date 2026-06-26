@@ -25,15 +25,20 @@ def test_build_publication_gate_manifest_tracks_ci_and_submission_blockers(tmp_p
     assert manifest["benchmark_id"] == "finds_agentbench_pilot_v0"
     assert manifest["status"] == "blocked_on_submission_evidence_and_pdf_compile"
     assert manifest["ready_for_final_submission_package"] is False
-    assert manifest["automated_gate_count"] == 6
-    assert manifest["ci_enforced_automated_gate_count"] == 6
+    assert manifest["automated_gate_count"] == 7
+    assert manifest["ci_enforced_automated_gate_count"] == 7
     assert manifest["blocking_evidence_gate_count"] == 4
 
     automated_gate_ids = {gate["gate_id"] for gate in manifest["automated_gates"]}
     assert "release_gate_regression_suite" in automated_gate_ids
     assert "publication_gate_manifest_staleness" in automated_gate_ids
+    assert "submission_package_manifest_staleness" in automated_gate_ids
     assert "release_archive_build_and_verify" in automated_gate_ids
     assert "pilot_release_reproducibility_smoke" in automated_gate_ids
+    assert any(
+        "tests/test_submission_package.py" in gate["local_command"]
+        for gate in manifest["automated_gates"]
+    )
     assert any(
         "tests/test_publication_gate.py" in gate["local_command"]
         for gate in manifest["automated_gates"]
@@ -57,6 +62,7 @@ def test_build_publication_gate_manifest_tracks_ci_and_submission_blockers(tmp_p
 
     assert "Publication Gate Manifest" in markdown
     assert "release_archive_build_and_verify" in markdown
+    assert "PYTHONPATH=src python scripts/build_submission_package_manifest.py --check" in markdown
     assert "PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check" in markdown
 
 

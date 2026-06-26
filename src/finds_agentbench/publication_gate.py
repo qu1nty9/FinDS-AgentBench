@@ -28,6 +28,7 @@ RELEASE_GATE_TEST_PATHS = (
     "tests/test_release_reproducibility.py",
     "tests/test_submission_readiness.py",
     "tests/test_manuscript_formatting.py",
+    "tests/test_submission_package.py",
     "tests/test_publication_gate.py",
 )
 
@@ -135,6 +136,20 @@ def build_automated_gates() -> list[dict[str, Any]]:
             "artifacts": [
                 "docs/releases/pilot_v0/publication_gate_manifest.json",
                 "docs/releases/pilot_v0/publication_gate_manifest.md",
+            ],
+        },
+        {
+            "gate_id": "submission_package_manifest_staleness",
+            "title": "Submission Package Manifest Staleness",
+            "status": "defined_in_ci",
+            "ci_job": "release-gate-tests",
+            "ci_enforced": True,
+            "blocks_publication_if_failing": True,
+            "local_command": "PYTHONPATH=src python scripts/build_submission_package_manifest.py --check",
+            "ci_command": "PYTHONPATH=src python scripts/build_submission_package_manifest.py --check",
+            "artifacts": [
+                "papers/workshop_pilot/submission_package_manifest.json",
+                "papers/workshop_pilot/submission_package_manifest.md",
             ],
         },
         {

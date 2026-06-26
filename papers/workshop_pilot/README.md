@@ -15,6 +15,8 @@ Generated manuscript scaffold for the FinDS-AgentBench arXiv/workshop pilot pape
 | `formatting_check.md` | Static LaTeX readiness and PDF-risk report. |
 | `formatting_check.json` | Machine-readable static formatting report. |
 | `submission_readiness_checklist.md` | Remaining work before a credible arXiv/workshop submission. |
+| `submission_package_manifest.md` | Submission-level wrapper over manuscript files, release artifacts, claim boundaries, and archive checksums. |
+| `submission_package_manifest.json` | Machine-readable submission package manifest. |
 | `metadata.json` | Machine-readable manuscript summary derived from release artifacts. |
 
 ## Snapshot
@@ -45,6 +47,12 @@ Check static LaTeX readiness and PDF-risk warnings:
 
 ```bash
 PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py
+```
+
+Build the submission package manifest:
+
+```bash
+PYTHONPATH=src python scripts/build_submission_package_manifest.py
 ```
 
 The generated `main.tex` inputs LaTeX tables from `docs/releases/pilot_v0/` rather than copying them, so table updates remain traceable to the release pipeline.

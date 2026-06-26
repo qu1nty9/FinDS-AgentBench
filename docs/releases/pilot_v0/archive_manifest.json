@@ -1,8 +1,8 @@
 {
   "archive_mtime_policy": "tar and gzip mtimes are normalized to 0",
   "archive_path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
-  "archive_sha256": "9e6c033d45e06c5a1a63cea22a0639313a02856abb48283345fb584208529c05",
-  "archive_size_bytes": 289523,
+  "archive_sha256": "c55fbd7327e7b1698785e204e1cd64418cbb792ea771b51c5a6ab4b98a1a95f2",
+  "archive_size_bytes": 294075,
   "archive_status": "candidate_unfrozen",
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
@@ -11,17 +11,17 @@
     "docs/releases/pilot_v0/archive_manifest.md"
   ],
   "expected_tag": "v0.1.0-pilot",
-  "file_count": 296,
+  "file_count": 298,
   "files": [
     {
       "path": ".github/workflows/ci.yml",
-      "sha256": "53ce08c871f8b3cbd1168d3ecd1d1ac23f3ea7f86e9ef7adb46e7f78f33fd449",
-      "size_bytes": 3672
+      "sha256": "35f717478770496b88996e664a9e107237de781b136d8e527a76958c584b9a3b",
+      "size_bytes": 3856
     },
     {
       "path": "README.md",
-      "sha256": "761f9514a3c47426da321f2ccebc122f6c5ff16879ee7c75c2c4289be0d142e6",
-      "size_bytes": 17126
+      "sha256": "a79b35a3c2e142eed0419290263852636fe3597806cd15124f95ffc0d501c0f0",
+      "size_bytes": 17494
     },
     {
       "path": "agents/README.md",
@@ -565,8 +565,8 @@
     },
     {
       "path": "docs/releases/pilot_v0/README.md",
-      "sha256": "158d94f0893b7eef7a5c0f124e1c77c35e381a0b57c2f319b64cc648c53c88dc",
-      "size_bytes": 10106
+      "sha256": "a31f42f39e049821d2e9af4ff8ea460b88afa248466d1f19b7c3d85da3dd4669",
+      "size_bytes": 10202
     },
     {
       "path": "docs/releases/pilot_v0/external_agent_intake_manifest.json",
@@ -610,8 +610,8 @@
     },
     {
       "path": "docs/releases/pilot_v0/manifest.json",
-      "sha256": "0a66980665a28415e3fd7108a01d1006457a459173590489467d8538de65e48c",
-      "size_bytes": 31740
+      "sha256": "be33cc7f2569a80cdec6943a0c6c1b7a11e52ea679c1538fe5f5467f6cf1bf70",
+      "size_bytes": 31944
     },
     {
       "path": "docs/releases/pilot_v0/paper_artifacts/README.md",
@@ -650,13 +650,13 @@
     },
     {
       "path": "docs/releases/pilot_v0/publication_gate_manifest.json",
-      "sha256": "949ab0e0698fd7e2e81823b6d0db9c74d2b540e8f9091158837bcfaf10624e28",
-      "size_bytes": 10482
+      "sha256": "365797a513ee7298675394b4b9d8de2fa48f2e6dcd46abb2441bb60cb76ab38a",
+      "size_bytes": 11175
     },
     {
       "path": "docs/releases/pilot_v0/publication_gate_manifest.md",
-      "sha256": "6d1f224f0ac4fe40e6e28c58523f9bb0bea552936323c446f41c85cd5c3a832e",
-      "size_bytes": 4699
+      "sha256": "687e72a656282a70024a13da8e504f69519612ee3c27c32eda8c3eda56be2e38",
+      "size_bytes": 4996
     },
     {
       "path": "docs/releases/pilot_v0/reference_results.json",
@@ -837,6 +837,11 @@
       "path": "scripts/build_run_report.py",
       "sha256": "6d210223d6d1792bb331f03c983b2b80475c81c0f3623e3b4b94d2c3ddc851d2",
       "size_bytes": 2178
+    },
+    {
+      "path": "scripts/build_submission_package_manifest.py",
+      "sha256": "1cb2dfedf6d4ac0c531e7fa3bfd49de96985e44757ff793499e6393cc32a2065",
+      "size_bytes": 3346
     },
     {
       "path": "scripts/build_submission_readiness.py",
@@ -1280,8 +1285,8 @@
     },
     {
       "path": "src/finds_agentbench/benchmark_manifest.py",
-      "sha256": "e00b784da16677d70594d55ec38a9764539d8ae00382303f227b1b4d9aafbfac",
-      "size_bytes": 39778
+      "sha256": "2649341b86e614841344199cca9142bba534e402f7dc41498f69f1d1fbc16d48",
+      "size_bytes": 40347
     },
     {
       "path": "src/finds_agentbench/curve_10y3mo.py",
@@ -1340,8 +1345,8 @@
     },
     {
       "path": "src/finds_agentbench/pilot_manuscript.py",
-      "sha256": "235684840fc0323276f48d25a086d1fc2518fbfa62e479a52e5fbe3863391d3f",
-      "size_bytes": 35909
+      "sha256": "03083f201b46f4697bad2b17bf41cf800fe35cc575cb3c3d4979369f2c4aef06",
+      "size_bytes": 36741
     },
     {
       "path": "src/finds_agentbench/pilot_release.py",
@@ -1355,8 +1360,8 @@
     },
     {
       "path": "src/finds_agentbench/publication_gate.py",
-      "sha256": "9331421f79c111228289c2e294118e36dcb608995d3087900ab83671f99d1cbc",
-      "size_bytes": 17769
+      "sha256": "2ee5a0bfbd1e1d0cfd5abd52481b462b243542f6a5d409fe5ebdd70368f7dd25",
+      "size_bytes": 18522
     },
     {
       "path": "src/finds_agentbench/reference_results.py",
@@ -1402,6 +1407,11 @@
       "path": "src/finds_agentbench/statistical_artifacts.py",
       "sha256": "6ea55f8c075209f07606fe128bc2cc339de1d7455c08370a4528c72cfa5c3c0f",
       "size_bytes": 27266
+    },
+    {
+      "path": "src/finds_agentbench/submission_package.py",
+      "sha256": "9a9be0f7a73cc5af65eed7cb0fb73b22d3c48037806f5681be3fbaf563071a7d",
+      "size_bytes": 23109
     },
     {
       "path": "src/finds_agentbench/submission_readiness.py",
@@ -1516,6 +1526,6 @@
     "ready_for_workshop_submission": false,
     "status": "not_ready_for_workshop_submission"
   },
-  "total_uncompressed_size_bytes": 2409967,
+  "total_uncompressed_size_bytes": 2440418,
   "verification_command": "PYTHONPATH=src python scripts/verify_release_archive.py"
 }

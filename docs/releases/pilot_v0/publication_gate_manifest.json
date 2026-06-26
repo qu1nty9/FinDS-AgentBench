@@ -1,5 +1,5 @@
 {
-  "automated_gate_count": 6,
+  "automated_gate_count": 7,
   "automated_gates": [
     {
       "artifacts": [],
@@ -15,11 +15,11 @@
     {
       "artifacts": [],
       "blocks_publication_if_failing": true,
-      "ci_command": "PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_publication_gate.py -q",
+      "ci_command": "PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_submission_package.py tests/test_publication_gate.py -q",
       "ci_enforced": true,
       "ci_job": "release-gate-tests",
       "gate_id": "release_gate_regression_suite",
-      "local_command": "PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_publication_gate.py -q",
+      "local_command": "PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_submission_package.py tests/test_publication_gate.py -q",
       "status": "defined_in_ci",
       "title": "Release-Gate Regression Suite"
     },
@@ -50,6 +50,20 @@
       "local_command": "PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check",
       "status": "defined_in_ci",
       "title": "Publication Gate Manifest Staleness"
+    },
+    {
+      "artifacts": [
+        "papers/workshop_pilot/submission_package_manifest.json",
+        "papers/workshop_pilot/submission_package_manifest.md"
+      ],
+      "blocks_publication_if_failing": true,
+      "ci_command": "PYTHONPATH=src python scripts/build_submission_package_manifest.py --check",
+      "ci_enforced": true,
+      "ci_job": "release-gate-tests",
+      "gate_id": "submission_package_manifest_staleness",
+      "local_command": "PYTHONPATH=src python scripts/build_submission_package_manifest.py --check",
+      "status": "defined_in_ci",
+      "title": "Submission Package Manifest Staleness"
     },
     {
       "artifacts": [
@@ -93,7 +107,7 @@
     "Run a real LaTeX engine and inspect the generated PDF before final submission.",
     "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
   ],
-  "ci_enforced_automated_gate_count": 6,
+  "ci_enforced_automated_gate_count": 7,
   "evidence_gate_count": 7,
   "evidence_gates": [
     {

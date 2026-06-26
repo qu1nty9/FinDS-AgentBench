@@ -121,6 +121,18 @@ CI uses the same generator in stale-check mode:
 PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check
 ```
 
+Build the workshop submission package manifest that inventories manuscript files, release artifacts, claim boundaries, archive checksums, and remaining blockers:
+
+```bash
+PYTHONPATH=src python scripts/build_submission_package_manifest.py
+```
+
+CI checks it for staleness as well:
+
+```bash
+PYTHONPATH=src python scripts/build_submission_package_manifest.py --check
+```
+
 
 ## Core Evaluation Dimensions
 

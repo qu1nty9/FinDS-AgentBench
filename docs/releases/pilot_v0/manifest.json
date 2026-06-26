@@ -622,5 +622,7 @@
       ],
       "track": "research_replication_and_audit"
     }
-  ]
+  ],
+  "workshop_submission_package_json_path": "papers/workshop_pilot/submission_package_manifest.json",
+  "workshop_submission_package_markdown_path": "papers/workshop_pilot/submission_package_manifest.md"
 }

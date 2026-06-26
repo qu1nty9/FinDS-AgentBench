@@ -20,6 +20,7 @@ This checklist tracks work that should be complete before treating the workshop 
 - Static manuscript formatting checker covering inputs, citations, labels, table structure, and PDF-risk warnings.
 - Manuscript table-layout mitigations for related-work, result, uncertainty, and protocol tables.
 - Publication-gate manifest connecting CI checks, archive verification, manuscript formatting, and external evidence blockers.
+- Workshop submission-package manifest inventorying manuscript files, release artifacts, claim boundaries, archive checksums, and remaining blockers.
 
 ## Required Before Submission
 
