@@ -109,6 +109,18 @@ Check static LaTeX readiness, citation/label consistency, and PDF-risk warnings 
 PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py
 ```
 
+Build the publication-gate manifest that maps CI checks, release verification, manuscript formatting, and remaining evidence blockers:
+
+```bash
+PYTHONPATH=src python scripts/build_publication_gate_manifest.py
+```
+
+CI uses the same generator in stale-check mode:
+
+```bash
+PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check
+```
+
 
 ## Core Evaluation Dimensions
 

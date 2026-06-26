@@ -45,6 +45,8 @@ RELEASE_ARCHIVE_PATH = (
 )
 RELEASE_ARCHIVE_MANIFEST_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/archive_manifest.json"
 RELEASE_ARCHIVE_MANIFEST_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/archive_manifest.md"
+PUBLICATION_GATE_MANIFEST_JSON_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/publication_gate_manifest.json"
+PUBLICATION_GATE_MANIFEST_MARKDOWN_PATH = f"{PILOT_RELEASE_DOCS_ROOT}/publication_gate_manifest.md"
 
 TASK_RELEASE_METADATA: dict[str, dict[str, Any]] = {
     "leakage_audit_temporal_split_v0": {
@@ -321,6 +323,7 @@ def render_release_readme(manifest: dict[str, Any]) -> str:
                     ["Paper Artifacts", "paper_artifacts/README.md"],
                     ["Statistical Artifacts", "statistical_artifacts/README.md"],
                     ["Release Archive Manifest", "archive_manifest.md"],
+                    ["Publication Gate Manifest", "publication_gate_manifest.md"],
                     ["Independent Participant Brief", "independent_participant_brief.md"],
                     ["Manual Audit", manual_audit["readme_path"]],
                     ["Agreement Report", manual_audit["agreement_report_markdown_path"]],
@@ -535,6 +538,8 @@ def build_benchmark_manifest(
         "release_archive_path": RELEASE_ARCHIVE_PATH,
         "release_archive_manifest_json_path": RELEASE_ARCHIVE_MANIFEST_JSON_PATH,
         "release_archive_manifest_markdown_path": RELEASE_ARCHIVE_MANIFEST_MARKDOWN_PATH,
+        "publication_gate_manifest_json_path": PUBLICATION_GATE_MANIFEST_JSON_PATH,
+        "publication_gate_manifest_markdown_path": PUBLICATION_GATE_MANIFEST_MARKDOWN_PATH,
         "external_agents": {
             "registry_path": EXTERNAL_AGENT_REGISTRY_PATH,
             "protocol_markdown_path": EXTERNAL_AGENT_PROTOCOL_MARKDOWN_PATH,

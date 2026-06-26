@@ -43,7 +43,16 @@ jobs:
             tests/test_reference_results.py \
             tests/test_paper_artifacts.py \
             tests/test_release_reproducibility.py \
+            tests/test_submission_readiness.py \
+            tests/test_manuscript_formatting.py \
+            tests/test_publication_gate.py \
             -q
+
+      - name: Check manuscript static formatting
+        run: PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py
+
+      - name: Check publication gate manifest
+        run: PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check
 
       - name: Build release archive smoke artifact
         run: |
@@ -51,6 +60,11 @@ jobs:
             --output-dir tmp/ci_release_archives \
             --manifest-json tmp/ci_release_archive_manifest.json \
             --manifest-markdown tmp/ci_release_archive_manifest.md
+
+      - name: Verify release archive smoke artifact
+        run: |
+          PYTHONPATH=src python scripts/verify_release_archive.py \
+            --archive-manifest tmp/ci_release_archive_manifest.json
 
   pilot-release-repro-smoke:
     needs: release-gate-tests

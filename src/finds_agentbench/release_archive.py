@@ -21,6 +21,7 @@ DEFAULT_RELEASE_ARCHIVE_VERIFICATION_COMMAND = (
     "PYTHONPATH=src python scripts/verify_release_archive.py"
 )
 DEFAULT_RELEASE_ARCHIVE_INCLUDE_PATHS = (
+    Path(".github/workflows"),
     Path("README.md"),
     Path("pyproject.toml"),
     Path("schemas"),

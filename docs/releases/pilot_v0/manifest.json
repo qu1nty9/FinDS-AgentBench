@@ -195,6 +195,8 @@
       ]
     }
   ],
+  "publication_gate_manifest_json_path": "docs/releases/pilot_v0/publication_gate_manifest.json",
+  "publication_gate_manifest_markdown_path": "docs/releases/pilot_v0/publication_gate_manifest.md",
   "reference_results_path": "docs/releases/pilot_v0/reference_results.md",
   "release_archive_manifest_json_path": "docs/releases/pilot_v0/archive_manifest.json",
   "release_archive_manifest_markdown_path": "docs/releases/pilot_v0/archive_manifest.md",

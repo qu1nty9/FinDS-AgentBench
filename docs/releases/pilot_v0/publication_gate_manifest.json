@@ -1,0 +1,217 @@
+{
+  "automated_gate_count": 6,
+  "automated_gates": [
+    {
+      "artifacts": [],
+      "blocks_publication_if_failing": true,
+      "ci_command": "python -m ruff check .",
+      "ci_enforced": true,
+      "ci_job": "release-gate-tests",
+      "gate_id": "full_repository_lint",
+      "local_command": "python -m ruff check .",
+      "status": "defined_in_ci",
+      "title": "Full Repository Lint"
+    },
+    {
+      "artifacts": [],
+      "blocks_publication_if_failing": true,
+      "ci_command": "PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_publication_gate.py -q",
+      "ci_enforced": true,
+      "ci_job": "release-gate-tests",
+      "gate_id": "release_gate_regression_suite",
+      "local_command": "PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_publication_gate.py -q",
+      "status": "defined_in_ci",
+      "title": "Release-Gate Regression Suite"
+    },
+    {
+      "artifacts": [
+        "papers/workshop_pilot/formatting_check.json",
+        "papers/workshop_pilot/formatting_check.md"
+      ],
+      "blocks_publication_if_failing": true,
+      "ci_command": "PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py",
+      "ci_enforced": true,
+      "ci_job": "release-gate-tests",
+      "gate_id": "manuscript_static_formatting",
+      "local_command": "PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py",
+      "status": "defined_in_ci",
+      "title": "Manuscript Static Formatting"
+    },
+    {
+      "artifacts": [
+        "docs/releases/pilot_v0/publication_gate_manifest.json",
+        "docs/releases/pilot_v0/publication_gate_manifest.md"
+      ],
+      "blocks_publication_if_failing": true,
+      "ci_command": "PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check",
+      "ci_enforced": true,
+      "ci_job": "release-gate-tests",
+      "gate_id": "publication_gate_manifest_staleness",
+      "local_command": "PYTHONPATH=src python scripts/build_publication_gate_manifest.py --check",
+      "status": "defined_in_ci",
+      "title": "Publication Gate Manifest Staleness"
+    },
+    {
+      "artifacts": [
+        "tmp/ci_release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
+        "tmp/ci_release_archive_manifest.json",
+        "tmp/ci_release_archive_manifest.md"
+      ],
+      "blocks_publication_if_failing": true,
+      "ci_command": "PYTHONPATH=src python scripts/build_release_archive.py --output-dir tmp/ci_release_archives --manifest-json tmp/ci_release_archive_manifest.json --manifest-markdown tmp/ci_release_archive_manifest.md && PYTHONPATH=src python scripts/verify_release_archive.py --archive-manifest tmp/ci_release_archive_manifest.json",
+      "ci_enforced": true,
+      "ci_job": "release-gate-tests",
+      "gate_id": "release_archive_build_and_verify",
+      "local_command": "PYTHONPATH=src python scripts/build_release_archive.py --output-dir tmp/ci_release_archives --manifest-json tmp/ci_release_archive_manifest.json --manifest-markdown tmp/ci_release_archive_manifest.md && PYTHONPATH=src python scripts/verify_release_archive.py --archive-manifest tmp/ci_release_archive_manifest.json",
+      "status": "defined_in_ci",
+      "title": "Release Archive Build and Verify"
+    },
+    {
+      "artifacts": [
+        "tmp/pilot_release_repro_check"
+      ],
+      "blocks_publication_if_failing": true,
+      "ci_command": "PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py --work-root tmp/github_actions_release_repro --forensics-output-dir tmp/github_actions_release_repro/forensics --repeat 1 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21",
+      "ci_enforced": true,
+      "ci_job": "pilot-release-repro-smoke",
+      "gate_id": "pilot_release_reproducibility_smoke",
+      "local_command": "PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py --work-root tmp/pilot_release_repro_check --repeat 1 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21",
+      "status": "defined_in_ci",
+      "title": "Pilot Release Reproducibility Smoke"
+    }
+  ],
+  "benchmark_id": "finds_agentbench_pilot_v0",
+  "benchmark_version": "0.1.0",
+  "blocking_evidence_gate_count": 4,
+  "blocking_item_count": 7,
+  "blocking_items": [
+    "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
+    "Rebuild official agreement reporting after an independent completed packet is available.",
+    "Register and run at least one non-author external agent configuration through the pilot harness.",
+    "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
+    "Create a release tag and archive the release artifact bundle after the remaining gates pass.",
+    "Run a real LaTeX engine and inspect the generated PDF before final submission.",
+    "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
+  ],
+  "ci_enforced_automated_gate_count": 6,
+  "evidence_gate_count": 7,
+  "evidence_gates": [
+    {
+      "blockers": [],
+      "evidence": {
+        "runnable_task_count": 9,
+        "target_range": "8-12 runnable pilot tasks",
+        "task_count": 9
+      },
+      "gate_id": "pilot_release_scope",
+      "ready": true,
+      "status": "ready",
+      "title": "Pilot Release Scope"
+    },
+    {
+      "blockers": [],
+      "evidence": {
+        "path": "docs/releases/pilot_v0/statistical_artifacts/README.md"
+      },
+      "gate_id": "statistical_artifacts",
+      "ready": true,
+      "status": "ready",
+      "title": "Statistical Artifacts"
+    },
+    {
+      "blockers": [
+        "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
+        "Rebuild official agreement reporting after an independent completed packet is available."
+      ],
+      "evidence": {
+        "agreement_status": "insufficient_independent_overlap",
+        "case_count": 6,
+        "independent_completed_reviewer_packet_count": 0
+      },
+      "gate_id": "manual_audit_independent_review",
+      "ready": false,
+      "status": "not_ready_seed_only",
+      "title": "Manual Audit Independent Review"
+    },
+    {
+      "blockers": [
+        "Register and run at least one non-author external agent configuration through the pilot harness.",
+        "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset."
+      ],
+      "evidence": {
+        "completed_external_agent_configuration_count": 0,
+        "expected_task_count": 8,
+        "external_task_coverage_count": 0
+      },
+      "gate_id": "external_agent_evidence",
+      "ready": false,
+      "status": "not_ready_no_external_agents",
+      "title": "External Agent Evidence"
+    },
+    {
+      "blockers": [],
+      "evidence": {
+        "clean_control_row_count": 16,
+        "finding_row_count": 5,
+        "fixture_true_positives": 4,
+        "review_packet_row_count": 21,
+        "scanned_file_count": 713
+      },
+      "gate_id": "methodology_calibration_review",
+      "ready": true,
+      "status": "ready",
+      "title": "Methodology Calibration Review"
+    },
+    {
+      "blockers": [
+        "Create a release tag and archive the release artifact bundle after the remaining gates pass."
+      ],
+      "evidence": {
+        "archive_required": true,
+        "expected_tag": "v0.1.0-pilot"
+      },
+      "gate_id": "release_tag_and_archive",
+      "ready": false,
+      "status": "not_ready_unfrozen",
+      "title": "Release Tag and Archive"
+    },
+    {
+      "blockers": [
+        "Run a real LaTeX engine and inspect the generated PDF before final submission.",
+        "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
+      ],
+      "evidence": {
+        "hard_error_count": 0,
+        "latex_engine": null,
+        "latex_engine_available": false,
+        "main_tex_path": "papers/workshop_pilot/main.tex",
+        "mitigated_table_count": 2,
+        "pdf_compile_status": "not_run_no_latex_engine",
+        "table_count": 4,
+        "warning_count": 1
+      },
+      "gate_id": "latex_pdf_compile_visual_inspection",
+      "ready": false,
+      "status": "static_checks_passed_pdf_compile_pending",
+      "title": "LaTeX PDF Compile and Visual Inspection"
+    }
+  ],
+  "ready_for_final_submission_package": false,
+  "recommended_completion_order": [
+    "Run CI-backed automated gates on every publication-facing change.",
+    "Complete one independent manual-audit reviewer packet and rebuild agreement reporting.",
+    "Register and run at least one non-author external agent configuration.",
+    "Compile and inspect the manuscript PDF with a real LaTeX engine.",
+    "Rebuild and verify the deterministic release archive.",
+    "Freeze the final release tag after all evidence gates pass."
+  ],
+  "release_stage": "pilot",
+  "schema_version": 1,
+  "source_artifacts": {
+    "formatting_check": "papers/workshop_pilot/formatting_check.json",
+    "github_actions_workflow": ".github/workflows/ci.yml",
+    "release_manifest": "docs/releases/pilot_v0/manifest.json",
+    "submission_readiness": "docs/releases/pilot_v0/submission_readiness.json"
+  },
+  "status": "blocked_on_submission_evidence_and_pdf_compile"
+}

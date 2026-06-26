@@ -55,6 +55,14 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
         manifest["release_archive_manifest_markdown_path"]
         == "docs/releases/pilot_v0/archive_manifest.md"
     )
+    assert (
+        manifest["publication_gate_manifest_json_path"]
+        == "docs/releases/pilot_v0/publication_gate_manifest.json"
+    )
+    assert (
+        manifest["publication_gate_manifest_markdown_path"]
+        == "docs/releases/pilot_v0/publication_gate_manifest.md"
+    )
     assert manifest["external_agents"]["registry_path"] == "agents/external_agent_registry.yaml"
     assert (
         manifest["external_agents"]["protocol_markdown_path"]
@@ -239,6 +247,8 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert "reference_results.md" in readme
     assert "paper_artifacts/README.md" in readme
     assert "statistical_artifacts/README.md" in readme
+    assert "Publication Gate Manifest" in readme
+    assert "publication_gate_manifest.md" in readme
     assert "Independent Participant Brief" in readme
     assert "independent_participant_brief.md" in readme
     assert "External Agent Protocol" in readme
