@@ -449,6 +449,7 @@ def render_agent_vs_best_baseline_latex_table(
         "\\begin{table}[t]",
         "\\centering",
         "\\small",
+        "\\resizebox{\\textwidth}{!}{%",
         "\\begin{tabular}{lllrrr}",
         "\\toprule",
         "Task & Agent vs. Baseline & $n$ & Agent & Baseline & $\\Delta$ ($p_{sign}$) \\\\",
@@ -480,6 +481,7 @@ def render_agent_vs_best_baseline_latex_table(
         [
             "\\bottomrule",
             "\\end{tabular}",
+            "}",
             (
                 "\\caption{Paired agent-minus-best-baseline comparison for "
                 f"{latex_escape(metric_label(metric))}. Baselines are selected separately "
@@ -522,13 +524,13 @@ def render_statistical_methods_latex(
     protocol_results_source_path: str,
     metrics: Iterable[str],
 ) -> str:
-    metric_text = ", ".join(latex_escape(metric) for metric in metrics)
+    metric_text = ", ".join(f"\\path{{{metric}}}" for metric in metrics)
     return "\n".join(
         [
             "\\paragraph{Statistical reporting.}",
             (
                 "We report repeated-run uncertainty from the combined protocol run table "
-                f"\\texttt{{{latex_escape(protocol_results_source_path)}}}. "
+                f"\\path{{{protocol_results_source_path}}}. "
                 f"The reported metrics are {metric_text}."
             ),
             (
@@ -540,7 +542,7 @@ def render_statistical_methods_latex(
             (
                 "For agent-vs-baseline comparisons, the best baseline is selected independently "
                 "for each task and metric using the completed-run mean. Agent and baseline runs "
-                "are paired by \\texttt{trace.repeat\\_index}, falling back to \\texttt{trace.seed} "
+                "are paired by \\path{trace.repeat_index}, falling back to \\path{trace.seed} "
                 "only when no repeat index is available. We report the paired agent-minus-baseline "
                 "mean difference, its t-interval, and an exact two-sided sign-test p-value after "
                 "dropping zero differences."

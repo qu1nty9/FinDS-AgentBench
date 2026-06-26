@@ -79,6 +79,38 @@ def test_manuscript_formatting_report_accepts_traceable_latex_scaffold(tmp_path:
     assert report["tables"][0]["label"] == "tab:demo"
 
 
+def test_manuscript_formatting_report_accepts_compiled_pdf_artifact(tmp_path: Path, monkeypatch):
+    paper_root = tmp_path / "papers" / "workshop_pilot"
+    main_tex = paper_root / "main.tex"
+    references_bib = paper_root / "references.bib"
+    write_text(
+        main_tex,
+        "\n".join(
+            [
+                "\\documentclass{article}",
+                "\\begin{document}",
+                "Ready.",
+                "\\bibliography{references}",
+                "\\end{document}",
+                "",
+            ]
+        ),
+    )
+    write_text(references_bib, "")
+    (paper_root / "main.pdf").write_bytes(b"%PDF-1.5\n%%EOF\n")
+    monkeypatch.setattr(
+        "finds_agentbench.manuscript_formatting.discover_latex_engine",
+        lambda: {"available": True, "engine": "tectonic", "path": "/usr/local/bin/tectonic"},
+    )
+
+    report = build_manuscript_formatting_report(main_tex_path=main_tex, workspace_root=tmp_path)
+
+    assert report["status"] == "pdf_compile_verified"
+    assert report["ready_for_pdf_formatting_claims"] is True
+    assert report["pdf_compile_status"] == "compiled_pdf_present"
+    assert report["compiled_pdf"]["header_valid"] is True
+
+
 def test_manuscript_formatting_report_rejects_missing_inputs_and_citations(tmp_path: Path):
     paper_root = tmp_path / "papers" / "workshop_pilot"
     main_tex = paper_root / "main.tex"

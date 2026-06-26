@@ -9,15 +9,15 @@ Submission-level wrapper around the manuscript source, release candidate, eviden
 | Benchmark ID | finds_agentbench_pilot_v0 |
 | Benchmark Version | 0.1.0 |
 | Release Stage | pilot |
-| Package Status | `candidate_blocked_on_missing_artifacts_and_evidence` |
+| Package Status | `candidate_blocked_on_evidence_gates` |
 | Ready for Workshop Submission Package | no |
-| Publication Gate | `blocked_on_submission_evidence_and_pdf_compile` |
+| Publication Gate | `blocked_on_submission_evidence` |
 | Submission Readiness | `not_ready_for_workshop_submission` |
-| Formatting Status | `static_checks_passed_pdf_compile_pending` |
+| Formatting Status | `pdf_compile_verified` |
 | Archive Status | `candidate_unfrozen` |
-| Archive SHA256 | `5b00985555a2335a789a6d2ea14bbda33f21242f5dcfde140c003000fdcc7b9c` |
+| Archive SHA256 | `c28ce7d780845b2ed9ee99ee3e9ffdbf516123bc5940211751a6f800276e8f5b` |
 | Artifacts | 67 |
-| Missing Required Artifacts | 1 |
+| Missing Required Artifacts | 0 |
 
 ## Stage Targets
 
@@ -32,12 +32,10 @@ Submission-level wrapper around the manuscript source, release candidate, eviden
 - Register and run at least one non-author external agent configuration through the pilot harness.
 - Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.
 - Create a release tag and archive the release artifact bundle after the remaining gates pass.
-- Run a real LaTeX engine and inspect the generated PDF before final submission.
-- Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation.
 
 ## Missing Required Artifacts
 
-- `papers/workshop_pilot/main.pdf` (manuscript / compiled_pdf)
+- None.
 
 ## Allowed Current Claims
 
@@ -66,7 +64,7 @@ Submission-level wrapper around the manuscript source, release candidate, eviden
 | manuscript | formatting_check_json | papers/workshop_pilot/formatting_check.json | file | yes |
 | manuscript | formatting_check_md | papers/workshop_pilot/formatting_check.md | file | yes |
 | manuscript | submission_readiness_checklist | papers/workshop_pilot/submission_readiness_checklist.md | file | yes |
-| manuscript | compiled_pdf | papers/workshop_pilot/main.pdf | missing | no |
+| manuscript | compiled_pdf | papers/workshop_pilot/main.pdf | file | yes |
 | paper_inputs | reference_results | docs/releases/pilot_v0/reference_results.md | file | yes |
 | paper_inputs | paper_artifacts_index | docs/releases/pilot_v0/paper_artifacts/README.md | file | yes |
 | paper_inputs | statistical_artifacts_index | docs/releases/pilot_v0/statistical_artifacts/README.md | file | yes |

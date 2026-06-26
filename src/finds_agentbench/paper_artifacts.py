@@ -54,7 +54,7 @@ def format_float(value: Any, digits: int = 3) -> str:
 
 
 def metric_pm(mean_value: Any, std_value: Any, digits: int = 3) -> str:
-    return f"{format_float(mean_value, digits)} \\pm {format_float(std_value, digits)}"
+    return f"\\ensuremath{{{format_float(mean_value, digits)} \\pm {format_float(std_value, digits)}}}"
 
 
 def latex_escape(value: str) -> str:

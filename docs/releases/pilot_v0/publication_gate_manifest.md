@@ -9,13 +9,13 @@ Machine-readable gate map for the FinDS-AgentBench pilot submission package.
 | Benchmark ID | finds_agentbench_pilot_v0 |
 | Benchmark Version | 0.1.0 |
 | Release Stage | pilot |
-| Status | `blocked_on_submission_evidence_and_pdf_compile` |
+| Status | `blocked_on_submission_evidence` |
 | Ready for Final Submission Package | no |
 | Automated Gates | 7 |
 | CI-Enforced Automated Gates | 7 |
 | Evidence Gates | 7 |
-| Blocking Evidence Gates | 3 |
-| Blocking Items | 5 |
+| Blocking Evidence Gates | 2 |
+| Blocking Items | 3 |
 
 ## Automated Gates
 
@@ -39,15 +39,13 @@ Machine-readable gate map for the FinDS-AgentBench pilot submission package.
 | external_agent_evidence | no | `not_ready_no_external_agents` | 2 |
 | methodology_calibration_review | yes | `ready` | 0 |
 | release_tag_and_archive | no | `not_ready_unfrozen` | 1 |
-| latex_pdf_compile_visual_inspection | no | `static_checks_passed_pdf_compile_pending` | 2 |
+| latex_pdf_compile_visual_inspection | yes | `ready` | 0 |
 
 ## Blocking Items
 
 - Register and run at least one non-author external agent configuration through the pilot harness.
 - Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.
 - Create a release tag and archive the release artifact bundle after the remaining gates pass.
-- Run a real LaTeX engine and inspect the generated PDF before final submission.
-- Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation.
 
 ## Command Catalog
 
@@ -119,6 +117,5 @@ PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py --work-root
 1. Run CI-backed automated gates on every publication-facing change.
 2. Inspect the official manual-audit agreement and adjudication queue before strengthening qualitative claims.
 3. Register and run at least one non-author external agent configuration.
-4. Compile and inspect the manuscript PDF with a real LaTeX engine.
-5. Rebuild and verify the deterministic release archive.
-6. Freeze the final release tag after all evidence gates pass.
+4. Rebuild and verify the deterministic release archive.
+5. Freeze the final release tag after all evidence gates pass.

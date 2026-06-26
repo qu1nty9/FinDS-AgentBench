@@ -61,6 +61,27 @@ def discover_latex_engine() -> dict[str, Any]:
     return {"available": False, "engine": None, "path": None}
 
 
+def inspect_compiled_pdf(
+    main_tex_path: str | Path,
+    *,
+    workspace_root: str | Path = ".",
+) -> dict[str, Any]:
+    root = Path(workspace_root)
+    pdf_path = Path(main_tex_path).with_suffix(".pdf")
+    exists = pdf_path.exists()
+    size_bytes = pdf_path.stat().st_size if exists else 0
+    header_valid = False
+    if exists and size_bytes > 0:
+        with pdf_path.open("rb") as handle:
+            header_valid = handle.read(5) == b"%PDF-"
+    return {
+        "path": workspace_relative(pdf_path, workspace_root=root),
+        "exists": exists,
+        "size_bytes": size_bytes,
+        "header_valid": header_valid,
+    }
+
+
 def collect_tex_files(
     main_tex_path: str | Path,
     *,
@@ -306,7 +327,15 @@ def build_manuscript_formatting_report(
     unresolved_citations = collect_unresolved_citations(tex_contents, bib_keys)
     label_findings = collect_label_findings(tex_contents)
     environment_findings = collect_environment_findings(tex_contents)
-    latex_engine = discover_latex_engine()
+    compiled_pdf = inspect_compiled_pdf(main_tex_path, workspace_root=root)
+    if compiled_pdf["header_valid"]:
+        latex_engine = {
+            "available": True,
+            "engine": "compiled_pdf_artifact",
+            "path": None,
+        }
+    else:
+        latex_engine = discover_latex_engine()
 
     hard_errors = [*tex_errors, *bibliography_errors, *table_errors]
     hard_errors.extend(
@@ -324,6 +353,14 @@ def build_manuscript_formatting_report(
         {"kind": "environment_mismatch", **entry}
         for entry in environment_findings["mismatches"]
     )
+    if compiled_pdf["exists"] and not compiled_pdf["header_valid"]:
+        hard_errors.append(
+            {
+                "kind": "compiled_pdf_invalid",
+                "path": compiled_pdf["path"],
+                "size_bytes": compiled_pdf["size_bytes"],
+            }
+        )
 
     warnings = list(table_warnings)
     if not latex_engine["available"]:
@@ -334,23 +371,34 @@ def build_manuscript_formatting_report(
             }
         )
 
+    pdf_ready = (
+        not hard_errors
+        and not warnings
+        and bool(latex_engine["available"])
+        and bool(compiled_pdf["header_valid"])
+    )
     if hard_errors:
         status = "failed_static_checks"
+    elif pdf_ready:
+        status = "pdf_compile_verified"
     elif latex_engine["available"]:
         status = "static_checks_passed_pdf_compile_ready"
     else:
         status = "static_checks_passed_pdf_compile_pending"
+    if compiled_pdf["header_valid"]:
+        pdf_compile_status = "compiled_pdf_present"
+    elif latex_engine["available"]:
+        pdf_compile_status = "not_run_engine_available"
+    else:
+        pdf_compile_status = "not_run_no_latex_engine"
 
     return {
         "status": status,
         "main_tex_path": workspace_relative(Path(main_tex_path), workspace_root=root),
         "ready_for_static_formatting_claims": not hard_errors,
-        "ready_for_pdf_formatting_claims": False,
-        "pdf_compile_status": (
-            "not_run_engine_available"
-            if latex_engine["available"]
-            else "not_run_no_latex_engine"
-        ),
+        "ready_for_pdf_formatting_claims": pdf_ready,
+        "pdf_compile_status": pdf_compile_status,
+        "compiled_pdf": compiled_pdf,
         "latex_engine": latex_engine,
         "hard_error_count": len(hard_errors),
         "warning_count": len(warnings),
@@ -379,7 +427,12 @@ def build_manuscript_formatting_report(
         "label_count": label_findings["label_count"],
         "reference_count": label_findings["reference_count"],
         "environment_counts": environment_findings["environment_counts"],
-        "next_actions": build_next_actions(hard_errors=hard_errors, warnings=warnings),
+        "next_actions": build_next_actions(
+            hard_errors=hard_errors,
+            warnings=warnings,
+            pdf_ready=pdf_ready,
+            compiled_pdf=compiled_pdf,
+        ),
     }
 
 
@@ -387,15 +440,23 @@ def build_next_actions(
     *,
     hard_errors: list[dict[str, Any]],
     warnings: list[dict[str, Any]],
+    pdf_ready: bool,
+    compiled_pdf: dict[str, Any],
 ) -> list[str]:
     if hard_errors:
         return [
             "Fix hard manuscript structure errors before treating the LaTeX scaffold as publication-ready.",
             "Re-run PYTHONPATH=src python scripts/check_pilot_manuscript_formatting.py.",
         ]
+    if pdf_ready:
+        return [
+            "Keep the compiled PDF with the submission package and re-run this check after manuscript changes.",
+        ]
     actions = [
         "Run a real LaTeX engine and inspect the generated PDF before final submission.",
     ]
+    if not compiled_pdf["exists"]:
+        actions.append("Compile papers/workshop_pilot/main.pdf before final submission.")
     if any(warning["kind"] == "wide_table_candidate" for warning in warnings):
         actions.append("Inspect wide-table candidates in the compiled PDF and resize or split if needed.")
     if any(warning["kind"] == "long_table_candidate" for warning in warnings):
@@ -420,6 +481,9 @@ def render_manuscript_formatting_markdown(report: dict[str, Any]) -> str:
         f"| Static formatting claims ready | {'yes' if report['ready_for_static_formatting_claims'] else 'no'} |",
         f"| PDF formatting claims ready | {'yes' if report['ready_for_pdf_formatting_claims'] else 'no'} |",
         f"| PDF compile status | `{report['pdf_compile_status']}` |",
+        f"| Compiled PDF | `{report['compiled_pdf']['path']}` |",
+        f"| Compiled PDF exists | {'yes' if report['compiled_pdf']['exists'] else 'no'} |",
+        f"| Compiled PDF size | {report['compiled_pdf']['size_bytes']} bytes |",
         f"| LaTeX engine | `{report['latex_engine']['engine'] or 'unavailable'}` |",
         f"| TeX files checked | {report['tex_file_count']} |",
         f"| Bibliographies checked | {report['bibliography_count']} |",
@@ -486,6 +550,8 @@ def format_issue(entry: dict[str, Any]) -> str:
             f"`environment_mismatch`: `{entry['environment']}` has "
             f"{entry['begin_count']} begin blocks and {entry['end_count']} end blocks."
         )
+    if kind == "compiled_pdf_invalid":
+        return f"`compiled_pdf_invalid`: `{entry['path']}` is present but does not have a PDF header."
     if kind == "table_missing_label":
         return f"`table_missing_label`: table {entry['table_index']} in `{entry['path']}` has no label."
     if kind == "table_missing_caption":

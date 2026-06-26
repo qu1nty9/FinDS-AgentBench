@@ -63,7 +63,7 @@ def test_build_paper_artifacts_writes_tables_figures_and_readme(tmp_path: Path):
     assert "Synthetic Market" in latex
     assert "Treasury 10Y-3M Curve" in latex
     assert "Treasury 10Y-3M Sweep Env-Agent" in latex
-    assert "0.521 \\pm 0.018" in latex
+    assert "\\ensuremath{0.521 \\pm 0.018}" in latex
     assert "<svg" in svg
     assert "Pilot Baseline Suite" in svg
     assert "Momentum" in svg

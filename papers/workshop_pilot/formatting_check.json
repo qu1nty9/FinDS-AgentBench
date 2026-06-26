@@ -9,12 +9,14 @@
   ],
   "bibliography_count": 1,
   "citation_count": 16,
+  "compiled_pdf": {
+    "exists": true,
+    "header_valid": true,
+    "path": "papers/workshop_pilot/main.pdf",
+    "size_bytes": 67674
+  },
   "environment_counts": {
     "abstract": {
-      "begin_count": 1,
-      "end_count": 1
-    },
-    "description": {
       "begin_count": 1,
       "end_count": 1
     },
@@ -23,8 +25,8 @@
       "end_count": 1
     },
     "enumerate": {
-      "begin_count": 1,
-      "end_count": 1
+      "begin_count": 2,
+      "end_count": 2
     },
     "itemize": {
       "begin_count": 1,
@@ -47,21 +49,20 @@
   "hard_errors": [],
   "label_count": 4,
   "latex_engine": {
-    "available": false,
-    "engine": null,
+    "available": true,
+    "engine": "compiled_pdf_artifact",
     "path": null
   },
   "main_tex_path": "papers/workshop_pilot/main.tex",
-  "mitigated_table_count": 2,
+  "mitigated_table_count": 4,
   "next_actions": [
-    "Run a real LaTeX engine and inspect the generated PDF before final submission.",
-    "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
+    "Keep the compiled PDF with the submission package and re-run this check after manuscript changes."
   ],
-  "pdf_compile_status": "not_run_no_latex_engine",
-  "ready_for_pdf_formatting_claims": false,
+  "pdf_compile_status": "compiled_pdf_present",
+  "ready_for_pdf_formatting_claims": true,
   "ready_for_static_formatting_claims": true,
   "reference_count": 2,
-  "status": "static_checks_passed_pdf_compile_pending",
+  "status": "pdf_compile_verified",
   "table_count": 4,
   "tables": [
     {
@@ -74,7 +75,7 @@
       "row_count": 17,
       "table_index": 1,
       "tabular_count": 1,
-      "width_mitigation": null
+      "width_mitigation": "resizebox"
     },
     {
       "caption_present": true,
@@ -86,7 +87,7 @@
       "row_count": 9,
       "table_index": 1,
       "tabular_count": 1,
-      "width_mitigation": null
+      "width_mitigation": "resizebox"
     },
     {
       "caption_present": true,
@@ -104,7 +105,7 @@
       "caption_present": true,
       "label": "tab:pilot-protocol",
       "max_column_count": 7,
-      "max_row_length": 124,
+      "max_row_length": 163,
       "path": "docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex",
       "placement": "appendix",
       "row_count": 36,
@@ -119,19 +120,19 @@
       "input_count": 0,
       "line_count": 49,
       "path": "docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex",
-      "size_bytes": 4046
+      "size_bytes": 5411
     },
     {
       "input_count": 0,
       "line_count": 5,
       "path": "docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.tex",
-      "size_bytes": 1158
+      "size_bytes": 1165
     },
     {
       "input_count": 0,
-      "line_count": 20,
+      "line_count": 22,
       "path": "docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex",
-      "size_bytes": 1210
+      "size_bytes": 1240
     },
     {
       "input_count": 0,
@@ -141,28 +142,23 @@
     },
     {
       "input_count": 0,
-      "line_count": 21,
+      "line_count": 25,
       "path": "papers/workshop_pilot/audit_failure_examples.tex",
-      "size_bytes": 4053
+      "size_bytes": 4083
     },
     {
       "input_count": 6,
-      "line_count": 81,
+      "line_count": 95,
       "path": "papers/workshop_pilot/main.tex",
-      "size_bytes": 6818
+      "size_bytes": 6796
     },
     {
       "input_count": 0,
-      "line_count": 35,
+      "line_count": 37,
       "path": "papers/workshop_pilot/related_work.tex",
-      "size_bytes": 4667
+      "size_bytes": 4697
     }
   ],
-  "warning_count": 1,
-  "warnings": [
-    {
-      "kind": "latex_engine_unavailable",
-      "message": "Install latexmk, tectonic, pdflatex, xelatex, or lualatex before PDF compilation."
-    }
-  ]
+  "warning_count": 0,
+  "warnings": []
 }

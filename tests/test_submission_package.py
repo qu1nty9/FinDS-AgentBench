@@ -23,17 +23,17 @@ def test_build_submission_package_manifest_tracks_claims_artifacts_and_targets(t
 
     assert result.manifest == manifest
     assert manifest["benchmark_id"] == "finds_agentbench_pilot_v0"
-    assert manifest["status"] == "candidate_blocked_on_missing_artifacts_and_evidence"
+    assert manifest["status"] == "candidate_blocked_on_evidence_gates"
     assert manifest["ready_for_workshop_submission_package"] is False
-    assert manifest["publication_gate_status"] == "blocked_on_submission_evidence_and_pdf_compile"
+    assert manifest["publication_gate_status"] == "blocked_on_submission_evidence"
     assert manifest["archive_status"] == "candidate_unfrozen"
     assert len(manifest["archive_sha256"]) == 64
     assert manifest["artifact_count"] >= 30
-    assert manifest["missing_required_artifact_count"] >= 1
+    assert manifest["missing_required_artifact_count"] == 0
 
     artifacts = {(artifact["group"], artifact["role"]): artifact for artifact in manifest["artifacts"]}
     assert artifacts[("manuscript", "main_tex")]["exists"] is True
-    assert artifacts[("manuscript", "compiled_pdf")]["exists"] is False
+    assert artifacts[("manuscript", "compiled_pdf")]["exists"] is True
     assert artifacts[("release_candidate", "release_archive")]["materialization"] == (
         "declared_by_archive_manifest"
     )
@@ -64,7 +64,7 @@ def test_build_submission_package_manifest_tracks_claims_artifacts_and_targets(t
     )
 
     assert "Workshop Submission Package Manifest" in markdown
-    assert "candidate_blocked_on_missing_artifacts_and_evidence" in markdown
+    assert "candidate_blocked_on_evidence_gates" in markdown
     assert "papers/workshop_pilot/main.pdf" in markdown
 
 

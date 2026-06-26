@@ -7,7 +7,7 @@
     "Methodology-calibration findings have a completed author review packet.",
     "A deterministic candidate archive and archive manifest can be built before final tagging."
   ],
-  "archive_sha256": "5b00985555a2335a789a6d2ea14bbda33f21242f5dcfde140c003000fdcc7b9c",
+  "archive_sha256": "c28ce7d780845b2ed9ee99ee3e9ffdbf516123bc5940211751a6f800276e8f5b",
   "archive_status": "candidate_unfrozen",
   "artifact_count": 67,
   "artifacts": [
@@ -19,8 +19,8 @@
       "path": "papers/workshop_pilot/main.tex",
       "required_for_workshop_submission": true,
       "role": "main_tex",
-      "sha256": "8c1870205545402da604e59868739e1369e942389537b73e5ad7f7dcaa807ee4",
-      "size_bytes": 6818
+      "sha256": "1f5d066b5d797ba66e469548c9516a4680486283e8568c30fe4bbd8c89b9dfe5",
+      "size_bytes": 6796
     },
     {
       "exists": true,
@@ -30,8 +30,8 @@
       "path": "papers/workshop_pilot/related_work.tex",
       "required_for_workshop_submission": true,
       "role": "related_work_tex",
-      "sha256": "08f52dd67a107749576600afaf5e7d17bce1e148751632b9f6cb813ae4259ad0",
-      "size_bytes": 4667
+      "sha256": "e7512bad006ed89126722d56cb1faf60173773a90e835080c015d53c7b9ed70d",
+      "size_bytes": 4697
     },
     {
       "exists": true,
@@ -63,8 +63,8 @@
       "path": "papers/workshop_pilot/audit_failure_examples.tex",
       "required_for_workshop_submission": true,
       "role": "audit_failure_examples_tex",
-      "sha256": "b1eec79d965f59b9eb7aa936acacb5fa92b8b483cc6dea12664df0de6e7f646f",
-      "size_bytes": 4053
+      "sha256": "8aedcf6978955afae61ae1693e746501053faf185da097e8f02ede7e2f3e238f",
+      "size_bytes": 4083
     },
     {
       "exists": true,
@@ -85,8 +85,8 @@
       "path": "papers/workshop_pilot/formatting_check.json",
       "required_for_workshop_submission": true,
       "role": "formatting_check_json",
-      "sha256": "20ab4f7345baf4224fdc86c6764fc59bd9dc01e5ecf2bc4dea9f0a4195ee357b",
-      "size_bytes": 4422
+      "sha256": "336fac35d1140ecbbac8e6b7f198616815c3dc6f80c21dc59873cdd675c194be",
+      "size_bytes": 4273
     },
     {
       "exists": true,
@@ -96,8 +96,8 @@
       "path": "papers/workshop_pilot/formatting_check.md",
       "required_for_workshop_submission": true,
       "role": "formatting_check_md",
-      "sha256": "3c807ef55be448d97ac539b41be7034b3333b50cc6efb1fccf7c90c5f623ef8e",
-      "size_bytes": 1672
+      "sha256": "943be7dd6ceadeb7de08826b8dcdb8749540c692c2d53f6996155e76eee85263",
+      "size_bytes": 1630
     },
     {
       "exists": true,
@@ -111,16 +111,16 @@
       "size_bytes": 3278
     },
     {
-      "exists": false,
+      "exists": true,
       "group": "manuscript",
-      "kind": "missing",
+      "kind": "file",
       "materialization": "workspace_path",
       "note": "Required only for the final venue upload, not for source-only review.",
       "path": "papers/workshop_pilot/main.pdf",
       "required_for_workshop_submission": true,
       "role": "compiled_pdf",
-      "sha256": null,
-      "size_bytes": null
+      "sha256": "603307b4809e897c81c63fea88ec080d8927390c2d3e941b0631d0a2ead82323",
+      "size_bytes": 67674
     },
     {
       "exists": true,
@@ -163,8 +163,8 @@
       "path": "docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex",
       "required_for_workshop_submission": true,
       "role": "agent_vs_baseline_table",
-      "sha256": "9b70124fc5e2df28d7ae892c9c4410e045da45ab1a8d418c9346016e331425c2",
-      "size_bytes": 1210
+      "sha256": "3e7f28c3b3fc12bbaf7bd85dfd06bd066ba4087792624c98b555cb5f5bdbf3b8",
+      "size_bytes": 1240
     },
     {
       "exists": true,
@@ -207,7 +207,7 @@
       "path": "docs/releases/pilot_v0/archive_manifest.json",
       "required_for_workshop_submission": true,
       "role": "archive_manifest_json",
-      "sha256": "4dfdf7556bf63e82822d9a24ee1dbba02fcc262f0c2793078e3f606d3388fbb7",
+      "sha256": "dc8c3f480f1a7479cfed833daff61df3b19da00d0cbdac46b0b0e7a835634d57",
       "size_bytes": 58482
     },
     {
@@ -218,7 +218,7 @@
       "path": "docs/releases/pilot_v0/archive_manifest.md",
       "required_for_workshop_submission": true,
       "role": "archive_manifest_md",
-      "sha256": "1b2207a8d8b8dba263aa43165c23a469c7c141c438bb062b6697892f016df942",
+      "sha256": "29165e2f74275dbcacf6f97f590e6b2375c513e08b26558ba75c2a6a35a295b8",
       "size_bytes": 41032
     },
     {
@@ -229,8 +229,8 @@
       "path": "docs/releases/pilot_v0/publication_gate_manifest.json",
       "required_for_workshop_submission": true,
       "role": "publication_gate_json",
-      "sha256": "2ea03f2c6c9968b7fd2de5a16b39190d0077e4d45390fc1504541d5a0b7c502a",
-      "size_bytes": 10793
+      "sha256": "0bedc1add494c2bc7084a85bb30324c1f5678efad7ac51266fb5aadd68817f2c",
+      "size_bytes": 10326
     },
     {
       "exists": true,
@@ -240,8 +240,8 @@
       "path": "docs/releases/pilot_v0/publication_gate_manifest.md",
       "required_for_workshop_submission": true,
       "role": "publication_gate_md",
-      "sha256": "7cde1a564ce08baa4b630a1a7ef93726222904738ef3b1e9f767b7eae77d97f3",
-      "size_bytes": 4840
+      "sha256": "22eea463a52eb95ce167588865b534de8d26c93818205800d6217b8c2396c690",
+      "size_bytes": 4560
     },
     {
       "exists": true,
@@ -351,8 +351,8 @@
       "path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
       "required_for_workshop_submission": true,
       "role": "release_archive",
-      "sha256": "5b00985555a2335a789a6d2ea14bbda33f21242f5dcfde140c003000fdcc7b9c",
-      "size_bytes": 296717
+      "sha256": "c28ce7d780845b2ed9ee99ee3e9ffdbf516123bc5940211751a6f800276e8f5b",
+      "size_bytes": 297596
     },
     {
       "exists": null,
@@ -736,7 +736,7 @@
       "path": "docs/releases/pilot_v0/archive_manifest.json",
       "required_for_workshop_submission": true,
       "role": "release_archive_manifest_json",
-      "sha256": "4dfdf7556bf63e82822d9a24ee1dbba02fcc262f0c2793078e3f606d3388fbb7",
+      "sha256": "dc8c3f480f1a7479cfed833daff61df3b19da00d0cbdac46b0b0e7a835634d57",
       "size_bytes": 58482
     },
     {
@@ -747,7 +747,7 @@
       "path": "docs/releases/pilot_v0/archive_manifest.md",
       "required_for_workshop_submission": true,
       "role": "release_archive_manifest_markdown",
-      "sha256": "1b2207a8d8b8dba263aa43165c23a469c7c141c438bb062b6697892f016df942",
+      "sha256": "29165e2f74275dbcacf6f97f590e6b2375c513e08b26558ba75c2a6a35a295b8",
       "size_bytes": 41032
     }
   ],
@@ -756,23 +756,15 @@
   "blocking_items": [
     "Register and run at least one non-author external agent configuration through the pilot harness.",
     "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
-    "Create a release tag and archive the release artifact bundle after the remaining gates pass.",
-    "Run a real LaTeX engine and inspect the generated PDF before final submission.",
-    "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
+    "Create a release tag and archive the release artifact bundle after the remaining gates pass."
   ],
   "disallowed_current_claims": [
     "Independent external-agent performance evidence.",
     "A frozen tagged release archive exists."
   ],
-  "formatting_status": "static_checks_passed_pdf_compile_pending",
-  "missing_required_artifact_count": 1,
-  "missing_required_artifacts": [
-    {
-      "group": "manuscript",
-      "path": "papers/workshop_pilot/main.pdf",
-      "role": "compiled_pdf"
-    }
-  ],
+  "formatting_status": "pdf_compile_verified",
+  "missing_required_artifact_count": 0,
+  "missing_required_artifacts": [],
   "pre_submission_verification_commands": [
     "python -m ruff check .",
     "PYTHONPATH=src python -m pytest tests/test_curve_10y3mo_and_scoring.py tests/test_pipelines.py tests/test_benchmark_manifest.py tests/test_task_cards.py tests/test_manual_audit.py tests/test_external_agents.py tests/test_pilot_release.py tests/test_release_archive.py tests/test_reference_results.py tests/test_paper_artifacts.py tests/test_release_reproducibility.py tests/test_submission_readiness.py tests/test_manuscript_formatting.py tests/test_submission_package.py tests/test_publication_gate.py -q",
@@ -782,7 +774,7 @@
     "PYTHONPATH=src python scripts/build_release_archive.py --output-dir tmp/ci_release_archives --manifest-json tmp/ci_release_archive_manifest.json --manifest-markdown tmp/ci_release_archive_manifest.md && PYTHONPATH=src python scripts/verify_release_archive.py --archive-manifest tmp/ci_release_archive_manifest.json",
     "PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py --work-root tmp/pilot_release_repro_check --repeat 1 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21"
   ],
-  "publication_gate_status": "blocked_on_submission_evidence_and_pdf_compile",
+  "publication_gate_status": "blocked_on_submission_evidence",
   "ready_for_workshop_submission_package": false,
   "release_stage": "pilot",
   "schema_version": 1,
@@ -799,9 +791,7 @@
       "required_before_submission": [
         "Register and run at least one non-author external agent configuration through the pilot harness.",
         "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
-        "Create a release tag and archive the release artifact bundle after the remaining gates pass.",
-        "Run a real LaTeX engine and inspect the generated PDF before final submission.",
-        "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
+        "Create a release tag and archive the release artifact bundle after the remaining gates pass."
       ],
       "scope": "Pilot manuscript plus deterministic public benchmark release candidate.",
       "status": "not_ready_blocked_by_current_gates",
@@ -830,6 +820,6 @@
       "target_id": "journal_extension"
     }
   ],
-  "status": "candidate_blocked_on_missing_artifacts_and_evidence",
+  "status": "candidate_blocked_on_evidence_gates",
   "submission_readiness_status": "not_ready_for_workshop_submission"
 }

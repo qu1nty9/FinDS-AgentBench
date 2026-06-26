@@ -1,6 +1,7 @@
 \begin{table}[t]
 \centering
 \small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lllrrr}
 \toprule
 Task & Agent vs. Baseline & $n$ & Agent & Baseline & $\Delta$ ($p_{sign}$) \\
@@ -15,6 +16,7 @@ Treasury 10Y-3M Curve & Treasury 10Y-3M Sweep Env-Agent / Extra Trees & 3 & 0.51
 Treasury 10Y Direction & Treasury 10Y Sweep Env-Agent / Extra Trees & 3 & 0.504 & 0.506 & -0.002 (1.000) \\
 \bottomrule
 \end{tabular}
+}
 \caption{Paired agent-minus-best-baseline comparison for Overall. Baselines are selected separately within each task by completed-run mean. The sign-test p-value is exact and two-sided.}
 \label{tab:pilot-agent-vs-best-baseline-score-overall-score}
 \end{table}

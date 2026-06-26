@@ -12,10 +12,10 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | Archive Status | `candidate_unfrozen` |
 | Expected Tag | `v0.1.0-pilot` |
 | Archive Path | `dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz` |
-| Archive SHA256 | `5b00985555a2335a789a6d2ea14bbda33f21242f5dcfde140c003000fdcc7b9c` |
+| Archive SHA256 | `c28ce7d780845b2ed9ee99ee3e9ffdbf516123bc5940211751a6f800276e8f5b` |
 | Verification Command | `PYTHONPATH=src python scripts/verify_release_archive.py` |
 | File Count | 300 |
-| Total Uncompressed Size | 2478401 bytes |
+| Total Uncompressed Size | 2484220 bytes |
 
 ## Submission Readiness
 
@@ -155,11 +155,11 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `docs/releases/pilot_v0/paper_artifacts/figures/pilot_agent_suite_overall_score.svg` | 7880 | `93565d25792af062ec6c783694861dc9f334b601dfe50600c22f81011f07b078` |
 | `docs/releases/pilot_v0/paper_artifacts/figures/pilot_baseline_suite_overall_score.svg` | 19998 | `7da8330c5517845172ccdb95fabe8655d837da1cc38b4b663050da2fd0c62c43` |
 | `docs/releases/pilot_v0/paper_artifacts/figures/pilot_protocol_overall_score.svg` | 25357 | `a94bcc5d2920cf713458d2e8cf3bff93e91b08628bebc9ef10e07fc5ba409f50` |
-| `docs/releases/pilot_v0/paper_artifacts/tables/pilot_agent_suite.tex` | 1282 | `8697cb8ec0b83282eaa7e84b3f02a483c8c154157da585560c7d58ac98d61146` |
-| `docs/releases/pilot_v0/paper_artifacts/tables/pilot_baseline_suite.tex` | 3135 | `6509d6f0406c74293c9f844cbc7c37c94587950d3057791f836e9d77002cd1c5` |
-| `docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex` | 4046 | `53d874704e4e93af10d82798203eb0079a30a51d86ffa441fc6848433c564042` |
-| `docs/releases/pilot_v0/publication_gate_manifest.json` | 10793 | `2ea03f2c6c9968b7fd2de5a16b39190d0077e4d45390fc1504541d5a0b7c502a` |
-| `docs/releases/pilot_v0/publication_gate_manifest.md` | 4840 | `7cde1a564ce08baa4b630a1a7ef93726222904738ef3b1e9f767b7eae77d97f3` |
+| `docs/releases/pilot_v0/paper_artifacts/tables/pilot_agent_suite.tex` | 1594 | `0a6c0f2ed5007ae926cce03a5607b7f0a9b661b1b5fbd91a53f0cdb3d943a0af` |
+| `docs/releases/pilot_v0/paper_artifacts/tables/pilot_baseline_suite.tex` | 4188 | `c6b5b609810789d14fa3e0bef8b82c170e90c4bf8cdd45efd3966294303ff037` |
+| `docs/releases/pilot_v0/paper_artifacts/tables/pilot_protocol.tex` | 5411 | `f49d6b434660ba85bfe1c6b3007a4ad72a6f76263dc478dd594425e85b98ac68` |
+| `docs/releases/pilot_v0/publication_gate_manifest.json` | 10326 | `0bedc1add494c2bc7084a85bb30324c1f5678efad7ac51266fb5aadd68817f2c` |
+| `docs/releases/pilot_v0/publication_gate_manifest.md` | 4560 | `22eea463a52eb95ce167588865b534de8d26c93818205800d6217b8c2396c690` |
 | `docs/releases/pilot_v0/reference_results.json` | 155036 | `38a3b87177da38580e6501e3084ee9a3f64aa4cca6c1db9b30895755152a404d` |
 | `docs/releases/pilot_v0/reference_results.md` | 13123 | `fb0b65f76d9b361c3f7cc993df75ef14e17a139aad9742e11cf50b2ed1006d9d` |
 | `docs/releases/pilot_v0/statistical_artifacts/README.md` | 2241 | `b34ebaac3848cb76592c3bccca69350e62d2805d693f21ec2ba8cd0ea6ef9670` |
@@ -167,11 +167,11 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `docs/releases/pilot_v0/statistical_artifacts/agent_vs_best_baseline.json` | 17399 | `e7caa248db02817a90343696e2e4d0b0d9cbebf9adf97c527a8f3d4c5c18adf4` |
 | `docs/releases/pilot_v0/statistical_artifacts/agent_vs_best_baseline.md` | 6069 | `89d6099f053010320354b199a6c08b3acaa6da83037a7814c733a3af01a411cc` |
 | `docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.md` | 1191 | `d12f707496773f4990bbacc79c30c3e95bc6841aec7d04ff1503f3ee1703b8f2` |
-| `docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.tex` | 1158 | `9c2799f527af52b5c14fef4e484980969508f7a1b2b78ffc7d50d5243b82379f` |
+| `docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.tex` | 1165 | `79c839988832ce0154977f7e160a377cb6c52700ef5bb635717c67354e163a0e` |
 | `docs/releases/pilot_v0/statistical_artifacts/summary_uncertainty.csv` | 18715 | `d99ad7298063af6231f6796f5d0c9bdbefa6b3a845db96569e1fb75a06f5ae07` |
 | `docs/releases/pilot_v0/statistical_artifacts/summary_uncertainty.json` | 41258 | `b10d7953117c19bb86c0351cfeb6d525a9ee06d6b439ac1cb65b5b3448402f8d` |
 | `docs/releases/pilot_v0/statistical_artifacts/summary_uncertainty.md` | 18174 | `174da70c3ffe66844a66e0ca4d4ad824c6db3801e6026f5a18a8f60fbd588ac5` |
-| `docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex` | 1210 | `9b70124fc5e2df28d7ae892c9c4410e045da45ab1a8d418c9346016e331425c2` |
+| `docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex` | 1240 | `3e7f28c3b3fc12bbaf7bd85dfd06bd066ba4087792624c98b555cb5f5bdbf3b8` |
 | `docs/releases/pilot_v0/statistical_artifacts/tables/summary_uncertainty_overall_score.tex` | 2995 | `7ba894464398f1282bfe6737cf50576efd7e4df24dbe88540cc2a8b92d7c8072` |
 | `docs/releases/pilot_v0/submission_evidence_ledger.json` | 10805 | `76bf8456037e2e2f73ac7f7546a65eaa3b0ffa7a3d7f903cff25d991b662a8a7` |
 | `docs/releases/pilot_v0/submission_evidence_ledger.md` | 7087 | `abb01b286df81223e83785c4af3d1bcb556162fddc4e3ded984139215c5e8517` |
@@ -293,23 +293,23 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `src/finds_agentbench/io.py` | 683 | `934ae5e625c83ac994bdad1067c1154755ea9f3e6bc3c82e9953a2e2f24edac4` |
 | `src/finds_agentbench/leakage.py` | 3952 | `07dd0ea04f7725ec94d0b9776577655e7c172ecf1fb4a8dac39dab1be6be775e` |
 | `src/finds_agentbench/manual_audit.py` | 84510 | `cb3532e235e825d38563d799e0e5ab4db0012eeaa4ce5a60116d0f5f049f9691` |
-| `src/finds_agentbench/manuscript_formatting.py` | 21287 | `2380f1c3aaccfa410c7f65df955222f6bc1ea5866c7d74db51876aaa4cafa287` |
+| `src/finds_agentbench/manuscript_formatting.py` | 23703 | `c8c8bbe36e1a260d488130f393bd9b7bd4707e28d0d6efe579bc2796867ed179` |
 | `src/finds_agentbench/methodology.py` | 11942 | `ade6672d442914e4b10f133c263dd7fe015877787927318590f36913dc60280a` |
 | `src/finds_agentbench/methodology_calibration.py` | 34092 | `5a9471f4f80334aafb4ececcfb1649af329c54baa0321eabbf989a91d9d9c411` |
-| `src/finds_agentbench/paper_artifacts.py` | 11417 | `2bc0c74856b5d827a5711460308904bb53bea419c2e1dcad0407d3afa7c687ad` |
-| `src/finds_agentbench/pilot_manuscript.py` | 36741 | `03083f201b46f4697bad2b17bf41cf800fe35cc575cb3c3d4979369f2c4aef06` |
+| `src/finds_agentbench/paper_artifacts.py` | 11433 | `f98a4c047b8c555add70381498917f7930add8ba0b11519d9befbaa457595587` |
+| `src/finds_agentbench/pilot_manuscript.py` | 38009 | `da77534b365c19ce5d6354b45293fdd0a8f53419ff4125e0c848c7add7029d76` |
 | `src/finds_agentbench/pilot_release.py` | 26730 | `d52af5f25445e8e5e5af4e25c1c12e9a98e51103e47368eeb803539d947d833c` |
 | `src/finds_agentbench/pipelines.py` | 273833 | `f53ad58158979718ffc56dfbaea6767d41fbe9f2c7ac2c9621febd1cfe953bda` |
 | `src/finds_agentbench/publication_gate.py` | 19505 | `e45f1f4c2d33cacf0b81a07db2d1faed674d5fa627b729472ce00de79c7da002` |
 | `src/finds_agentbench/reference_results.py` | 12624 | `91ee3dc182b9e7b13384911c9d7b99a3e3ff5735e4af3adba6b26d7b9b888ce8` |
-| `src/finds_agentbench/related_work.py` | 25632 | `a94e83b2f4d6defebda69df11354511dcdf52016247cf165146bad10ca99a39f` |
+| `src/finds_agentbench/related_work.py` | 25694 | `5596b383823f4813a9de4f15bb6a4974a444a1cdf9e6dcbd65df790e72f760bb` |
 | `src/finds_agentbench/release_archive.py` | 18821 | `3ba60a1863fd3759ab6544c4db4f743c8bac91a750a3b623c465f6969cea3fe2` |
 | `src/finds_agentbench/release_reproducibility.py` | 15734 | `b80557034d7c4d51f72385f38417df3e96994aa63d0f2b9595187deabe2b8975` |
 | `src/finds_agentbench/reports.py` | 9496 | `8868d056c890630d6ef39623232fc9ac1cd884cf4b0c9919dbba00267988535a` |
 | `src/finds_agentbench/research_agent.py` | 29875 | `bffae1f574cf0ab2445985db15a9953d68528a87c38ca128bd75cbb616a1eaed` |
 | `src/finds_agentbench/runs.py` | 7711 | `dfa9a1ac9111237c9214ca8f13014d709d91f3349652f06ca400da105b4fddbc` |
 | `src/finds_agentbench/scoring.py` | 16311 | `aa056322da790c0c4d9c92dde27ee2d98ebabf4ad8006324880e8f147595b75d` |
-| `src/finds_agentbench/statistical_artifacts.py` | 27266 | `6ea55f8c075209f07606fe128bc2cc339de1d7455c08370a4528c72cfa5c3c0f` |
+| `src/finds_agentbench/statistical_artifacts.py` | 27303 | `b6ece7d528df74be060e43873793b64f894a3ca87e5f7633553628c002ef4db2` |
 | `src/finds_agentbench/submission_package.py` | 23109 | `9a9be0f7a73cc5af65eed7cb0fb73b22d3c48037806f5681be3fbaf563071a7d` |
 | `src/finds_agentbench/submission_readiness.py` | 27423 | `ad43498fe78c9a85cf189dfdb8f6362a955b94027427b42252478268fd83ab37` |
 | `src/finds_agentbench/synthetic.py` | 19703 | `347b9d3231fbf6b84671ed1165c7d75f4753cf9de62339821d651676d86a69bf` |

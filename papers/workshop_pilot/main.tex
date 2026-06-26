@@ -30,23 +30,23 @@ Financial machine-learning research is unusually sensitive to timestamp discipli
 \input{related_work.tex}
 
 \section{Benchmark Design}
-The pilot release spans event\_aware\_time\_series\_reasoning, predictive\_financial\_ml, research\_replication\_and\_audit. Each task specification identifies the prediction timestamp, allowed public information, target horizon, temporal split, required submission artifacts, primary metric, and leakage constraints. The benchmark separates predictive performance from artifact validity so that a high private-holdout score does not erase reproducibility, leakage, or methodology failures.
+The pilot release spans event-aware time-series reasoning, predictive financial ML, research replication and audit. Each task specification identifies the prediction timestamp, allowed public information, target horizon, temporal split, required submission artifacts, primary metric, and leakage constraints. The benchmark separates predictive performance from artifact validity so that a high private-holdout score does not erase reproducibility, leakage, or methodology failures.
 
 \section{Pilot Release}
 The release manifest records 9 tasks and 9 runnable tasks. The repeated-run pilot protocol covers 8 tasks, excluding the leakage-audit task from the predictive baseline/agent sweep because it uses an audit-style scoring surface rather than a standard prediction holdout.
 
 \section{Evaluation Protocol}
-The combined pilot protocol evaluates 27 baseline task-system cells and 8 agent task-system cells. Observed run counts per cell are 3. Baselines include naive and classical models; the bundled example agents are environment-wrapped systems that select among public candidate strategies before writing holdout predictions and research artifacts. The external-agent readiness gate is \texttt{not\_ready\_no\_external\_agents} with 0 completed external agent configurations.
+The combined pilot protocol evaluates 27 baseline task-system cells and 8 agent task-system cells. Observed run counts per cell are 3. Baselines include naive and classical models; the bundled example agents are environment-wrapped systems that select among public candidate strategies before writing holdout predictions and research artifacts. The external-agent readiness gate is \path{not_ready_no_external_agents} with 0 completed external agent configurations.
 
 \input{../../docs/releases/pilot_v0/statistical_artifacts/methods/statistical_methods.tex}
 
 \section{Results}
-Table~\ref{tab:pilot-agent-vs-best-baseline-score-overall-score} summarizes the paired overall-score comparison between each agent and the best completed-run baseline for the same task. Appendix Table~\ref{tab:pilot-uncertainty-score-overall-score} reports overall-score repeated-run uncertainty for all task-system cells.
+Table~\ref{tab:pilot-agent-vs-best-baseline-score-overall-score} compares each agent with the best completed-run baseline for the same task. Appendix Table~\ref{tab:pilot-uncertainty-score-overall-score} reports repeated-run overall-score uncertainty for all task-system cells.
 
 \input{../../docs/releases/pilot_v0/statistical_artifacts/tables/agent_vs_best_baseline_overall_score.tex}
 
 \section{Manual Audit and Validity Checks}
-The pilot manual-audit bundle currently includes 6 cases across 3 reviewed tasks. Its official status is \texttt{seed\_author\_adjudication\_only}; independent-overlap agreement status is \texttt{pairwise\_agreement\_available}, with exploratory status \texttt{pairwise\_agreement\_available}. The reviewer-readiness gate is \texttt{ready\_for\_submission\_claims} with 1 completed independent reviewer packets. This makes the current audit layer suitable as a seed adjudication workflow, while a submission-ready paper should add an independent second-reviewer packet.
+The pilot manual-audit bundle currently includes 6 cases across 3 reviewed tasks. Its official status is \path{seed_author_adjudication_only}; independent-overlap agreement status is \path{pairwise_agreement_available}, with exploratory status \path{pairwise_agreement_available}. The reviewer-readiness gate is \path{ready_for_submission_claims} with 1 completed independent reviewer packets. This makes the current audit layer suitable as a seed adjudication workflow, while a submission-ready paper should add an independent second-reviewer packet.
 
 \input{audit_failure_examples.tex}
 
@@ -54,7 +54,21 @@ The pilot manual-audit bundle currently includes 6 cases across 3 reviewed tasks
 The release build is intentionally scriptable. It rebuilds suite reports, reference results, statistical artifacts, paper artifacts, task cards, data manifests, and the canonical release manifest. A separate smoke check builds the pilot release twice in isolated roots and compares deterministic publication-facing outputs by content digest.
 
 \begin{verbatim}
-PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-outputs
+PYTHONPATH=src python scripts/build_pilot_release.py \
+  --repeat 3 \
+  --market-seed 11 \
+  --event-seed 23 \
+  --treasury-seed 29 \
+  --curve-seed 31 \
+  --curve3mo-seed 33 \
+  --front-end-seed 31 \
+  --usd-seed 37 \
+  --treasury-snapshot-date 2026-06-21 \
+  --curve-snapshot-date 2026-06-21 \
+  --curve3mo-snapshot-date 2026-06-21 \
+  --front-end-snapshot-date 2026-06-21 \
+  --usd-snapshot-date 2026-06-21 \
+  --clean-existing-outputs
 \end{verbatim}
 
 \section{Limitations}

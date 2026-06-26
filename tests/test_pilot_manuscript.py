@@ -193,8 +193,8 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert "\\input{" in main_tex
     assert "baseline-higher" not in main_tex
     assert "2 task-system cells" in main_tex
-    assert "not\\_ready\\_seed\\_only" in main_tex
-    assert "not\\_ready\\_no\\_external\\_agents" in main_tex
+    assert "\\path{not_ready_seed_only}" in main_tex
+    assert "\\path{not_ready_no_external_agents}" in main_tex
     assert "Workshop Pilot Manuscript" in readme
     assert "Reviewer Readiness" in readme
     assert "External Agent Readiness" in readme
@@ -214,6 +214,9 @@ def test_build_pilot_manuscript_writes_traceable_workshop_scaffold(tmp_path: Pat
     assert "submission_package_manifest.md" in readme
     assert "scripts/build_submission_package_manifest.py" in readme
     assert "Qualitative Failure Examples" in audit_examples_tex
+    assert "\\begin{enumerate}[leftmargin=*]" in audit_examples_tex
+    assert "\\path{case_a}" in audit_examples_tex
+    assert "\\path{runs/task_a/agent_a/run_a/writeup.md}" in audit_examples_tex
     assert "case_a" in audit_examples_markdown
     assert "Required Before Submission" in checklist
     assert "Generated qualitative failure examples" in checklist

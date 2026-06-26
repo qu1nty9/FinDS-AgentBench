@@ -238,21 +238,26 @@ def render_audit_failure_examples_tex(examples: list[dict[str, Any]]) -> str:
             "the seed adjudicated audit subset and preserve task, run, and artifact references."
         ),
         "",
-        "\\begin{description}[leftmargin=*]",
+        "\\begingroup",
+        "\\small",
+        "\\raggedright",
+        "\\begin{enumerate}[leftmargin=*]",
     ]
-    for example in examples:
+    for index, example in enumerate(examples, start=1):
         findings = format_sentence_list(example["primary_manual_findings"])
-        low_dimensions = ", ".join(str(item).replace("_", "\\_") for item in example["low_dimension_ids"])
+        low_dimensions = ", ".join(
+            f"\\path{{{latex_path(item)}}}" for item in example["low_dimension_ids"]
+        )
         lines.extend(
             [
                 (
-                    "\\item["
-                    f"{latex_escape(str(example['case_id']))}] "
-                    f"\\textbf{{Task/system:}} \\texttt{{{latex_escape(str(example['task_id']))}}} / "
-                    f"\\texttt{{{latex_escape(str(example['agent_id']))}}} "
+                    "\\item "
+                    f"\\textbf{{Case {index}:}} \\path{{{latex_path(example['case_id'])}}}. "
+                    f"\\textbf{{Task/system:}} \\path{{{latex_path(example['task_id'])}}} / "
+                    f"\\path{{{latex_path(example['agent_id'])}}} "
                     f"({latex_escape(str(example['run_type']))}, run label "
-                    f"\\texttt{{{latex_escape(str(example['run_label']))}}}). "
-                    f"\\textbf{{Audit label:}} \\texttt{{{latex_escape(str(example['overall_label']))}}}, "
+                    f"\\path{{{latex_path(example['run_label'])}}}). "
+                    f"\\textbf{{Audit label:}} \\path{{{latex_path(example['overall_label'])}}}, "
                     f"total score {example['total_score']}."
                 ),
                 (
@@ -262,12 +267,12 @@ def render_audit_failure_examples_tex(examples: list[dict[str, Any]]) -> str:
                 ),
                 (
                     "\\textbf{Artifact reference:} "
-                    f"\\texttt{{{latex_escape(str(example['writeup_path']))}}}."
+                    f"\\path{{{latex_path(example['writeup_path'])}}}."
                 ),
                 "",
             ]
         )
-    lines.extend(["\\end{description}", ""])
+    lines.extend(["\\end{enumerate}", "\\endgroup", ""])
     return "\n".join(lines)
 
 
@@ -307,6 +312,41 @@ def format_sentence_list(items: list[Any]) -> str:
     return "; ".join(cleaned) + "."
 
 
+def pretty_track_label(track: Any) -> str:
+    labels = {
+        "event_aware_time_series_reasoning": "event-aware time-series reasoning",
+        "predictive_financial_ml": "predictive financial ML",
+        "research_replication_and_audit": "research replication and audit",
+    }
+    value = str(track)
+    return labels.get(value, value.replace("_", " "))
+
+
+def latex_path(value: Any) -> str:
+    return str(value).replace("{", "\\{").replace("}", "\\}")
+
+
+def format_verbatim_shell_command(command: str, *, prefix_token_count: int = 3) -> str:
+    tokens = command.split()
+    if len(tokens) <= prefix_token_count:
+        return command
+
+    lines = [" ".join(tokens[:prefix_token_count])]
+    index = prefix_token_count
+    while index < len(tokens):
+        token = tokens[index]
+        if token.startswith("--") and index + 1 < len(tokens) and not tokens[index + 1].startswith("--"):
+            lines.append(f"  {token} {tokens[index + 1]}")
+            index += 2
+        else:
+            lines.append(f"  {token}")
+            index += 1
+
+    continued = [f"{line} \\" for line in lines[:-1]]
+    continued.append(lines[-1])
+    return "\n".join(continued)
+
+
 def render_main_tex(
     *,
     summary: dict[str, Any],
@@ -318,7 +358,7 @@ def render_main_tex(
     protocol_table_path: str,
 ) -> str:
     run_count_text = ", ".join(str(value) for value in summary["run_counts"])
-    track_text = ", ".join(str(track) for track in summary["track_names"])
+    track_text = ", ".join(pretty_track_label(track) for track in summary["track_names"])
     return "\n".join(
         [
             "\\documentclass[11pt]{article}",
@@ -397,7 +437,7 @@ def render_main_tex(
                 f"run counts per cell are {latex_escape(run_count_text)}. Baselines include naive and "
                 "classical models; the bundled example agents are environment-wrapped systems that select "
                 "among public candidate strategies before writing holdout predictions and research artifacts. "
-                f"The external-agent readiness gate is \\texttt{{{latex_escape(summary['external_agent_readiness_status'])}}} "
+                f"The external-agent readiness gate is \\path{{{latex_path(summary['external_agent_readiness_status'])}}} "
                 f"with {summary['completed_external_agent_configuration_count']} completed external "
                 "agent configurations."
             ),
@@ -406,10 +446,10 @@ def render_main_tex(
             "",
             "\\section{Results}",
             (
-                "Table~\\ref{tab:pilot-agent-vs-best-baseline-score-overall-score} summarizes the "
-                "paired overall-score comparison between each agent and the best completed-run baseline "
-                "for the same task. Appendix Table~\\ref{tab:pilot-uncertainty-score-overall-score} "
-                "reports overall-score repeated-run uncertainty for all task-system cells."
+                "Table~\\ref{tab:pilot-agent-vs-best-baseline-score-overall-score} compares each "
+                "agent with the best completed-run baseline for the same task. Appendix "
+                "Table~\\ref{tab:pilot-uncertainty-score-overall-score} reports repeated-run "
+                "overall-score uncertainty for all task-system cells."
             ),
             "",
             f"\\input{{{agent_vs_baseline_table_path}}}",
@@ -418,10 +458,10 @@ def render_main_tex(
             (
                 f"The pilot manual-audit bundle currently includes {summary['manual_audit_case_count']} "
                 f"cases across {summary['manual_audit_reviewed_task_count']} reviewed tasks. Its official "
-                f"status is \\texttt{{{latex_escape(summary['manual_audit_status'])}}}; independent-overlap "
-                f"agreement status is \\texttt{{{latex_escape(summary['agreement_status'])}}}, with "
-                f"exploratory status \\texttt{{{latex_escape(summary['exploratory_agreement_status'])}}}. "
-                f"The reviewer-readiness gate is \\texttt{{{latex_escape(summary['reviewer_readiness_status'])}}} "
+                f"status is \\path{{{latex_path(summary['manual_audit_status'])}}}; independent-overlap "
+                f"agreement status is \\path{{{latex_path(summary['agreement_status'])}}}, with "
+                f"exploratory status \\path{{{latex_path(summary['exploratory_agreement_status'])}}}. "
+                f"The reviewer-readiness gate is \\path{{{latex_path(summary['reviewer_readiness_status'])}}} "
                 f"with {summary['independent_completed_reviewer_packet_count']} completed independent "
                 "reviewer packets. "
                 "This makes the current audit layer suitable as a seed adjudication workflow, while a "
@@ -439,7 +479,7 @@ def render_main_tex(
             ),
             "",
             "\\begin{verbatim}",
-            summary["release_build_command"],
+            format_verbatim_shell_command(summary["release_build_command"]),
             "\\end{verbatim}",
             "",
             "\\section{Limitations}",

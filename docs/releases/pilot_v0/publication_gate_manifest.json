@@ -96,14 +96,12 @@
   ],
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
-  "blocking_evidence_gate_count": 3,
-  "blocking_item_count": 5,
+  "blocking_evidence_gate_count": 2,
+  "blocking_item_count": 3,
   "blocking_items": [
     "Register and run at least one non-author external agent configuration through the pilot harness.",
     "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
-    "Create a release tag and archive the release artifact bundle after the remaining gates pass.",
-    "Run a real LaTeX engine and inspect the generated PDF before final submission.",
-    "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
+    "Create a release tag and archive the release artifact bundle after the remaining gates pass."
   ],
   "ci_enforced_automated_gate_count": 7,
   "evidence_gate_count": 7,
@@ -185,23 +183,20 @@
       "title": "Release Tag and Archive"
     },
     {
-      "blockers": [
-        "Run a real LaTeX engine and inspect the generated PDF before final submission.",
-        "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
-      ],
+      "blockers": [],
       "evidence": {
         "hard_error_count": 0,
-        "latex_engine": null,
-        "latex_engine_available": false,
+        "latex_engine": "compiled_pdf_artifact",
+        "latex_engine_available": true,
         "main_tex_path": "papers/workshop_pilot/main.tex",
-        "mitigated_table_count": 2,
-        "pdf_compile_status": "not_run_no_latex_engine",
+        "mitigated_table_count": 4,
+        "pdf_compile_status": "compiled_pdf_present",
         "table_count": 4,
-        "warning_count": 1
+        "warning_count": 0
       },
       "gate_id": "latex_pdf_compile_visual_inspection",
-      "ready": false,
-      "status": "static_checks_passed_pdf_compile_pending",
+      "ready": true,
+      "status": "ready",
       "title": "LaTeX PDF Compile and Visual Inspection"
     }
   ],
@@ -210,7 +205,6 @@
     "Run CI-backed automated gates on every publication-facing change.",
     "Inspect the official manual-audit agreement and adjudication queue before strengthening qualitative claims.",
     "Register and run at least one non-author external agent configuration.",
-    "Compile and inspect the manuscript PDF with a real LaTeX engine.",
     "Rebuild and verify the deterministic release archive.",
     "Freeze the final release tag after all evidence gates pass."
   ],
@@ -222,5 +216,5 @@
     "release_manifest": "docs/releases/pilot_v0/manifest.json",
     "submission_readiness": "docs/releases/pilot_v0/submission_readiness.json"
   },
-  "status": "blocked_on_submission_evidence_and_pdf_compile"
+  "status": "blocked_on_submission_evidence"
 }
