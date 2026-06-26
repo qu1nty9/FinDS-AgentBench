@@ -12,10 +12,10 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | Archive Status | `candidate_unfrozen` |
 | Expected Tag | `v0.1.0-pilot` |
 | Archive Path | `dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz` |
-| Archive SHA256 | `7571e1854ac569da761e481cd12377b57a30b9056f25a2ccee6ac43c489e7700` |
+| Archive SHA256 | `5b00985555a2335a789a6d2ea14bbda33f21242f5dcfde140c003000fdcc7b9c` |
 | Verification Command | `PYTHONPATH=src python scripts/verify_release_archive.py` |
 | File Count | 300 |
-| Total Uncompressed Size | 2478124 bytes |
+| Total Uncompressed Size | 2478401 bytes |
 
 ## Submission Readiness
 
@@ -292,7 +292,7 @@ Deterministic archive manifest for the FinDS-AgentBench pilot release candidate.
 | `src/finds_agentbench/front_end.py` | 28091 | `3c66b9e0958081568d248da523dbf6822bc1b74ddeb743265467719e122ce3f3` |
 | `src/finds_agentbench/io.py` | 683 | `934ae5e625c83ac994bdad1067c1154755ea9f3e6bc3c82e9953a2e2f24edac4` |
 | `src/finds_agentbench/leakage.py` | 3952 | `07dd0ea04f7725ec94d0b9776577655e7c172ecf1fb4a8dac39dab1be6be775e` |
-| `src/finds_agentbench/manual_audit.py` | 84233 | `3dc3f603497593cff8e8af8154d35b3ede64be1d7f714262d936f5fd14faf1bf` |
+| `src/finds_agentbench/manual_audit.py` | 84510 | `cb3532e235e825d38563d799e0e5ab4db0012eeaa4ce5a60116d0f5f049f9691` |
 | `src/finds_agentbench/manuscript_formatting.py` | 21287 | `2380f1c3aaccfa410c7f65df955222f6bc1ea5866c7d74db51876aaa4cafa287` |
 | `src/finds_agentbench/methodology.py` | 11942 | `ade6672d442914e4b10f133c263dd7fe015877787927318590f36913dc60280a` |
 | `src/finds_agentbench/methodology_calibration.py` | 34092 | `5a9471f4f80334aafb4ececcfb1649af329c54baa0321eabbf989a91d9d9c411` |

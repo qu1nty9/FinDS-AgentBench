@@ -7,7 +7,7 @@
     "Methodology-calibration findings have a completed author review packet.",
     "A deterministic candidate archive and archive manifest can be built before final tagging."
   ],
-  "archive_sha256": "7571e1854ac569da761e481cd12377b57a30b9056f25a2ccee6ac43c489e7700",
+  "archive_sha256": "5b00985555a2335a789a6d2ea14bbda33f21242f5dcfde140c003000fdcc7b9c",
   "archive_status": "candidate_unfrozen",
   "artifact_count": 67,
   "artifacts": [
@@ -207,7 +207,7 @@
       "path": "docs/releases/pilot_v0/archive_manifest.json",
       "required_for_workshop_submission": true,
       "role": "archive_manifest_json",
-      "sha256": "627699fd22fb7c58cb87afd191c3e858e9541836ff597670de33a757527884a9",
+      "sha256": "4dfdf7556bf63e82822d9a24ee1dbba02fcc262f0c2793078e3f606d3388fbb7",
       "size_bytes": 58482
     },
     {
@@ -218,7 +218,7 @@
       "path": "docs/releases/pilot_v0/archive_manifest.md",
       "required_for_workshop_submission": true,
       "role": "archive_manifest_md",
-      "sha256": "27ed15604cfa0d1597ba90ff11e9b77b6164eff9327bb9dad2746e498385c1e4",
+      "sha256": "1b2207a8d8b8dba263aa43165c23a469c7c141c438bb062b6697892f016df942",
       "size_bytes": 41032
     },
     {
@@ -351,8 +351,8 @@
       "path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
       "required_for_workshop_submission": true,
       "role": "release_archive",
-      "sha256": "7571e1854ac569da761e481cd12377b57a30b9056f25a2ccee6ac43c489e7700",
-      "size_bytes": 296666
+      "sha256": "5b00985555a2335a789a6d2ea14bbda33f21242f5dcfde140c003000fdcc7b9c",
+      "size_bytes": 296717
     },
     {
       "exists": null,
@@ -736,7 +736,7 @@
       "path": "docs/releases/pilot_v0/archive_manifest.json",
       "required_for_workshop_submission": true,
       "role": "release_archive_manifest_json",
-      "sha256": "627699fd22fb7c58cb87afd191c3e858e9541836ff597670de33a757527884a9",
+      "sha256": "4dfdf7556bf63e82822d9a24ee1dbba02fcc262f0c2793078e3f606d3388fbb7",
       "size_bytes": 58482
     },
     {
@@ -747,7 +747,7 @@
       "path": "docs/releases/pilot_v0/archive_manifest.md",
       "required_for_workshop_submission": true,
       "role": "release_archive_manifest_markdown",
-      "sha256": "27ed15604cfa0d1597ba90ff11e9b77b6164eff9327bb9dad2746e498385c1e4",
+      "sha256": "1b2207a8d8b8dba263aa43165c23a469c7c141c438bb062b6697892f016df942",
       "size_bytes": 41032
     }
   ],

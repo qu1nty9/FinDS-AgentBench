@@ -32,6 +32,22 @@ def test_load_manual_audit_bundle_validates_repo_seed_subset():
     )
 
 
+def test_load_manual_audit_bundle_allows_clean_checkout_without_run_artifacts(tmp_path):
+    bundle = load_manual_audit_bundle(workspace_root=tmp_path)
+
+    assert bundle.summary["case_count"] == 6
+
+    try:
+        load_manual_audit_bundle(
+            workspace_root=tmp_path,
+            require_source_artifacts=True,
+        )
+    except ValueError as exc:
+        assert "artifact_root does not exist" in str(exc)
+    else:
+        raise AssertionError("Expected strict source-artifact validation to fail.")
+
+
 def test_build_manual_audit_workflow_artifacts_writes_seed_template_and_report(tmp_path):
     bundle = load_manual_audit_bundle()
 

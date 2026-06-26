@@ -130,6 +130,7 @@ def validate_manual_audit_bundle(
     rubric_path: str | Path,
     subset_path: str | Path,
     workspace_root: str | Path = ".",
+    require_source_artifacts: bool = False,
 ) -> list[str]:
     errors: list[str] = []
     workspace = Path(workspace_root).resolve()
@@ -187,24 +188,26 @@ def validate_manual_audit_bundle(
             if not str(case.get(key, "")).strip():
                 errors.append(f"{context}.{key} must be non-empty")
 
-        artifact_root = workspace / str(case.get("artifact_root", ""))
-        if not artifact_root.exists():
-            errors.append(
-                f"{context}.artifact_root does not exist: "
-                f"{_relative_path_string(artifact_root, workspace_root=workspace)}"
-            )
+        if require_source_artifacts:
+            artifact_root = workspace / str(case.get("artifact_root", ""))
+            if not artifact_root.exists():
+                errors.append(
+                    f"{context}.artifact_root does not exist: "
+                    f"{_relative_path_string(artifact_root, workspace_root=workspace)}"
+                )
 
         source_paths = case.get("source_paths")
         if not isinstance(source_paths, dict) or not source_paths:
             errors.append(f"{context}.source_paths must be a non-empty object")
         else:
             for key, value in source_paths.items():
-                target = workspace / str(value)
-                if not target.exists():
-                    errors.append(
-                        f"{context}.source_paths.{key} does not exist: "
-                        f"{_relative_path_string(target, workspace_root=workspace)}"
-                    )
+                if require_source_artifacts:
+                    target = workspace / str(value)
+                    if not target.exists():
+                        errors.append(
+                            f"{context}.source_paths.{key} does not exist: "
+                            f"{_relative_path_string(target, workspace_root=workspace)}"
+                        )
 
         rubric_scores = case.get("rubric_scores")
         if not isinstance(rubric_scores, dict):
@@ -2054,6 +2057,7 @@ def load_manual_audit_bundle(
     rubric_path: str | Path = DEFAULT_MANUAL_AUDIT_RUBRIC_PATH,
     subset_path: str | Path = DEFAULT_MANUAL_AUDIT_SUBSET_PATH,
     workspace_root: str | Path = ".",
+    require_source_artifacts: bool = False,
 ) -> ManualAuditBundle:
     rubric = load_yaml(rubric_path)
     subset = load_json(subset_path)
@@ -2063,6 +2067,7 @@ def load_manual_audit_bundle(
         rubric_path=rubric_path,
         subset_path=subset_path,
         workspace_root=workspace_root,
+        require_source_artifacts=require_source_artifacts,
     )
     if errors:
         message = "\n".join(f"- {error}" for error in errors)

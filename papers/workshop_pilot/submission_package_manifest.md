@@ -15,7 +15,7 @@ Submission-level wrapper around the manuscript source, release candidate, eviden
 | Submission Readiness | `not_ready_for_workshop_submission` |
 | Formatting Status | `static_checks_passed_pdf_compile_pending` |
 | Archive Status | `candidate_unfrozen` |
-| Archive SHA256 | `7571e1854ac569da761e481cd12377b57a30b9056f25a2ccee6ac43c489e7700` |
+| Archive SHA256 | `5b00985555a2335a789a6d2ea14bbda33f21242f5dcfde140c003000fdcc7b9c` |
 | Artifacts | 67 |
 | Missing Required Artifacts | 1 |
 
