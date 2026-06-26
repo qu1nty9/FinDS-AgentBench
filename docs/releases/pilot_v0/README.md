@@ -66,8 +66,8 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | --- | --- |
 | Status | not_ready_for_workshop_submission |
 | Ready for Workshop Submission | no |
-| Ready Gates | 3 / 6 |
-| Blocking Gates | 3 |
+| Ready Gates | 4 / 6 |
+| Blocking Gates | 2 |
 | Report | docs/releases/pilot_v0/submission_readiness.md |
 | Evidence Ledger | docs/releases/pilot_v0/submission_evidence_ledger.md |
 
@@ -95,9 +95,9 @@ Canonical pilot release manifest for FinDS-AgentBench.
 | Status | seed_author_adjudication_only |
 | Case Count | 6 |
 | Reviewed Task Count | 3 |
-| Reviewer Readiness Status | not_ready_seed_only |
-| Ready for Submission Claims | no |
-| Official Agreement Status | insufficient_independent_overlap |
+| Reviewer Readiness Status | ready_for_submission_claims |
+| Ready for Submission Claims | yes |
+| Official Agreement Status | pairwise_agreement_available |
 | Exploratory Dry-Run Status | pairwise_agreement_available |
 | Scope Tracks | predictive_financial_ml, event_aware_time_series_reasoning |
 | Run Types | agent, baseline |

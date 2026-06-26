@@ -14,8 +14,8 @@ Machine-readable gate map for the FinDS-AgentBench pilot submission package.
 | Automated Gates | 7 |
 | CI-Enforced Automated Gates | 7 |
 | Evidence Gates | 7 |
-| Blocking Evidence Gates | 4 |
-| Blocking Items | 7 |
+| Blocking Evidence Gates | 3 |
+| Blocking Items | 5 |
 
 ## Automated Gates
 
@@ -35,7 +35,7 @@ Machine-readable gate map for the FinDS-AgentBench pilot submission package.
 | --- | --- | --- | --- |
 | pilot_release_scope | yes | `ready` | 0 |
 | statistical_artifacts | yes | `ready` | 0 |
-| manual_audit_independent_review | no | `not_ready_seed_only` | 2 |
+| manual_audit_independent_review | yes | `ready_for_submission_claims` | 0 |
 | external_agent_evidence | no | `not_ready_no_external_agents` | 2 |
 | methodology_calibration_review | yes | `ready` | 0 |
 | release_tag_and_archive | no | `not_ready_unfrozen` | 1 |
@@ -43,8 +43,6 @@ Machine-readable gate map for the FinDS-AgentBench pilot submission package.
 
 ## Blocking Items
 
-- Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.
-- Rebuild official agreement reporting after an independent completed packet is available.
 - Register and run at least one non-author external agent configuration through the pilot harness.
 - Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.
 - Create a release tag and archive the release artifact bundle after the remaining gates pass.
@@ -119,7 +117,7 @@ PYTHONPATH=src python scripts/check_pilot_release_reproducibility.py --work-root
 ## Recommended Completion Order
 
 1. Run CI-backed automated gates on every publication-facing change.
-2. Complete one independent manual-audit reviewer packet and rebuild agreement reporting.
+2. Inspect the official manual-audit agreement and adjudication queue before strengthening qualitative claims.
 3. Register and run at least one non-author external agent configuration.
 4. Compile and inspect the manuscript PDF with a real LaTeX engine.
 5. Rebuild and verify the deterministic release archive.

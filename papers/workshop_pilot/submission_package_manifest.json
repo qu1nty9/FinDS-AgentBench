@@ -2,12 +2,12 @@
   "allowed_current_claims": [
     "The pilot release is within the planned 8-12 runnable-task workshop scope.",
     "Pilot uncertainty and paired-comparison statistical artifacts are generated.",
-    "Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.",
+    "The manual-audit subset has completed independent-review evidence and official agreement reporting.",
     "External-agent registration, handoff, and readiness gates are available.",
     "Methodology-calibration findings have a completed author review packet.",
     "A deterministic candidate archive and archive manifest can be built before final tagging."
   ],
-  "archive_sha256": "c55fbd7327e7b1698785e204e1cd64418cbb792ea771b51c5a6ab4b98a1a95f2",
+  "archive_sha256": "7571e1854ac569da761e481cd12377b57a30b9056f25a2ccee6ac43c489e7700",
   "archive_status": "candidate_unfrozen",
   "artifact_count": 67,
   "artifacts": [
@@ -19,8 +19,8 @@
       "path": "papers/workshop_pilot/main.tex",
       "required_for_workshop_submission": true,
       "role": "main_tex",
-      "sha256": "3789e6e37d74f2e4333a3ad7dfd18dfe2a13d5c5dc6146c94d5e9fcc8f1969ee",
-      "size_bytes": 6814
+      "sha256": "8c1870205545402da604e59868739e1369e942389537b73e5ad7f7dcaa807ee4",
+      "size_bytes": 6818
     },
     {
       "exists": true,
@@ -52,8 +52,8 @@
       "path": "papers/workshop_pilot/metadata.json",
       "required_for_workshop_submission": true,
       "role": "metadata",
-      "sha256": "f51d3f23ff089f5157ce045e8d46e7f9c482e038de2bf63b705f9c57ef8005d0",
-      "size_bytes": 2452
+      "sha256": "b1040859e8816ba55d2fb68112af8ad98fd66d99fdd75217d45775f273c39b71",
+      "size_bytes": 2257
     },
     {
       "exists": true,
@@ -85,7 +85,7 @@
       "path": "papers/workshop_pilot/formatting_check.json",
       "required_for_workshop_submission": true,
       "role": "formatting_check_json",
-      "sha256": "af805775a3563a0c8c469bf192fb7b11a08f231f6acebafd9db22bb21a530e74",
+      "sha256": "20ab4f7345baf4224fdc86c6764fc59bd9dc01e5ecf2bc4dea9f0a4195ee357b",
       "size_bytes": 4422
     },
     {
@@ -107,8 +107,8 @@
       "path": "papers/workshop_pilot/submission_readiness_checklist.md",
       "required_for_workshop_submission": true,
       "role": "submission_readiness_checklist",
-      "sha256": "61bed6f79346d112a23380e50ee2fcc3040d4af597f98acb40d3056504d96df2",
-      "size_bytes": 3417
+      "sha256": "b0fe81003c08343bf23f89755311b9653e725331f0d7122aeb558af66cf13ea6",
+      "size_bytes": 3278
     },
     {
       "exists": false,
@@ -185,8 +185,8 @@
       "path": "docs/releases/pilot_v0/manifest.json",
       "required_for_workshop_submission": true,
       "role": "release_manifest",
-      "sha256": "be33cc7f2569a80cdec6943a0c6c1b7a11e52ea679c1538fe5f5467f6cf1bf70",
-      "size_bytes": 31944
+      "sha256": "cfcc4650be336688d02cb44a6e790f89f8c6750a6905df5324ec46f02f0ae85e",
+      "size_bytes": 31544
     },
     {
       "exists": true,
@@ -196,8 +196,8 @@
       "path": "docs/releases/pilot_v0/README.md",
       "required_for_workshop_submission": true,
       "role": "release_readme",
-      "sha256": "a31f42f39e049821d2e9af4ff8ea460b88afa248466d1f19b7c3d85da3dd4669",
-      "size_bytes": 10202
+      "sha256": "e44e2bcb3506f847a871eabfd09a4388ee01dd5b5cdc37954d892bbdc12a3340",
+      "size_bytes": 10207
     },
     {
       "exists": true,
@@ -207,8 +207,8 @@
       "path": "docs/releases/pilot_v0/archive_manifest.json",
       "required_for_workshop_submission": true,
       "role": "archive_manifest_json",
-      "sha256": "bbe5a2ef3d2b5f08060cc2c4008074a88c2d712063cad393909666b7a97d3f46",
-      "size_bytes": 58119
+      "sha256": "627699fd22fb7c58cb87afd191c3e858e9541836ff597670de33a757527884a9",
+      "size_bytes": 58482
     },
     {
       "exists": true,
@@ -218,8 +218,8 @@
       "path": "docs/releases/pilot_v0/archive_manifest.md",
       "required_for_workshop_submission": true,
       "role": "archive_manifest_md",
-      "sha256": "6519ae94e41604cd81f815bfe2779c9074dddb7de56f522d063c31632865b914",
-      "size_bytes": 40783
+      "sha256": "27ed15604cfa0d1597ba90ff11e9b77b6164eff9327bb9dad2746e498385c1e4",
+      "size_bytes": 41032
     },
     {
       "exists": true,
@@ -229,8 +229,8 @@
       "path": "docs/releases/pilot_v0/publication_gate_manifest.json",
       "required_for_workshop_submission": true,
       "role": "publication_gate_json",
-      "sha256": "365797a513ee7298675394b4b9d8de2fa48f2e6dcd46abb2441bb60cb76ab38a",
-      "size_bytes": 11175
+      "sha256": "2ea03f2c6c9968b7fd2de5a16b39190d0077e4d45390fc1504541d5a0b7c502a",
+      "size_bytes": 10793
     },
     {
       "exists": true,
@@ -240,8 +240,8 @@
       "path": "docs/releases/pilot_v0/publication_gate_manifest.md",
       "required_for_workshop_submission": true,
       "role": "publication_gate_md",
-      "sha256": "687e72a656282a70024a13da8e504f69519612ee3c27c32eda8c3eda56be2e38",
-      "size_bytes": 4996
+      "sha256": "7cde1a564ce08baa4b630a1a7ef93726222904738ef3b1e9f767b7eae77d97f3",
+      "size_bytes": 4840
     },
     {
       "exists": true,
@@ -251,8 +251,8 @@
       "path": "docs/releases/pilot_v0/submission_readiness.json",
       "required_for_workshop_submission": true,
       "role": "submission_readiness_json",
-      "sha256": "751c4b89e77da75dd6c42a244ea80b12fca96cf9a0a3050bf397df21fbedd872",
-      "size_bytes": 3358
+      "sha256": "da676171844e534b609dd9838662bd2864addd90066c7c48154cd826da429d10",
+      "size_bytes": 2955
     },
     {
       "exists": true,
@@ -262,8 +262,8 @@
       "path": "docs/releases/pilot_v0/submission_readiness.md",
       "required_for_workshop_submission": true,
       "role": "submission_readiness_md",
-      "sha256": "32b0f85cb505e33810a2e969e053f6a782874a67733a49353f4c7f168d901874",
-      "size_bytes": 1705
+      "sha256": "0ad99b9fd236efa22be695d07d09bea75109ccad70ca3a5d2890f58cc9ad6ae6",
+      "size_bytes": 1347
     },
     {
       "exists": true,
@@ -273,8 +273,8 @@
       "path": "docs/releases/pilot_v0/submission_evidence_ledger.json",
       "required_for_workshop_submission": true,
       "role": "evidence_ledger_json",
-      "sha256": "919611f762a92d1e4ac094891f9552c262df799028c743bf208abfae42de6350",
-      "size_bytes": 11206
+      "sha256": "76bf8456037e2e2f73ac7f7546a65eaa3b0ffa7a3d7f903cff25d991b662a8a7",
+      "size_bytes": 10805
     },
     {
       "exists": true,
@@ -284,8 +284,8 @@
       "path": "docs/releases/pilot_v0/submission_evidence_ledger.md",
       "required_for_workshop_submission": true,
       "role": "evidence_ledger_md",
-      "sha256": "a6a8079061fd77dd6c842f52186824391d7a74926ecdbb631e8c559d257350da",
-      "size_bytes": 7483
+      "sha256": "abb01b286df81223e83785c4af3d1bcb556162fddc4e3ded984139215c5e8517",
+      "size_bytes": 7087
     },
     {
       "exists": true,
@@ -339,8 +339,8 @@
       "path": "src/finds_agentbench/publication_gate.py",
       "required_for_workshop_submission": true,
       "role": "publication_gate_module",
-      "sha256": "2ee5a0bfbd1e1d0cfd5abd52481b462b243542f6a5d409fe5ebdd70368f7dd25",
-      "size_bytes": 18522
+      "sha256": "e45f1f4c2d33cacf0b81a07db2d1faed674d5fa627b729472ce00de79c7da002",
+      "size_bytes": 19505
     },
     {
       "exists": null,
@@ -351,8 +351,8 @@
       "path": "dist/release_archives/finds_agentbench_pilot_v0-0.1.0-pilot.tar.gz",
       "required_for_workshop_submission": true,
       "role": "release_archive",
-      "sha256": "c55fbd7327e7b1698785e204e1cd64418cbb792ea771b51c5a6ab4b98a1a95f2",
-      "size_bytes": 294075
+      "sha256": "7571e1854ac569da761e481cd12377b57a30b9056f25a2ccee6ac43c489e7700",
+      "size_bytes": 296666
     },
     {
       "exists": null,
@@ -384,8 +384,8 @@
       "path": "docs/releases/pilot_v0/manifest.json",
       "required_for_workshop_submission": false,
       "role": "release_manifest",
-      "sha256": "be33cc7f2569a80cdec6943a0c6c1b7a11e52ea679c1538fe5f5467f6cf1bf70",
-      "size_bytes": 31944
+      "sha256": "cfcc4650be336688d02cb44a6e790f89f8c6750a6905df5324ec46f02f0ae85e",
+      "size_bytes": 31544
     },
     {
       "exists": true,
@@ -395,8 +395,8 @@
       "path": "docs/releases/pilot_v0/README.md",
       "required_for_workshop_submission": false,
       "role": "release_readme",
-      "sha256": "a31f42f39e049821d2e9af4ff8ea460b88afa248466d1f19b7c3d85da3dd4669",
-      "size_bytes": 10202
+      "sha256": "e44e2bcb3506f847a871eabfd09a4388ee01dd5b5cdc37954d892bbdc12a3340",
+      "size_bytes": 10207
     },
     {
       "exists": true,
@@ -492,7 +492,7 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "docs/releases/pilot_v0/independent_participant_brief.md",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "independent_participant_brief",
       "sha256": "d166dfd24688a18e836274b7a93f511c89e65dd92dcfa408aabe1f236c944022",
       "size_bytes": 5136
@@ -503,7 +503,7 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/README.md",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "manual_audit_readme",
       "sha256": "c7101d3cbb1db09123749962c1d3a32d673b8bde9b8a76c3405c709e12d72b6d",
       "size_bytes": 2067
@@ -514,7 +514,7 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/manual_audit_rubric.yaml",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "rubric",
       "sha256": "34f29a90f2a396448682e647bd79bd2b8c0bd956f6ef87ee585924f2084d5bbe",
       "size_bytes": 5608
@@ -525,7 +525,7 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/adjudicated_subset.json",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "seed_subset",
       "sha256": "e7826edefa2bcd89d49c23049e42e17ecd37126a2cfb2b38d92729b75e925d67",
       "size_bytes": 21591
@@ -536,7 +536,7 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/reviews/README.md",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "reviews_workflow",
       "sha256": "a71009823aad755f4207d2a869462ceeb516f863c06727b1b2f3db2beda0f915",
       "size_bytes": 1755
@@ -547,10 +547,10 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/reports/reviewer_readiness.md",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "reviewer_readiness",
-      "sha256": "b60710c8ce74cad9c514ce218d738edadc11805494d2914200065cf8ebb9df30",
-      "size_bytes": 1627
+      "sha256": "98cd758c3979373c09acac96e07307ac956982a083f29e95cffdaf74c36e226a",
+      "size_bytes": 1297
     },
     {
       "exists": true,
@@ -558,10 +558,10 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/reports/agreement_summary.md",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "agreement_report",
-      "sha256": "c1b740101feb12500ad51cc5353faf08c8c3ad186989b2ac2815ee905793ccc1",
-      "size_bytes": 1878
+      "sha256": "36db0a4e62e2a2cd23b7acc4dc7e0a8d35f764dcb31ddc2e1612af8e83b24e95",
+      "size_bytes": 3895
     },
     {
       "exists": true,
@@ -569,10 +569,10 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/reports/adjudication_queue.md",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "adjudication_queue",
-      "sha256": "e9a19ad0aa975ddc51ba5965a9d30dffdd232db9ed742eaf820d87b486743f09",
-      "size_bytes": 1501
+      "sha256": "9fd61fd2d01f3c340011b3578adf678142608e37a60cbcd681f76cbb2b285ccf",
+      "size_bytes": 5481
     },
     {
       "exists": true,
@@ -580,7 +580,7 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/reviews/independent_reviewer_handoff.md",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "independent_handoff",
       "sha256": "c676a1a4a8f8683d6adbf84b4a76e3e66682abada753f309a780c7beddb00c85",
       "size_bytes": 2830
@@ -591,7 +591,7 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/reviews/independent_reviewer_packet_manifest.md",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "independent_packet_manifest",
       "sha256": "3c48ef90788b7ef68274f8427f64401903841c0d905553bae13b2034350e1eb0",
       "size_bytes": 4069
@@ -602,10 +602,10 @@
       "kind": "file",
       "materialization": "workspace_path",
       "path": "audits/pilot_v0/reports/independent_reviewer_packet_validation.md",
-      "required_for_workshop_submission": true,
+      "required_for_workshop_submission": false,
       "role": "independent_packet_validation",
-      "sha256": "2e96de908fa9da251df7a3c032d21a7d8032dc64bda0e0b9dce0c66ec2c5cd23",
-      "size_bytes": 1656
+      "sha256": "d9413749f68f6af317efdcc67a54fe10a8191c88b2f813792a54308e17d51626",
+      "size_bytes": 605
     },
     {
       "exists": true,
@@ -736,8 +736,8 @@
       "path": "docs/releases/pilot_v0/archive_manifest.json",
       "required_for_workshop_submission": true,
       "role": "release_archive_manifest_json",
-      "sha256": "bbe5a2ef3d2b5f08060cc2c4008074a88c2d712063cad393909666b7a97d3f46",
-      "size_bytes": 58119
+      "sha256": "627699fd22fb7c58cb87afd191c3e858e9541836ff597670de33a757527884a9",
+      "size_bytes": 58482
     },
     {
       "exists": true,
@@ -747,15 +747,13 @@
       "path": "docs/releases/pilot_v0/archive_manifest.md",
       "required_for_workshop_submission": true,
       "role": "release_archive_manifest_markdown",
-      "sha256": "6519ae94e41604cd81f815bfe2779c9074dddb7de56f522d063c31632865b914",
-      "size_bytes": 40783
+      "sha256": "27ed15604cfa0d1597ba90ff11e9b77b6164eff9327bb9dad2746e498385c1e4",
+      "size_bytes": 41032
     }
   ],
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
   "blocking_items": [
-    "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
-    "Rebuild official agreement reporting after an independent completed packet is available.",
     "Register and run at least one non-author external agent configuration through the pilot harness.",
     "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
     "Create a release tag and archive the release artifact bundle after the remaining gates pass.",
@@ -763,7 +761,6 @@
     "Install latexmk, tectonic, pdflatex, xelatex, or lualatex for PDF compilation."
   ],
   "disallowed_current_claims": [
-    "Independent manual-audit agreement or submission-strength second-reviewer evidence.",
     "Independent external-agent performance evidence.",
     "A frozen tagged release archive exists."
   ],
@@ -800,8 +797,6 @@
   "stage_targets": [
     {
       "required_before_submission": [
-        "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
-        "Rebuild official agreement reporting after an independent completed packet is available.",
         "Register and run at least one non-author external agent configuration through the pilot harness.",
         "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
         "Create a release tag and archive the release artifact bundle after the remaining gates pass.",

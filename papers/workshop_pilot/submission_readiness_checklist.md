@@ -35,20 +35,19 @@ This checklist tracks work that should be complete before treating the workshop 
 ## Current Risk Flags
 
 - Manual audit status: `seed_author_adjudication_only`.
-- Reviewer readiness status: `not_ready_seed_only`.
-- Completed independent reviewer packets: `0`.
-- Independent agreement status: `insufficient_independent_overlap`.
+- Reviewer readiness status: `ready_for_submission_claims`.
+- Completed independent reviewer packets: `1`.
+- Independent agreement status: `pairwise_agreement_available`.
 - External-agent readiness status: `not_ready_no_external_agents`.
 - Completed external agent configurations: `0`.
 - Submission readiness status: `not_ready_for_workshop_submission`.
-- Submission gates ready: `3 / 6`.
+- Submission gates ready: `4 / 6`.
 - Pilot repeated-run count is small; statistical claims must remain caveated.
 - Bundled example agents should not be framed as a comprehensive model leaderboard.
 
 ## Manual-Audit Gate Blockers
 
-- Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.
-- Rebuild official agreement reporting after an independent completed packet is available.
+- No reviewer-readiness blockers recorded.
 
 ## External-Agent Gate Blockers
 

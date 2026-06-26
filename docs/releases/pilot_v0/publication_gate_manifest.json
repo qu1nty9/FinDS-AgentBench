@@ -96,11 +96,9 @@
   ],
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
-  "blocking_evidence_gate_count": 4,
-  "blocking_item_count": 7,
+  "blocking_evidence_gate_count": 3,
+  "blocking_item_count": 5,
   "blocking_items": [
-    "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
-    "Rebuild official agreement reporting after an independent completed packet is available.",
     "Register and run at least one non-author external agent configuration through the pilot harness.",
     "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
     "Create a release tag and archive the release artifact bundle after the remaining gates pass.",
@@ -133,18 +131,15 @@
       "title": "Statistical Artifacts"
     },
     {
-      "blockers": [
-        "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
-        "Rebuild official agreement reporting after an independent completed packet is available."
-      ],
+      "blockers": [],
       "evidence": {
-        "agreement_status": "insufficient_independent_overlap",
+        "agreement_status": "pairwise_agreement_available",
         "case_count": 6,
-        "independent_completed_reviewer_packet_count": 0
+        "independent_completed_reviewer_packet_count": 1
       },
       "gate_id": "manual_audit_independent_review",
-      "ready": false,
-      "status": "not_ready_seed_only",
+      "ready": true,
+      "status": "ready_for_submission_claims",
       "title": "Manual Audit Independent Review"
     },
     {
@@ -213,7 +208,7 @@
   "ready_for_final_submission_package": false,
   "recommended_completion_order": [
     "Run CI-backed automated gates on every publication-facing change.",
-    "Complete one independent manual-audit reviewer packet and rebuild agreement reporting.",
+    "Inspect the official manual-audit agreement and adjudication queue before strengthening qualitative claims.",
     "Register and run at least one non-author external agent configuration.",
     "Compile and inspect the manuscript PDF with a real LaTeX engine.",
     "Rebuild and verify the deterministic release archive.",

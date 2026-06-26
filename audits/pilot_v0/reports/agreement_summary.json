@@ -1,7 +1,121 @@
 {
-  "eligible_reviewer_packet_count": 1,
-  "exploratory_eligible_reviewer_packet_count": 2,
+  "eligible_reviewer_packet_count": 2,
+  "exploratory_eligible_reviewer_packet_count": 3,
   "exploratory_pairwise_agreement": [
+    {
+      "cases_with_any_disagreement": 6,
+      "disagreement_case_ids": [
+        "pilot_event_rule_baseline_release_001",
+        "pilot_event_rule_env_agent_protocol_001",
+        "pilot_market_logistic_baseline_release_001",
+        "pilot_market_momentum_baseline_release_001",
+        "pilot_treasury_logistic_baseline_release_001",
+        "pilot_treasury_previous_day_baseline_release_001"
+      ],
+      "exact_total_score_match_rate": 0.0,
+      "mean_abs_total_score_diff": 4.166667,
+      "overall_label_exact_agreement": 0.0,
+      "overall_label_kappa": 0.0,
+      "overlap_case_count": 6,
+      "packet_paths": [
+        "audits/pilot_v0/reviews/external_reviewer_1_completed.csv",
+        "audits/pilot_v0/reviews/reviewer_1_seed.csv"
+      ],
+      "per_dimension": [
+        {
+          "dimension_id": "temporal_protocol_correctness",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "leakage_awareness_and_feature_hygiene",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "quantitative_evidence_use",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "baseline_comparison_or_counterfactual_context",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "claim_discipline",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "reproducibility_trace_completeness",
+          "exact_agreement_rate": 0.333333,
+          "quadratic_weighted_kappa": 0.0
+        }
+      ],
+      "reviewer_pair": [
+        "external_reviewer_1",
+        "reviewer_1_seed"
+      ],
+      "status": "pairwise_agreement_available"
+    },
+    {
+      "cases_with_any_disagreement": 6,
+      "disagreement_case_ids": [
+        "pilot_event_rule_baseline_release_001",
+        "pilot_event_rule_env_agent_protocol_001",
+        "pilot_market_logistic_baseline_release_001",
+        "pilot_market_momentum_baseline_release_001",
+        "pilot_treasury_logistic_baseline_release_001",
+        "pilot_treasury_previous_day_baseline_release_001"
+      ],
+      "exact_total_score_match_rate": 0.0,
+      "mean_abs_total_score_diff": 4.333333,
+      "overall_label_exact_agreement": 0.0,
+      "overall_label_kappa": 0.0,
+      "overlap_case_count": 6,
+      "packet_paths": [
+        "audits/pilot_v0/reviews/external_reviewer_1_completed.csv",
+        "audits/pilot_v0/reviews/reviewer_2_shadow_demo.csv"
+      ],
+      "per_dimension": [
+        {
+          "dimension_id": "temporal_protocol_correctness",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "leakage_awareness_and_feature_hygiene",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "quantitative_evidence_use",
+          "exact_agreement_rate": 0.333333,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "baseline_comparison_or_counterfactual_context",
+          "exact_agreement_rate": 0.333333,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "claim_discipline",
+          "exact_agreement_rate": 0.166667,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "reproducibility_trace_completeness",
+          "exact_agreement_rate": 0.5,
+          "quadratic_weighted_kappa": 0.0
+        }
+      ],
+      "reviewer_pair": [
+        "external_reviewer_1",
+        "reviewer_2_shadow_demo"
+      ],
+      "status": "pairwise_agreement_available"
+    },
     {
       "cases_with_any_disagreement": 6,
       "disagreement_case_ids": [
@@ -61,8 +175,31 @@
     }
   ],
   "exploratory_status": "pairwise_agreement_available",
-  "official_status": "insufficient_independent_overlap",
+  "official_status": "pairwise_agreement_available",
   "packet_inventory": [
+    {
+      "completed_case_count": 6,
+      "eligible_for_agreement": true,
+      "error_count": 0,
+      "errors": [],
+      "exploratory_eligible_for_agreement": true,
+      "filename": "external_reviewer_1_completed.csv",
+      "packet_status": "complete",
+      "path": "audits/pilot_v0/reviews/external_reviewer_1_completed.csv",
+      "review_sources": [
+        "independent_manual_review_limited_intake_packet"
+      ],
+      "review_statuses": [
+        "complete"
+      ],
+      "reviewer_ids": [
+        "external_reviewer_1"
+      ],
+      "reviewer_roles": [
+        "independent_reviewer"
+      ],
+      "row_count": 6
+    },
     {
       "completed_case_count": 6,
       "eligible_for_agreement": true,
@@ -133,6 +270,64 @@
       "row_count": 6
     }
   ],
-  "pairwise_agreement": [],
-  "status": "insufficient_independent_overlap"
+  "pairwise_agreement": [
+    {
+      "cases_with_any_disagreement": 6,
+      "disagreement_case_ids": [
+        "pilot_event_rule_baseline_release_001",
+        "pilot_event_rule_env_agent_protocol_001",
+        "pilot_market_logistic_baseline_release_001",
+        "pilot_market_momentum_baseline_release_001",
+        "pilot_treasury_logistic_baseline_release_001",
+        "pilot_treasury_previous_day_baseline_release_001"
+      ],
+      "exact_total_score_match_rate": 0.0,
+      "mean_abs_total_score_diff": 4.166667,
+      "overall_label_exact_agreement": 0.0,
+      "overall_label_kappa": 0.0,
+      "overlap_case_count": 6,
+      "packet_paths": [
+        "audits/pilot_v0/reviews/external_reviewer_1_completed.csv",
+        "audits/pilot_v0/reviews/reviewer_1_seed.csv"
+      ],
+      "per_dimension": [
+        {
+          "dimension_id": "temporal_protocol_correctness",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "leakage_awareness_and_feature_hygiene",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "quantitative_evidence_use",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "baseline_comparison_or_counterfactual_context",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "claim_discipline",
+          "exact_agreement_rate": 0.0,
+          "quadratic_weighted_kappa": 0.0
+        },
+        {
+          "dimension_id": "reproducibility_trace_completeness",
+          "exact_agreement_rate": 0.333333,
+          "quadratic_weighted_kappa": 0.0
+        }
+      ],
+      "reviewer_pair": [
+        "external_reviewer_1",
+        "reviewer_1_seed"
+      ],
+      "status": "pairwise_agreement_available"
+    }
+  ],
+  "status": "pairwise_agreement_available"
 }

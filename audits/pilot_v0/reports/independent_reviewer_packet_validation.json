@@ -1,34 +1,28 @@
 {
   "case_count": 6,
-  "completed_case_count": 0,
-  "error_count": 4,
-  "errors": [
-    "review_source is not acceptable for independent review: blank_template",
-    "review_status must be complete for every row: pilot_market_momentum_baseline_release_001, pilot_market_logistic_baseline_release_001, pilot_event_rule_baseline_release_001, pilot_event_rule_env_agent_protocol_001, pilot_treasury_previous_day_baseline_release_001, pilot_treasury_logistic_baseline_release_001",
-    "all rubric scores, evidence notes, and overall_label must be complete for every row: pilot_market_momentum_baseline_release_001, pilot_market_logistic_baseline_release_001, pilot_event_rule_baseline_release_001, pilot_event_rule_env_agent_protocol_001, pilot_treasury_previous_day_baseline_release_001, pilot_treasury_logistic_baseline_release_001",
-    "primary_manual_findings must be non-empty for: pilot_market_momentum_baseline_release_001, pilot_market_logistic_baseline_release_001, pilot_event_rule_baseline_release_001, pilot_event_rule_env_agent_protocol_001, pilot_treasury_previous_day_baseline_release_001, pilot_treasury_logistic_baseline_release_001"
-  ],
+  "completed_case_count": 6,
+  "error_count": 0,
+  "errors": [],
   "extra_case_ids": [],
   "missing_case_ids": [],
   "next_actions": [
-    "Fix validation errors in the reviewer packet.",
-    "Re-run scripts/validate_manual_audit_review_packet.py.",
-    "Rebuild manual-audit workflow artifacts once validation passes."
+    "Rebuild manual-audit workflow artifacts.",
+    "Inspect official pairwise agreement and adjudication queue."
   ],
-  "packet_path": "audits/pilot_v0/reviews/reviewer_2_blank_template.csv",
-  "ready_for_independent_agreement": false,
+  "packet_path": "audits/pilot_v0/reviews/external_reviewer_1_completed.csv",
+  "ready_for_independent_agreement": true,
   "review_sources": [
-    "blank_template"
+    "independent_manual_review_limited_intake_packet"
   ],
   "review_statuses": [
-    "template"
+    "complete"
   ],
   "reviewer_ids": [
-    "reviewer_2"
+    "external_reviewer_1"
   ],
   "reviewer_roles": [
     "independent_reviewer"
   ],
   "row_count": 6,
-  "status": "invalid_or_incomplete"
+  "status": "ready_for_independent_agreement"
 }

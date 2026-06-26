@@ -52,7 +52,12 @@ def test_build_submission_package_manifest_tracks_claims_artifacts_and_targets(t
 
     assert any("External-agent registration" in claim for claim in manifest["allowed_current_claims"])
     assert any("Independent external-agent performance" in claim for claim in manifest["disallowed_current_claims"])
-    assert any("independent reviewer packet" in item for item in manifest["blocking_items"])
+    assert any(
+        "completed independent-review evidence" in claim
+        for claim in manifest["allowed_current_claims"]
+    )
+    assert not any("independent reviewer packet" in item for item in manifest["blocking_items"])
+    assert any("non-author external agent" in item for item in manifest["blocking_items"])
     assert any(
         command.endswith("scripts/build_submission_package_manifest.py --check")
         for command in manifest["pre_submission_verification_commands"]

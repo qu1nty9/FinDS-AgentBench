@@ -1,6 +1,6 @@
 {
   "agent_cell_count": 8,
-  "agreement_status": "insufficient_independent_overlap",
+  "agreement_status": "pairwise_agreement_available",
   "baseline_cell_count": 27,
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
@@ -15,7 +15,7 @@
   ],
   "external_agent_configuration_count": 0,
   "external_agent_readiness_status": "not_ready_no_external_agents",
-  "independent_completed_reviewer_packet_count": 0,
+  "independent_completed_reviewer_packet_count": 1,
   "manual_audit_case_count": 6,
   "manual_audit_reviewed_task_count": 3,
   "manual_audit_status": "seed_author_adjudication_only",
@@ -26,24 +26,21 @@
   "protocol_cell_count": 35,
   "protocol_task_count": 8,
   "ready_for_external_agent_claims": false,
-  "ready_for_submission_claims": false,
+  "ready_for_submission_claims": true,
   "ready_for_workshop_submission": false,
   "release_build_command": "PYTHONPATH=src python scripts/build_pilot_release.py --repeat 3 --market-seed 11 --event-seed 23 --treasury-seed 29 --curve-seed 31 --curve3mo-seed 33 --front-end-seed 31 --usd-seed 37 --treasury-snapshot-date 2026-06-21 --curve-snapshot-date 2026-06-21 --curve3mo-snapshot-date 2026-06-21 --front-end-snapshot-date 2026-06-21 --usd-snapshot-date 2026-06-21 --clean-existing-outputs",
   "release_stage": "pilot",
-  "reviewer_readiness_blocking_items": [
-    "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
-    "Rebuild official agreement reporting after an independent completed packet is available."
-  ],
+  "reviewer_readiness_blocking_items": [],
   "reviewer_readiness_markdown_path": "audits/pilot_v0/reports/reviewer_readiness.md",
-  "reviewer_readiness_status": "not_ready_seed_only",
+  "reviewer_readiness_status": "ready_for_submission_claims",
   "run_counts": [
     3
   ],
   "runnable_task_count": 9,
-  "submission_blocking_gate_count": 3,
+  "submission_blocking_gate_count": 2,
   "submission_gate_count": 6,
   "submission_readiness_status": "not_ready_for_workshop_submission",
-  "submission_ready_gate_count": 3,
+  "submission_ready_gate_count": 4,
   "task_count": 9,
   "track_count": 3,
   "track_names": [

@@ -39,12 +39,12 @@
   },
   "independent_participant_brief_path": "docs/releases/pilot_v0/independent_participant_brief.md",
   "manual_audit": {
-    "adjudication_entry_count": 6,
+    "adjudication_entry_count": 18,
     "adjudication_report_json_path": "audits/pilot_v0/reports/adjudication_queue.json",
     "adjudication_report_markdown_path": "audits/pilot_v0/reports/adjudication_queue.md",
     "agreement_report_json_path": "audits/pilot_v0/reports/agreement_summary.json",
     "agreement_report_markdown_path": "audits/pilot_v0/reports/agreement_summary.md",
-    "agreement_status": "insufficient_independent_overlap",
+    "agreement_status": "pairwise_agreement_available",
     "case_count": 6,
     "dimension_count": 6,
     "dimension_ids": [
@@ -55,18 +55,18 @@
       "claim_discipline",
       "reproducibility_trace_completeness"
     ],
-    "eligible_reviewer_packet_count": 1,
+    "eligible_reviewer_packet_count": 2,
     "exploratory_agreement_status": "pairwise_agreement_available",
-    "exploratory_eligible_reviewer_packet_count": 2,
-    "exploratory_pairwise_agreement_count": 1,
-    "independent_completed_reviewer_packet_count": 0,
+    "exploratory_eligible_reviewer_packet_count": 3,
+    "exploratory_pairwise_agreement_count": 3,
+    "independent_completed_reviewer_packet_count": 1,
     "independent_reviewer_handoff_path": "audits/pilot_v0/reviews/independent_reviewer_handoff.md",
     "independent_reviewer_packet_manifest_json_path": "audits/pilot_v0/reviews/independent_reviewer_packet_manifest.json",
     "independent_reviewer_packet_manifest_markdown_path": "audits/pilot_v0/reviews/independent_reviewer_packet_manifest.md",
     "independent_reviewer_packet_manifest_status": "ready_for_independent_review_intake",
     "independent_reviewer_packet_validation_json_path": "audits/pilot_v0/reports/independent_reviewer_packet_validation.json",
     "independent_reviewer_packet_validation_markdown_path": "audits/pilot_v0/reports/independent_reviewer_packet_validation.md",
-    "pairwise_agreement_count": 0,
+    "pairwise_agreement_count": 1,
     "per_dimension_means": [
       {
         "case_count": 6,
@@ -100,18 +100,15 @@
       }
     ],
     "readme_path": "audits/pilot_v0/README.md",
-    "ready_for_submission_claims": false,
+    "ready_for_submission_claims": true,
     "reviewed_task_count": 3,
     "reviewer_1_seed_path": "audits/pilot_v0/reviews/reviewer_1_seed.csv",
     "reviewer_2_shadow_path": "audits/pilot_v0/reviews/reviewer_2_shadow_demo.csv",
     "reviewer_2_template_path": "audits/pilot_v0/reviews/reviewer_2_blank_template.csv",
-    "reviewer_readiness_blocking_items": [
-      "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
-      "Rebuild official agreement reporting after an independent completed packet is available."
-    ],
+    "reviewer_readiness_blocking_items": [],
     "reviewer_readiness_json_path": "audits/pilot_v0/reports/reviewer_readiness.json",
     "reviewer_readiness_markdown_path": "audits/pilot_v0/reports/reviewer_readiness.md",
-    "reviewer_readiness_status": "not_ready_seed_only",
+    "reviewer_readiness_status": "ready_for_submission_claims",
     "reviews_readme_path": "audits/pilot_v0/reviews/README.md",
     "rubric_path": "audits/pilot_v0/manual_audit_rubric.yaml",
     "run_types": [
@@ -206,15 +203,13 @@
   "runnable_task_count": 9,
   "statistical_artifacts_path": "docs/releases/pilot_v0/statistical_artifacts/README.md",
   "submission_readiness": {
-    "blocking_gate_count": 3,
+    "blocking_gate_count": 2,
     "blocking_items": [
-      "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
-      "Rebuild official agreement reporting after an independent completed packet is available.",
       "Register and run at least one non-author external agent configuration through the pilot harness.",
       "Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.",
       "Create a release tag and archive the release artifact bundle after the remaining gates pass."
     ],
-    "disallowed_current_claim_count": 3,
+    "disallowed_current_claim_count": 2,
     "evidence_ledger_json_path": "docs/releases/pilot_v0/submission_evidence_ledger.json",
     "evidence_ledger_markdown_path": "docs/releases/pilot_v0/submission_evidence_ledger.md",
     "evidence_ledger_status": "submission_evidence_incomplete",
@@ -222,7 +217,7 @@
     "json_path": "docs/releases/pilot_v0/submission_readiness.json",
     "markdown_path": "docs/releases/pilot_v0/submission_readiness.md",
     "ready_for_workshop_submission": false,
-    "ready_gate_count": 3,
+    "ready_gate_count": 4,
     "status": "not_ready_for_workshop_submission"
   },
   "task_count": 9,

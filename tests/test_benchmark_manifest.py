@@ -126,10 +126,14 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert manifest["submission_readiness"]["status"] == "not_ready_for_workshop_submission"
     assert manifest["submission_readiness"]["ready_for_workshop_submission"] is False
     assert manifest["submission_readiness"]["gate_count"] == 6
-    assert manifest["submission_readiness"]["ready_gate_count"] == 3
-    assert manifest["submission_readiness"]["blocking_gate_count"] == 3
-    assert any(
+    assert manifest["submission_readiness"]["ready_gate_count"] == 4
+    assert manifest["submission_readiness"]["blocking_gate_count"] == 2
+    assert not any(
         "Complete at least one independent reviewer packet" in item
+        for item in manifest["submission_readiness"]["blocking_items"]
+    )
+    assert any(
+        "non-author external agent" in item
         for item in manifest["submission_readiness"]["blocking_items"]
     )
     assert not any(
@@ -173,17 +177,17 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
         manifest["manual_audit"]["reviewer_readiness_markdown_path"]
         == "audits/pilot_v0/reports/reviewer_readiness.md"
     )
-    assert manifest["manual_audit"]["reviewer_readiness_status"] == "not_ready_seed_only"
-    assert manifest["manual_audit"]["ready_for_submission_claims"] is False
-    assert manifest["manual_audit"]["independent_completed_reviewer_packet_count"] == 0
-    assert any(
+    assert manifest["manual_audit"]["reviewer_readiness_status"] == "ready_for_submission_claims"
+    assert manifest["manual_audit"]["ready_for_submission_claims"] is True
+    assert manifest["manual_audit"]["independent_completed_reviewer_packet_count"] == 1
+    assert not any(
         "independent reviewer packet" in item
         for item in manifest["manual_audit"]["reviewer_readiness_blocking_items"]
     )
-    assert manifest["manual_audit"]["agreement_status"] == "insufficient_independent_overlap"
+    assert manifest["manual_audit"]["agreement_status"] == "pairwise_agreement_available"
     assert manifest["manual_audit"]["exploratory_agreement_status"] == "pairwise_agreement_available"
-    assert manifest["manual_audit"]["eligible_reviewer_packet_count"] == 1
-    assert manifest["manual_audit"]["exploratory_eligible_reviewer_packet_count"] == 2
+    assert manifest["manual_audit"]["eligible_reviewer_packet_count"] == 2
+    assert manifest["manual_audit"]["exploratory_eligible_reviewer_packet_count"] == 3
     assert manifest["manual_audit"]["exploratory_pairwise_agreement_count"] >= 1
     assert manifest["manual_audit"]["adjudication_entry_count"] >= 1
     assert manifest["manual_audit"]["case_count"] >= 6
@@ -287,4 +291,4 @@ def test_build_benchmark_manifest_generates_release_index(tmp_path: Path):
     assert "audits/pilot_v0/reports/agreement_summary.md" in readme
     assert "audits/pilot_v0/reports/adjudication_queue.md" in readme
     assert "audits/pilot_v0/reports/reviewer_readiness.md" in readme
-    assert "not_ready_seed_only" in readme
+    assert "ready_for_submission_claims" in readme

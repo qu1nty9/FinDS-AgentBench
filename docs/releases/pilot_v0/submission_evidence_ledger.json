@@ -1,17 +1,16 @@
 {
   "benchmark_id": "finds_agentbench_pilot_v0",
   "benchmark_version": "0.1.0",
-  "blocking_gate_count": 3,
+  "blocking_gate_count": 2,
   "current_allowed_claims": [
     "The pilot release is within the planned 8-12 runnable-task workshop scope.",
     "Pilot uncertainty and paired-comparison statistical artifacts are generated.",
-    "Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.",
+    "The manual-audit subset has completed independent-review evidence and official agreement reporting.",
     "External-agent registration, handoff, and readiness gates are available.",
     "Methodology-calibration findings have a completed author review packet.",
     "A deterministic candidate archive and archive manifest can be built before final tagging."
   ],
   "current_disallowed_claims": [
-    "Independent manual-audit agreement or submission-strength second-reviewer evidence.",
     "Independent external-agent performance evidence.",
     "A frozen tagged release archive exists."
   ],
@@ -98,17 +97,14 @@
       ]
     },
     {
-      "blockers": [
-        "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
-        "Rebuild official agreement reporting after an independent completed packet is available."
-      ],
-      "claim_status": "claim_blocked",
-      "current_allowed_claim": "Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.",
-      "current_disallowed_claim": "Independent manual-audit agreement or submission-strength second-reviewer evidence.",
+      "blockers": [],
+      "claim_status": "claim_allowed",
+      "current_allowed_claim": "The manual-audit subset has completed independent-review evidence and official agreement reporting.",
+      "current_disallowed_claim": null,
       "evidence": {
-        "agreement_status": "insufficient_independent_overlap",
+        "agreement_status": "pairwise_agreement_available",
         "case_count": 6,
-        "independent_completed_reviewer_packet_count": 0
+        "independent_completed_reviewer_packet_count": 1
       },
       "evidence_artifacts": [
         {
@@ -157,8 +153,8 @@
         }
       ],
       "gate_id": "manual_audit_independent_review",
-      "ready": false,
-      "status": "not_ready_seed_only",
+      "ready": true,
+      "status": "ready_for_submission_claims",
       "title": "Manual Audit Independent Review",
       "verification_commands": [
         "PYTHONPATH=src python scripts/build_manual_audit_workflow.py",
@@ -291,7 +287,7 @@
     }
   ],
   "ready_for_workshop_submission": false,
-  "ready_gate_count": 3,
+  "ready_gate_count": 4,
   "release_stage": "pilot",
   "status": "submission_evidence_incomplete",
   "submission_readiness_status": "not_ready_for_workshop_submission"

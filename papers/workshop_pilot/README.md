@@ -30,7 +30,7 @@ Generated manuscript scaffold for the FinDS-AgentBench arXiv/workshop pilot pape
 | Overall Agent Higher Cases | 0 |
 | Overall Baseline Higher Cases | 6 |
 | Overall Tie Cases | 2 |
-| Reviewer Readiness | not_ready_seed_only |
+| Reviewer Readiness | ready_for_submission_claims |
 | External Agent Readiness | not_ready_no_external_agents |
 | Submission Readiness | not_ready_for_workshop_submission |
 | Formatting Check | static_checks_passed_pdf_compile_pending |

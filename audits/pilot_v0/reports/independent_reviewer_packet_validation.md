@@ -6,24 +6,20 @@ Validation report for a submission-strength manual-audit second-reviewer packet.
 
 | Field | Value |
 | --- | --- |
-| Status | `invalid_or_incomplete` |
-| Ready for independent agreement | no |
-| Completed cases | 0 / 6 |
+| Status | `ready_for_independent_agreement` |
+| Ready for independent agreement | yes |
+| Completed cases | 6 / 6 |
 | Rows | 6 |
-| Reviewer IDs | reviewer_2 |
+| Reviewer IDs | external_reviewer_1 |
 | Reviewer Roles | independent_reviewer |
-| Review Sources | blank_template |
-| Errors | 4 |
+| Review Sources | independent_manual_review_limited_intake_packet |
+| Errors | 0 |
 
 ## Errors
 
-- review_source is not acceptable for independent review: blank_template
-- review_status must be complete for every row: pilot_market_momentum_baseline_release_001, pilot_market_logistic_baseline_release_001, pilot_event_rule_baseline_release_001, pilot_event_rule_env_agent_protocol_001, pilot_treasury_previous_day_baseline_release_001, pilot_treasury_logistic_baseline_release_001
-- all rubric scores, evidence notes, and overall_label must be complete for every row: pilot_market_momentum_baseline_release_001, pilot_market_logistic_baseline_release_001, pilot_event_rule_baseline_release_001, pilot_event_rule_env_agent_protocol_001, pilot_treasury_previous_day_baseline_release_001, pilot_treasury_logistic_baseline_release_001
-- primary_manual_findings must be non-empty for: pilot_market_momentum_baseline_release_001, pilot_market_logistic_baseline_release_001, pilot_event_rule_baseline_release_001, pilot_event_rule_env_agent_protocol_001, pilot_treasury_previous_day_baseline_release_001, pilot_treasury_logistic_baseline_release_001
+- None.
 
 ## Next Actions
 
-- Fix validation errors in the reviewer packet.
-- Re-run scripts/validate_manual_audit_review_packet.py.
-- Rebuild manual-audit workflow artifacts once validation passes.
+- Rebuild manual-audit workflow artifacts.
+- Inspect official pairwise agreement and adjudication queue.

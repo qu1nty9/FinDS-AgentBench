@@ -15,7 +15,7 @@ Submission-level wrapper around the manuscript source, release candidate, eviden
 | Submission Readiness | `not_ready_for_workshop_submission` |
 | Formatting Status | `static_checks_passed_pdf_compile_pending` |
 | Archive Status | `candidate_unfrozen` |
-| Archive SHA256 | `c55fbd7327e7b1698785e204e1cd64418cbb792ea771b51c5a6ab4b98a1a95f2` |
+| Archive SHA256 | `7571e1854ac569da761e481cd12377b57a30b9056f25a2ccee6ac43c489e7700` |
 | Artifacts | 67 |
 | Missing Required Artifacts | 1 |
 
@@ -29,8 +29,6 @@ Submission-level wrapper around the manuscript source, release candidate, eviden
 
 ## Blocking Items
 
-- Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.
-- Rebuild official agreement reporting after an independent completed packet is available.
 - Register and run at least one non-author external agent configuration through the pilot harness.
 - Cover all expected pilot agent tasks with completed external-agent runs or declare a scoped external-agent subset.
 - Create a release tag and archive the release artifact bundle after the remaining gates pass.
@@ -45,14 +43,13 @@ Submission-level wrapper around the manuscript source, release candidate, eviden
 
 - The pilot release is within the planned 8-12 runnable-task workshop scope.
 - Pilot uncertainty and paired-comparison statistical artifacts are generated.
-- Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.
+- The manual-audit subset has completed independent-review evidence and official agreement reporting.
 - External-agent registration, handoff, and readiness gates are available.
 - Methodology-calibration findings have a completed author review packet.
 - A deterministic candidate archive and archive manifest can be built before final tagging.
 
 ## Disallowed Current Claims
 
-- Independent manual-audit agreement or submission-strength second-reviewer evidence.
 - Independent external-agent performance evidence.
 - A frozen tagged release archive exists.
 

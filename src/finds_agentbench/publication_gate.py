@@ -240,6 +240,36 @@ def publication_gate_status(*, submission_ready: bool, pdf_ready: bool) -> str:
     return "blocked_on_pdf_compile"
 
 
+def build_recommended_completion_order(evidence_gates: list[dict[str, Any]]) -> list[str]:
+    gates_by_id = {str(gate["gate_id"]): gate for gate in evidence_gates}
+    steps = ["Run CI-backed automated gates on every publication-facing change."]
+    manual_gate = gates_by_id.get("manual_audit_independent_review")
+    if manual_gate and not manual_gate["ready"]:
+        steps.append("Complete one independent manual-audit reviewer packet and rebuild agreement reporting.")
+    elif manual_gate and manual_gate["ready"]:
+        steps.append(
+            "Inspect the official manual-audit agreement and adjudication queue before strengthening qualitative claims."
+        )
+
+    external_gate = gates_by_id.get("external_agent_evidence")
+    if external_gate and not external_gate["ready"]:
+        steps.append("Register and run at least one non-author external agent configuration.")
+
+    pdf_gate = gates_by_id.get("latex_pdf_compile_visual_inspection")
+    if pdf_gate and not pdf_gate["ready"]:
+        steps.append("Compile and inspect the manuscript PDF with a real LaTeX engine.")
+
+    release_gate = gates_by_id.get("release_tag_and_archive")
+    if release_gate and not release_gate["ready"]:
+        steps.extend(
+            [
+                "Rebuild and verify the deterministic release archive.",
+                "Freeze the final release tag after all evidence gates pass.",
+            ]
+        )
+    return steps
+
+
 def build_publication_gate_manifest(
     *,
     release_manifest: dict[str, Any],
@@ -280,14 +310,7 @@ def build_publication_gate_manifest(
         "blocking_items": blocking_items,
         "automated_gates": automated_gates,
         "evidence_gates": evidence_gates,
-        "recommended_completion_order": [
-            "Run CI-backed automated gates on every publication-facing change.",
-            "Complete one independent manual-audit reviewer packet and rebuild agreement reporting.",
-            "Register and run at least one non-author external agent configuration.",
-            "Compile and inspect the manuscript PDF with a real LaTeX engine.",
-            "Rebuild and verify the deterministic release archive.",
-            "Freeze the final release tag after all evidence gates pass.",
-        ],
+        "recommended_completion_order": build_recommended_completion_order(evidence_gates),
     }
 
 

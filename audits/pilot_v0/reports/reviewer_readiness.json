@@ -2,42 +2,40 @@
   "blank_template_packet_paths": [
     "audits/pilot_v0/reviews/reviewer_2_blank_template.csv"
   ],
-  "blocking_items": [
-    "Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.",
-    "Rebuild official agreement reporting after an independent completed packet is available."
-  ],
+  "blocking_items": [],
   "case_count": 6,
   "claim_boundary": {
-    "allowed_current_claim": "Seed manual-audit rubric, adjudicated subset, and reviewer workflow are present.",
-    "disallowed_current_claim": "Independent inter-rater reliability or official second-reviewer agreement."
+    "allowed_current_claim": "Independent reviewer agreement artifacts are available for submission-strength audit claims.",
+    "disallowed_current_claim": ""
   },
   "exploratory_dry_run_status": "pairwise_agreement_available",
-  "exploratory_eligible_completed_reviewer_packet_count": 2,
-  "exploratory_pairwise_agreement_count": 1,
-  "independent_completed_reviewer_packet_count": 0,
-  "independent_completed_reviewer_packet_paths": [],
+  "exploratory_eligible_completed_reviewer_packet_count": 3,
+  "exploratory_pairwise_agreement_count": 3,
+  "independent_completed_reviewer_packet_count": 1,
+  "independent_completed_reviewer_packet_paths": [
+    "audits/pilot_v0/reviews/external_reviewer_1_completed.csv"
+  ],
   "next_actions": [
-    "Copy reviewer_2_blank_template.csv to a reviewer-specific CSV.",
-    "Fill every case with rubric scores, evidence, overall labels, and review_status=complete.",
-    "Rebuild manual-audit workflow artifacts and adjudicate any official disagreements."
+    "Inspect pairwise agreement and adjudication queue before making final submission claims."
   ],
   "non_blocking_cautions": [
     "reviewer_2_shadow_demo.csv is exploratory dry-run evidence only and must not be cited as official inter-rater agreement."
   ],
-  "official_agreement_status": "insufficient_independent_overlap",
-  "official_eligible_completed_reviewer_packet_count": 1,
+  "official_agreement_status": "pairwise_agreement_available",
+  "official_eligible_completed_reviewer_packet_count": 2,
   "official_eligible_reviewer_packet_paths": [
+    "audits/pilot_v0/reviews/external_reviewer_1_completed.csv",
     "audits/pilot_v0/reviews/reviewer_1_seed.csv"
   ],
-  "official_pairwise_agreement_available": false,
-  "official_pairwise_agreement_count": 0,
-  "ready_for_submission_claims": false,
+  "official_pairwise_agreement_available": true,
+  "official_pairwise_agreement_count": 1,
+  "ready_for_submission_claims": true,
   "required_independent_completed_reviewers": 1,
   "seed_completed_reviewer_packet_count": 1,
   "seed_reviewer_packet_paths": [
     "audits/pilot_v0/reviews/reviewer_1_seed.csv"
   ],
-  "status": "not_ready_seed_only",
+  "status": "ready_for_submission_claims",
   "synthetic_shadow_packet_paths": [
     "audits/pilot_v0/reviews/reviewer_2_shadow_demo.csv"
   ]

@@ -27,7 +27,7 @@ def test_build_publication_gate_manifest_tracks_ci_and_submission_blockers(tmp_p
     assert manifest["ready_for_final_submission_package"] is False
     assert manifest["automated_gate_count"] == 7
     assert manifest["ci_enforced_automated_gate_count"] == 7
-    assert manifest["blocking_evidence_gate_count"] == 4
+    assert manifest["blocking_evidence_gate_count"] == 3
 
     automated_gate_ids = {gate["gate_id"] for gate in manifest["automated_gates"]}
     assert "release_gate_regression_suite" in automated_gate_ids
@@ -46,7 +46,7 @@ def test_build_publication_gate_manifest_tracks_ci_and_submission_blockers(tmp_p
 
     evidence_gates = {gate["gate_id"]: gate for gate in manifest["evidence_gates"]}
     assert evidence_gates["pilot_release_scope"]["ready"] is True
-    assert evidence_gates["manual_audit_independent_review"]["ready"] is False
+    assert evidence_gates["manual_audit_independent_review"]["ready"] is True
     assert evidence_gates["external_agent_evidence"]["ready"] is False
     assert evidence_gates["release_tag_and_archive"]["ready"] is False
     assert evidence_gates["latex_pdf_compile_visual_inspection"]["ready"] is False
@@ -56,9 +56,13 @@ def test_build_publication_gate_manifest_tracks_ci_and_submission_blockers(tmp_p
         ]
         is False
     )
-    assert any("independent reviewer packet" in item for item in manifest["blocking_items"])
+    assert not any("independent reviewer packet" in item for item in manifest["blocking_items"])
     assert any("non-author external agent" in item for item in manifest["blocking_items"])
     assert any("LaTeX engine" in item for item in manifest["blocking_items"])
+    assert any(
+        "Inspect the official manual-audit agreement" in item
+        for item in manifest["recommended_completion_order"]
+    )
 
     assert "Publication Gate Manifest" in markdown
     assert "release_archive_build_and_verify" in markdown

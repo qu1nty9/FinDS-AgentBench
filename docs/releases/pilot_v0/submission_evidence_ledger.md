@@ -9,21 +9,20 @@ Machine-readable claim boundary and evidence index for the workshop submission g
 | Ledger status | `submission_evidence_incomplete` |
 | Submission readiness | `not_ready_for_workshop_submission` |
 | Ready for workshop submission | no |
-| Ready gates | 3 / 6 |
-| Blocking gates | 3 |
+| Ready gates | 4 / 6 |
+| Blocking gates | 2 |
 
 ## Allowed Current Claims
 
 - The pilot release is within the planned 8-12 runnable-task workshop scope.
 - Pilot uncertainty and paired-comparison statistical artifacts are generated.
-- Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.
+- The manual-audit subset has completed independent-review evidence and official agreement reporting.
 - External-agent registration, handoff, and readiness gates are available.
 - Methodology-calibration findings have a completed author review packet.
 - A deterministic candidate archive and archive manifest can be built before final tagging.
 
 ## Disallowed Current Claims
 
-- Independent manual-audit agreement or submission-strength second-reviewer evidence.
 - Independent external-agent performance evidence.
 - A frozen tagged release archive exists.
 
@@ -33,7 +32,7 @@ Machine-readable claim boundary and evidence index for the workshop submission g
 | --- | --- | --- | --- | --- | --- |
 | pilot_release_scope | yes | `ready` | `claim_allowed` | 6 | 3 |
 | statistical_artifacts | yes | `ready` | `claim_allowed` | 4 | 1 |
-| manual_audit_independent_review | no | `not_ready_seed_only` | `claim_blocked` | 11 | 2 |
+| manual_audit_independent_review | yes | `ready_for_submission_claims` | `claim_allowed` | 11 | 2 |
 | external_agent_evidence | no | `not_ready_no_external_agents` | `claim_blocked` | 7 | 2 |
 | methodology_calibration_review | yes | `ready` | `claim_allowed` | 4 | 1 |
 | release_tag_and_archive | no | `not_ready_unfrozen` | `claim_blocked` | 3 | 2 |
@@ -70,11 +69,8 @@ Machine-readable claim boundary and evidence index for the workshop submission g
 
 ### manual_audit_independent_review
 
-- Current allowed claim: Manual-audit rubric, seed review, reviewer handoff, blank reviewer packet, and dry-run plumbing are available.
-- Current disallowed claim: Independent manual-audit agreement or submission-strength second-reviewer evidence.
-- Blockers:
-  - Complete at least one independent reviewer packet copied from reviewer_2_blank_template.csv.
-  - Rebuild official agreement reporting after an independent completed packet is available.
+- Current allowed claim: The manual-audit subset has completed independent-review evidence and official agreement reporting.
+- Blockers: none
 - Evidence artifacts:
   - `docs/releases/pilot_v0/independent_participant_brief.md` (independent_participant_brief)
   - `audits/pilot_v0/README.md` (manual_audit_readme)
